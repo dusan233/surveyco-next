@@ -2,6 +2,7 @@
 
 import { useAuth, useUser } from "@clerk/nextjs";
 import React, { useEffect } from "react";
+import Spinner from "./ui/spinner";
 
 const CheckAuth = () => {
   const auth = useAuth();
@@ -18,7 +19,12 @@ const CheckAuth = () => {
 
   console.log(auth, user);
 
-  return <div>CheckAuth</div>;
+  return (
+    <div>
+      CheckAuth
+      <Spinner size="sm" />
+    </div>
+  );
 };
 
 export default CheckAuth;
