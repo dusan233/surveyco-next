@@ -1,8 +1,11 @@
 "use server";
 
+import { QuizResponseData } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 
-export const getSurvey = async (surveyId: string) => {
+export const getSurvey = async (
+  surveyId: string
+): Promise<QuizResponseData> => {
   const { getToken } = auth();
   const token = await getToken();
 

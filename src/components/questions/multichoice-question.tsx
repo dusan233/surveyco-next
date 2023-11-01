@@ -43,7 +43,7 @@ const MultiChoiceQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
   const form = useForm<z.infer<typeof multiChoiceQuestionSchema>>({
     resolver: zodResolver(multiChoiceQuestionSchema),
     defaultValues: {
-      question_description: question.question_description,
+      question_description: question.description,
       options: question.options,
     },
   });
@@ -53,7 +53,7 @@ const MultiChoiceQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
   ) => console.log(data);
 
   return (
-    <div className="p-5 rounded-lg bg-slate-100 border-l-4 border-l-blue-400">
+    <div className="p-5 rounded-lg bg-white border-l-4 border-l-blue-400">
       <QuestionHeader index={index} type={question.type} />
       <FormProvider {...form}>
         <Form {...form}>
@@ -65,7 +65,7 @@ const MultiChoiceQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
                 <FormItem>
                   <FormControl>
                     <RichTextEditor
-                      content={question.question_description}
+                      content={question.description}
                       placeholder="Enter your question"
                       onChange={field.onChange}
                       onBlur={field.onBlur}

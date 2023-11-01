@@ -8,11 +8,22 @@ export enum QuestionType {
 }
 
 export interface QuestionBase {
+  quizId: string;
   id: number | string;
   type: QuestionType;
-  updated_at: string | null;
-  question_description: string;
+  updated_at: string;
+  created_at: string;
+  description: string;
 }
+export type UnsavedQuestion =
+  | { id: number; updated_at: null; type: QuestionType; description: string }
+  | {
+      id: number;
+      updated_at: null;
+      type: QuestionType;
+      description: string;
+      options: Option[];
+    };
 
 export interface Option {
   description: string;
@@ -38,3 +49,13 @@ export type Question =
   | CheckboxesQuestion
   | DropdownQuestion
   | TextboxQuestion;
+
+export interface QuizResponseData {
+  id: string;
+  creatorId: string;
+  title: string;
+  category: string;
+  created_at: Date;
+  updated_at: Date;
+  questions: [];
+}

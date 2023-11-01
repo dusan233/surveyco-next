@@ -1,12 +1,17 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Question, QuestionType } from "../../../../../lib/types";
+import {
+  Question,
+  QuestionType,
+  UnsavedQuestion,
+} from "../../../../../lib/types";
 import BuildQuestionsList from "@/components/questions/build-questions-list";
 
 import AddQuestion from "@/components/questions/add-question";
 import useSurvey from "@/lib/hooks/useQuiz";
 import { useParams } from "next/navigation";
+import Spinner from "@/components/ui/spinner";
 
 const questionss = [
   {
@@ -52,12 +57,20 @@ const questionss = [
 
 const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
   const { survey, isLoading } = useSurvey(params.slug);
-  console.log(survey, "data");
-  const [questions, setQuestions] = useState<Question[]>(questionss);
+
+  const [questions, setQuestions] = useState<(Question | UnsavedQuestion)[]>(
+    []
+  );
   const previousSelectedQuestion = useRef<string | null | number>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<
     string | number | null
   >(null);
+
+  useEffect(() => {
+    if (survey) {
+      setQuestions(survey.questions);
+    }
+  }, [survey]);
 
   useEffect(() => {
     if (previousSelectedQuestion.current) {
@@ -97,13 +110,13 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
           ? {
               id: newQuestionId,
               type: type,
-              question_description: "",
+              description: "",
               updated_at: null,
             }
           : {
               id: newQuestionId,
               type: type,
-              question_description: "",
+              description: "",
               updated_at: null,
               options: [
                 {
@@ -125,13 +138,21 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
   };
 
   return (
-    <div className="p-10 rounded-sm bg-slate-100">
-      <BuildQuestionsList
-        selectedQuestion={selectedQuestion}
-        setSelectedQuestion={setSelectedQuestion}
-        questions={questions}
-      />
-      <AddQuestion addNewQuestion={addNewQuestion} />
+    <div className="p-10 rounded-sm  bg-slate-100">
+      {isLoading ? (
+        <div className="flex justify-center">
+          <Spinner size="lg" />
+        </div>
+      ) : (
+        <>
+          <BuildQuestionsList
+            selectedQuestion={selectedQuestion}
+            setSelectedQuestion={setSelectedQuestion}
+            questions={questions}
+          />
+          <AddQuestion addNewQuestion={addNewQuestion} />
+        </>
+      )}
     </div>
   );
 };
