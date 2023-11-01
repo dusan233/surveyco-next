@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Question, QuestionType } from "../../lib/types";
+import { Question, QuestionType } from "../../../../../lib/types";
 import BuildQuestionsList from "@/components/questions/build-questions-list";
 
 import AddQuestion from "@/components/questions/add-question";
+import useSurvey from "@/lib/hooks/useQuiz";
+import { useParams } from "next/navigation";
 
 const questionss = [
   {
@@ -48,7 +50,9 @@ const questionss = [
   },
 ];
 
-const BuildSurveyPage = () => {
+const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
+  const { survey, isLoading } = useSurvey(params.slug);
+  console.log(survey, "data");
   const [questions, setQuestions] = useState<Question[]>(questionss);
   const previousSelectedQuestion = useRef<string | null | number>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<

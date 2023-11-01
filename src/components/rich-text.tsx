@@ -213,8 +213,8 @@ export const RichTextEditor = ({
           }
         }}
         ref={richEditorContainerRef}
-        className={`relative border-2 rounded-sm p-2  ${
-          isFocused ? "border-blue-500" : "border-slate-300"
+        className={`relative bg-white border-2 rounded-sm p-2  ${
+          isFocused ? "border-blue-500" : "border-slate-200"
         } focus:outline-none`}
       >
         {isFocused && <MenuBar editor={editor} />}

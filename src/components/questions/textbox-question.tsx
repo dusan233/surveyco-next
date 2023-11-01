@@ -34,7 +34,7 @@ const TextboxQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
   ) => console.log(data);
 
   return (
-    <div className="p-5 rounded-sm border border-slate-600">
+    <div className="p-5 bg-slate-100 rounded-sm border-l-4 border-l-blue-400">
       <QuestionHeader type={question.type} index={index} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>

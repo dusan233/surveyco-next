@@ -10,7 +10,7 @@ const CheckAuth = () => {
   useEffect(() => {
     const du = async () => {
       const token = await auth.getToken();
-      console.log(token, "eve ga tokenero");
+      console.error(token, "eve ga tokenero");
     };
 
     du();

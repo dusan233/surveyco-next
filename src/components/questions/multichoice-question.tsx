@@ -53,7 +53,7 @@ const MultiChoiceQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
   ) => console.log(data);
 
   return (
-    <div className="p-5 rounded-sm border border-slate-600">
+    <div className="p-5 rounded-lg bg-slate-100 border-l-4 border-l-blue-400">
       <QuestionHeader index={index} type={question.type} />
       <FormProvider {...form}>
         <Form {...form}>
