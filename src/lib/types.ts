@@ -1,4 +1,9 @@
 import { Content } from "@tiptap/react";
+import { z } from "zod";
+import {
+  multiChoiceQuestionSchema,
+  textboxQuestionSchema,
+} from "./validationSchemas";
 
 export enum QuestionType {
   multiple_choice = "multiple_choice",
@@ -15,15 +20,33 @@ export interface QuestionBase {
   created_at: string;
   description: string;
 }
-export type UnsavedQuestion =
-  | { id: number; updated_at: null; type: QuestionType; description: string }
-  | {
-      id: number;
-      updated_at: null;
-      type: QuestionType;
-      description: string;
-      options: Option[];
-    };
+export type UnsavedQuestion = UnsavedMultiChoiceQuestion | UnsavedTextQuestion;
+export type UnsavedMultiChoiceQuestion = {
+  id?: string;
+  updated_at: null;
+  type: QuestionType;
+  description: string;
+  options: Option[];
+};
+export type UnsavedTextQuestion = {
+  id?: string;
+  updated_at: null;
+  type: QuestionType;
+  description: string;
+};
+
+export type MultiChoiceQuestionData = z.infer<
+  typeof multiChoiceQuestionSchema
+> & {
+  id?: string;
+  type: QuestionType;
+};
+export type TextQuestionData = z.infer<typeof textboxQuestionSchema> & {
+  id?: string;
+  type: QuestionType;
+};
+
+export type SaveQuestionData = MultiChoiceQuestionData | TextQuestionData;
 
 export interface Option {
   description: string;
@@ -57,5 +80,9 @@ export interface QuizResponseData {
   category: string;
   created_at: Date;
   updated_at: Date;
-  questions: [];
+  questions: Question[];
+}
+
+export interface QuestionsResponseData {
+  questions: Question[];
 }

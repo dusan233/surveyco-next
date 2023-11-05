@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const multiChoiceQuestionSchema = z.object({
-  question_description: z.string().min(1, "You must enter question text."),
+  description: z.string().min(1, "You must enter question text."),
   options: z
     .array(
       z.object({
@@ -12,5 +12,5 @@ export const multiChoiceQuestionSchema = z.object({
 });
 
 export const textboxQuestionSchema = z.object({
-  question_description: z.string().min(1, "You must enter question text."),
+  description: z.string().min(1, "You must enter question text."),
 });

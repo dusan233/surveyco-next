@@ -19,14 +19,14 @@ type MultiChoiceQuestionProps = {
   index: number;
 };
 export const textboxQuestionSchema = z.object({
-  question_description: z.string().min(1, "You must enter question text."),
+  description: z.string().min(1, "You must enter question text."),
 });
 
 const TextboxQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
   const form = useForm<z.infer<typeof textboxQuestionSchema>>({
     resolver: zodResolver(textboxQuestionSchema),
     defaultValues: {
-      question_description: question.question_description,
+      description: question.description,
     },
   });
   const onSubmit: SubmitHandler<z.infer<typeof textboxQuestionSchema>> = (
@@ -40,12 +40,12 @@ const TextboxQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
-            name="question_description"
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <RichTextEditor
-                    content={question.question_description}
+                    content={question.description}
                     placeholder="Enter your question"
                     onChange={field.onChange}
                     onBlur={field.onBlur}

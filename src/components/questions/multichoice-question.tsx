@@ -1,4 +1,9 @@
-import { MultipleChoiceQuestion, Option } from "@/lib/types";
+import {
+  MultipleChoiceQuestion,
+  Option,
+  UnsavedMultiChoiceQuestion,
+  UnsavedQuestion,
+} from "@/lib/types";
 import React from "react";
 import { RichTextEditor } from "../rich-text";
 import { Button } from "../ui/button";
@@ -17,40 +22,36 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import QuestionFooter from "./question-footer";
 import QuestionHeader from "./question-header";
+import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
+import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 
 type MultiChoiceQuestionProps = {
-  question: MultipleChoiceQuestion;
+  question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
+  surveyId: string;
   index: number;
 };
 
-export type QuestionInputs = {
-  question_description: Content;
-  options: Option[];
-};
-
-export const multiChoiceQuestionSchema = z.object({
-  question_description: z.string().min(1, "You must enter question text."),
-  options: z
-    .array(
-      z.object({
-        description: z.string().min(1, "You must enter option text."),
-      })
-    )
-    .nonempty("You must add at least one option."),
-});
-
-const MultiChoiceQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
+const MultiChoiceQuestion = ({
+  question,
+  index,
+  surveyId,
+}: MultiChoiceQuestionProps) => {
   const form = useForm<z.infer<typeof multiChoiceQuestionSchema>>({
     resolver: zodResolver(multiChoiceQuestionSchema),
     defaultValues: {
-      question_description: question.description,
+      description: question.description,
       options: question.options,
     },
   });
 
+  const { isPending, saveQuestionMutation } = useSaveQuestion(surveyId);
+
   const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (
     data
-  ) => console.log(data);
+  ) => {
+    console.log(data);
+    saveQuestionMutation(data);
+  };
 
   return (
     <div className="p-5 rounded-lg bg-white border-l-4 border-l-blue-400">
@@ -60,7 +61,7 @@ const MultiChoiceQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name="question_description"
+              name="description"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

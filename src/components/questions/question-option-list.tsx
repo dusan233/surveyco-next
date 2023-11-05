@@ -1,11 +1,9 @@
 import React from "react";
 import { Control, useFieldArray } from "react-hook-form";
 import QuestionOption from "./question-option";
-import {
-  QuestionInputs,
-  multiChoiceQuestionSchema,
-} from "./multichoice-question";
+import {} from "./multichoice-question";
 import { z } from "zod";
+import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 
 type QuestionOptionListProps = {
   control: Control<z.infer<typeof multiChoiceQuestionSchema>, any>;
