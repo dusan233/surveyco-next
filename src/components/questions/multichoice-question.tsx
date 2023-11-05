@@ -1,4 +1,5 @@
 import {
+  MultiChoiceQuestionData,
   MultipleChoiceQuestion,
   Option,
   UnsavedMultiChoiceQuestion,
@@ -49,8 +50,11 @@ const MultiChoiceQuestion = ({
   const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (
     data
   ) => {
+    // const questionData: MultiChoiceQuestionData = {
+    //   id: question.id,
+    // };
+    // saveQuestionMutation(data);
     console.log(data);
-    saveQuestionMutation(data);
   };
 
   return (

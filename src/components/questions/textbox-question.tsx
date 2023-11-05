@@ -8,14 +8,14 @@ import {
   FormMessage,
 } from "../ui/form";
 import { RichTextEditor } from "../rich-text";
-import { TextboxQuestion } from "@/lib/types";
+import { TextboxQuestion, UnsavedTextQuestion } from "@/lib/types";
 import QuestionHeader from "./question-header";
 import QuestionFooter from "./question-footer";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type MultiChoiceQuestionProps = {
-  question: TextboxQuestion;
+  question: TextboxQuestion | UnsavedTextQuestion;
   index: number;
 };
 export const textboxQuestionSchema = z.object({

@@ -44,7 +44,9 @@ export const getSurveyQuestions = async (
   );
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch questions for survey with id: ${surveyId}`);
+    throw new Error(
+      `Failed to fetch questions for survey with id: ${surveyId}`
+    );
   }
 
   return await res.json();

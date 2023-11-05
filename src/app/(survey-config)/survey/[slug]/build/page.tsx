@@ -11,6 +11,7 @@ import BuildQuestionsList from "@/components/questions/build-questions-list";
 import AddQuestion from "@/components/questions/add-question";
 import Spinner from "@/components/ui/spinner";
 import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
+import { QuestionsListContext } from "@/lib/context";
 
 const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
   const { questions: questionsData, isLoading } = useSurveyQuestions(
@@ -21,13 +22,14 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
     []
   );
   const [addingQuestion, setAddingQuestion] = useState(false);
-  const previousSelectedQuestion = useRef<string | null | number>(null);
+  // const previousSelectedQuestion = useRef<string | null | number>(null);
   const [selectedQuestion, setSelectedQuestion] = useState<
     string | number | null
   >(null);
 
   useEffect(() => {
     if (questionsData) {
+      console.log(questionsData);
       setQuestions(questionsData);
     }
   }, [questionsData]);
@@ -97,7 +99,9 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
           <Spinner size="lg" />
         </div>
       ) : (
-        <>
+        <QuestionsListContext.Provider
+          value={{ setSelectedQuestion: setSelectedQuestion }}
+        >
           <BuildQuestionsList
             addingQuestion={addingQuestion}
             setAddingQuestion={setAddingQuestion}
@@ -106,8 +110,8 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
             setSelectedQuestion={setSelectedQuestion}
             questions={questions}
           />
-          <AddQuestion addNewQuestion={addNewQuestion} />
-        </>
+          <AddQuestion addQuestion={addNewQuestion} />
+        </QuestionsListContext.Provider>
       )}
     </div>
   );
