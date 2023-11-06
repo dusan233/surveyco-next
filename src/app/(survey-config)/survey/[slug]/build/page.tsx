@@ -34,6 +34,14 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
     }
   }, [questionsData]);
 
+  useEffect(() => {
+    if (!addingQuestion) {
+      setQuestions((questions) => {
+        return questions.filter((question) => question.id);
+      });
+    }
+  }, [addingQuestion]);
+
   // useEffect(() => {
   //   if (previousSelectedQuestion.current) {
   //     console.log(previousSelectedQuestion.current);
@@ -81,9 +89,7 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
                 },
               ],
             };
-      const filteredQuestions = questions.filter(
-        (question) => question.updated_at
-      );
+      const filteredQuestions = questions.filter((question) => question.id);
       const newQuestions = [...filteredQuestions, newQuestion];
 
       return newQuestions;
@@ -100,7 +106,12 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
         </div>
       ) : (
         <QuestionsListContext.Provider
-          value={{ setSelectedQuestion: setSelectedQuestion }}
+          value={{
+            setSelectedQuestion,
+            setAddingQuestion,
+            addingQuestion,
+            lastQuestionIndex: questions.length - 1,
+          }}
         >
           <BuildQuestionsList
             addingQuestion={addingQuestion}

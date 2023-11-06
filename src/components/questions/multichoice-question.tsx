@@ -82,7 +82,7 @@ const MultiChoiceQuestion = ({
             />
             <Separator className="my-5" />
             <QuestionOptionList control={form.control} />
-            <QuestionFooter />
+            <QuestionFooter questionIndex={index} />
           </form>
         </Form>
       </FormProvider>

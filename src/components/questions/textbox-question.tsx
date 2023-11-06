@@ -55,7 +55,7 @@ const TextboxQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
               </FormItem>
             )}
           />
-          <QuestionFooter />
+          <QuestionFooter questionIndex={index} />
         </form>
       </Form>
     </div>

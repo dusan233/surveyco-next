@@ -2,13 +2,22 @@ import { QuestionsListContext } from "@/lib/context";
 import React, { useContext } from "react";
 import { Button } from "../ui/button";
 
-const QuestionFooter = () => {
-  const { setSelectedQuestion } = useContext(QuestionsListContext);
+const QuestionFooter = ({ questionIndex }: { questionIndex: number }) => {
+  const {
+    setSelectedQuestion,
+    lastQuestionIndex,
+    addingQuestion,
+    setAddingQuestion,
+  } = useContext(QuestionsListContext);
   return (
     <div className="flex justify-end gap-2 mt-5">
       <Button
         onClick={() => {
-          setSelectedQuestion(null);
+          if (addingQuestion && lastQuestionIndex === questionIndex) {
+            setAddingQuestion(false);
+          } else {
+            setSelectedQuestion(null);
+          }
         }}
         variant="outline"
         type="button"
