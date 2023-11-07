@@ -25,6 +25,7 @@ import QuestionFooter from "./question-footer";
 import QuestionHeader from "./question-header";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
+import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -50,15 +51,30 @@ const MultiChoiceQuestion = ({
   const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (
     data
   ) => {
-    // const questionData: MultiChoiceQuestionData = {
-    //   id: question.id,
-    // };
-    // saveQuestionMutation(data);
-    console.log(data);
+    const questionData: MultiChoiceQuestionData = {
+      description: data.description,
+      type: question.type,
+      options: data.options,
+      ...(question.id && { id: question.id }),
+    };
+    console.log(questionData);
+    // saveQuestionMutation(questionData);
   };
+  const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
+    console.log("away");
+
+    await form.handleSubmit(onSubmit)();
+    console.log(form.formState.errors, "erros");
+    if (form.formState.errors.description || form.formState.errors.options) {
+      e.stopPropagation();
+    }
+  });
 
   return (
-    <div className="p-5 rounded-lg bg-white border-l-4 border-l-blue-400">
+    <div
+      ref={ref}
+      className="p-5 rounded-lg bg-white border-l-4 border-l-blue-400"
+    >
       <QuestionHeader index={index} type={question.type} />
       <FormProvider {...form}>
         <Form {...form}>

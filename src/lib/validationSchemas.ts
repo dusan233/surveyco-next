@@ -5,6 +5,7 @@ export const multiChoiceQuestionSchema = z.object({
   options: z
     .array(
       z.object({
+        id: z.string().optional(),
         description: z.string().min(1, "You must enter option text."),
       })
     )

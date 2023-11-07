@@ -35,6 +35,7 @@ const BuildQuestionsList = ({
   const renderQuestionDesc = (question: Question | UnsavedQuestion) => {
     return (
       <div
+        data-question="true"
         onClick={() => {
           setSelectedQuestion(question.id!);
           setAddingQuestion(false);

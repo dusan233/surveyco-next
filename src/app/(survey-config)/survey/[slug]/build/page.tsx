@@ -26,6 +26,7 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
   const [selectedQuestion, setSelectedQuestion] = useState<
     string | number | null
   >(null);
+  const [canSelectDiffQuestion, setCanSelectDiffQuestion] = useState(true);
 
   useEffect(() => {
     if (questionsData) {
@@ -109,6 +110,7 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
           value={{
             setSelectedQuestion,
             setAddingQuestion,
+            setCanSelectDiffQuestion,
             addingQuestion,
             lastQuestionIndex: questions.length - 1,
           }}

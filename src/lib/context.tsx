@@ -5,11 +5,13 @@ export const QuestionsListContext = createContext<{
     React.SetStateAction<string | number | null>
   >;
   setAddingQuestion: React.Dispatch<React.SetStateAction<boolean>>;
+  setCanSelectDiffQuestion: React.Dispatch<React.SetStateAction<boolean>>;
   addingQuestion: boolean;
   lastQuestionIndex: number;
 }>({
   setSelectedQuestion: () => {},
   setAddingQuestion: () => {},
+  setCanSelectDiffQuestion: () => {},
   addingQuestion: false,
   lastQuestionIndex: 0,
 });

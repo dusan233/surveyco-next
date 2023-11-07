@@ -14,7 +14,7 @@ export enum QuestionType {
 
 export interface QuestionBase {
   quizId: string;
-  id: number | string;
+  id: string;
   type: QuestionType;
   updated_at: string;
   created_at: string;
@@ -50,7 +50,7 @@ export type SaveQuestionData = MultiChoiceQuestionData | TextQuestionData;
 
 export interface Option {
   description: string;
-  id?: string | number;
+  id?: string;
 }
 
 export interface OptionsQuestion {

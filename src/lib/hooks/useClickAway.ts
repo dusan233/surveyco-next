@@ -1,7 +1,9 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 
-export function useClickAway(cb: (e: MouseEvent | TouchEvent) => void) {
-  const ref = useRef<Element>(null);
+export function useClickAwayQuestionEdit<T extends Element>(
+  cb: (e: MouseEvent | TouchEvent) => void
+) {
+  const ref = useRef<T>(null);
   const refCb = useRef(cb);
 
   useLayoutEffect(() => {
@@ -11,17 +13,27 @@ export function useClickAway(cb: (e: MouseEvent | TouchEvent) => void) {
   useEffect(() => {
     const handler = (e: MouseEvent | TouchEvent) => {
       const element = ref.current;
+      const target = e.target as Element;
 
-      if (element && !element.contains(e.target as Node)) {
+      let clickedOnQuestionEl = false;
+      document.querySelectorAll("[data-question]").forEach((el) => {
+        if (el.contains(target)) {
+          clickedOnQuestionEl = true;
+        }
+      });
+
+      if (element && !element.contains(target) && clickedOnQuestionEl) {
         refCb.current(e);
+      } else {
+        return false;
       }
     };
 
-    document.addEventListener("mousedown", handler);
+    document.addEventListener("click", handler, { capture: true });
     document.addEventListener("touchstart", handler);
 
     return () => {
-      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("click", handler, { capture: true });
       document.removeEventListener("touchstart", handler);
     };
   }, []);
