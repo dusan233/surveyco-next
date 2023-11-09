@@ -58,12 +58,12 @@ const MultiChoiceQuestion = ({
       ...(question.id && { id: question.id }),
     };
     console.log(questionData);
-    // saveQuestionMutation(questionData);
+    saveQuestionMutation(questionData);
   };
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
     console.log("away");
-
-    await form.handleSubmit(onSubmit)();
+    const fn = form.handleSubmit(onSubmit);
+    await fn();
     console.log(form.formState.errors, "erros");
     if (form.formState.errors.description || form.formState.errors.options) {
       e.stopPropagation();

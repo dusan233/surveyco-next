@@ -34,7 +34,6 @@ const QuestionOptionList = ({ control }: QuestionOptionListProps) => {
   return (
     <div className="flex flex-col gap-2 ml-3">
       {options.map((option, index) => {
-        console.log(option.optionId);
         return (
           <QuestionOption
             addAnotherOption={addAnotherOption}

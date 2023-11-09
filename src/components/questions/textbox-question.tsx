@@ -8,33 +8,66 @@ import {
   FormMessage,
 } from "../ui/form";
 import { RichTextEditor } from "../rich-text";
-import { TextboxQuestion, UnsavedTextQuestion } from "@/lib/types";
+import {
+  TextQuestionData,
+  TextboxQuestion,
+  UnsavedTextQuestion,
+} from "@/lib/types";
 import QuestionHeader from "./question-header";
 import QuestionFooter from "./question-footer";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
+import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 
-type MultiChoiceQuestionProps = {
+type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
+  surveyId: string;
   index: number;
 };
 export const textboxQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
 });
 
-const TextboxQuestion = ({ question, index }: MultiChoiceQuestionProps) => {
+const TextboxQuestion = ({
+  question,
+  index,
+  surveyId,
+}: TextboxQuestionProps) => {
   const form = useForm<z.infer<typeof textboxQuestionSchema>>({
     resolver: zodResolver(textboxQuestionSchema),
     defaultValues: {
       description: question.description,
     },
   });
+
+  const { isPending, saveQuestionMutation } = useSaveQuestion(surveyId);
+
   const onSubmit: SubmitHandler<z.infer<typeof textboxQuestionSchema>> = (
     data
-  ) => console.log(data);
+  ) => {
+    const questionData: TextQuestionData = {
+      description: data.description,
+      type: question.type,
+      ...(question.id && { id: question.id }),
+    };
+    saveQuestionMutation(questionData);
+  };
+
+  const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
+    const fn = form.handleSubmit(onSubmit);
+    await fn();
+
+    if (form.formState.errors.description) {
+      e.stopPropagation();
+    }
+  });
 
   return (
-    <div className="p-5 bg-white rounded-sm border-l-4 border-l-blue-400">
+    <div
+      ref={ref}
+      className="p-5 bg-white rounded-sm border-l-4 border-l-blue-400"
+    >
       <QuestionHeader type={question.type} index={index} />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>

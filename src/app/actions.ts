@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  Question,
   QuestionsResponseData,
   QuizResponseData,
   SaveQuestionData,
@@ -55,16 +56,17 @@ export const getSurveyQuestions = async (
 export const saveQuestion = async (
   surveyId: string,
   data: SaveQuestionData
-) => {
+): Promise<Question> => {
   const { getToken } = auth();
   const token = await getToken();
-
+  console.log(data, "ovo saljem");
   const res = await fetch(
     `${process.env.BACKEND_API}/quiz/${surveyId}/save-question`,
     {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + token,
+        "Content-type": "application/json",
       },
       body: JSON.stringify(data),
     }

@@ -68,7 +68,11 @@ const BuildQuestionsList = ({
         question={question as MultipleChoiceQuestion}
       />
     ) : (
-      <TextboxQuestionn index={index} question={question as TextboxQuestion} />
+      <TextboxQuestionn
+        surveyId={surveyId}
+        index={index}
+        question={question as TextboxQuestion}
+      />
     );
   };
   const renderQuestion = (
