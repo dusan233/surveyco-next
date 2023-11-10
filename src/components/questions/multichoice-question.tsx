@@ -5,7 +5,7 @@ import {
   UnsavedMultiChoiceQuestion,
   UnsavedQuestion,
 } from "@/lib/types";
-import React from "react";
+import React, { useContext } from "react";
 import { RichTextEditor } from "../rich-text";
 import { Button } from "../ui/button";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -26,6 +26,7 @@ import QuestionHeader from "./question-header";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
+import { QuestionsListContext } from "@/lib/context";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -45,7 +46,7 @@ const MultiChoiceQuestion = ({
       options: question.options,
     },
   });
-
+  const { setCanSelectQuestion } = useContext(QuestionsListContext);
   const { isPending, saveQuestionMutation } = useSaveQuestion(surveyId);
 
   const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (
@@ -57,7 +58,8 @@ const MultiChoiceQuestion = ({
       options: data.options,
       ...(question.id && { id: question.id }),
     };
-    console.log(questionData);
+
+    setCanSelectQuestion(false);
     saveQuestionMutation(questionData);
   };
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {

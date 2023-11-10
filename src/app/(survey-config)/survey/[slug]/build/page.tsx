@@ -12,6 +12,7 @@ import AddQuestion from "@/components/questions/add-question";
 import Spinner from "@/components/ui/spinner";
 import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
 import { QuestionsListContext } from "@/lib/context";
+import { useSelectedQuestion } from "@/lib/hooks/useSelectedQuestion";
 
 const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
   const { questions: questionsData, isLoading } = useSurveyQuestions(
@@ -23,10 +24,11 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
   );
   const [addingQuestion, setAddingQuestion] = useState(false);
   // const previousSelectedQuestion = useRef<string | null | number>(null);
-  const [selectedQuestion, setSelectedQuestion] = useState<
-    string | number | null
-  >(null);
-  const [canSelectDiffQuestion, setCanSelectDiffQuestion] = useState(true);
+  // const [selectedQuestion, setSelectedQuestion] = useState<
+  //   string  | null
+  // >(null);
+  const { selectedQuestion, setCanSelectQuestion, setPendingQuestion } =
+    useSelectedQuestion();
 
   useEffect(() => {
     if (questionsData) {
@@ -95,7 +97,7 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
 
       return newQuestions;
     });
-    setSelectedQuestion(null);
+    setPendingQuestion(null);
     setAddingQuestion(true);
   };
 
@@ -108,9 +110,9 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
       ) : (
         <QuestionsListContext.Provider
           value={{
-            setSelectedQuestion,
+            setCanSelectQuestion,
+            setPendingQuestion,
             setAddingQuestion,
-            setCanSelectDiffQuestion,
             addingQuestion,
             lastQuestionIndex: questions.length - 1,
           }}
@@ -120,7 +122,7 @@ const BuildSurveyPage = ({ params }: { params: { slug: string } }) => {
             setAddingQuestion={setAddingQuestion}
             surveyId={params.slug}
             selectedQuestion={selectedQuestion}
-            setSelectedQuestion={setSelectedQuestion}
+            setPendingQuestion={setPendingQuestion}
             questions={questions}
           />
           <AddQuestion addQuestion={addNewQuestion} />

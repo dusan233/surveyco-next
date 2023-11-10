@@ -16,16 +16,14 @@ type BuildQuestionsListProps = {
   selectedQuestion: string | number | null;
   surveyId: string;
   addingQuestion: boolean;
-  setSelectedQuestion: React.Dispatch<
-    React.SetStateAction<string | number | null>
-  >;
+  setPendingQuestion: React.Dispatch<React.SetStateAction<string | null>>;
   setAddingQuestion: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const BuildQuestionsList = ({
   questions,
   selectedQuestion,
-  setSelectedQuestion,
+  setPendingQuestion,
   addingQuestion,
   surveyId,
   setAddingQuestion,
@@ -37,7 +35,7 @@ const BuildQuestionsList = ({
       <div
         data-question="true"
         onClick={() => {
-          setSelectedQuestion(question.id!);
+          setPendingQuestion(question.id!);
           setAddingQuestion(false);
         }}
         className="p-2 cursor-pointer bg-white rounded-sm hover:bg-slate-200"

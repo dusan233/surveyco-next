@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 
 const QuestionFooter = ({ questionIndex }: { questionIndex: number }) => {
   const {
-    setSelectedQuestion,
+    setPendingQuestion,
     lastQuestionIndex,
     addingQuestion,
     setAddingQuestion,
@@ -16,7 +16,7 @@ const QuestionFooter = ({ questionIndex }: { questionIndex: number }) => {
           if (addingQuestion && lastQuestionIndex === questionIndex) {
             setAddingQuestion(false);
           } else {
-            setSelectedQuestion(null);
+            setPendingQuestion(null);
           }
         }}
         variant="outline"
