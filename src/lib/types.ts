@@ -86,3 +86,16 @@ export interface QuizResponseData {
 export interface QuestionsResponseData {
   questions: Question[];
 }
+
+export enum CollectorType {
+  web_link = "web_link",
+}
+
+export interface Collector {
+  id: string;
+  type: CollectorType;
+  created_at: Date;
+  updated_at: Date;
+  status: string;
+  surveyId: string;
+}

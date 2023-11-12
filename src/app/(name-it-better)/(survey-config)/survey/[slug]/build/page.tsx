@@ -5,7 +5,7 @@ import {
   Question,
   QuestionType,
   UnsavedQuestion,
-} from "../../../../../lib/types";
+} from "../../../../../../lib/types";
 import BuildQuestionsList from "@/components/questions/build-questions-list";
 
 import AddQuestion from "@/components/questions/add-question";

@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  Collector,
   Question,
   QuestionsResponseData,
   QuizResponseData,
@@ -47,6 +48,27 @@ export const getSurveyQuestions = async (
   if (!res.ok) {
     throw new Error(
       `Failed to fetch questions for survey with id: ${surveyId}`
+    );
+  }
+
+  return await res.json();
+};
+
+export const getSurveyCollector = async (
+  collectorId: string,
+  surveyId: string
+): Promise<Collector> => {
+  console.log(collectorId, "action");
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/collector/${collectorId}`,
+    {
+      cache: "no-cache",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch collector ${collectorId} for survey with id: ${surveyId}`
     );
   }
 
