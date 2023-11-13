@@ -1,5 +1,3 @@
-"use client";
-
 import BuildSurveyNavigation from "@/components/survey/build-survey-navigation";
 import type { Metadata } from "next";
 

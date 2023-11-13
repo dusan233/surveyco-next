@@ -50,7 +50,7 @@ export type SaveQuestionData = MultiChoiceQuestionData | TextQuestionData;
 
 export interface Option {
   description: string;
-  id?: string;
+  id: string;
 }
 
 export interface OptionsQuestion {
