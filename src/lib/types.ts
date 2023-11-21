@@ -67,6 +67,14 @@ export interface DropdownQuestion extends QuestionBase, OptionsQuestion {}
 
 export interface TextboxQuestion extends QuestionBase {}
 
+export interface SurveyPage {
+  id: string;
+  created_at: Date;
+  updated_at: Date | null;
+  surveyId: string;
+  number: number;
+}
+
 export type Question =
   | MultipleChoiceQuestion
   | CheckboxesQuestion

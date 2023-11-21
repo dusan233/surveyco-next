@@ -18,6 +18,7 @@ type BuildQuestionsListProps = {
   addingQuestion: boolean;
   setPendingQuestion: React.Dispatch<React.SetStateAction<string | null>>;
   setAddingQuestion: React.Dispatch<React.SetStateAction<boolean>>;
+  currentPageId: string;
 };
 
 const BuildQuestionsList = ({
@@ -27,6 +28,7 @@ const BuildQuestionsList = ({
   addingQuestion,
   surveyId,
   setAddingQuestion,
+  currentPageId,
 }: BuildQuestionsListProps) => {
   const lastQuestionIndex = questions.length - 1;
 
@@ -63,12 +65,14 @@ const BuildQuestionsList = ({
       <MultiChoiceQuestion
         surveyId={surveyId}
         index={index}
+        currentPageId={currentPageId}
         question={question as MultipleChoiceQuestion}
       />
     ) : (
       <TextboxQuestionn
         surveyId={surveyId}
         index={index}
+        currentPageId={currentPageId}
         question={question as TextboxQuestion}
       />
     );
@@ -84,7 +88,7 @@ const BuildQuestionsList = ({
   };
 
   return (
-    <div className="flex flex-col rounded-sm p-3 gap-3 bg-slate-100">
+    <div className="flex flex-col rounded-sm py-3 gap-3 bg-slate-100">
       {questions.map((question, index) => {
         return renderQuestion(question, index);
       })}

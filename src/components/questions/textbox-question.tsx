@@ -24,6 +24,7 @@ type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
   surveyId: string;
   index: number;
+  currentPageId: string;
 };
 export const textboxQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
@@ -33,6 +34,7 @@ const TextboxQuestion = ({
   question,
   index,
   surveyId,
+  currentPageId,
 }: TextboxQuestionProps) => {
   const form = useForm<z.infer<typeof textboxQuestionSchema>>({
     resolver: zodResolver(textboxQuestionSchema),
@@ -41,7 +43,10 @@ const TextboxQuestion = ({
     },
   });
 
-  const { isPending, saveQuestionMutation } = useSaveQuestion(surveyId);
+  const { isPending, saveQuestionMutation } = useSaveQuestion(
+    surveyId,
+    currentPageId
+  );
 
   const onSubmit: SubmitHandler<z.infer<typeof textboxQuestionSchema>> = (
     data

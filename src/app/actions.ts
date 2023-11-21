@@ -6,6 +6,7 @@ import {
   QuestionsResponseData,
   QuizResponseData,
   SaveQuestionData,
+  SurveyPage,
 } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 
@@ -30,13 +31,16 @@ export const getSurvey = async (
 };
 
 export const getSurveyQuestions = async (
-  surveyId: string
+  surveyId: string,
+  surveyPage?: number
 ): Promise<QuestionsResponseData> => {
   const { getToken } = auth();
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/questions`,
+    `${process.env.BACKEND_API}/quiz/${surveyId}/questions?page=${
+      surveyPage || 1
+    }`,
     {
       cache: "no-cache",
       headers: {
@@ -54,11 +58,24 @@ export const getSurveyQuestions = async (
   return await res.json();
 };
 
+export const getSurveyPages = async (
+  surveyId: string
+): Promise<SurveyPage[]> => {
+  const res = await fetch(`${process.env.BACKEND_API}/quiz/${surveyId}/pages`, {
+    cache: "no-cache",
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch pages  for survey with id: ${surveyId}`);
+  }
+
+  return await res.json();
+};
+
 export const getSurveyCollector = async (
   collectorId: string,
   surveyId: string
 ): Promise<Collector> => {
-  console.log(collectorId, "action");
   const res = await fetch(
     `${process.env.BACKEND_API}/quiz/${surveyId}/collector/${collectorId}`,
     {
@@ -77,6 +94,7 @@ export const getSurveyCollector = async (
 
 export const saveQuestion = async (
   surveyId: string,
+  pageId: string,
   data: SaveQuestionData
 ): Promise<Question> => {
   const { getToken } = auth();
@@ -90,7 +108,7 @@ export const saveQuestion = async (
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ data, pageId }),
     }
   );
 

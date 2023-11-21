@@ -4,7 +4,7 @@ import { Question, QuestionsResponseData, SaveQuestionData } from "../types";
 import { useContext } from "react";
 import { QuestionsListContext } from "../context";
 
-export default function useSaveQuestion(surveyId: string) {
+export default function useSaveQuestion(surveyId: string, pageId: string) {
   const { setCanSelectQuestion } = useContext(QuestionsListContext);
   const queryClient = useQueryClient();
   const {
@@ -14,11 +14,11 @@ export default function useSaveQuestion(surveyId: string) {
     isSuccess,
   } = useMutation({
     mutationFn: (questionData: SaveQuestionData) =>
-      saveQuestion(surveyId, questionData),
+      saveQuestion(surveyId, pageId, questionData),
     onSuccess(data, variables, context) {
       setCanSelectQuestion(true);
       queryClient.setQueryData<QuestionsResponseData>(
-        ["survey", surveyId, "questions"],
+        ["survey", surveyId, "questions", pageId],
         (questionsData) => {
           if (questionsData) {
             const questions = questionsData.questions;
@@ -30,7 +30,7 @@ export default function useSaveQuestion(surveyId: string) {
               const newQuestions = questions.map((question) =>
                 question.id === data.id ? data : question
               );
-              console.log(newQuestions, "gugugu");
+
               return { questions: newQuestions };
             } else {
               return { questions: [...questions, data] };

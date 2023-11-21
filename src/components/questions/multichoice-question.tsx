@@ -1,3 +1,5 @@
+"use client";
+
 import {
   MultiChoiceQuestionData,
   MultipleChoiceQuestion,
@@ -27,17 +29,20 @@ import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
 import { QuestionsListContext } from "@/lib/context";
+import { useSearchParams } from "next/navigation";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
   surveyId: string;
   index: number;
+  currentPageId: string;
 };
 
 const MultiChoiceQuestion = ({
   question,
   index,
   surveyId,
+  currentPageId,
 }: MultiChoiceQuestionProps) => {
   const form = useForm<z.infer<typeof multiChoiceQuestionSchema>>({
     resolver: zodResolver(multiChoiceQuestionSchema),
@@ -46,8 +51,12 @@ const MultiChoiceQuestion = ({
       options: question.options,
     },
   });
+
   const { setCanSelectQuestion } = useContext(QuestionsListContext);
-  const { isPending, saveQuestionMutation } = useSaveQuestion(surveyId);
+  const { isPending, saveQuestionMutation } = useSaveQuestion(
+    surveyId,
+    currentPageId
+  );
 
   const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (
     data
