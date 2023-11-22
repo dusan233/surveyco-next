@@ -1,10 +1,18 @@
 import { saveQuestion } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Question, QuestionsResponseData, SaveQuestionData } from "../types";
+import {
+  Question,
+  QuestionsResponseData,
+  SaveQuestionData,
+  SurveyPage,
+} from "../types";
 import { useContext } from "react";
 import { QuestionsListContext } from "../context";
 
-export default function useSaveQuestion(surveyId: string, pageId: string) {
+export default function useSaveQuestion(
+  surveyId: string,
+  currentPage: SurveyPage
+) {
   const { setCanSelectQuestion } = useContext(QuestionsListContext);
   const queryClient = useQueryClient();
   const {
@@ -14,11 +22,11 @@ export default function useSaveQuestion(surveyId: string, pageId: string) {
     isSuccess,
   } = useMutation({
     mutationFn: (questionData: SaveQuestionData) =>
-      saveQuestion(surveyId, pageId, questionData),
+      saveQuestion(surveyId, currentPage.id, questionData),
     onSuccess(data, variables, context) {
       setCanSelectQuestion(true);
       queryClient.setQueryData<QuestionsResponseData>(
-        ["survey", surveyId, "questions", pageId],
+        ["survey", surveyId, "questions", currentPage.number],
         (questionsData) => {
           if (questionsData) {
             const questions = questionsData.questions;

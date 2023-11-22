@@ -35,14 +35,12 @@ type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
   surveyId: string;
   index: number;
-  currentPageId: string;
 };
 
 const MultiChoiceQuestion = ({
   question,
   index,
   surveyId,
-  currentPageId,
 }: MultiChoiceQuestionProps) => {
   const form = useForm<z.infer<typeof multiChoiceQuestionSchema>>({
     resolver: zodResolver(multiChoiceQuestionSchema),
@@ -52,10 +50,12 @@ const MultiChoiceQuestion = ({
     },
   });
 
-  const { setCanSelectQuestion } = useContext(QuestionsListContext);
+  const { setCanSelectQuestion, currentPage } =
+    useContext(QuestionsListContext);
+
   const { isPending, saveQuestionMutation } = useSaveQuestion(
     surveyId,
-    currentPageId
+    currentPage!
   );
 
   const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (

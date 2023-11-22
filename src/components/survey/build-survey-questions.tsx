@@ -24,10 +24,12 @@ const BuildSurveyQuestions = ({
   surveyId: string;
   currentSurveyPage: number;
 }) => {
+  const [currentPageNumber, setCurrentPageNumber] = useState(currentSurveyPage);
   const { surveyPages } = useSurveyPages(surveyId);
-  const currentPageId = surveyPages!.find(
-    (page) => page.number === currentSurveyPage
-  )!.id;
+  const currentPage = surveyPages!.find(
+    (page) => page.number === currentPageNumber
+  );
+
   const { questions: questionsData, isLoading } = useSurveyQuestions(
     surveyId,
     1
@@ -122,6 +124,7 @@ const BuildSurveyQuestions = ({
             setAddingQuestion,
             addingQuestion,
             lastQuestionIndex: questions.length - 1,
+            currentPage,
           }}
         >
           <BuildQuestionsList
@@ -131,7 +134,6 @@ const BuildSurveyQuestions = ({
             selectedQuestion={selectedQuestion}
             setPendingQuestion={setPendingQuestion}
             questions={questions}
-            currentPageId={currentPageId}
           />
           <AddQuestion addQuestion={addNewQuestion} />
         </QuestionsListContext.Provider>

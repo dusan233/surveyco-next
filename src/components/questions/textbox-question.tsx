@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Form,
@@ -19,12 +19,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
+import { QuestionsListContext } from "@/lib/context";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
   surveyId: string;
   index: number;
-  currentPageId: string;
 };
 export const textboxQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
@@ -34,7 +34,6 @@ const TextboxQuestion = ({
   question,
   index,
   surveyId,
-  currentPageId,
 }: TextboxQuestionProps) => {
   const form = useForm<z.infer<typeof textboxQuestionSchema>>({
     resolver: zodResolver(textboxQuestionSchema),
@@ -43,9 +42,12 @@ const TextboxQuestion = ({
     },
   });
 
+  const { setCanSelectQuestion, currentPage } =
+    useContext(QuestionsListContext);
+
   const { isPending, saveQuestionMutation } = useSaveQuestion(
     surveyId,
-    currentPageId
+    currentPage!
   );
 
   const onSubmit: SubmitHandler<z.infer<typeof textboxQuestionSchema>> = (
@@ -56,6 +58,7 @@ const TextboxQuestion = ({
       type: question.type,
       ...(question.id && { id: question.id }),
     };
+    setCanSelectQuestion(false);
     saveQuestionMutation(questionData);
   };
 
