@@ -30,6 +30,7 @@ import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
 import { QuestionsListContext } from "@/lib/context";
 import { useSearchParams } from "next/navigation";
+import { useToast } from "../ui/use-toast";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -42,6 +43,7 @@ const MultiChoiceQuestion = ({
   index,
   surveyId,
 }: MultiChoiceQuestionProps) => {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof multiChoiceQuestionSchema>>({
     resolver: zodResolver(multiChoiceQuestionSchema),
     defaultValues: {
@@ -69,24 +71,27 @@ const MultiChoiceQuestion = ({
     };
 
     setCanSelectQuestion(false);
-    saveQuestionMutation(questionData);
+    const addingQuestionToast = toast({
+      variant: "destructive",
+      title: "Saving question...",
+    });
+    saveQuestionMutation(questionData, {
+      onSuccess() {
+        addingQuestionToast.dismiss();
+      },
+    });
   };
-  const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
-    console.log("away");
+  const ref = useClickAwayQuestionEdit<HTMLDivElement>((e) => {
     const fn = form.handleSubmit(onSubmit);
-    await fn();
-    console.log(form.formState.errors, "erros");
+    fn();
     if (form.formState.errors.description || form.formState.errors.options) {
+      console.log("before prop stop");
       e.stopPropagation();
     }
   });
 
   return (
-    <div
-      ref={ref}
-      className="p-5 rounded-lg bg-white border-l-4 border-l-blue-400"
-    >
-      <QuestionHeader index={index} type={question.type} />
+    <div ref={ref}>
       <FormProvider {...form}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -109,7 +114,7 @@ const MultiChoiceQuestion = ({
             />
             <Separator className="my-5" />
             <QuestionOptionList control={form.control} />
-            <QuestionFooter questionIndex={index} />
+            <QuestionFooter questionIndex={index} isDisabled={isPending} />
           </form>
         </Form>
       </FormProvider>

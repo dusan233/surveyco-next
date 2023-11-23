@@ -18,6 +18,7 @@ export default function useSaveQuestion(
   const {
     isPending,
     mutate: saveQuestionMutation,
+    mutateAsync: saveQuestionMutationAsync,
     isError,
     isSuccess,
   } = useMutation({

@@ -2,7 +2,13 @@ import { QuestionsListContext } from "@/lib/context";
 import React, { useContext } from "react";
 import { Button } from "../ui/button";
 
-const QuestionFooter = ({ questionIndex }: { questionIndex: number }) => {
+const QuestionFooter = ({
+  questionIndex,
+  isDisabled,
+}: {
+  questionIndex: number;
+  isDisabled: boolean;
+}) => {
   const {
     setPendingQuestion,
     lastQuestionIndex,
@@ -20,12 +26,13 @@ const QuestionFooter = ({ questionIndex }: { questionIndex: number }) => {
           }
         }}
         variant="outline"
+        disabled={isDisabled}
         type="button"
         size="sm"
       >
         Cancel
       </Button>
-      <Button size="sm" type="submit">
+      <Button disabled={isDisabled} size="sm" type="submit">
         Save
       </Button>
     </div>

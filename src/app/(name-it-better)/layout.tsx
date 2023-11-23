@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/layout/navbar";
 import Providers from "../providers";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
             <div className="mx-auto max-w-7xl">
               <Navbar />
               <main>{children}</main>
+              <Toaster />
             </div>
           </Providers>
         </body>

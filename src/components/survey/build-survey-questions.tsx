@@ -129,10 +129,8 @@ const BuildSurveyQuestions = ({
         >
           <BuildQuestionsList
             addingQuestion={addingQuestion}
-            setAddingQuestion={setAddingQuestion}
             surveyId={surveyId}
             selectedQuestion={selectedQuestion}
-            setPendingQuestion={setPendingQuestion}
             questions={questions}
           />
           <AddQuestion addQuestion={addNewQuestion} />

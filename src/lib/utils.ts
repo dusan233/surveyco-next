@@ -10,19 +10,25 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getQuestionTypes() {
-  return [
-    {
-      title: "Multiple Choice",
-      icon: FaListUl,
-      type: QuestionType.multiple_choice,
-    },
-    {
-      title: "Checkbox",
-      icon: IoMdCheckboxOutline,
-      type: QuestionType.checkboxes,
-    },
-    { title: "Dropdown", icon: HiSelector, type: QuestionType.dropdown },
-    { title: "Textbox", icon: PiTextboxBold, type: QuestionType.textbox },
-  ];
-}
+export const questionTypesData = [
+  {
+    title: "Multiple Choice",
+    icon: FaListUl,
+    type: QuestionType.multiple_choice,
+  },
+  {
+    title: "Checkboxes",
+    icon: IoMdCheckboxOutline,
+    type: QuestionType.checkboxes,
+  },
+  { title: "Dropdown", icon: HiSelector, type: QuestionType.dropdown },
+  { title: "Textbox", icon: PiTextboxBold, type: QuestionType.textbox },
+];
+
+export const getQuestionTypes = () => {
+  return questionTypesData;
+};
+
+export const getQuestionTypeLable = (type: QuestionType) => {
+  return questionTypesData.find((qType) => qType.type === type)!.title;
+};

@@ -20,6 +20,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { QuestionsListContext } from "@/lib/context";
+import { useToast } from "../ui/use-toast";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
@@ -35,6 +36,7 @@ const TextboxQuestion = ({
   index,
   surveyId,
 }: TextboxQuestionProps) => {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof textboxQuestionSchema>>({
     resolver: zodResolver(textboxQuestionSchema),
     defaultValues: {
@@ -59,24 +61,29 @@ const TextboxQuestion = ({
       ...(question.id && { id: question.id }),
     };
     setCanSelectQuestion(false);
-    saveQuestionMutation(questionData);
+    const addingQuestionToast = toast({
+      variant: "destructive",
+      title: "Saving question...",
+    });
+    saveQuestionMutation(questionData, {
+      onSuccess() {
+        addingQuestionToast.dismiss();
+      },
+    });
   };
 
-  const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
+  const ref = useClickAwayQuestionEdit<HTMLDivElement>((e) => {
     const fn = form.handleSubmit(onSubmit);
-    await fn();
+    fn();
 
     if (form.formState.errors.description) {
+      console.log("before prop stop");
       e.stopPropagation();
     }
   });
 
   return (
-    <div
-      ref={ref}
-      className="p-5 bg-white rounded-sm border-l-4 border-l-blue-400"
-    >
-      <QuestionHeader type={question.type} index={index} />
+    <div ref={ref}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -96,7 +103,7 @@ const TextboxQuestion = ({
               </FormItem>
             )}
           />
-          <QuestionFooter questionIndex={index} />
+          <QuestionFooter questionIndex={index} isDisabled={isPending} />
         </form>
       </Form>
     </div>
