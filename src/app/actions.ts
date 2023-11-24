@@ -99,7 +99,7 @@ export const saveQuestion = async (
 ): Promise<Question> => {
   const { getToken } = auth();
   const token = await getToken();
-  console.log(data, "ovo saljem");
+
   const res = await fetch(
     `${process.env.BACKEND_API}/quiz/${surveyId}/save-question`,
     {
@@ -117,4 +117,26 @@ export const saveQuestion = async (
   }
 
   return await res.json();
+};
+
+export const deleteQuestion = async (
+  surveyId: string,
+  questionId: string
+): Promise<void> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to delete question with id: ${questionId}`);
+  }
 };

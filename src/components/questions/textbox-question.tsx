@@ -72,9 +72,9 @@ const TextboxQuestion = ({
     });
   };
 
-  const ref = useClickAwayQuestionEdit<HTMLDivElement>((e) => {
+  const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
     const fn = form.handleSubmit(onSubmit);
-    fn();
+    await fn();
 
     if (form.formState.errors.description) {
       console.log("before prop stop");

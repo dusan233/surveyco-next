@@ -47,7 +47,11 @@ const EditQuestion = ({
 
   return (
     <QuestionCard>
-      <QuestionHeader index={questionIndex} type={question.type} />
+      <QuestionHeader
+        surveyId={surveyId}
+        index={questionIndex}
+        question={question}
+      />
       {renderQuestionEditor(question, questionIndex)}
     </QuestionCard>
   );

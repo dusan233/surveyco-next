@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { Button } from "../ui/button";
 
 const BuildSurveyQuestions = ({
   surveyId,
@@ -91,26 +92,32 @@ const BuildSurveyQuestions = ({
 
   return (
     <div className="p-10 rounded-sm  bg-slate-100">
-      <div className="mb-4 max-w-xs">
-        <Select
-          onValueChange={(value) => {
-            console.log(value);
-          }}
-          defaultValue={"1"}
-        >
-          {/* <FormControl> */}
-          <SelectTrigger>
-            <SelectValue placeholder="Select option" />
-          </SelectTrigger>
-          {/* </FormControl> */}
-          <SelectContent>
-            {surveyPages!.map((page) => (
-              <SelectItem key={page.id} value={page.number.toString()}>
-                {"Page " + page.number}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="mb-4 flex items-end gap-2">
+        <div className="max-w-xs flex-1 flex items-end">
+          <Select
+            onValueChange={(value) => {
+              console.log(value);
+            }}
+            defaultValue={"1"}
+          >
+            {/* <FormControl> */}
+            <SelectTrigger>
+              <SelectValue placeholder="Select option" />
+            </SelectTrigger>
+            {/* </FormControl> */}
+            <SelectContent>
+              {surveyPages!.map((page) => (
+                <SelectItem key={page.id} value={page.number.toString()}>
+                  {"Page " + page.number}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <Button variant="default" size="default">
+          Create Page
+        </Button>
       </div>
       {isLoading ? (
         <div className="flex justify-center">

@@ -20,9 +20,10 @@ const QuestionPreview = ({ question }: QuestionPreviewProps) => {
       className="p-2 cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full"
       key={question.id}
     >
-      <div className="text-lg">
-        <span className="font-bold">{1}.</span>
+      <div className="flex items-start gap-3">
+        <span className="font-bold text-xl">{question.number}.</span>
         <h4
+          className="flex-1 text-lg "
           dangerouslySetInnerHTML={{
             __html: question.description,
           }}

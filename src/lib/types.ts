@@ -19,6 +19,7 @@ export interface QuestionBase {
   updated_at: string;
   created_at: string;
   description: string;
+  number: number;
 }
 export type UnsavedQuestion = UnsavedMultiChoiceQuestion | UnsavedTextQuestion;
 export type UnsavedMultiChoiceQuestion = {
