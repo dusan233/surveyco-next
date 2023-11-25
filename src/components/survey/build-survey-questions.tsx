@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Button } from "../ui/button";
+import PageControlBar from "./page-control-bar";
+import { useToast } from "../ui/use-toast";
 
 const BuildSurveyQuestions = ({
   surveyId,
@@ -33,7 +35,7 @@ const BuildSurveyQuestions = ({
 
   const { questions: questionsData, isLoading } = useSurveyQuestions(
     surveyId,
-    1
+    currentPageNumber
   );
 
   const [questions, setQuestions] = useState<(Question | UnsavedQuestion)[]>(
@@ -60,6 +62,8 @@ const BuildSurveyQuestions = ({
   }, [addingQuestion]);
 
   const addNewQuestion = (type: QuestionType) => {
+    const lastQuestionNumber = (questions[questions.length - 1] as Question)
+      .number;
     setQuestions((questions) => {
       const newQuestion =
         type === QuestionType.textbox
@@ -67,11 +71,13 @@ const BuildSurveyQuestions = ({
               type: type,
               description: "",
               updated_at: null,
+              number: lastQuestionNumber + 1,
             }
           : {
               type: type,
               description: "",
               updated_at: null,
+              number: lastQuestionNumber + 1,
               options: [
                 {
                   description: "",
@@ -92,35 +98,14 @@ const BuildSurveyQuestions = ({
 
   return (
     <div className="p-10 rounded-sm  bg-slate-100">
-      <div className="mb-4 flex items-end gap-2">
-        <div className="max-w-xs flex-1 flex items-end">
-          <Select
-            onValueChange={(value) => {
-              console.log(value);
-            }}
-            defaultValue={"1"}
-          >
-            {/* <FormControl> */}
-            <SelectTrigger>
-              <SelectValue placeholder="Select option" />
-            </SelectTrigger>
-            {/* </FormControl> */}
-            <SelectContent>
-              {surveyPages!.map((page) => (
-                <SelectItem key={page.id} value={page.number.toString()}>
-                  {"Page " + page.number}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+      <PageControlBar
+        currentPageNumber={currentPageNumber}
+        setCurrentPageNumber={setCurrentPageNumber}
+        surveyId={surveyId}
+      />
 
-        <Button variant="default" size="default">
-          Create Page
-        </Button>
-      </div>
       {isLoading ? (
-        <div className="flex justify-center">
+        <div className="flex py-20 justify-center">
           <Spinner size="lg" />
         </div>
       ) : (

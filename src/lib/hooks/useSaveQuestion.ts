@@ -13,7 +13,8 @@ export default function useSaveQuestion(
   surveyId: string,
   currentPage: SurveyPage
 ) {
-  const { setCanSelectQuestion } = useContext(QuestionsListContext);
+  const { setCanSelectQuestion, setAddingQuestion, setPendingQuestion } =
+    useContext(QuestionsListContext);
   const queryClient = useQueryClient();
   const {
     isPending,
@@ -26,6 +27,8 @@ export default function useSaveQuestion(
       saveQuestion(surveyId, currentPage.id, questionData),
     onSuccess(data, variables, context) {
       setCanSelectQuestion(true);
+      setAddingQuestion(false);
+      setPendingQuestion(data.id);
       queryClient.setQueryData<QuestionsResponseData>(
         ["survey", surveyId, "questions", currentPage.number],
         (questionsData) => {

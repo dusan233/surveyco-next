@@ -16,7 +16,7 @@ const QuestionHeader = ({ question, index, surveyId }: QuestionHeaderProps) => {
   return (
     <div className="flex gap-2 justify-between text-lg mb-5">
       <div className="flex-1 flex gap-2 items-end">
-        <div className="font-bold">Q{index + 1}</div>
+        <div className="font-bold">Q{question.number}</div>
         <div className="text-base">{getQuestionTypeLable(question.type)}</div>
       </div>
       {question.id && (

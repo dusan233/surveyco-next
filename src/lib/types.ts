@@ -28,12 +28,14 @@ export type UnsavedMultiChoiceQuestion = {
   type: QuestionType;
   description: string;
   options: Option[];
+  number: number;
 };
 export type UnsavedTextQuestion = {
   id?: string;
   updated_at: null;
   type: QuestionType;
   description: string;
+  number: number;
 };
 
 export type MultiChoiceQuestionData = z.infer<

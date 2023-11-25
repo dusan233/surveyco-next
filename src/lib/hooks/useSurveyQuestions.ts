@@ -1,11 +1,13 @@
 import { getSurveyQuestions } from "@/app/actions";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export default function useSurveyQuestions(surveyId: string, page: number) {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
+    staleTime: 0,
     queryKey: ["survey", surveyId, "questions", page],
     queryFn: () => getSurveyQuestions(surveyId, page),
+    placeholderData: keepPreviousData,
   });
 
-  return { questions: data?.questions, isLoading };
+  return { questions: data?.questions, isLoading, isFetching };
 }

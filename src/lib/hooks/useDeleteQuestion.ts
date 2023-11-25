@@ -19,18 +19,22 @@ export default function useDeleteQuestion(currentPage: SurveyPage) {
         (questionsData) => {
           if (questionsData) {
             const questions = questionsData.questions;
-            const filteredQuestions = questions.filter(
-              (question) => question.id !== variables.questionId
-            );
-            return { questions: filteredQuestions };
+            const deletedQuestion = questions.find(
+              (question) => question.id === variables.questionId
+            )!;
+            const updatedQuestions = questions
+              .filter((question) => question.id !== variables.questionId)
+              .map((question) => {
+                if (question.number > deletedQuestion.number)
+                  return { ...question, number: question.number - 1 };
+                return question;
+              });
+            return { questions: updatedQuestions };
           } else {
             return questionsData;
           }
         }
       );
-    },
-    onError(error, variables, context) {
-      console.log(error, "dudu");
     },
   });
 

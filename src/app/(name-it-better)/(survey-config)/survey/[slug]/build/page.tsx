@@ -37,7 +37,6 @@ const BuildSurveyPage = async ({
         currentSurveyPage={currenSurveyPage}
         surveyId={surveyId}
       />
-      ;
     </HydrationBoundary>
   );
 };

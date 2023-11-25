@@ -140,3 +140,23 @@ export const deleteQuestion = async (
     throw new Error(`Failed to delete question with id: ${questionId}`);
   }
 };
+
+export const createSurveyPage = async (
+  surveyId: string
+): Promise<SurveyPage> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(`${process.env.BACKEND_API}/quiz/${surveyId}/page`, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to create page for survey with id: ${surveyId}`);
+  }
+
+  return await res.json();
+};
