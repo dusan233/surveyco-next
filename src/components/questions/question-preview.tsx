@@ -1,12 +1,14 @@
 import { QuestionsListContext } from "@/lib/context";
 import { Question } from "@/lib/types";
 import React, { useContext } from "react";
+import QuestionActions from "./question-actions";
 
 type QuestionPreviewProps = {
   question: Question;
+  surveyId: string;
 };
 
-const QuestionPreview = ({ question }: QuestionPreviewProps) => {
+const QuestionPreview = ({ question, surveyId }: QuestionPreviewProps) => {
   const { setPendingQuestion, setAddingQuestion } =
     useContext(QuestionsListContext);
 
@@ -17,7 +19,7 @@ const QuestionPreview = ({ question }: QuestionPreviewProps) => {
         setPendingQuestion(question.id!);
         setAddingQuestion(false);
       }}
-      className="p-2 cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full"
+      className="p-3 cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full"
       key={question.id}
     >
       <div className="flex items-start gap-3">

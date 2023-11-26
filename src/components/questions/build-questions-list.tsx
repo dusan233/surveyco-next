@@ -41,7 +41,11 @@ const BuildQuestionsList = ({
         surveyId={surveyId}
       />
     ) : (
-      <QuestionPreview key={question.id} question={question as Question} />
+      <QuestionPreview
+        key={question.id}
+        surveyId={surveyId}
+        question={question as Question}
+      />
     );
   };
 

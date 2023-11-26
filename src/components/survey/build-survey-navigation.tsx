@@ -17,7 +17,7 @@ const BuildSurveyNavigation = () => {
   const surveyId = segment[1];
 
   return (
-    <div className="border-y flex gap-6 mb-4 uppercase text-sm">
+    <div className="border-b flex gap-6 mb-4 bg-white h-12 z-10 uppercase text-sm sticky top-0">
       {surveyBuildLinks.map((link, index) => {
         const href = `/survey/${surveyId}/${link.slug}`;
         const isActive = segment.join("") === href.replaceAll("/", "");

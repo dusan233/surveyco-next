@@ -12,6 +12,11 @@ export enum QuestionType {
   textbox = "textbox",
 }
 
+export enum OperationPosition {
+  after = "after",
+  before = "before",
+}
+
 export interface QuestionBase {
   quizId: string;
   id: string;
