@@ -42,6 +42,10 @@ const CopyQuestionDialog = ({
   });
 
   const { surveyPages } = useSurveyPages(surveyId);
+  const selectedPageNumber = Number(form.watch("page"));
+  const currentPageTotalQuestions = surveyPages?.find(
+    (page) => page.number === selectedPageNumber
+  )?.totalQuestions;
 
   const onSubmit = async (values: any) => {
     console.log(values);
@@ -49,7 +53,7 @@ const CopyQuestionDialog = ({
 
   return (
     <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
-      <DialogContent className="sm:max-w-[425px] md:max-w-2xl">
+      <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
           <DialogTitle>Copy Question</DialogTitle>
           <DialogDescription>
@@ -91,66 +95,75 @@ const CopyQuestionDialog = ({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="position"
-                render={({ field }) => (
-                  <FormItem className="min-w-[100px]">
-                    <FormLabel>Position</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value={OperationPosition.after}>
-                          After
-                        </SelectItem>
-                        <SelectItem value={OperationPosition.before}>
-                          Before
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="questionNumber"
-                render={({ field }) => (
-                  <FormItem className="max-w-[300px]">
-                    <FormLabel>Question</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value={"1"}>
-                          1. After i do the thing everything will be jsut
-                          fineoooo
-                        </SelectItem>
-                        <SelectItem value={"2"}>
-                          2. Before do the thing everything will be.
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
+              {currentPageTotalQuestions! > 0 && (
+                <>
+                  <FormField
+                    control={form.control}
+                    name="position"
+                    render={({ field }) => (
+                      <FormItem className="min-w-[100px]">
+                        <FormLabel>Position</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value={OperationPosition.after}>
+                              After
+                            </SelectItem>
+                            <SelectItem value={OperationPosition.before}>
+                              Before
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="questionNumber"
+                    render={({ field }) => (
+                      <FormItem className="max-w-[300px]">
+                        <FormLabel>Question</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {Array.from(
+                              { length: currentPageTotalQuestions! },
+                              (_, index) => index + 1
+                            ).map((q) => {
+                              return (
+                                <SelectItem key={q} value={q.toString()}>
+                                  {q}.
+                                </SelectItem>
+                              );
+                            })}
+                          </SelectContent>
+                        </Select>
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
             </form>
           </Form>
         </div>
         <DialogFooter>
-          <Button size="sm">Cancel</Button>
+          <Button onClick={() => onOpenChange(false)} size="sm">
+            Cancel
+          </Button>
           <Button onClick={form.handleSubmit(onSubmit)} size="sm">
             Copy question
           </Button>

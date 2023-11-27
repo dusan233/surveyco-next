@@ -48,8 +48,8 @@ const PageControlBar = ({
 
   return (
     <div className="mb-4 py-2 flex items-end bg-slate-100 justify-between gap-2 sticky top-12 z-10">
-      <div className="flex flex-1 gap-2">
-        <div className="max-w-xs flex-1 flex items-end">
+      <div className="flex flex-1 items-center gap-5">
+        <div className="max-w-xs flex-1 flex items-center">
           <Select
             value={currentPageNumber.toString()}
             onValueChange={(value) => {

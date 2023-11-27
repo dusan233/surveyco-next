@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Spinner from "../ui/spinner";
 import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
 import { useSelectedQuestion } from "@/lib/hooks/useSelectedQuestion";
 import { Question, QuestionType, UnsavedQuestion } from "@/lib/types";
@@ -9,16 +8,8 @@ import { QuestionsListContext } from "@/lib/context";
 import BuildQuestionsList from "../questions/build-questions-list";
 import AddQuestion from "../questions/add-question";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Button } from "../ui/button";
 import PageControlBar from "./page-control-bar";
-import { useToast } from "../ui/use-toast";
+import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
 
 const BuildSurveyQuestions = ({
   surveyId,
@@ -32,11 +23,11 @@ const BuildSurveyQuestions = ({
   const currentPage = surveyPages!.find(
     (page) => page.number === currentPageNumber
   );
-
-  const { questions: questionsData, isLoading } = useSurveyQuestions(
-    surveyId,
-    currentPageNumber
-  );
+  const {
+    questions: questionsData,
+    isLoading,
+    isFetching,
+  } = useSurveyQuestions(surveyId, currentPageNumber);
 
   const [questions, setQuestions] = useState<(Question | UnsavedQuestion)[]>(
     []
@@ -60,6 +51,7 @@ const BuildSurveyQuestions = ({
       });
     }
   }, [addingQuestion]);
+  useLoadingToast(isFetching);
 
   const addNewQuestion = (type: QuestionType) => {
     const lastQuestionNumber = (questions[questions.length - 1] as Question)
@@ -104,30 +96,24 @@ const BuildSurveyQuestions = ({
         surveyId={surveyId}
       />
 
-      {isLoading ? (
-        <div className="flex py-20 justify-center">
-          <Spinner size="lg" />
-        </div>
-      ) : (
-        <QuestionsListContext.Provider
-          value={{
-            setCanSelectQuestion,
-            setPendingQuestion,
-            setAddingQuestion,
-            addingQuestion,
-            lastQuestionIndex: questions.length - 1,
-            currentPage,
-          }}
-        >
-          <BuildQuestionsList
-            addingQuestion={addingQuestion}
-            surveyId={surveyId}
-            selectedQuestion={selectedQuestion}
-            questions={questions}
-          />
-          <AddQuestion addQuestion={addNewQuestion} />
-        </QuestionsListContext.Provider>
-      )}
+      <QuestionsListContext.Provider
+        value={{
+          setCanSelectQuestion,
+          setPendingQuestion,
+          setAddingQuestion,
+          addingQuestion,
+          lastQuestionIndex: questions.length - 1,
+          currentPage,
+        }}
+      >
+        <BuildQuestionsList
+          addingQuestion={addingQuestion}
+          surveyId={surveyId}
+          selectedQuestion={selectedQuestion}
+          questions={questions}
+        />
+        <AddQuestion addQuestion={addNewQuestion} />
+      </QuestionsListContext.Provider>
     </div>
   );
 };

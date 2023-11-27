@@ -81,6 +81,7 @@ export interface SurveyPage {
   updated_at: Date | null;
   surveyId: string;
   number: number;
+  totalQuestions: number;
 }
 
 export type Question =
