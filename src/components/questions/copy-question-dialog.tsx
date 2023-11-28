@@ -21,6 +21,7 @@ import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { OperationPosition } from "@/lib/types";
+import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
 
 type CopyQuestionDialogProps = {
   isOpen: boolean;
@@ -33,19 +34,24 @@ const CopyQuestionDialog = ({
   onOpenChange,
   surveyId,
 }: CopyQuestionDialogProps) => {
+  const { surveyPages } = useSurveyPages(surveyId);
+
   const form = useForm({
     defaultValues: {
-      page: "1",
+      pageId: surveyPages!.find((page) => page.number === 1)!.id,
       position: OperationPosition.after,
-      questionNumber: "1",
+      questionId: "",
     },
   });
 
-  const { surveyPages } = useSurveyPages(surveyId);
-  const selectedPageNumber = Number(form.watch("page"));
-  const currentPageTotalQuestions = surveyPages?.find(
-    (page) => page.number === selectedPageNumber
-  )?.totalQuestions;
+  const selectedPageId = form.watch("pageId");
+  const selectedPageNumber = surveyPages!.find(
+    (page) => page.id === selectedPageId
+  )!.number;
+  const { questions, isLoading } = useSurveyQuestions(
+    surveyId,
+    selectedPageNumber
+  );
 
   const onSubmit = async (values: any) => {
     console.log(values);
@@ -65,7 +71,7 @@ const CopyQuestionDialog = ({
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
               <FormField
                 control={form.control}
-                name="page"
+                name="pageId"
                 render={({ field }) => (
                   <FormItem className="min-w-[70px]">
                     <FormLabel>Page</FormLabel>
@@ -81,10 +87,7 @@ const CopyQuestionDialog = ({
                       <SelectContent>
                         {surveyPages?.map((page) => {
                           return (
-                            <SelectItem
-                              key={page.id}
-                              value={page.number.toString()}
-                            >
+                            <SelectItem key={page.id} value={page.id}>
                               {page.number}.
                             </SelectItem>
                           );
@@ -95,7 +98,7 @@ const CopyQuestionDialog = ({
                   </FormItem>
                 )}
               />
-              {currentPageTotalQuestions! > 0 && (
+              {!isLoading && questions!.length > 0 && (
                 <>
                   <FormField
                     control={form.control}
@@ -126,7 +129,7 @@ const CopyQuestionDialog = ({
                   />
                   <FormField
                     control={form.control}
-                    name="questionNumber"
+                    name="questionId"
                     render={({ field }) => (
                       <FormItem className="max-w-[300px]">
                         <FormLabel>Question</FormLabel>
@@ -140,13 +143,10 @@ const CopyQuestionDialog = ({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {Array.from(
-                              { length: currentPageTotalQuestions! },
-                              (_, index) => index + 1
-                            ).map((q) => {
+                            {questions!.map((q) => {
                               return (
-                                <SelectItem key={q} value={q.toString()}>
-                                  {q}.
+                                <SelectItem key={q.id} value={q.id}>
+                                  {q.number}.
                                 </SelectItem>
                               );
                             })}
