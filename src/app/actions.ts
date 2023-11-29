@@ -2,6 +2,7 @@
 
 import {
   Collector,
+  CopyQuestionData,
   Question,
   QuestionsResponseData,
   QuizResponseData,
@@ -139,6 +140,33 @@ export const deleteQuestion = async (
   if (!res.ok) {
     throw new Error(`Failed to delete question with id: ${questionId}`);
   }
+};
+
+export const copyQuestion = async (
+  surveyId: string,
+  questionId: string,
+  data: CopyQuestionData
+): Promise<Question> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}/copy`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to copy question with id: ${questionId}`);
+  }
+
+  return await res.json();
 };
 
 export const createSurveyPage = async (

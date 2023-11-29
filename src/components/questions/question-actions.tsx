@@ -52,6 +52,7 @@ const QuestionActions = ({
   return (
     <>
       <CopyQuestionDialog
+        questionId={questionId}
         surveyId={surveyId}
         isOpen={isCopyOpen}
         onOpenChange={setIsCopyOpen}

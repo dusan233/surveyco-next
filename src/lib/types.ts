@@ -2,6 +2,7 @@ import { Content } from "@tiptap/react";
 import { z } from "zod";
 import {
   multiChoiceQuestionSchema,
+  placeQuestionSchema,
   textboxQuestionSchema,
 } from "./validationSchemas";
 
@@ -42,6 +43,8 @@ export type UnsavedTextQuestion = {
   description: string;
   number: number;
 };
+
+export type CopyQuestionData = z.infer<typeof placeQuestionSchema>;
 
 export type MultiChoiceQuestionData = z.infer<
   typeof multiChoiceQuestionSchema

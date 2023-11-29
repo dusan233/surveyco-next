@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -20,26 +20,35 @@ import {
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
-import { OperationPosition } from "@/lib/types";
-import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
+import { CopyQuestionData, OperationPosition } from "@/lib/types";
+import useDownsizedQuestions from "@/lib/hooks/useDownsizedQuestions";
+import { Skeleton } from "../ui/skeleton";
+import { z } from "zod";
+import { placeQuestionSchema } from "@/lib/validationSchemas";
+import useCopyQuestion from "@/lib/hooks/useCopyQuestion";
+import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type CopyQuestionDialogProps = {
   isOpen: boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
   surveyId: string;
+  questionId: string;
 };
 
 const CopyQuestionDialog = ({
   isOpen,
   onOpenChange,
   surveyId,
+  questionId,
 }: CopyQuestionDialogProps) => {
   const { surveyPages } = useSurveyPages(surveyId);
-
-  const form = useForm({
+  const { copyQuestionMutation, isPending } = useCopyQuestion();
+  const form = useForm<z.infer<typeof placeQuestionSchema>>({
+    resolver: zodResolver(placeQuestionSchema),
     defaultValues: {
       pageId: surveyPages!.find((page) => page.number === 1)!.id,
-      position: OperationPosition.after,
+      position: OperationPosition.before,
       questionId: "",
     },
   });
@@ -48,15 +57,29 @@ const CopyQuestionDialog = ({
   const selectedPageNumber = surveyPages!.find(
     (page) => page.id === selectedPageId
   )!.number;
-  const { questions, isLoading } = useSurveyQuestions(
+  const { questions, isLoading } = useDownsizedQuestions(
     surveyId,
     selectedPageNumber
   );
 
-  const onSubmit = async (values: any) => {
-    console.log(values);
-  };
+  useEffect(() => {
+    const currentPageId = form.getValues().pageId;
+    const questionId = questions ? (questions[0] ? questions[0].id : "") : "";
+    const position = OperationPosition.after;
+    // console.log("pitanjca brteau");
+    form.reset({ pageId: currentPageId, position, questionId });
+    // console.log("ovo treba da setujem sad", questionId);
+    // form.setValue("questionId", questionId);
+    // form.setValue("position", position);
+  }, [questions, form]);
 
+  useLoadingToast(isPending);
+
+  const onSubmit = async (values: CopyQuestionData) => {
+    console.log(values);
+    // copyQuestionMutation({ surveyId, questionId, data: values });
+  };
+  //dasdasd
   return (
     <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
@@ -66,9 +89,12 @@ const CopyQuestionDialog = ({
             Copy this question and put it on ...
           </DialogDescription>
         </DialogHeader>
-        <div className="flex gap-2 mb-8 mt-5">
+        <div className="gap-2  mt-5">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="flex gap-2">
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex items-end gap-2"
+            >
               <FormField
                 control={form.control}
                 name="pageId"
@@ -92,13 +118,18 @@ const CopyQuestionDialog = ({
                             </SelectItem>
                           );
                         })}
-                        <SelectItem value={"52"}>532.</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormItem>
                 )}
               />
-              {!isLoading && questions!.length > 0 && (
+
+              {isLoading ? (
+                <>
+                  <Skeleton className="h-6 w-[100px]" />
+                  <Skeleton className="h-6 w-[100px]" />
+                </>
+              ) : (
                 <>
                   <FormField
                     control={form.control}
@@ -107,8 +138,8 @@ const CopyQuestionDialog = ({
                       <FormItem className="min-w-[100px]">
                         <FormLabel>Position</FormLabel>
                         <Select
+                          value={field.value}
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -130,44 +161,51 @@ const CopyQuestionDialog = ({
                   <FormField
                     control={form.control}
                     name="questionId"
-                    render={({ field }) => (
-                      <FormItem className="max-w-[300px]">
-                        <FormLabel>Question</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {questions!.map((q) => {
-                              return (
-                                <SelectItem key={q.id} value={q.id}>
-                                  {q.number}.
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectContent>
-                        </Select>
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      console.log(field.value, "ta famozna vrednost");
+                      return (
+                        <FormItem className="max-w-[300px]">
+                          <FormLabel>Question</FormLabel>
+                          <Select
+                            value={field.value}
+                            onValueChange={field.onChange}
+                          >
+                            <FormControl>
+                              <SelectTrigger
+                                onChange={(e) => {
+                                  console.log(e);
+                                }}
+                              >
+                                <SelectValue />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {questions!.map((q) => {
+                                return (
+                                  <SelectItem key={q.id} value={q.id}>
+                                    {q.number}.
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+                        </FormItem>
+                      );
+                    }}
                   />
                 </>
               )}
             </form>
           </Form>
+          <DialogFooter>
+            <Button onClick={() => onOpenChange(false)} size="sm">
+              Cancel
+            </Button>
+            <Button onClick={form.handleSubmit(onSubmit)} size="sm">
+              Copy question
+            </Button>
+          </DialogFooter>
         </div>
-        <DialogFooter>
-          <Button onClick={() => onOpenChange(false)} size="sm">
-            Cancel
-          </Button>
-          <Button onClick={form.handleSubmit(onSubmit)} size="sm">
-            Copy question
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
