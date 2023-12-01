@@ -10,17 +10,22 @@ import MultiChoiceQuestion from "./multichoice-question";
 import TextboxQuestionn from "./textbox-question";
 import QuestionCard from "./question-card";
 import QuestionHeader from "./question-header";
+import { Draggable, DraggableProvided } from "react-beautiful-dnd";
 
 type EditQuestionProps = {
   question: Question | UnsavedQuestion;
   questionIndex: number;
   surveyId: string;
+  lastQuestionIndex: number;
+  addingQuestion: boolean;
 };
 
 const EditQuestion = ({
   question,
   questionIndex,
   surveyId,
+  lastQuestionIndex,
+  addingQuestion,
 }: EditQuestionProps) => {
   const renderQuestionEditor = (
     question: Question | UnsavedQuestion,
@@ -45,7 +50,10 @@ const EditQuestion = ({
     );
   };
 
-  return (
+  const isAddQuestionEdit =
+    lastQuestionIndex === questionIndex && addingQuestion;
+
+  return isAddQuestionEdit ? (
     <QuestionCard>
       <QuestionHeader
         surveyId={surveyId}
@@ -54,6 +62,30 @@ const EditQuestion = ({
       />
       {renderQuestionEditor(question, questionIndex)}
     </QuestionCard>
+  ) : (
+    <Draggable
+      isDragDisabled
+      draggableId={question.id || ""}
+      index={questionIndex}
+    >
+      {(provided) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className="mb-4"
+        >
+          <QuestionCard>
+            <QuestionHeader
+              surveyId={surveyId}
+              index={questionIndex}
+              question={question}
+            />
+            {renderQuestionEditor(question, questionIndex)}
+          </QuestionCard>
+        </div>
+      )}
+    </Draggable>
   );
 };
 

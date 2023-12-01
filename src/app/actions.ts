@@ -169,6 +169,33 @@ export const copyQuestion = async (
   return await res.json();
 };
 
+export const moveQuestion = async (
+  surveyId: string,
+  questionId: string,
+  data: CopyQuestionData
+): Promise<Question> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}/move`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to move question with id: ${questionId}`);
+  }
+
+  return await res.json();
+};
+
 export const createSurveyPage = async (
   surveyId: string
 ): Promise<SurveyPage> => {

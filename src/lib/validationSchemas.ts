@@ -19,6 +19,6 @@ export const textboxQuestionSchema = z.object({
 
 export const placeQuestionSchema = z.object({
   pageId: z.string(),
-  position: z.nativeEnum(OperationPosition),
-  questionId: z.string(),
+  position: z.nativeEnum(OperationPosition).optional(),
+  questionId: z.string().optional(),
 });

@@ -8,8 +8,16 @@ import { QuestionsListContext } from "@/lib/context";
 import BuildQuestionsList from "../questions/build-questions-list";
 import AddQuestion from "../questions/add-question";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DropResult,
+  ResponderProvided,
+} from "react-beautiful-dnd";
 import PageControlBar from "./page-control-bar";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import { StrictModeDroppable } from "../strict-mode-droppable";
 
 const BuildSurveyQuestions = ({
   surveyId,
@@ -107,11 +115,13 @@ const BuildSurveyQuestions = ({
         }}
       >
         <BuildQuestionsList
+          currentPageId={currentPage!.id}
           addingQuestion={addingQuestion}
           surveyId={surveyId}
           selectedQuestion={selectedQuestion}
           questions={questions}
         />
+
         <AddQuestion addQuestion={addNewQuestion} />
       </QuestionsListContext.Provider>
     </div>

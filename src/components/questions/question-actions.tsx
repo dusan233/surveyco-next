@@ -17,6 +17,7 @@ import useDeleteQuestion from "@/lib/hooks/useDeleteQuestion";
 import { SurveyPage } from "@/lib/types";
 import { useToast } from "../ui/use-toast";
 import CopyQuestionDialog from "./copy-question-dialog";
+import MoveQuestionDialog from "./move-question-dialog";
 
 type QuestionActionsProps = {
   currentPage: SurveyPage;
@@ -32,6 +33,7 @@ const QuestionActions = ({
   const { toast } = useToast();
   const { deleteQuestionMutation } = useDeleteQuestion(currentPage);
   const [isCopyOpen, setIsCopyOpen] = useState(false);
+  const [isMoveOpen, setIsMoveOpen] = useState(false);
 
   const handleDeleteQuestion = () => {
     const deleteQuestionToast = toast({
@@ -57,6 +59,12 @@ const QuestionActions = ({
         isOpen={isCopyOpen}
         onOpenChange={setIsCopyOpen}
       />
+      <MoveQuestionDialog
+        questionId={questionId}
+        surveyId={surveyId}
+        isOpen={isMoveOpen}
+        onOpenChange={setIsMoveOpen}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
@@ -73,7 +81,7 @@ const QuestionActions = ({
                 <Copy className="h-4 w-4" />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setIsMoveOpen(true)}>
               Move
               <DropdownMenuShortcut>
                 <ArrowUpDown className="h-4 w-4" />

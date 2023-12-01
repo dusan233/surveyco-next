@@ -67,7 +67,14 @@ const CopyQuestionDialog = ({
     const questionId = questions ? (questions[0] ? questions[0].id : "") : "";
     const position = OperationPosition.after;
     // console.log("pitanjca brteau");
-    form.reset({ pageId: currentPageId, position, questionId });
+    if (questionId === "") {
+      form.unregister(["questionId", "position"]);
+    } else {
+      form.register("questionId");
+      form.register("position");
+      form.reset({ pageId: currentPageId, position, questionId });
+    }
+
     // console.log("ovo treba da setujem sad", questionId);
     // form.setValue("questionId", questionId);
     // form.setValue("position", position);
@@ -129,7 +136,7 @@ const CopyQuestionDialog = ({
                   <Skeleton className="h-6 w-[100px]" />
                   <Skeleton className="h-6 w-[100px]" />
                 </>
-              ) : (
+              ) : questions!.length > 0 ? (
                 <>
                   <FormField
                     control={form.control}
@@ -194,7 +201,7 @@ const CopyQuestionDialog = ({
                     }}
                   />
                 </>
-              )}
+              ) : null}
             </form>
           </Form>
           <DialogFooter>
