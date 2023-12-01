@@ -97,16 +97,26 @@ const BuildQuestionsList = ({
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <StrictModeDroppable droppableId="list">
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            <div className="rounded-sm py-3 bg-slate-100">
-              {questions.map((question, index) => {
-                return renderQuestion(question, index);
-              })}
-            </div>
-            {provided.placeholder}
-          </div>
-        )}
+        {(provided) => {
+          const lastQuestion = questions[questions.length - 1];
+          const filteredQuestions = addingQuestion
+            ? questions.filter((q) => q.id)
+            : questions;
+          return (
+            <>
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <div className="rounded-sm  bg-slate-100">
+                  {filteredQuestions.map((question, index) => {
+                    return renderQuestion(question, index);
+                  })}
+                  {provided.placeholder}
+                  {addingQuestion &&
+                    renderQuestion(lastQuestion, questions.length - 1)}
+                </div>
+              </div>
+            </>
+          );
+        }}
       </StrictModeDroppable>
     </DragDropContext>
   );

@@ -20,7 +20,7 @@ const QuestionPreview = ({
 
   return (
     <Draggable draggableId={question.id} index={index}>
-      {(provided) => (
+      {(provided, { isDragging }) => (
         <div
           data-question="true"
           onClick={() => {
@@ -30,7 +30,10 @@ const QuestionPreview = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          className="p-3 mb-4 !cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full"
+          className={`p-3 mb-4 ${
+            isDragging &&
+            "outline-dashed outline-3 outline-blue-500 outline-offset-4"
+          } shadow-sm !cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full`}
         >
           <div className="flex items-start gap-3">
             <span className="font-bold text-xl">{question.number}.</span>
