@@ -116,6 +116,7 @@ const BuildSurveyQuestions = ({
       >
         <BuildQuestionsList
           currentPageId={currentPage!.id}
+          currentPageNumber={currentPageNumber}
           addingQuestion={addingQuestion}
           surveyId={surveyId}
           selectedQuestion={selectedQuestion}

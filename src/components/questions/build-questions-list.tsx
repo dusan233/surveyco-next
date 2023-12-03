@@ -6,6 +6,7 @@ import {
   OperationPosition,
   Question,
   QuestionType,
+  QuestionsResponseData,
   TextboxQuestion,
   UnsavedQuestion,
 } from "../../lib/types";
@@ -21,6 +22,7 @@ import {
 } from "react-beautiful-dnd";
 import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import { useQueryClient } from "@tanstack/react-query";
 
 type BuildQuestionsListProps = {
   questions: (Question | UnsavedQuestion)[];
@@ -28,6 +30,7 @@ type BuildQuestionsListProps = {
   surveyId: string;
   addingQuestion: boolean;
   currentPageId: string;
+  currentPageNumber: number;
 };
 
 const BuildQuestionsList = ({
@@ -36,9 +39,11 @@ const BuildQuestionsList = ({
   addingQuestion,
   surveyId,
   currentPageId,
+  currentPageNumber,
 }: BuildQuestionsListProps) => {
   const { isPending, moveQuestionMutation } = useMoveQuestion();
   const lastQuestionIndex = questions.length - 1;
+  const queryClient = useQueryClient();
 
   const renderQuestion = (
     question: Question | UnsavedQuestion,
@@ -80,12 +85,15 @@ const BuildQuestionsList = ({
       sourceIndex > destinationIndex
         ? OperationPosition.before
         : OperationPosition.after;
+
     const targetQuestion = questions.find(
       (_, index) => index === destinationIndex
     ) as Question;
+
     moveQuestionMutation({
       surveyId,
       questionId: movingQuestionId,
+      pageNumber: currentPageNumber,
       data: {
         position,
         questionId: targetQuestion.id,

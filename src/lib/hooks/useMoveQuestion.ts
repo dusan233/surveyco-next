@@ -1,6 +1,6 @@
 import { moveQuestion } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CopyQuestionData } from "../types";
+import { CopyQuestionData, Question, QuestionsResponseData } from "../types";
 
 export default function useMoveQuestion() {
   const queryClient = useQueryClient();
@@ -14,9 +14,68 @@ export default function useMoveQuestion() {
     mutationFn: (payload: {
       surveyId: string;
       questionId: string;
+      pageNumber: number;
       data: CopyQuestionData;
     }) => moveQuestion(payload.surveyId, payload.questionId, payload.data),
-    onSuccess(data, variables, context) {},
+    onMutate(moveQuestion) {
+      const previousQuestions = queryClient.getQueryData<{
+        questions: Question[];
+      }>([
+        "survey",
+        moveQuestion.surveyId,
+        "questions",
+        moveQuestion.pageNumber,
+      ]);
+      const sourceQuestion = previousQuestions?.questions.find(
+        (q) => q.id === moveQuestion.questionId
+      );
+      const targetQuestion = previousQuestions?.questions.find(
+        (q) => q.id === moveQuestion.data.questionId
+      ) as Question;
+
+      let updatedNumbersQuestions;
+      if (sourceQuestion!.number > targetQuestion.number) {
+        updatedNumbersQuestions = previousQuestions!.questions.map((q) => {
+          if (
+            q.number >= targetQuestion.number &&
+            q.number < sourceQuestion!.number
+          ) {
+            return { ...q, number: q.number + 1 };
+          }
+          if (q.number === sourceQuestion!.number)
+            return { ...q, number: targetQuestion.number };
+          return q;
+        });
+
+        updatedNumbersQuestions.sort((a, b) => a.number - b.number);
+      } else {
+        updatedNumbersQuestions = previousQuestions!.questions.map((q) => {
+          if (
+            q.number > sourceQuestion!.number &&
+            q.number <= targetQuestion.number
+          ) {
+            return { ...q, number: q.number - 1 };
+          }
+          if (q.number === sourceQuestion!.number)
+            return { ...q, number: targetQuestion.number };
+          return q;
+        });
+        updatedNumbersQuestions.sort((a, b) => a.number - b.number);
+      }
+
+      queryClient.setQueryData<QuestionsResponseData>(
+        ["survey", moveQuestion.surveyId, "questions", moveQuestion.pageNumber],
+        { questions: updatedNumbersQuestions }
+      );
+
+      return { previousQuestions };
+    },
+    onError(error, variables, context) {
+      queryClient.setQueryData<QuestionsResponseData>(
+        ["survey", variables.surveyId, "questions", variables.pageNumber],
+        context?.previousQuestions
+      );
+    },
   });
 
   return {
