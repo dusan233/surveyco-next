@@ -112,6 +112,7 @@ const BuildSurveyQuestions = ({
           addingQuestion,
           lastQuestionIndex: questions.length - 1,
           currentPage,
+          setQuestions,
         }}
       >
         <BuildQuestionsList
@@ -121,6 +122,7 @@ const BuildSurveyQuestions = ({
           surveyId={surveyId}
           selectedQuestion={selectedQuestion}
           questions={questions}
+          setQuestions={setQuestions}
         />
 
         <AddQuestion addQuestion={addNewQuestion} />

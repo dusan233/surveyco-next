@@ -11,6 +11,8 @@ import TextboxQuestionn from "./textbox-question";
 import QuestionCard from "./question-card";
 import QuestionHeader from "./question-header";
 import { Draggable, DraggableProvided } from "react-beautiful-dnd";
+import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable";
 
 type EditQuestionProps = {
   question: Question | UnsavedQuestion;
@@ -27,6 +29,22 @@ const EditQuestion = ({
   lastQuestionIndex,
   addingQuestion,
 }: EditQuestionProps) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    isDragging,
+    transform,
+    transition,
+  } = useSortable({ id: question.id || "unsavedQuestion" });
+
+  const style = {
+    opacity: isDragging ? "0.4" : undefined,
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   const renderQuestionEditor = (
     question: Question | UnsavedQuestion,
     index: number
@@ -54,38 +72,27 @@ const EditQuestion = ({
     lastQuestionIndex === questionIndex && addingQuestion;
 
   return isAddQuestionEdit ? (
-    <QuestionCard>
-      <QuestionHeader
-        surveyId={surveyId}
-        index={questionIndex}
-        question={question}
-      />
-      {renderQuestionEditor(question, questionIndex)}
-    </QuestionCard>
+    <div ref={setNodeRef} style={style}>
+      <QuestionCard>
+        <QuestionHeader
+          surveyId={surveyId}
+          index={questionIndex}
+          question={question}
+        />
+        {renderQuestionEditor(question, questionIndex)}
+      </QuestionCard>
+    </div>
   ) : (
-    <Draggable
-      isDragDisabled
-      draggableId={question.id || ""}
-      index={questionIndex}
-    >
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className="mb-4"
-        >
-          <QuestionCard>
-            <QuestionHeader
-              surveyId={surveyId}
-              index={questionIndex}
-              question={question}
-            />
-            {renderQuestionEditor(question, questionIndex)}
-          </QuestionCard>
-        </div>
-      )}
-    </Draggable>
+    <div ref={setNodeRef} style={style} className="mb-4">
+      <QuestionCard>
+        <QuestionHeader
+          surveyId={surveyId}
+          index={questionIndex}
+          question={question}
+        />
+        {renderQuestionEditor(question, questionIndex)}
+      </QuestionCard>
+    </div>
   );
 };
 

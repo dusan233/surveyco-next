@@ -17,7 +17,7 @@ import QuestionHeader from "./question-header";
 import QuestionFooter from "./question-footer";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
+import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "../ui/use-toast";

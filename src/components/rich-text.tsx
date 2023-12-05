@@ -2,15 +2,23 @@
 
 import "../styles/richText.css";
 
+import { mergeAttributes, Node } from "@tiptap/core";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
-import { EditorContent, Editor, useEditor, Content } from "@tiptap/react";
+import {
+  EditorContent,
+  Editor,
+  useEditor,
+  Content,
+  NodeViewWrapper,
+  ReactNodeViewRenderer,
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 import React, { useEffect, useRef, useState } from "react";
-import { Input } from "./ui/input";
+
 import {
   FaBold,
   FaItalic,
@@ -21,9 +29,9 @@ import { ImRedo2, ImUndo2 } from "react-icons/im";
 
 const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const regularBtnClassNames =
-    "bg-blue-400 text-white p-1 hover:bg-blue-300 hover:text-slate-700";
+    "bg-indigo-400 text-white p-1 hover:bg-indigo-300 hover:text-slate-700";
   const highlightedBtnClassNames =
-    "bg-blue-600 text-white p-1 hover:bg-blue-300 hover:text-slate-700";
+    "bg-indigo-600 text-white p-1 hover:bg-indigo-300 hover:text-slate-700";
 
   if (!editor) {
     return null;
@@ -95,43 +103,6 @@ const MenuBar = ({ editor }: { editor: Editor | null }) => {
       >
         <ImRedo2 />
       </button>
-
-      {/* <button
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive("orderedList") ? "is-active" : ""}
-      >
-        ordered list
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={editor.isActive("codeBlock") ? "is-active" : ""}
-      >
-        code block
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={editor.isActive("blockquote") ? "is-active" : ""}
-      >
-        blockquote
-      </button>
-      <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-        horizontal rule
-      </button>
-      <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-        hard break
-      </button>
-      <button
-        onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().chain().focus().undo().run()}
-      >
-        undo
-      </button>
-      <button
-        onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editor.can().chain().focus().redo().run()}
-      >
-        redo
-      </button> */}
     </div>
   );
 };
@@ -150,6 +121,7 @@ export const RichTextEditor = ({
 }: RichTextEditorProps) => {
   const [isFocused, setIsFocused] = useState(false);
   const richEditorContainerRef = useRef<HTMLDivElement | null>(null);
+  const richEditorRef = useRef<HTMLDivElement | null>(null);
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -177,50 +149,72 @@ export const RichTextEditor = ({
 
       onChange(editor.isEmpty ? "" : htmlContent);
     },
+
     editorProps: {
       attributes: {
-        class: "focus:outline-none text-sm",
+        class: `relative cursor-text bg-slate-50 border-[1.5px] rounded-md p-2 focus:border-indigo-500  border-slate-300 focus:outline-none text-sm`,
       },
     },
-    content: content,
+    content: `${content}
+    <MenuBar editor={editor} />
+    `,
   });
 
   useEffect(() => {
-    window.addEventListener("click", (e) => {
-      const target = e.target as HTMLElement;
-      if (!richEditorContainerRef.current?.contains(target)) {
-        setIsFocused(false);
-      }
-    });
+    if (isFocused) editor?.commands.focus();
+  }, [isFocused, editor]);
 
-    return window.removeEventListener("click", (e) => {
-      const target = e.target as HTMLElement;
-      if (!richEditorContainerRef.current?.contains(target)) {
+  useEffect(() => {
+    window.addEventListener("mousedown", (e: any) => {
+      if (!richEditorContainerRef.current?.contains(e.target)) {
         setIsFocused(false);
       }
     });
   }, []);
 
   return (
-    <>
-      <div
-        onMouseDown={() => {
+    // <>
+    <div
+      // onMouseDown={() => {
+      //   setIsFocused(true);
+      //   editor?.commands.focus();
+      // }}
+      onFocus={() => {
+        setIsFocused(true);
+      }}
+      onBlur={(e) => {
+        // console.log("ddwww", e.currentTarget, e.target);
+        if (!e.currentTarget.contains(e.target)) {
+          setIsFocused(false);
+          console.log("d212112");
+        }
+      }}
+      // onKeyDown={(e) => {
+      //   if (e.key === "Tab") {
+      //     console.log("shitt");
+      //     setIsFocused(false);
+      //   }
+      // }}
+      ref={richEditorContainerRef}
+      className="cursor-text relative"
+      // className={`relative cursor-text bg-slate-50 border-[1.5px] rounded-md p-2  ${
+      //   isFocused ? "border-indigo-500" : "border-slate-300"
+      // } focus:outline-none`}
+    >
+      {isFocused && <MenuBar editor={editor} />}
+      <EditorContent
+        onFocus={(e) => {
           setIsFocused(true);
+          console.log("editor focus", e.target);
         }}
-        onBlur={(e) => {
-          if (!e.currentTarget.contains(e.target)) {
-            setIsFocused(false);
-          }
-        }}
-        ref={richEditorContainerRef}
-        className={`relative bg-white border-2 rounded-sm p-2  ${
-          isFocused ? "border-blue-500" : "border-slate-200"
-        } focus:outline-none`}
-      >
-        {isFocused && <MenuBar editor={editor} />}
-
-        <EditorContent editor={editor} />
-      </div>
-    </>
+        // onBlur={(e) => {
+        //   setIsFocused(false);
+        //   console.log("editor blur", e.target);
+        // }}
+        className="relative"
+        editor={editor}
+      />
+    </div>
+    // {/* </> */}
   );
 };

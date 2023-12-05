@@ -27,7 +27,7 @@ import QuestionFooter from "./question-footer";
 import QuestionHeader from "./question-header";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
-import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAway";
+import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import { QuestionsListContext } from "@/lib/context";
 import { useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";

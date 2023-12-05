@@ -1,28 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useId, useState } from "react";
 import {
-  MultipleChoiceQuestion,
-  OperationPosition,
-  Question,
-  QuestionType,
-  QuestionsResponseData,
-  TextboxQuestion,
-  UnsavedQuestion,
-} from "../../lib/types";
-import MultiChoiceQuestion from "./multichoice-question";
-import TextboxQuestionn from "./textbox-question";
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { OperationPosition, Question, UnsavedQuestion } from "../../lib/types";
 import EditQuestion from "./edit-question";
 import QuestionPreview from "./question-preview";
-import { StrictModeDroppable } from "../strict-mode-droppable";
-import {
-  DragDropContext,
-  DropResult,
-  ResponderProvided,
-} from "react-beautiful-dnd";
+
 import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
-import { useQueryClient } from "@tanstack/react-query";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useSmoothScrollToQuestion } from "@/lib/hooks/useSmoothScroll";
 
 type BuildQuestionsListProps = {
   questions: (Question | UnsavedQuestion)[];
@@ -31,6 +32,9 @@ type BuildQuestionsListProps = {
   addingQuestion: boolean;
   currentPageId: string;
   currentPageNumber: number;
+  setQuestions: (
+    value: React.SetStateAction<(Question | UnsavedQuestion)[]>
+  ) => void;
 };
 
 const BuildQuestionsList = ({
@@ -40,10 +44,32 @@ const BuildQuestionsList = ({
   surveyId,
   currentPageId,
   currentPageNumber,
+  setQuestions,
 }: BuildQuestionsListProps) => {
+  const [activeId, setActiveId] = useState(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+  const listRef = React.useRef<HTMLDivElement | null>(null);
+
   const { isPending, moveQuestionMutation } = useMoveQuestion();
   const lastQuestionIndex = questions.length - 1;
-  const queryClient = useQueryClient();
+
+  const dndContextId = useId();
+  const savedQuestions = questions.filter((q) => q.id) as Question[];
+  const activeQuestion = savedQuestions.find((q) => q.id === activeId)!;
+  const activeIndex = savedQuestions.findIndex((q) => q.id === activeId);
+
+  const virtualizer = useWindowVirtualizer({
+    count: questions.length,
+    estimateSize: () => 50,
+    overscan: 5,
+    scrollMargin: listRef.current?.offsetTop ?? 0,
+  });
+  const virtualItems = virtualizer.getVirtualItems();
 
   const renderQuestion = (
     question: Question | UnsavedQuestion,
@@ -70,63 +96,101 @@ const BuildQuestionsList = ({
   };
 
   useLoadingToast(isPending);
+  const scrollToQuestionIndex = useSmoothScrollToQuestion(virtualizer);
 
-  const handleDragEnd = (result: DropResult, provided: ResponderProvided) => {
-    console.log(result);
+  useEffect(() => {
+    const questionIndex = questions.findIndex((q) => q.id === selectedQuestion);
+    if (questionIndex !== -1)
+      scrollToQuestionIndex(questionIndex, { aling: "start" });
+  }, [selectedQuestion, questions, virtualizer, scrollToQuestionIndex]);
 
-    if (!result.destination || result.destination.index === result.source.index)
-      return;
+  function handleDragStart(event: any) {
+    const { active } = event;
 
-    const movingQuestionId = result.draggableId;
-    const destinationIndex = result.destination?.index;
-    const sourceIndex = result.source.index;
+    setActiveId(active.id);
+  }
 
-    const position =
-      sourceIndex > destinationIndex
-        ? OperationPosition.before
-        : OperationPosition.after;
+  function handleDragEnd(event: any) {
+    const { active, over } = event;
 
-    const targetQuestion = questions.find(
-      (_, index) => index === destinationIndex
-    ) as Question;
+    if (active.id !== over.id) {
+      const movingQuestionId = active.id;
+      const destinationIndex = over.data.current.sortable.index;
+      const sourceIndex = active.data.current.sortable.index;
 
-    moveQuestionMutation({
-      surveyId,
-      questionId: movingQuestionId,
-      pageNumber: currentPageNumber,
-      data: {
-        position,
-        questionId: targetQuestion.id,
-        pageId: currentPageId,
-      },
-    });
-  };
+      const position =
+        sourceIndex > destinationIndex
+          ? OperationPosition.before
+          : OperationPosition.after;
+
+      setQuestions((prev) => {
+        return arrayMove(prev, sourceIndex, destinationIndex);
+      });
+      setActiveId(null);
+      moveQuestionMutation({
+        surveyId,
+        questionId: movingQuestionId,
+        pageNumber: currentPageNumber,
+        data: {
+          position,
+          questionId: over.id,
+          pageId: currentPageId,
+        },
+      });
+    }
+  }
 
   return (
-    <DragDropContext onDragEnd={handleDragEnd}>
-      <StrictModeDroppable droppableId="list">
-        {(provided) => {
-          const lastQuestion = questions[questions.length - 1];
-          const filteredQuestions = addingQuestion
-            ? questions.filter((q) => q.id)
-            : questions;
-          return (
-            <>
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                <div className="rounded-sm  bg-slate-100">
-                  {filteredQuestions.map((question, index) => {
-                    return renderQuestion(question, index);
-                  })}
-                  {provided.placeholder}
-                  {addingQuestion &&
-                    renderQuestion(lastQuestion, questions.length - 1)}
+    <DndContext
+      id={dndContextId}
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext
+        items={savedQuestions}
+        strategy={verticalListSortingStrategy}
+      >
+        <div ref={listRef}>
+          <div
+            className="w-full relative"
+            style={{
+              height: `${virtualizer.getTotalSize()}px`,
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                transform: `translateY(${
+                  virtualItems[0]?.start - virtualizer.options.scrollMargin
+                }px)`,
+              }}
+            >
+              {virtualItems.map((virtualRow) => (
+                <div
+                  key={virtualRow.key}
+                  data-index={virtualRow.index}
+                  ref={virtualizer.measureElement}
+                  className="pb-3"
+                >
+                  {renderQuestion(
+                    questions[virtualRow.index],
+                    virtualRow.index
+                  )}
                 </div>
-              </div>
-            </>
-          );
-        }}
-      </StrictModeDroppable>
-    </DragDropContext>
+              ))}
+            </div>
+          </div>
+        </div>
+      </SortableContext>
+      <DragOverlay>
+        {activeId ? renderQuestion(activeQuestion, activeIndex) : null}
+      </DragOverlay>
+    </DndContext>
   );
 };
 

@@ -1,42 +1,32 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
+import { off, on } from "../utils";
 
-export function useClickAwayQuestionEdit<T extends Element>(
-  cb: (e: MouseEvent | TouchEvent) => void
-) {
-  const ref = useRef<T>(null);
-  const refCb = useRef(cb);
+const defaultEvents = ["mousedown", "touchstart"];
 
-  useLayoutEffect(() => {
-    refCb.current = cb;
-  });
-
+const useClickAway = <E extends Event = Event>(
+  ref: RefObject<HTMLElement | null>,
+  onClickAway: (event: E) => void,
+  events: string[] = defaultEvents
+) => {
+  const savedCallback = useRef(onClickAway);
   useEffect(() => {
-    const handler = (e: MouseEvent | TouchEvent) => {
-      const element = ref.current;
-      const target = e.target as Element;
+    savedCallback.current = onClickAway;
+  }, [onClickAway]);
+  useEffect(() => {
+    const handler = (event: any) => {
+      const { current: el } = ref;
 
-      let clickedOnQuestionEl = false;
-      document.querySelectorAll("[data-question]").forEach((el) => {
-        if (el.contains(target)) {
-          clickedOnQuestionEl = true;
-        }
-      });
-
-      if (element && !element.contains(target) && clickedOnQuestionEl) {
-        refCb.current(e);
-      } else {
-        return false;
+      el && !el.contains(event.target) && savedCallback.current(event);
+    };
+    for (const eventName of events) {
+      on(document, eventName, handler);
+    }
+    return () => {
+      for (const eventName of events) {
+        off(document, eventName, handler);
       }
     };
+  }, [events, ref]);
+};
 
-    document.addEventListener("click", handler, { capture: true });
-    document.addEventListener("touchstart", handler);
-
-    return () => {
-      document.removeEventListener("click", handler, { capture: true });
-      document.removeEventListener("touchstart", handler);
-    };
-  }, []);
-
-  return ref;
-}
+export default useClickAway;
