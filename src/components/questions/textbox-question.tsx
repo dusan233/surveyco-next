@@ -21,6 +21,7 @@ import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "../ui/use-toast";
+import AutoAnimate from "../auto-animate";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
@@ -89,7 +90,7 @@ const TextboxQuestion = ({
           <FormField
             control={form.control}
             name="description"
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <FormItem>
                 <FormControl>
                   <RichTextEditor
@@ -97,9 +98,12 @@ const TextboxQuestion = ({
                     placeholder="Enter your question"
                     onChange={field.onChange}
                     onBlur={field.onBlur}
+                    error={fieldState.error}
                   />
                 </FormControl>
-                <FormMessage />
+                <AutoAnimate>
+                  <FormMessage />
+                </AutoAnimate>
               </FormItem>
             )}
           />

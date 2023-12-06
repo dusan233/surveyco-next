@@ -31,6 +31,8 @@ import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import { QuestionsListContext } from "@/lib/context";
 import { useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import AutoAnimate from "../auto-animate";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -44,6 +46,7 @@ const MultiChoiceQuestion = ({
   surveyId,
 }: MultiChoiceQuestionProps) => {
   const { toast } = useToast();
+  const [parent] = useAutoAnimate();
   const form = useForm<z.infer<typeof multiChoiceQuestionSchema>>({
     resolver: zodResolver(multiChoiceQuestionSchema),
     defaultValues: {
@@ -98,7 +101,7 @@ const MultiChoiceQuestion = ({
             <FormField
               control={form.control}
               name="description"
-              render={({ field }) => (
+              render={({ field, fieldState }) => (
                 <FormItem>
                   <FormControl>
                     <RichTextEditor
@@ -106,9 +109,12 @@ const MultiChoiceQuestion = ({
                       placeholder="Enter your question"
                       onChange={field.onChange}
                       onBlur={field.onBlur}
+                      error={fieldState.error}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <AutoAnimate>
+                    <FormMessage />
+                  </AutoAnimate>
                 </FormItem>
               )}
             />

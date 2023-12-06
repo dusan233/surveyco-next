@@ -5,6 +5,7 @@ import { Option } from "@/lib/types";
 import { Control, useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
 import { FaPlus, FaMinus } from "react-icons/fa6";
+import AutoAnimate from "../auto-animate";
 
 type QuestionOptionProps = {
   option: Option;
@@ -22,14 +23,17 @@ const QuestionOption = ({
   removeOption,
   removeDisabled,
 }: QuestionOptionProps) => {
-  const { getValues } = useFormContext();
+  const {
+    getValues,
+    formState: { errors },
+  } = useFormContext();
   return (
     <div className="flex gap-2">
       <div className="flex-1">
         <FormField
           control={control}
           name={`options.${index}.description`}
-          render={({ field }) => (
+          render={({ field, fieldState }) => (
             <FormItem>
               <FormControl>
                 <RichTextEditor
@@ -37,9 +41,12 @@ const QuestionOption = ({
                   placeholder="Enter an answer choice"
                   onChange={field.onChange}
                   onBlur={field.onBlur}
+                  error={fieldState.error}
                 />
               </FormControl>
-              <FormMessage />
+              <AutoAnimate>
+                <FormMessage />
+              </AutoAnimate>
             </FormItem>
           )}
         />

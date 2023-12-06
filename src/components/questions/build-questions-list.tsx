@@ -10,6 +10,7 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   SortableContext,
   arrayMove,
@@ -187,7 +188,7 @@ const BuildQuestionsList = ({
           </div>
         </div>
       </SortableContext>
-      <DragOverlay>
+      <DragOverlay modifiers={[restrictToVerticalAxis]}>
         {activeId ? renderQuestion(activeQuestion, activeIndex) : null}
       </DragOverlay>
     </DndContext>
