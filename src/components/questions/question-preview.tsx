@@ -32,7 +32,6 @@ const QuestionPreview = ({
     setNodeRef,
     setActivatorNodeRef,
     isDragging,
-    active,
     transform,
     transition,
   } = useSortable({ id: question.id });
