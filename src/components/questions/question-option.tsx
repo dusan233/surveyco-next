@@ -1,6 +1,6 @@
 import React from "react";
 import { FormControl, FormField, FormItem, FormMessage } from "../ui/form";
-import { RichTextEditor } from "../rich-text";
+import { RichTextEditor } from "../text-editor/rich-text";
 import { Option } from "@/lib/types";
 import { Control, useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
@@ -37,7 +37,7 @@ const QuestionOption = ({
             <FormItem>
               <FormControl>
                 <RichTextEditor
-                  content={getValues(`options.${index}.description`)}
+                  content={field.value}
                   placeholder="Enter an answer choice"
                   onChange={field.onChange}
                   onBlur={field.onBlur}

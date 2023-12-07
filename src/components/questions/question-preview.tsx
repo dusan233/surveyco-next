@@ -1,6 +1,6 @@
 import { QuestionsListContext } from "@/lib/context";
 import { Question } from "@/lib/types";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import QuestionActions from "./question-actions";
 import { Draggable } from "react-beautiful-dnd";
 import { useSortable } from "@dnd-kit/sortable";
@@ -11,15 +11,20 @@ type QuestionPreviewProps = {
   question: Question;
   surveyId: string;
   index: number;
+  isOverlay?: boolean;
+  activeId: string | null;
 };
 
 const QuestionPreview = ({
   question,
+  isOverlay = false,
+  activeId,
   surveyId,
   index,
 }: QuestionPreviewProps) => {
   const { setPendingQuestion, setAddingQuestion } =
     useContext(QuestionsListContext);
+  const [showDraggableState, setShowDraggableState] = useState(() => isOverlay);
 
   const {
     attributes,
@@ -27,6 +32,7 @@ const QuestionPreview = ({
     setNodeRef,
     setActivatorNodeRef,
     isDragging,
+    active,
     transform,
     transition,
   } = useSortable({ id: question.id });
@@ -37,12 +43,26 @@ const QuestionPreview = ({
     transition,
   };
 
+  useEffect(() => {
+    if (!activeId) {
+      setShowDraggableState(false);
+    }
+  }, [activeId]);
+
   return (
     <div
       data-question="true"
       onClick={() => {
         setPendingQuestion(question.id!);
         setAddingQuestion(false);
+      }}
+      onMouseOver={() => {
+        setShowDraggableState(true);
+      }}
+      onMouseLeave={() => {
+        if (!isOverlay) {
+          setShowDraggableState(false);
+        }
       }}
       ref={setNodeRef}
       style={style}
@@ -61,7 +81,7 @@ const QuestionPreview = ({
         ></h4>
       </div>
       <div className="font-bold mt-2">type:{question.type}</div>
-      {!isDragging && (
+      {showDraggableState && (
         <button
           {...attributes}
           {...listeners}

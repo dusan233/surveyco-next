@@ -8,7 +8,7 @@ import {
   UnsavedQuestion,
 } from "@/lib/types";
 import React, { useContext } from "react";
-import { RichTextEditor } from "../rich-text";
+import { RichTextEditor } from "../text-editor/rich-text";
 import { Button } from "../ui/button";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
@@ -33,6 +33,7 @@ import { useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import AutoAnimate from "../auto-animate";
+import { Input } from "../ui/input";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -105,7 +106,7 @@ const MultiChoiceQuestion = ({
                 <FormItem>
                   <FormControl>
                     <RichTextEditor
-                      content={question.description}
+                      content={field.value}
                       placeholder="Enter your question"
                       onChange={field.onChange}
                       onBlur={field.onBlur}

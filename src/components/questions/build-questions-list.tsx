@@ -91,6 +91,7 @@ const BuildQuestionsList = ({
         index={index}
         key={question.id}
         surveyId={surveyId}
+        activeId={activeId}
         question={question as Question}
       />
     );
@@ -138,6 +139,8 @@ const BuildQuestionsList = ({
           pageId: currentPageId,
         },
       });
+    } else {
+      setActiveId(null);
     }
   }
 
@@ -189,7 +192,16 @@ const BuildQuestionsList = ({
         </div>
       </SortableContext>
       <DragOverlay modifiers={[restrictToVerticalAxis]}>
-        {activeId ? renderQuestion(activeQuestion, activeIndex) : null}
+        {activeId ? (
+          <QuestionPreview
+            index={activeIndex}
+            key={activeQuestion.id}
+            surveyId={surveyId}
+            isOverlay
+            question={activeQuestion}
+            activeId={activeId}
+          />
+        ) : null}
       </DragOverlay>
     </DndContext>
   );

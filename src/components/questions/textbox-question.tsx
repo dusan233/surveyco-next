@@ -7,7 +7,7 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
-import { RichTextEditor } from "../rich-text";
+import { RichTextEditor } from "../text-editor/rich-text";
 import {
   TextQuestionData,
   TextboxQuestion,
@@ -94,7 +94,7 @@ const TextboxQuestion = ({
               <FormItem>
                 <FormControl>
                   <RichTextEditor
-                    content={question.description}
+                    content={field.value}
                     placeholder="Enter your question"
                     onChange={field.onChange}
                     onBlur={field.onBlur}
