@@ -120,6 +120,63 @@ export const saveQuestion = async (
   return await res.json();
 };
 
+export const createQuestion = async (
+  surveyId: string,
+  pageId: string,
+  data: SaveQuestionData
+): Promise<Question> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/question`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ data, pageId }),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to create question for survey with id: ${surveyId}`
+    );
+  }
+
+  return await res.json();
+};
+
+export const updateQuestion = async (
+  surveyId: string,
+  data: SaveQuestionData
+): Promise<Question> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/question`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ data }),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to update question for survey with id: ${surveyId}`
+    );
+  }
+
+  return await res.json();
+};
+
 export const deleteQuestion = async (
   surveyId: string,
   questionId: string

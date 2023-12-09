@@ -59,10 +59,7 @@ const MultiChoiceQuestion = ({
   const { setCanSelectQuestion, currentPage } =
     useContext(QuestionsListContext);
 
-  const { isPending, saveQuestionMutation } = useSaveQuestion(
-    surveyId,
-    currentPage!
-  );
+  const { isPending, saveQuestionMutation } = useSaveQuestion();
 
   const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (
     data
@@ -79,11 +76,14 @@ const MultiChoiceQuestion = ({
       variant: "destructive",
       title: "Saving question...",
     });
-    saveQuestionMutation(questionData, {
-      onSuccess() {
-        addingQuestionToast.dismiss();
-      },
-    });
+    saveQuestionMutation(
+      { surveyId, currentPage: currentPage!, data: questionData },
+      {
+        onSuccess() {
+          addingQuestionToast.dismiss();
+        },
+      }
+    );
   };
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
     const fn = form.handleSubmit(onSubmit);

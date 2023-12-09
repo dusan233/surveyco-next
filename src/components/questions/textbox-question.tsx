@@ -48,10 +48,7 @@ const TextboxQuestion = ({
   const { setCanSelectQuestion, currentPage } =
     useContext(QuestionsListContext);
 
-  const { isPending, saveQuestionMutation } = useSaveQuestion(
-    surveyId,
-    currentPage!
-  );
+  const { isPending, saveQuestionMutation } = useSaveQuestion();
 
   const onSubmit: SubmitHandler<z.infer<typeof textboxQuestionSchema>> = (
     data
@@ -66,11 +63,14 @@ const TextboxQuestion = ({
       variant: "destructive",
       title: "Saving question...",
     });
-    saveQuestionMutation(questionData, {
-      onSuccess() {
-        addingQuestionToast.dismiss();
-      },
-    });
+    saveQuestionMutation(
+      { surveyId, currentPage: currentPage!, data: questionData },
+      {
+        onSuccess() {
+          addingQuestionToast.dismiss();
+        },
+      }
+    );
   };
 
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {

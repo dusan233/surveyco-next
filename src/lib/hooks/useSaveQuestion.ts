@@ -1,4 +1,4 @@
-import { saveQuestion } from "@/app/actions";
+import { createQuestion, saveQuestion, updateQuestion } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Question,
@@ -9,10 +9,7 @@ import {
 import { useContext } from "react";
 import { QuestionsListContext } from "../context";
 
-export default function useSaveQuestion(
-  surveyId: string,
-  currentPage: SurveyPage
-) {
+export default function useSaveQuestion() {
   const { setCanSelectQuestion, setAddingQuestion, setPendingQuestion } =
     useContext(QuestionsListContext);
   const queryClient = useQueryClient();
@@ -23,14 +20,30 @@ export default function useSaveQuestion(
     isError,
     isSuccess,
   } = useMutation({
-    mutationFn: (questionData: SaveQuestionData) =>
-      saveQuestion(surveyId, currentPage.id, questionData),
+    mutationFn: (payload: {
+      data: SaveQuestionData;
+      surveyId: string;
+      currentPage: SurveyPage;
+    }) =>
+      payload.data.id
+        ? updateQuestion(payload.surveyId, payload.data)
+        : createQuestion(
+            payload.surveyId,
+            payload.currentPage.id,
+            payload.data
+          ),
     onSuccess(data, variables, context) {
+      console.log(data, "Ovo mora da je ovde da vidimop sta i kako.");
       setCanSelectQuestion(true);
       setAddingQuestion(false);
       setPendingQuestion(data.id);
       queryClient.setQueryData<QuestionsResponseData>(
-        ["survey", surveyId, "questions", currentPage.number],
+        [
+          "survey",
+          variables.surveyId,
+          "questions",
+          variables.currentPage.number,
+        ],
         (questionsData) => {
           if (questionsData) {
             const questions = questionsData.questions;
