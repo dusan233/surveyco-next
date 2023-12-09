@@ -3,13 +3,10 @@
 import {
   MultiChoiceQuestionData,
   MultipleChoiceQuestion,
-  Option,
   UnsavedMultiChoiceQuestion,
-  UnsavedQuestion,
 } from "@/lib/types";
 import React, { useContext } from "react";
 import { RichTextEditor } from "../text-editor/rich-text";
-import { Button } from "../ui/button";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
   Form,
@@ -18,22 +15,18 @@ import {
   FormItem,
   FormMessage,
 } from "../ui/form";
-import { Content } from "@tiptap/react";
 import { Separator } from "../ui/separator";
 import QuestionOptionList from "./question-option-list";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import QuestionFooter from "./question-footer";
-import QuestionHeader from "./question-header";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import { QuestionsListContext } from "@/lib/context";
-import { useSearchParams } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import AutoAnimate from "../auto-animate";
-import { Input } from "../ui/input";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -41,7 +34,7 @@ type MultiChoiceQuestionProps = {
   index: number;
 };
 
-const MultiChoiceQuestion = ({
+const BuildMultiChoiceQuestion = ({
   question,
   index,
   surveyId,
@@ -129,4 +122,4 @@ const MultiChoiceQuestion = ({
   );
 };
 
-export default MultiChoiceQuestion;
+export default BuildMultiChoiceQuestion;

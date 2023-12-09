@@ -32,7 +32,7 @@ export const textboxQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
 });
 
-const TextboxQuestion = ({
+const BuildTextboxQuestion = ({
   question,
   index,
   surveyId,
@@ -114,4 +114,4 @@ const TextboxQuestion = ({
   );
 };
 
-export default TextboxQuestion;
+export default BuildTextboxQuestion;

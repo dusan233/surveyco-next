@@ -1,11 +1,23 @@
 import { QuestionsListContext } from "@/lib/context";
-import { Question } from "@/lib/types";
+import { MultipleChoiceQuestion, Question, QuestionType } from "@/lib/types";
 import React, { useContext, useEffect, useState } from "react";
 import QuestionActions from "./question-actions";
 import { Draggable } from "react-beautiful-dnd";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import MultiChoiceQuestionResponse from "./multichoice-question-response";
+import DropdownQuestionResponse from "./dropdown-question-response";
+import TextboxQuestionResponse from "./textbox-question-response";
+import CheckboxesQuestionResponse from "./checkboxes-question-response";
 
 type QuestionPreviewProps = {
   question: Question;
@@ -48,6 +60,36 @@ const QuestionPreview = ({
     }
   }, [activeId]);
 
+  const renderQuestionPreviewResponseInput = (question: Question) => {
+    switch (question.type) {
+      case QuestionType.multiple_choice:
+        return (
+          <MultiChoiceQuestionResponse
+            question={question as MultipleChoiceQuestion}
+            isPreview
+          />
+        );
+      case QuestionType.dropdown:
+        return (
+          <DropdownQuestionResponse
+            question={question as MultipleChoiceQuestion}
+            isPreview
+          />
+        );
+      case QuestionType.textbox:
+        return <TextboxQuestionResponse question={question} isPreview />;
+      case QuestionType.checkboxes:
+        return (
+          <CheckboxesQuestionResponse
+            question={question as MultipleChoiceQuestion}
+            isPreview
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       data-question="true"
@@ -65,21 +107,25 @@ const QuestionPreview = ({
       }}
       ref={setNodeRef}
       style={style}
-      className={`p-3 mb-4 ${
+      className={`px-3 py-5 mb-4 ${
         isDragging &&
         "outline-dashed outline-2 outline-blue-500 outline-offset-4"
-      } shadow-sm !cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full`}
+      } shadow-sm !cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:z-[100] after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full`}
     >
       <div className="flex items-start gap-3">
         <span className="font-bold text-xl">{question.number}.</span>
         <h4
-          className="flex-1 text-lg "
+          className="flex-1 text-xl"
           dangerouslySetInnerHTML={{
             __html: question.description,
           }}
         ></h4>
       </div>
-      <div className="font-bold mt-2">type:{question.type}</div>
+
+      <div className="mt-7 ml-6">
+        {renderQuestionPreviewResponseInput(question)}
+      </div>
+
       {showDraggableState && (
         <button
           {...attributes}

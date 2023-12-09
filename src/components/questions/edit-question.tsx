@@ -6,8 +6,8 @@ import {
   UnsavedQuestion,
 } from "@/lib/types";
 import React from "react";
-import MultiChoiceQuestion from "./multichoice-question";
-import TextboxQuestionn from "./textbox-question";
+import MultiChoiceQuestion from "./build-multichoice-question";
+import TextboxQuestionn from "./build-textbox-question";
 import QuestionCard from "./question-card";
 import QuestionHeader from "./question-header";
 import { Draggable, DraggableProvided } from "react-beautiful-dnd";
