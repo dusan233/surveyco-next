@@ -101,6 +101,7 @@ const BuildSurveyQuestions = ({
       <PageControlBar
         currentPageNumber={currentPageNumber}
         setCurrentPageNumber={setCurrentPageNumber}
+        currentPage={currentPage!}
         surveyId={surveyId}
       />
 

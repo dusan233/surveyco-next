@@ -22,30 +22,38 @@ import {
 import useDeleteQuestion from "@/lib/hooks/useDeleteQuestion";
 import { SurveyPage } from "@/lib/types";
 import { useToast } from "../ui/use-toast";
+import useDeleteSurveyPage from "@/lib/hooks/useDeleteSurveyPage";
 
 type QuestionActionsProps = {
   surveyId: string;
+  currentPage: SurveyPage;
+  setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const PageActions = ({ surveyId }: QuestionActionsProps) => {
-  //   const { toast } = useToast();
-  //   const { deleteQuestionMutation } = useDeleteQuestion(currentPage);
+const PageActions = ({
+  surveyId,
+  currentPage,
+  setCurrentPageNumber,
+}: QuestionActionsProps) => {
+  const { toast } = useToast();
 
-  const handleDeleteQuestion = () => {
-    // const deleteQuestionToast = toast({
-    //   variant: "destructive",
-    //   title: "Deleting question...",
-    // });
-    // console.log(surveyId, questionId, currentPage.number);
-    // deleteQuestionMutation(
-    //   { surveyId, questionId },
-    //   {
-    //     onSuccess() {
-    //       deleteQuestionToast.dismiss();
-    //     },
-    //   }
-    // );
-    console.log("dddd");
+  const { deletePageMutation } = useDeleteSurveyPage();
+
+  const handleDeletePage = () => {
+    const deletePageToast = toast({
+      variant: "destructive",
+      title: "Deleting page...",
+    });
+
+    deletePageMutation(
+      { surveyId, pageId: currentPage.id },
+      {
+        onSuccess() {
+          setCurrentPageNumber(1);
+          deletePageToast.dismiss();
+        },
+      }
+    );
   };
 
   return (
@@ -76,7 +84,7 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          onClick={handleDeleteQuestion}
+          onClick={handleDeletePage}
           className="bg-red-500 text-white focus:bg-red-600 focus:text-white"
         >
           Delete

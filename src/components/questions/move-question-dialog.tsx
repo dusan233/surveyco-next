@@ -38,6 +38,7 @@ const MoveQuestionDialog = ({
   surveyId,
   questionId,
 }: CopyQuestionDialogProps) => {
+  console.log("dsads1111");
   const { surveyPages } = useSurveyPages(surveyId);
   const { moveQuestionMutation, isPending } = useMoveQuestion();
   //   const form = useForm<z.infer<typeof placeQuestionSchema>>({
@@ -81,6 +82,7 @@ const MoveQuestionDialog = ({
       {
         surveyId,
         questionId,
+        pageNumber: currentPageNumber,
         data: {
           questionId: formQuestionId,
           pageId: formPageId,

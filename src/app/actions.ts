@@ -199,6 +199,25 @@ export const deleteQuestion = async (
   }
 };
 
+export const deleteSurveyPage = async (surveyId: string, pageId: string) => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/page/${pageId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to delete page with id: ${pageId}`);
+  }
+};
+
 export const copyQuestion = async (
   surveyId: string,
   questionId: string,

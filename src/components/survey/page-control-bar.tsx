@@ -13,17 +13,20 @@ import { Button } from "../ui/button";
 import useCreateSurveyPage from "@/lib/hooks/useCreateSurveyPage";
 import { useToast } from "../ui/use-toast";
 import PageActions from "./page-actions";
+import { SurveyPage } from "@/lib/types";
 
 type PageControlBarProps = {
   surveyId: string;
   setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
   currentPageNumber: number;
+  currentPage: SurveyPage;
 };
 
 const PageControlBar = ({
   surveyId,
   setCurrentPageNumber,
   currentPageNumber,
+  currentPage,
 }: PageControlBarProps) => {
   const { toast } = useToast();
   const { surveyPages } = useSurveyPages(surveyId);
@@ -80,7 +83,11 @@ const PageControlBar = ({
         </Button>
       </div>
       <div>
-        <PageActions surveyId={surveyId} />
+        <PageActions
+          setCurrentPageNumber={setCurrentPageNumber}
+          currentPage={currentPage}
+          surveyId={surveyId}
+        />
       </div>
     </div>
   );

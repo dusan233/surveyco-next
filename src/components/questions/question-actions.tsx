@@ -59,12 +59,14 @@ const QuestionActions = ({
         isOpen={isCopyOpen}
         onOpenChange={setIsCopyOpen}
       />
+
       <MoveQuestionDialog
         questionId={questionId}
         surveyId={surveyId}
         isOpen={isMoveOpen}
         onOpenChange={setIsMoveOpen}
       />
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
