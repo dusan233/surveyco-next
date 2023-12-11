@@ -1,7 +1,7 @@
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useRef } from "react";
 
-export function useLoadingToast(isLoading: boolean) {
+export function useLoadingToast(isLoading: boolean, title?: string) {
   const { toast } = useToast();
   const toastRef = useRef<{ id: string; dismiss: () => void; update: any }>();
 
@@ -9,11 +9,11 @@ export function useLoadingToast(isLoading: boolean) {
     if (isLoading) {
       const loadingToast = toast({
         variant: "destructive",
-        title: "Loading page...",
+        title: title ?? "Loading...",
       });
       toastRef.current = loadingToast;
     } else {
       toastRef.current?.dismiss();
     }
-  }, [isLoading, toast]);
+  }, [isLoading, toast, title]);
 }

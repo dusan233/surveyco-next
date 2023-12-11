@@ -22,3 +22,7 @@ export const placeQuestionSchema = z.object({
   position: z.nativeEnum(OperationPosition).optional(),
   questionId: z.string().optional(),
 });
+export const placePageSchema = z.object({
+  position: z.nativeEnum(OperationPosition),
+  pageId: z.string(),
+});

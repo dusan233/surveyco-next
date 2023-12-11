@@ -10,7 +10,6 @@ import MultiChoiceQuestion from "./build-multichoice-question";
 import TextboxQuestionn from "./build-textbox-question";
 import QuestionCard from "./question-card";
 import QuestionHeader from "./question-header";
-import { Draggable, DraggableProvided } from "react-beautiful-dnd";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 

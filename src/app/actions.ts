@@ -3,6 +3,7 @@
 import {
   Collector,
   CopyQuestionData,
+  OperationPosition,
   Question,
   QuestionsResponseData,
   QuizResponseData,
@@ -216,6 +217,33 @@ export const deleteSurveyPage = async (surveyId: string, pageId: string) => {
   if (!res.ok) {
     throw new Error(`Failed to delete page with id: ${pageId}`);
   }
+};
+
+export const copySurveyPage = async (
+  surveyId: string,
+  sourcePageId: string,
+  data: { position: OperationPosition; pageId: string }
+): Promise<SurveyPage> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/page/${sourcePageId}/copy`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to copy page with id: ${sourcePageId}`);
+  }
+
+  return await res.json();
 };
 
 export const copyQuestion = async (
