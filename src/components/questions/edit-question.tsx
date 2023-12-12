@@ -70,19 +70,12 @@ const EditQuestion = ({
   const isAddQuestionEdit =
     lastQuestionIndex === questionIndex && addingQuestion;
 
-  return isAddQuestionEdit ? (
-    <div ref={setNodeRef} style={style}>
-      <QuestionCard>
-        <QuestionHeader
-          surveyId={surveyId}
-          index={questionIndex}
-          question={question}
-        />
-        {renderQuestionEditor(question, questionIndex)}
-      </QuestionCard>
-    </div>
-  ) : (
-    <div ref={setNodeRef} style={style} className="mb-4">
+  return (
+    <div
+      ref={!isAddQuestionEdit ? setNodeRef : undefined}
+      style={!isAddQuestionEdit ? style : undefined}
+      className="mb-4"
+    >
       <QuestionCard>
         <QuestionHeader
           surveyId={surveyId}
