@@ -246,6 +246,33 @@ export const copySurveyPage = async (
   return await res.json();
 };
 
+export const moveSurveyPage = async (
+  surveyId: string,
+  sourcePageId: string,
+  data: { position: OperationPosition; pageId: string }
+): Promise<SurveyPage> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/page/${sourcePageId}/move`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to move page with id: ${sourcePageId}`);
+  }
+
+  return await res.json();
+};
+
 export const copyQuestion = async (
   surveyId: string,
   questionId: string,
