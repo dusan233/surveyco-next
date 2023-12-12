@@ -24,7 +24,7 @@ const CheckboxesQuestionResponse = ({
           key={option.id}
           className="flex items-center space-x-3 space-y-0"
         >
-          <Checkbox checked={false} />
+          <Checkbox tabIndex={-1} aria-readonly checked={false} />
 
           <label
             className="text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"

@@ -14,7 +14,7 @@ const TextboxQuestionResponse = ({
 }: TextboxQuestionResponseProps) => {
   return isPreview ? (
     <div className="max-w-xs">
-      <Input tabIndex={-1} placeholder="" />
+      <Input readOnly tabIndex={-1} placeholder="" />
     </div>
   ) : (
     <FormField

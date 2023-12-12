@@ -21,7 +21,7 @@ const DropdownQuestionResponse = ({
   return isPreview ? (
     <div className="max-w-xs">
       <Select defaultValue={""}>
-        <SelectTrigger>
+        <SelectTrigger tabIndex={-1} aria-readonly>
           <SelectValue placeholder="" />
         </SelectTrigger>
 

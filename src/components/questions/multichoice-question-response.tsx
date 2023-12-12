@@ -19,7 +19,12 @@ const MultiChoiceQuestionResponse = ({
   isPreview = false,
 }: MultiChoiceQuestionResponseProps) => {
   return isPreview ? (
-    <RadioGroup defaultValue={""} className="flex flex-col space-y-3">
+    <RadioGroup
+      aria-readonly
+      tabIndex={-1}
+      defaultValue={""}
+      className="flex flex-col space-y-3"
+    >
       {question.options.map((option) => (
         <FormItem
           key={option.id}
