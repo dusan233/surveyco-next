@@ -143,7 +143,7 @@ const MoveSurvePageDialog = ({
               Cancel
             </Button>
             <Button onClick={form.handleSubmit(handleSubmit)} size="sm">
-              Copy page
+              Move page
             </Button>
           </DialogFooter>
         </div>

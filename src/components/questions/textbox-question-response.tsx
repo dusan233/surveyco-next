@@ -14,7 +14,7 @@ const TextboxQuestionResponse = ({
 }: TextboxQuestionResponseProps) => {
   return isPreview ? (
     <div className="max-w-xs">
-      <Input placeholder="" />
+      <Input tabIndex={-1} placeholder="" />
     </div>
   ) : (
     <FormField
@@ -23,7 +23,7 @@ const TextboxQuestionResponse = ({
       render={({ field }) => (
         <FormItem>
           <FormControl>
-            <Input placeholder="Enter response" {...field} />
+            <Input className="pointer-events-none" {...field} />
           </FormControl>
           <FormMessage />
         </FormItem>

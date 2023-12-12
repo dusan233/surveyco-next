@@ -21,8 +21,48 @@ export default function useMoveSurveyPage() {
         ["survey", variables.surveyId, "pages"],
         (surveyPages) => {
           if (surveyPages) {
-            // write the logic
-            return surveyPages;
+            const sourcePageNumber = surveyPages.find(
+              (page) => page.id === variables.sourcePageId
+            )!.number;
+            const targetPageNumber = surveyPages.find(
+              (page) => page.id === variables.data.pageId
+            )!.number;
+
+            if (sourcePageNumber > targetPageNumber) {
+              return surveyPages
+                .map((page) => {
+                  if (
+                    page.number >= data.number &&
+                    page.number < sourcePageNumber
+                  ) {
+                    return { ...page, number: page.number + 1 };
+                  }
+
+                  return page;
+                })
+                .map((page) =>
+                  page.id === data.id ? { ...page, number: data.number } : page
+                )
+                .toSorted((p1, p2) => p1.number - p2.number);
+            } else {
+              const changedSurveyPages = surveyPages
+                .map((page) => {
+                  if (
+                    page.number <= data.number &&
+                    sourcePageNumber < page.number
+                  ) {
+                    return { ...page, number: page.number - 1 };
+                  }
+
+                  return page;
+                })
+                .map((page) =>
+                  page.id === data.id ? { ...page, number: data.number } : page
+                )
+                .toSorted((p1, p2) => p1.number - p2.number);
+
+              return changedSurveyPages;
+            }
           } else {
             return surveyPages;
           }
