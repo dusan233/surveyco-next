@@ -94,11 +94,14 @@ const BuildMultiChoiceQuestion = ({
     }
   });
 
+  const title = form.watch("description");
+
   return (
     <div ref={ref}>
       <FormProvider {...form}>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
+            {title}
             <FormField
               control={form.control}
               name="description"

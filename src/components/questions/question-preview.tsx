@@ -1,19 +1,10 @@
 import { QuestionsListContext } from "@/lib/context";
 import { MultipleChoiceQuestion, Question, QuestionType } from "@/lib/types";
 import React, { useContext, useEffect, useState } from "react";
-import QuestionActions from "./question-actions";
-import { Draggable } from "react-beautiful-dnd";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import * as DOMPurify from "dompurify";
 import MultiChoiceQuestionResponse from "./multichoice-question-response";
 import DropdownQuestionResponse from "./dropdown-question-response";
 import TextboxQuestionResponse from "./textbox-question-response";
@@ -118,7 +109,7 @@ const QuestionPreview = ({
         <h4
           className="flex-1 text-xl"
           dangerouslySetInnerHTML={{
-            __html: question.description,
+            __html: DOMPurify.sanitize(question.description),
           }}
         ></h4>
       </div>
