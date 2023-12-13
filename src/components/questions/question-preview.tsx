@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
-import * as DOMPurify from "dompurify";
+import DOMPurify from "dompurify";
 import MultiChoiceQuestionResponse from "./multichoice-question-response";
 import DropdownQuestionResponse from "./dropdown-question-response";
 import TextboxQuestionResponse from "./textbox-question-response";
