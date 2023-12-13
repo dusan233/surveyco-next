@@ -160,7 +160,9 @@ const BuildQuestionsList = ({
           <div
             className="w-full relative"
             style={{
-              height: `${virtualizer.getTotalSize()}px`,
+              height: `${
+                virtualItems.length === 0 ? 0 : virtualizer.getTotalSize()
+              }px`,
             }}
           >
             <div
