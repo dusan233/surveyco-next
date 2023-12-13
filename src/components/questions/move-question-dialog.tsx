@@ -18,8 +18,7 @@ import {
 } from "../ui/select";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import { Button } from "../ui/button";
-import { FormLabel } from "../ui/form";
-import { CopyQuestionData, OperationPosition } from "@/lib/types";
+import { OperationPosition } from "@/lib/types";
 import useDownsizedQuestions from "@/lib/hooks/useDownsizedQuestions";
 import { Skeleton } from "../ui/skeleton";
 import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
@@ -66,7 +65,7 @@ const MoveQuestionDialog = ({
     setFormQuestionId(questionId);
   }, [questions]);
 
-  useLoadingToast(isPending);
+  useLoadingToast(isPending, "Moving question...");
 
   const handleSubmit = async () => {
     moveQuestionMutation(

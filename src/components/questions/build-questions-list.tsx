@@ -97,7 +97,7 @@ const BuildQuestionsList = ({
     );
   };
 
-  useLoadingToast(isPending);
+  useLoadingToast(isPending, "Moving question...");
   const scrollToQuestionIndex = useSmoothScrollToQuestion(virtualizer);
 
   useEffect(() => {

@@ -59,7 +59,7 @@ const BuildSurveyQuestions = ({
       });
     }
   }, [addingQuestion]);
-  useLoadingToast(isFetching);
+  useLoadingToast(isFetching, "Loading page...");
 
   const addNewQuestion = (type: QuestionType) => {
     const lastQuestionNumber = (questions[questions.length - 1] as Question)

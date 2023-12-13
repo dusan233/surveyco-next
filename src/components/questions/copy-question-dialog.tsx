@@ -80,7 +80,7 @@ const CopyQuestionDialog = ({
     // form.setValue("position", position);
   }, [questions, form]);
 
-  useLoadingToast(isPending);
+  useLoadingToast(isPending, "Copying question...");
 
   const onSubmit = async (values: CopyQuestionData) => {
     console.log(values);

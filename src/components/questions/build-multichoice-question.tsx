@@ -68,7 +68,7 @@ const BuildMultiChoiceQuestion = ({
 
     setCanSelectQuestion(false);
     const addingQuestionToast = toast({
-      variant: "destructive",
+      variant: "default",
       title: "Saving question...",
     });
     saveQuestionMutation(

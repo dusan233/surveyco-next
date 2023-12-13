@@ -8,7 +8,7 @@ export function useLoadingToast(isLoading: boolean, title?: string) {
   useEffect(() => {
     if (isLoading) {
       const loadingToast = toast({
-        variant: "destructive",
+        variant: "default",
         title: title ?? "Loading...",
       });
       toastRef.current = loadingToast;
