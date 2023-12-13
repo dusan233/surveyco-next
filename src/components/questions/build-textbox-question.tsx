@@ -45,8 +45,12 @@ const BuildTextboxQuestion = ({
     },
   });
 
-  const { setCanSelectQuestion, currentPage } =
-    useContext(QuestionsListContext);
+  const {
+    setCanSelectQuestion,
+    currentPage,
+    setAddingQuestion,
+    setPendingQuestion,
+  } = useContext(QuestionsListContext);
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
@@ -66,7 +70,12 @@ const BuildTextboxQuestion = ({
     saveQuestionMutation(
       { surveyId, currentPage: currentPage!, data: questionData },
       {
-        onSuccess() {
+        onSuccess(data) {
+          setCanSelectQuestion(true);
+          setAddingQuestion(false);
+          if (!questionData.id) {
+            setPendingQuestion(data.id);
+          }
           addingQuestionToast.dismiss();
         },
       }

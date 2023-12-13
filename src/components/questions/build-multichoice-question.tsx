@@ -25,7 +25,6 @@ import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "../ui/use-toast";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import AutoAnimate from "../auto-animate";
 
 type MultiChoiceQuestionProps = {
@@ -40,7 +39,6 @@ const BuildMultiChoiceQuestion = ({
   surveyId,
 }: MultiChoiceQuestionProps) => {
   const { toast } = useToast();
-  const [parent] = useAutoAnimate();
   const form = useForm<z.infer<typeof multiChoiceQuestionSchema>>({
     resolver: zodResolver(multiChoiceQuestionSchema),
     defaultValues: {
@@ -49,8 +47,12 @@ const BuildMultiChoiceQuestion = ({
     },
   });
 
-  const { setCanSelectQuestion, currentPage } =
-    useContext(QuestionsListContext);
+  const {
+    setCanSelectQuestion,
+    setAddingQuestion,
+    setPendingQuestion,
+    currentPage,
+  } = useContext(QuestionsListContext);
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
@@ -72,7 +74,12 @@ const BuildMultiChoiceQuestion = ({
     saveQuestionMutation(
       { surveyId, currentPage: currentPage!, data: questionData },
       {
-        onSuccess() {
+        onSuccess(data) {
+          setCanSelectQuestion(true);
+          setAddingQuestion(false);
+          if (!questionData.id) {
+            setPendingQuestion(data.id);
+          }
           addingQuestionToast.dismiss();
         },
       }

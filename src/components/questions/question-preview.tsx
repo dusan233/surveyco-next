@@ -94,8 +94,9 @@ const QuestionPreview = ({
     <div
       data-question="true"
       onClick={() => {
+        console.log("seting" + question.id);
         setPendingQuestion(question.id!);
-        setAddingQuestion(false);
+        // setAddingQuestion(false);
       }}
       onMouseOver={() => {
         setShowDraggableState(true);

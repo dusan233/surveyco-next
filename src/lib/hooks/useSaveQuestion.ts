@@ -1,17 +1,8 @@
-import { createQuestion, saveQuestion, updateQuestion } from "@/app/actions";
+import { createQuestion, updateQuestion } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  Question,
-  QuestionsResponseData,
-  SaveQuestionData,
-  SurveyPage,
-} from "../types";
-import { useContext } from "react";
-import { QuestionsListContext } from "../context";
+import { QuestionsResponseData, SaveQuestionData, SurveyPage } from "../types";
 
 export default function useSaveQuestion() {
-  const { setCanSelectQuestion, setAddingQuestion, setPendingQuestion } =
-    useContext(QuestionsListContext);
   const queryClient = useQueryClient();
   const {
     isPending,
@@ -33,10 +24,6 @@ export default function useSaveQuestion() {
             payload.data
           ),
     onSuccess(data, variables, context) {
-      console.log(data, "Ovo mora da je ovde da vidimop sta i kako.");
-      setCanSelectQuestion(true);
-      setAddingQuestion(false);
-      setPendingQuestion(data.id);
       queryClient.setQueryData<QuestionsResponseData>(
         [
           "survey",
