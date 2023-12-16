@@ -1,21 +1,17 @@
 import React from "react";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
+import { FormItem } from "../ui/form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { MultipleChoiceQuestion } from "@/lib/types";
 
 type MultiChoiceQuestionResponseProps = {
   question: MultipleChoiceQuestion;
   isPreview?: boolean;
+  name?: string;
 };
 
 const MultiChoiceQuestionResponse = ({
   question,
+  name,
   isPreview = false,
 }: MultiChoiceQuestionResponseProps) => {
   return isPreview ? (
@@ -40,42 +36,7 @@ const MultiChoiceQuestionResponse = ({
         </FormItem>
       ))}
     </RadioGroup>
-  ) : (
-    <FormField
-      control={undefined}
-      shouldUnregister
-      name="dasdsa"
-      render={({ field }) => (
-        <FormItem className="space-y-3">
-          <FormControl>
-            <RadioGroup
-              onValueChange={field.onChange}
-              defaultValue={""}
-              className="flex flex-col space-y-1"
-            >
-              {question.options.map((option) => (
-                <FormItem
-                  key={option.id}
-                  className="flex items-center space-x-3 space-y-0"
-                >
-                  <FormControl>
-                    <RadioGroupItem value={option.id} />
-                  </FormControl>
-                  <FormLabel
-                    dangerouslySetInnerHTML={{
-                      __html: option.description,
-                    }}
-                    className="font-normal"
-                  ></FormLabel>
-                </FormItem>
-              ))}
-            </RadioGroup>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
+  ) : null;
 };
 
 export default MultiChoiceQuestionResponse;

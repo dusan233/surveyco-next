@@ -4,6 +4,8 @@ import React, { useContext } from "react";
 
 import QuestionActions from "./question-actions";
 import { QuestionsListContext } from "@/lib/context";
+import { Button } from "../ui/button";
+import { Lightbulb, Settings } from "lucide-react";
 
 type QuestionHeaderProps = {
   question: Question | UnsavedQuestion;
@@ -20,7 +22,13 @@ const QuestionHeader = ({ question, index, surveyId }: QuestionHeaderProps) => {
         <div className="text-base">{getQuestionTypeLable(question.type)}</div>
       </div>
       {question.id && (
-        <div>
+        <div className="flex gap-2">
+          <Button variant="outline" size="icon">
+            <Settings className="h-6 w-6" />
+          </Button>
+          <Button variant="outline" size="icon">
+            <Lightbulb className="h-6 w-6" />
+          </Button>
           <QuestionActions
             surveyId={surveyId}
             questionId={question.id!}

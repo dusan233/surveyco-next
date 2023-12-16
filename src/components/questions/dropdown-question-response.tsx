@@ -1,6 +1,5 @@
 import { MultipleChoiceQuestion } from "@/lib/types";
 import React from "react";
-import { FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import {
   Select,
   SelectContent,
@@ -12,10 +11,12 @@ import {
 type DropdownQuestionResponseProps = {
   question: MultipleChoiceQuestion;
   isPreview?: boolean;
+  name?: string;
 };
 
 const DropdownQuestionResponse = ({
   question,
+  name,
   isPreview = false,
 }: DropdownQuestionResponseProps) => {
   return isPreview ? (
@@ -34,31 +35,7 @@ const DropdownQuestionResponse = ({
         </SelectContent>
       </Select>
     </div>
-  ) : (
-    <FormField
-      control={undefined}
-      name={`dadasd`}
-      render={({ field }) => (
-        <FormItem>
-          <Select onValueChange={field.onChange} defaultValue={""}>
-            <FormControl>
-              <SelectTrigger>
-                <SelectValue placeholder="Select option" />
-              </SelectTrigger>
-            </FormControl>
-            <SelectContent>
-              {question.options.map((option) => (
-                <SelectItem key={option.id} value={option.id}>
-                  {option.description}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
-  );
+  ) : null;
 };
 
 export default DropdownQuestionResponse;

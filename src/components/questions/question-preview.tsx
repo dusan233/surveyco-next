@@ -114,7 +114,7 @@ const QuestionPreview = ({
         ></h4>
       </div>
 
-      <div className="mt-7 ml-6">
+      <div className="mt-7 ml-7">
         {renderQuestionPreviewResponseInput(question)}
       </div>
 
