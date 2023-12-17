@@ -4,6 +4,7 @@ import {
   multiChoiceQuestionSchema,
   placePageSchema,
   placeQuestionSchema,
+  questionsResponsesSchema,
   textboxQuestionSchema,
 } from "./validationSchemas";
 
@@ -27,6 +28,7 @@ export interface QuestionBase {
   created_at: string;
   description: string;
   number: number;
+  surveyPageId: string;
 }
 export type UnsavedQuestion = UnsavedMultiChoiceQuestion | UnsavedTextQuestion;
 export type UnsavedMultiChoiceQuestion = {
@@ -47,6 +49,7 @@ export type UnsavedTextQuestion = {
 
 export type CopyQuestionData = z.infer<typeof placeQuestionSchema>;
 export type CopyPageData = z.infer<typeof placePageSchema>;
+export type QuestionsResponsesData = z.infer<typeof questionsResponsesSchema>;
 
 export type MultiChoiceQuestionData = z.infer<
   typeof multiChoiceQuestionSchema

@@ -26,3 +26,12 @@ export const placePageSchema = z.object({
   position: z.nativeEnum(OperationPosition),
   pageId: z.string(),
 });
+
+export const questionsResponsesSchema = z.object({
+  questions: z.array(
+    z.object({
+      id: z.string(),
+      answer: z.string().or(z.array(z.string())),
+    })
+  ),
+});

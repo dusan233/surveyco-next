@@ -14,11 +14,13 @@ import { useFormContext } from "react-hook-form";
 type MultichoiceQuestionResponseProps = {
   name: string;
   question: MultipleChoiceQuestion;
+  defaultValue: string;
 };
 
 const MultiChoiceQuestionResponse = ({
   question,
   name,
+  defaultValue,
 }: MultichoiceQuestionResponseProps) => {
   const { control } = useFormContext();
 
@@ -31,7 +33,7 @@ const MultiChoiceQuestionResponse = ({
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
-              defaultValue={""}
+              defaultValue={defaultValue}
               className="flex flex-col space-y-1"
             >
               {question.options.map((option) => (

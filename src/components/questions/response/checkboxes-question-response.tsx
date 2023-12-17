@@ -14,11 +14,13 @@ import { useFormContext } from "react-hook-form";
 type CheckboxesQuestionResponseProps = {
   name: string;
   question: MultipleChoiceQuestion;
+  defaultValue: string[];
 };
 
 const CheckboxesQuestionResponse = ({
   name,
   question,
+  defaultValue,
 }: CheckboxesQuestionResponseProps) => {
   const { control } = useFormContext();
 

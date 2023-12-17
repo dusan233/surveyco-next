@@ -18,11 +18,13 @@ import { useFormContext } from "react-hook-form";
 type DropdownQuestionResponseProps = {
   name: string;
   question: MultipleChoiceQuestion;
+  defaultValue: string;
 };
 
 const DropdownQuestionResponse = ({
   name,
   question,
+  defaultValue,
 }: DropdownQuestionResponseProps) => {
   const { control } = useFormContext();
 
@@ -32,7 +34,7 @@ const DropdownQuestionResponse = ({
       name={name}
       render={({ field }) => (
         <FormItem className="max-w-xs">
-          <Select onValueChange={field.onChange} defaultValue={""}>
+          <Select onValueChange={field.onChange} defaultValue={defaultValue}>
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder="Select option" />

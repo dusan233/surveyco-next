@@ -1,6 +1,6 @@
 "use client";
 
-import { Question, QuestionType } from "@/lib/types";
+import { Question, QuestionType, SurveyPage } from "@/lib/types";
 import React from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
@@ -8,53 +8,121 @@ import { Form } from "../ui/form";
 import { Button } from "../ui/button";
 
 import QuestionResponse from "../questions/response/question-response";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { questionsResponsesSchema } from "@/lib/validationSchemas";
 
 type SurveResponseFormProps = {
   questions: Question[];
+  surveyPages: SurveyPage[];
+  currentPageNum: number;
+  setCurrentPageNum: React.Dispatch<React.SetStateAction<number>>;
+  isFetchingPage: boolean;
+  setIsPreviewFinished: React.Dispatch<React.SetStateAction<boolean>>;
+  saveQuestionsResponsesData: (
+    questionsResponsesData: {
+      id: string;
+      answer: string | string[];
+    }[]
+  ) => void;
+  initValue: {
+    id: string;
+    answer: string | string[];
+  }[];
+  questionsResponses: {
+    pageNum: number;
+    questionsResponses: {
+      id: string;
+      answer: string | string[];
+    }[];
+  }[];
 };
 
-const SurveyResponseForm = ({ questions }: SurveResponseFormProps) => {
+const SurveyResponseForm = ({
+  questions,
+  surveyPages,
+  currentPageNum,
+  setCurrentPageNum,
+  isFetchingPage,
+  initValue,
+  saveQuestionsResponsesData,
+  setIsPreviewFinished,
+  questionsResponses,
+}: SurveResponseFormProps) => {
   const form = useForm({
+    resolver: zodResolver(questionsResponsesSchema),
     defaultValues: {
-      questions: questions.map((question) => {
-        return {
-          id: question.id,
-          answer:
-            question.type === QuestionType.textbox ? "" : ([] as string[]),
-        };
-      }),
+      questions: initValue,
     },
   });
   const { fields } = useFieldArray({
     control: form.control,
     name: "questions",
+    keyName: "qId",
   });
 
+  const showNextBtn =
+    surveyPages.findIndex((page) => page.number > currentPageNum) !== -1;
+  const showPrevBtn =
+    surveyPages.findIndex((page) => page.number < currentPageNum) !== -1;
+  const showSendBtn = currentPageNum === surveyPages.length;
+
   const handleSubmit = (values: any) => {
-    console.log(values);
+    console.log(questionsResponses);
+    setIsPreviewFinished(true);
+  };
+
+  const handleNextPage = () => {
+    saveQuestionsResponsesData(form.getValues().questions);
+    setCurrentPageNum(currentPageNum + 1);
+  };
+
+  const handlePrevPage = () => {
+    saveQuestionsResponsesData(form.getValues().questions);
+    setCurrentPageNum(currentPageNum - 1);
   };
 
   return (
     <FormProvider {...form}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="flex flex-col gap-6">
             {fields.map((questionField, index) => {
               const questionData = questions[index];
-              console.log(questionField.id, questionData.id, "ss");
+
               return (
                 <QuestionResponse
                   key={questionField.id}
                   question={questionData}
                   index={index}
+                  defaultValue={questionField.answer}
                 />
               );
             })}
           </div>
-          <div className="flex justify-end gap-2 mt-5">
-            <Button size="lg" type="submit">
-              Send
-            </Button>
+          <div className="flex justify-end gap-2 mt-10">
+            {showPrevBtn && (
+              <Button
+                disabled={isFetchingPage}
+                onClick={handlePrevPage}
+                size="lg"
+              >
+                Previous
+              </Button>
+            )}
+            {showNextBtn && (
+              <Button
+                disabled={isFetchingPage}
+                onClick={handleNextPage}
+                size="lg"
+              >
+                Next
+              </Button>
+            )}
+            {showSendBtn && (
+              <Button disabled={isFetchingPage} size="lg" type="submit">
+                Send
+              </Button>
+            )}
           </div>
         </form>
       </Form>

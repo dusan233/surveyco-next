@@ -10,11 +10,13 @@ import CheckboxesQuestionResponse from "./checkboxes-question-response";
 type QuestionResponseProps = {
   question: Question;
   index: number;
+  defaultValue: string | string[];
 };
 
 const renderQuestionResponseContent = (
   questionData: Question,
-  index: number
+  index: number,
+  defaultValue: string | string[]
 ) => {
   if (questionData.type === QuestionType.textbox) {
     return <TextboxQuestionResponse name={`questions.${index}.answer`} />;
@@ -23,6 +25,7 @@ const renderQuestionResponseContent = (
       <DropdownQuestionResponse
         question={questionData as MultipleChoiceQuestion}
         name={`questions.${index}.answer`}
+        defaultValue={defaultValue as string}
       />
     );
   } else if (questionData.type === QuestionType.multiple_choice) {
@@ -30,6 +33,7 @@ const renderQuestionResponseContent = (
       <MultiChoiceQuestionResponse
         question={questionData as MultipleChoiceQuestion}
         name={`questions.${index}.answer`}
+        defaultValue={defaultValue as string}
       />
     );
   } else if (questionData.type === QuestionType.checkboxes) {
@@ -37,19 +41,24 @@ const renderQuestionResponseContent = (
       <CheckboxesQuestionResponse
         question={questionData as MultipleChoiceQuestion}
         name={`questions.${index}.answer`}
+        defaultValue={defaultValue as string[]}
       />
     );
   }
   return null;
 };
 
-const QuestionResponse = ({ question, index }: QuestionResponseProps) => {
+const QuestionResponse = ({
+  question,
+  index,
+  defaultValue,
+}: QuestionResponseProps) => {
   return (
     <QuestionCard>
       <>
         <QuestionDescription question={question} />
         <div className="mt-7 ml-7">
-          {renderQuestionResponseContent(question, index)}
+          {renderQuestionResponseContent(question, index, defaultValue)}
         </div>
       </>
     </QuestionCard>
