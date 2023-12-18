@@ -20,6 +20,7 @@ export const getSurvey = async (
 
   const res = await fetch(`${process.env.BACKEND_API}/quiz/${surveyId}`, {
     cache: "no-cache",
+    credentials: "include",
     headers: {
       Authorization: "Bearer " + token,
     },
@@ -44,6 +45,7 @@ export const getSurveyQuestions = async (
       surveyPage || 1
     }`,
     {
+      credentials: "same-origin",
       cache: "no-cache",
       headers: {
         Authorization: "Bearer " + token,
@@ -57,6 +59,8 @@ export const getSurveyQuestions = async (
     );
   }
 
+  console.log(res.headers, "dsadasd");
+
   return await res.json();
 };
 
@@ -65,6 +69,7 @@ export const getSurveyPages = async (
 ): Promise<SurveyPage[]> => {
   const res = await fetch(`${process.env.BACKEND_API}/quiz/${surveyId}/pages`, {
     cache: "no-cache",
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -82,6 +87,7 @@ export const getSurveyCollector = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/collector/${collectorId}`,
     {
       cache: "no-cache",
+      credentials: "include",
     }
   );
 
@@ -106,6 +112,7 @@ export const saveQuestion = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/save-question`,
     {
       method: "PUT",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
@@ -133,6 +140,7 @@ export const createQuestion = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/question`,
     {
       method: "POST",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
@@ -161,6 +169,7 @@ export const updateQuestion = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/question`,
     {
       method: "PUT",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
@@ -189,6 +198,7 @@ export const deleteQuestion = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}`,
     {
       method: "DELETE",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -208,6 +218,7 @@ export const deleteSurveyPage = async (surveyId: string, pageId: string) => {
     `${process.env.BACKEND_API}/quiz/${surveyId}/page/${pageId}`,
     {
       method: "DELETE",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
       },
@@ -231,6 +242,7 @@ export const copySurveyPage = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/page/${sourcePageId}/copy`,
     {
       method: "POST",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
@@ -258,6 +270,7 @@ export const moveSurveyPage = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/page/${sourcePageId}/move`,
     {
       method: "PUT",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
@@ -285,6 +298,7 @@ export const copyQuestion = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}/copy`,
     {
       method: "POST",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
@@ -312,6 +326,7 @@ export const moveQuestion = async (
     `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}/move`,
     {
       method: "PUT",
+      credentials: "include",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
@@ -335,6 +350,7 @@ export const createSurveyPage = async (
 
   const res = await fetch(`${process.env.BACKEND_API}/quiz/${surveyId}/page`, {
     method: "POST",
+    credentials: "include",
     headers: {
       Authorization: "Bearer " + token,
     },

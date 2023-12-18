@@ -14,15 +14,15 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
   const queryClient = useQueryClient();
   const surveyId = params.slug;
   const [isPreviewFinished, setIsPreviewFinished] = useState(false);
-  const [currentPageNum, setCurrentPageNum] = useState(1);
-  const [showPageNum, setShowPageNum] = useState(-1);
+  const [selectedPageNum, setSelectedPageNum] = useState(1);
+  const [displayPageNum, setDisplayPageNum] = useState(-1);
   const [questions, setQuestions] = useState<Question[] | undefined>([]);
   const { surveyPages, isLoading: loadingPages } = useSurveyPages(surveyId);
   const {
     questions: questionsData,
     isLoading: loadingQuestions,
     isFetching,
-  } = useSurveyQuestions(surveyId, currentPageNum);
+  } = useSurveyQuestions(surveyId, selectedPageNum);
   const [questionsResponses, setQuestionsResponses] = useState<
     {
       pageNum: number;
@@ -35,12 +35,12 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
   ) => {
     setQuestionsResponses((currentQuestionsResponses) => {
       const pageQuestionsResponsesExist = currentQuestionsResponses.find(
-        (page) => page.pageNum === showPageNum
+        (page) => page.pageNum === displayPageNum
       );
 
       if (pageQuestionsResponsesExist) {
         return currentQuestionsResponses.map((page) => {
-          if (page.pageNum === showPageNum)
+          if (page.pageNum === displayPageNum)
             return { ...page, questionsResponses: questionsResponsesData };
           return page;
         });
@@ -48,7 +48,7 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
         return [
           ...currentQuestionsResponses,
           {
-            pageNum: currentPageNum,
+            pageNum: selectedPageNum,
             questionsResponses: questionsResponsesData,
           },
         ];
@@ -59,7 +59,7 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
   const restartPreview = async () => {
     queryClient.clear();
     setIsPreviewFinished(false);
-    setCurrentPageNum(1);
+    setSelectedPageNum(1);
     setQuestionsResponses([]);
     setQuestions([]);
   };
@@ -67,9 +67,9 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
   useEffect(() => {
     if (!isFetching) {
       setQuestions(questionsData);
-      setShowPageNum(currentPageNum);
+      setDisplayPageNum(selectedPageNum);
     }
-  }, [isFetching, currentPageNum, questionsData]);
+  }, [isFetching, selectedPageNum, questionsData]);
 
   if (loadingPages || loadingQuestions)
     return (
@@ -90,7 +90,7 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
       <div className="max-w-3xl mx-auto">
         {surveyPages!.map((page) => {
           const pageQuestionsResponsesExist = questionsResponses.find(
-            (page) => page.pageNum === showPageNum
+            (page) => page.pageNum === displayPageNum
           );
           const initFormValues = pageQuestionsResponsesExist
             ? pageQuestionsResponsesExist.questionsResponses
@@ -104,11 +104,11 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
                 };
               });
 
-          return page.number === showPageNum ? (
+          return page.number === displayPageNum ? (
             <SurveyResponseForm
               key={page.id}
-              currentPageNum={currentPageNum}
-              setCurrentPageNum={setCurrentPageNum}
+              displayPageNum={displayPageNum}
+              setSelectedPageNum={setSelectedPageNum}
               surveyPages={surveyPages!}
               questions={questions!}
               isFetchingPage={isFetching}

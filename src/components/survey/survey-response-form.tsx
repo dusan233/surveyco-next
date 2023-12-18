@@ -1,6 +1,6 @@
 "use client";
 
-import { Question, QuestionType, SurveyPage } from "@/lib/types";
+import { Question, SurveyPage } from "@/lib/types";
 import React from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
@@ -14,8 +14,8 @@ import { questionsResponsesSchema } from "@/lib/validationSchemas";
 type SurveResponseFormProps = {
   questions: Question[];
   surveyPages: SurveyPage[];
-  currentPageNum: number;
-  setCurrentPageNum: React.Dispatch<React.SetStateAction<number>>;
+  displayPageNum: number;
+  setSelectedPageNum: React.Dispatch<React.SetStateAction<number>>;
   isFetchingPage: boolean;
   setIsPreviewFinished: React.Dispatch<React.SetStateAction<boolean>>;
   saveQuestionsResponsesData: (
@@ -40,8 +40,8 @@ type SurveResponseFormProps = {
 const SurveyResponseForm = ({
   questions,
   surveyPages,
-  currentPageNum,
-  setCurrentPageNum,
+  displayPageNum,
+  setSelectedPageNum,
   isFetchingPage,
   initValue,
   saveQuestionsResponsesData,
@@ -61,10 +61,10 @@ const SurveyResponseForm = ({
   });
 
   const showNextBtn =
-    surveyPages.findIndex((page) => page.number > currentPageNum) !== -1;
+    surveyPages.findIndex((page) => page.number > displayPageNum) !== -1;
   const showPrevBtn =
-    surveyPages.findIndex((page) => page.number < currentPageNum) !== -1;
-  const showSendBtn = currentPageNum === surveyPages.length;
+    surveyPages.findIndex((page) => page.number < displayPageNum) !== -1;
+  const showSendBtn = displayPageNum === surveyPages.length;
 
   const handleSubmit = (values: any) => {
     console.log(questionsResponses);
@@ -73,12 +73,12 @@ const SurveyResponseForm = ({
 
   const handleNextPage = () => {
     saveQuestionsResponsesData(form.getValues().questions);
-    setCurrentPageNum(currentPageNum + 1);
+    setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
   };
 
   const handlePrevPage = () => {
     saveQuestionsResponsesData(form.getValues().questions);
-    setCurrentPageNum(currentPageNum - 1);
+    setSelectedPageNum((selectedPageNum) => selectedPageNum - 1);
   };
 
   return (
