@@ -45,7 +45,7 @@ export const getSurveyQuestions = async (
       surveyPage || 1
     }`,
     {
-      credentials: "same-origin",
+      credentials: "include",
       cache: "no-cache",
       headers: {
         Authorization: "Bearer " + token,
