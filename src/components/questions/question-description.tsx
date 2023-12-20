@@ -1,3 +1,5 @@
+"use client";
+
 import { Question } from "@/lib/types";
 import DOMPurify from "dompurify";
 import React from "react";

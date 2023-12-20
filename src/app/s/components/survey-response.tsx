@@ -2,8 +2,9 @@
 
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SurveyResponseForm from "./survey-response-form";
+import { Question } from "@/lib/types";
 
 type SurveyResponseProps = {
   surveyId: string;
@@ -11,6 +12,7 @@ type SurveyResponseProps = {
 
 const SurveyResponse = ({ surveyId }: SurveyResponseProps) => {
   const [selectedPageNum, setSelectedPageNum] = useState(1);
+  const [displayPageNum, setDisplayPageNum] = useState(1);
 
   const { surveyPages, isLoading: loadingPages } = useSurveyPages(surveyId);
   const {
@@ -18,10 +20,45 @@ const SurveyResponse = ({ surveyId }: SurveyResponseProps) => {
     isLoading: loadingQuestions,
     isFetching,
   } = useSurveyQuestions(surveyId, selectedPageNum);
+  const [questions, setQuestions] = useState<Question[] | undefined>(
+    questionsData
+  );
+
+  useEffect(() => {
+    if (!isFetching) {
+      console.log(questionsData);
+      setQuestions(questionsData);
+      setDisplayPageNum(selectedPageNum);
+    }
+  }, [isFetching, selectedPageNum, questionsData]);
 
   return (
     <div>
-      <SurveyResponseForm />
+      {/* {surveyPages!.map((page) => {
+        return page.number === displayPageNum ? (
+          <SurveyResponseForm
+            key={page.id}
+            displayPageNum={displayPageNum}
+            setSelectedPageNum={setSelectedPageNum}
+            surveyPages={surveyPages!}
+            questions={questions!}
+            isFetchingPage={isFetching}
+          />
+        ) : null;
+      })} */}
+      <SurveyResponseForm
+        surveyId={surveyId}
+        key={
+          !isFetching
+            ? surveyPages?.find((page) => page.number === displayPageNum)?.id
+            : ""
+        }
+        isFetchingPage={isFetching}
+        questions={questionsData!}
+        surveyPages={surveyPages!}
+        setSelectedPageNum={setSelectedPageNum}
+        displayPageNum={displayPageNum}
+      />
     </div>
   );
 };

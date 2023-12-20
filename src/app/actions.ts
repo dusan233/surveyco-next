@@ -11,6 +11,8 @@ import {
   SurveyPage,
 } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
+import { cookies } from "next/headers";
+import cookie from "cookie";
 
 export const getSurvey = async (
   surveyId: string
@@ -58,8 +60,6 @@ export const getSurveyQuestions = async (
       `Failed to fetch questions for survey with id: ${surveyId}`
     );
   }
-
-  console.log(res.headers, "dsadasd");
 
   return await res.json();
 };
@@ -359,6 +359,48 @@ export const createSurveyPage = async (
   if (!res.ok) {
     throw new Error(`Failed to create page for survey with id: ${surveyId}`);
   }
+
+  return await res.json();
+};
+
+export const saveSurveyResponse = async (
+  surveyId: string
+): Promise<{ message: string }> => {
+  const surveyResponsesCookieObj = cookies().get("surveyResponses");
+  const serializedCookie = surveyResponsesCookieObj
+    ? cookie.serialize(
+        surveyResponsesCookieObj.name,
+        surveyResponsesCookieObj?.value
+      )
+    : "";
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/response`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        Cookie: serializedCookie,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    // throw new Error(`Failed to create page for survey with id: ${surveyId}`);
+    console.log("error cookie thing");
+  }
+  console.log(cookies().get("surveyResponses"), "dd");
+  res.headers.getSetCookie().forEach((cookieString) => {
+    const parsedCookie = cookie.parse(cookieString);
+    const cookieName = Object.keys(parsedCookie)[0];
+    const cookieValue = parsedCookie[cookieName];
+
+    console.log(parsedCookie, "parsed");
+    cookies().set({
+      name: cookieName,
+      value: cookieValue,
+      httpOnly: true,
+    });
+  });
 
   return await res.json();
 };

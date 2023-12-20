@@ -33,10 +33,8 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="mx-auto max-w-2xl p-10">
-        {/* <SurveyResponseForm questions={questions.questions} /> */}
+      <div className="mx-auto max-w-3xl p-10">
         <SurveyResponse surveyId={surveyId} />
-        dwqdw
       </div>
     </HydrationBoundary>
   );

@@ -23,7 +23,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <Providers>
-            <div className="mx-auto max-w-7xl">
+            <div className="">
               <div>{children}</div>
               <Toaster />
             </div>
