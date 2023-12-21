@@ -8,9 +8,10 @@ import { Question } from "@/lib/types";
 
 type SurveyResponseProps = {
   surveyId: string;
+  collectorId: string;
 };
 
-const SurveyResponse = ({ surveyId }: SurveyResponseProps) => {
+const SurveyResponse = ({ surveyId, collectorId }: SurveyResponseProps) => {
   const [selectedPageNum, setSelectedPageNum] = useState(1);
   const [displayPageNum, setDisplayPageNum] = useState(1);
 
@@ -48,6 +49,7 @@ const SurveyResponse = ({ surveyId }: SurveyResponseProps) => {
       })} */}
       <SurveyResponseForm
         surveyId={surveyId}
+        collectorId={collectorId}
         key={
           !isFetching
             ? surveyPages?.find((page) => page.number === displayPageNum)?.id

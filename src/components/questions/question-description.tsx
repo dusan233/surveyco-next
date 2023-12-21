@@ -1,7 +1,5 @@
-"use client";
-
 import { Question } from "@/lib/types";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import React from "react";
 
 type QuestionDescriptionProps = {

@@ -1,5 +1,4 @@
 "use server";
-
 import {
   Collector,
   CopyQuestionData,
@@ -363,44 +362,45 @@ export const createSurveyPage = async (
   return await res.json();
 };
 
-export const saveSurveyResponse = async (
-  surveyId: string
-): Promise<{ message: string }> => {
-  const surveyResponsesCookieObj = cookies().get("surveyResponses");
-  const serializedCookie = surveyResponsesCookieObj
-    ? cookie.serialize(
-        surveyResponsesCookieObj.name,
-        surveyResponsesCookieObj?.value
-      )
-    : "";
-  const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/response`,
-    {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        Cookie: serializedCookie,
-      },
-    }
-  );
+// export const saveSurveyResponse = async (
+//   surveyId: string
+// ): Promise<{ message: string }> => {
+//   "use client";
+//   // const surveyResponsesCookieObj = cookies().get("surveyResponses");
+//   // const serializedCookie = surveyResponsesCookieObj
+//   //   ? cookie.serialize(
+//   //       surveyResponsesCookieObj.name,
+//   //       surveyResponsesCookieObj?.value
+//   //     )
+//   //   : "";
+//   const res = await fetch(
+//     `${process.env.BACKEND_API}/quiz/${surveyId}/response`,
+//     {
+//       method: "PUT",
+//       credentials: "include",
+//       // headers: {
+//       //   Cookie: serializedCookie,
+//       // },
+//     }
+//   );
 
-  if (!res.ok) {
-    // throw new Error(`Failed to create page for survey with id: ${surveyId}`);
-    console.log("error cookie thing");
-  }
-  console.log(cookies().get("surveyResponses"), "dd");
-  res.headers.getSetCookie().forEach((cookieString) => {
-    const parsedCookie = cookie.parse(cookieString);
-    const cookieName = Object.keys(parsedCookie)[0];
-    const cookieValue = parsedCookie[cookieName];
+//   if (!res.ok) {
+//     // throw new Error(`Failed to create page for survey with id: ${surveyId}`);
+//     console.log("error cookie thing");
+//   }
+//   // console.log(cookies().get("surveyResponses"), "dd");
+//   // res.headers.getSetCookie().forEach((cookieString) => {
+//   //   const parsedCookie = cookie.parse(cookieString);
+//   //   const cookieName = Object.keys(parsedCookie)[0];
+//   //   const cookieValue = parsedCookie[cookieName];
 
-    console.log(parsedCookie, "parsed");
-    cookies().set({
-      name: cookieName,
-      value: cookieValue,
-      httpOnly: true,
-    });
-  });
+//   //   console.log(parsedCookie, "parsed");
+//   //   cookies().set({
+//   //     name: cookieName,
+//   //     value: cookieValue,
+//   //     httpOnly: true,
+//   //   });
+//   // });
 
-  return await res.json();
-};
+//   return await res.json();
+// };

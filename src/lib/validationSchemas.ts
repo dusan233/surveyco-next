@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { OperationPosition } from "./types";
+import { OperationPosition, QuestionType } from "./types";
 
 export const multiChoiceQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
@@ -28,10 +28,12 @@ export const placePageSchema = z.object({
 });
 
 export const questionsResponsesSchema = z.object({
-  questions: z.array(
+  questionResponses: z.array(
     z.object({
-      id: z.string(),
+      id: z.string().optional(),
+      questionId: z.string(),
       answer: z.string().or(z.array(z.string())),
+      questionType: z.nativeEnum(QuestionType),
     })
   ),
 });

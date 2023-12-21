@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { MultipleChoiceQuestion } from "@/lib/types";
-import DOMPurify from "dompurify";
+import DOMPurify from "isomorphic-dompurify";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 

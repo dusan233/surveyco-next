@@ -1,4 +1,6 @@
-import { saveSurveyResponse } from "@/app/actions";
+"use client";
+
+import { saveSurveyResponse } from "@/app/api";
 import QuestionResponse from "@/components/questions/response/question-response";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -17,6 +19,7 @@ type SurveyResponseFormProps = {
   questions: Question[];
   surveyPages: SurveyPage[];
   surveyId: string;
+  collectorId: string;
   displayPageNum: number;
   isFetchingPage: boolean;
   setSelectedPageNum: React.Dispatch<React.SetStateAction<number>>;
@@ -29,27 +32,29 @@ const SurveyResponseForm = ({
   isFetchingPage,
   displayPageNum,
   surveyId,
+  collectorId,
 }: SurveyResponseFormProps) => {
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
     defaultValues: {
-      questions: questions!.map((question) => {
+      questionResponses: questions!.map((question) => {
         return {
-          id: question.id,
+          questionId: question.id,
           answer:
             question.type === QuestionType.checkboxes ? ([] as string[]) : "",
+          questionType: question.type,
         };
       }),
     },
   });
   const { fields } = useFieldArray({
     control: form.control,
-    name: "questions",
+    name: "questionResponses",
     keyName: "qId",
   });
 
-  const handleSubmit = (values: any) => {
-    console.log(values);
+  const handleSubmit = async (values: QuestionsResponsesData) => {
+    await saveSurveyResponse(surveyId, values, collectorId);
   };
 
   const showNextBtn =
@@ -58,9 +63,8 @@ const SurveyResponseForm = ({
     surveyPages.findIndex((page) => page.number < displayPageNum) !== -1;
   const showSendBtn = displayPageNum === surveyPages.length;
 
-  const handleNextPage = () => {
-    console.log("kurac");
-    form.handleSubmit(handleSubmit)();
+  const handleNextPage = async () => {
+    await form.handleSubmit(handleSubmit)();
     setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
   };
 
@@ -79,7 +83,7 @@ const SurveyResponseForm = ({
 
               return (
                 <QuestionResponse
-                  key={questionField.id}
+                  key={questionField.qId}
                   question={questionData}
                   index={index}
                   defaultValue={questionField.answer}
@@ -112,8 +116,8 @@ const SurveyResponseForm = ({
               </Button>
             )}
             <Button
-              onClick={() => {
-                saveSurveyResponse(surveyId);
+              onClick={async () => {
+                // const da = await saveSurveyResponse(surveyId);
               }}
               size="lg"
               type="button"
