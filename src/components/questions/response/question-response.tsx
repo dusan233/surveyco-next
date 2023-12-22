@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import QuestionCard from "../question-card";
 import QuestionDescription from "../question-description";
@@ -19,12 +21,14 @@ const renderQuestionResponseContent = (
   defaultValue: string | string[]
 ) => {
   if (questionData.type === QuestionType.textbox) {
-    return <TextboxQuestionResponse name={`questions.${index}.answer`} />;
+    return (
+      <TextboxQuestionResponse name={`questionResponses.${index}.answer`} />
+    );
   } else if (questionData.type === QuestionType.dropdown) {
     return (
       <DropdownQuestionResponse
         question={questionData as MultipleChoiceQuestion}
-        name={`questions.${index}.answer`}
+        name={`questionResponses.${index}.answer`}
         defaultValue={defaultValue as string}
       />
     );
@@ -32,7 +36,7 @@ const renderQuestionResponseContent = (
     return (
       <MultiChoiceQuestionResponse
         question={questionData as MultipleChoiceQuestion}
-        name={`questions.${index}.answer`}
+        name={`questionResponses.${index}.answer`}
         defaultValue={defaultValue as string}
       />
     );
@@ -40,7 +44,7 @@ const renderQuestionResponseContent = (
     return (
       <CheckboxesQuestionResponse
         question={questionData as MultipleChoiceQuestion}
-        name={`questions.${index}.answer`}
+        name={`questionResponses.${index}.answer`}
         defaultValue={defaultValue as string[]}
       />
     );

@@ -12,6 +12,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import SurveyResponse from "../components/survey-response";
+import { QuestionsResponseData } from "@/lib/types";
 
 const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
   //if u took the servey based on cookie get message that u took the survey
@@ -31,10 +32,17 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
     queryFn: () => getSurveyQuestions(surveyId, 1),
   });
 
+  const pageQuestions = queryClient.getQueryData<QuestionsResponseData>([
+    "survey",
+    surveyId,
+    "questions",
+    1,
+  ]);
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="mx-auto max-w-3xl p-10">
-        <SurveyResponse surveyId={surveyId} />
+        <SurveyResponse collectorId={collector.id} surveyId={surveyId} />
       </div>
     </HydrationBoundary>
   );

@@ -11,7 +11,10 @@ export const saveSurveyResponse = async (
     headers: {
       "Content-type": "application/json",
     },
-    body: JSON.stringify({ questionResponses: data, collectorId }),
+    body: JSON.stringify({
+      questionResponses: data.questionResponses,
+      collectorId,
+    }),
   });
 
   if (!res.ok) {

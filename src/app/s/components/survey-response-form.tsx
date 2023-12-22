@@ -54,7 +54,10 @@ const SurveyResponseForm = ({
   });
 
   const handleSubmit = async (values: QuestionsResponsesData) => {
+    console.log(values);
+
     await saveSurveyResponse(surveyId, values, collectorId);
+    setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
   };
 
   const showNextBtn =
@@ -69,7 +72,6 @@ const SurveyResponseForm = ({
   };
 
   const handlePrevPage = () => {
-    form.handleSubmit(handleSubmit)();
     setSelectedPageNum((selectedPageNum) => selectedPageNum - 1);
   };
 
@@ -97,6 +99,7 @@ const SurveyResponseForm = ({
                 disabled={isFetchingPage}
                 onClick={handlePrevPage}
                 size="lg"
+                type="button"
               >
                 Previous
               </Button>
@@ -104,8 +107,9 @@ const SurveyResponseForm = ({
             {showNextBtn && (
               <Button
                 disabled={isFetchingPage}
-                onClick={handleNextPage}
+                // onClick={handleNextPage}
                 size="lg"
+                type="submit"
               >
                 Next
               </Button>
