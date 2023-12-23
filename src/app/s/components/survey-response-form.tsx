@@ -1,11 +1,13 @@
 "use client";
 
 import { saveSurveyResponse } from "@/app/api";
-import QuestionResponse from "@/components/questions/response/question-response";
+import QuestionResponseComp from "@/components/questions/response/question-response";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import useSaveSurveyResponse from "@/lib/hooks/useSaveSurveyResponse";
 import {
   Question,
+  QuestionResponse,
   QuestionType,
   QuestionsResponsesData,
   SurveyPage,
@@ -17,6 +19,7 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
 type SurveyResponseFormProps = {
   questions: Question[];
+  questionResponses: QuestionResponse[];
   surveyPages: SurveyPage[];
   surveyId: string;
   collectorId: string;
@@ -27,6 +30,7 @@ type SurveyResponseFormProps = {
 
 const SurveyResponseForm = ({
   questions,
+  questionResponses,
   surveyPages,
   setSelectedPageNum,
   isFetchingPage,
@@ -34,14 +38,35 @@ const SurveyResponseForm = ({
   surveyId,
   collectorId,
 }: SurveyResponseFormProps) => {
+  const getInitialAnswer = (question: Question) => {
+    const questionRes = questionResponses.find(
+      (qRes) => qRes.questionId === question.id
+    );
+
+    if (!questionRes)
+      return question.type === QuestionType.checkboxes ? ([] as string[]) : "";
+
+    return question.type === QuestionType.checkboxes
+      ? questionRes.answer.map((answer) => answer.questionOptionId!)
+      : question.type === QuestionType.textbox
+      ? questionRes.answer[0].textAnswer!
+      : questionRes.answer[0].questionOptionId!;
+  };
+
+  const { saveResponseMutationAsync, isPending } = useSaveSurveyResponse();
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
     defaultValues: {
       questionResponses: questions!.map((question) => {
+        const questionResponse = questionResponses.find(
+          (qRes) => qRes.questionId === question.id
+        );
+
         return {
+          ...(questionResponse &&
+            questionResponse.id && { id: questionResponse.id }),
           questionId: question.id,
-          answer:
-            question.type === QuestionType.checkboxes ? ([] as string[]) : "",
+          answer: getInitialAnswer(question),
           questionType: question.type,
         };
       }),
@@ -54,9 +79,7 @@ const SurveyResponseForm = ({
   });
 
   const handleSubmit = async (values: QuestionsResponsesData) => {
-    console.log(values);
-
-    await saveSurveyResponse(surveyId, values, collectorId);
+    await saveResponseMutationAsync({ surveyId, data: values, collectorId });
     setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
   };
 
@@ -66,14 +89,11 @@ const SurveyResponseForm = ({
     surveyPages.findIndex((page) => page.number < displayPageNum) !== -1;
   const showSendBtn = displayPageNum === surveyPages.length;
 
-  const handleNextPage = async () => {
-    await form.handleSubmit(handleSubmit)();
-    setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
-  };
-
   const handlePrevPage = () => {
     setSelectedPageNum((selectedPageNum) => selectedPageNum - 1);
   };
+
+  const buttonsInactive = isFetchingPage || isPending;
 
   return (
     <FormProvider {...form}>
@@ -84,7 +104,7 @@ const SurveyResponseForm = ({
               const questionData = questions[index];
 
               return (
-                <QuestionResponse
+                <QuestionResponseComp
                   key={questionField.qId}
                   question={questionData}
                   index={index}
@@ -96,7 +116,7 @@ const SurveyResponseForm = ({
           <div className="flex justify-end gap-2 mt-10">
             {showPrevBtn && (
               <Button
-                disabled={isFetchingPage}
+                disabled={buttonsInactive}
                 onClick={handlePrevPage}
                 size="lg"
                 type="button"
@@ -105,29 +125,15 @@ const SurveyResponseForm = ({
               </Button>
             )}
             {showNextBtn && (
-              <Button
-                disabled={isFetchingPage}
-                // onClick={handleNextPage}
-                size="lg"
-                type="submit"
-              >
+              <Button disabled={buttonsInactive} size="lg" type="submit">
                 Next
               </Button>
             )}
             {showSendBtn && (
-              <Button disabled={isFetchingPage} size="lg" type="submit">
+              <Button disabled={buttonsInactive} size="lg" type="submit">
                 Send
               </Button>
             )}
-            <Button
-              onClick={async () => {
-                // const da = await saveSurveyResponse(surveyId);
-              }}
-              size="lg"
-              type="button"
-            >
-              Cookie request
-            </Button>
           </div>
         </form>
       </Form>

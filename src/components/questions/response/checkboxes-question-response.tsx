@@ -47,7 +47,6 @@ const CheckboxesQuestionResponse = ({
                       <Checkbox
                         checked={field.value?.includes(option.id)}
                         onCheckedChange={(checked) => {
-                          console.log(field.value, "hhhj");
                           return checked
                             ? field.onChange([
                                 ...(field.value as string[]),

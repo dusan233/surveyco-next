@@ -5,6 +5,7 @@ import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
 import React, { useEffect, useRef, useState } from "react";
 import SurveyResponseForm from "./survey-response-form";
 import { Question } from "@/lib/types";
+import useQuestionsAndResponses from "@/lib/hooks/useQuestionsAndResponses";
 
 type SurveyResponseProps = {
   surveyId: string;
@@ -18,20 +19,24 @@ const SurveyResponse = ({ surveyId, collectorId }: SurveyResponseProps) => {
   const { surveyPages, isLoading: loadingPages } = useSurveyPages(surveyId);
   const {
     questions: questionsData,
+    questionResponses: questionResponsesData,
     isLoading: loadingQuestions,
     isFetching,
-  } = useSurveyQuestions(surveyId, selectedPageNum);
-  const [questions, setQuestions] = useState<Question[] | undefined>(
-    questionsData
+  } = useQuestionsAndResponses(surveyId, collectorId, selectedPageNum);
+
+  const [questions, setQuestions] = useState(questionsData);
+  const [questionResponses, setQuestionResponses] = useState(
+    questionResponsesData
   );
 
   useEffect(() => {
     if (!isFetching) {
-      console.log(questionsData);
+      console.log(questionsData, questionResponsesData);
       setQuestions(questionsData);
+      setQuestionResponses(questionResponsesData);
       setDisplayPageNum(selectedPageNum);
     }
-  }, [isFetching, selectedPageNum, questionsData]);
+  }, [isFetching, selectedPageNum, questionsData, questionResponsesData]);
 
   return (
     <div>
@@ -56,7 +61,8 @@ const SurveyResponse = ({ surveyId, collectorId }: SurveyResponseProps) => {
             : ""
         }
         isFetchingPage={isFetching}
-        questions={questionsData!}
+        questions={questions!}
+        questionResponses={questionResponses!}
         surveyPages={surveyPages!}
         setSelectedPageNum={setSelectedPageNum}
         displayPageNum={displayPageNum}

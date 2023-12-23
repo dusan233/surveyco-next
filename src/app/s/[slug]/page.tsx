@@ -13,6 +13,8 @@ import {
 } from "@tanstack/react-query";
 import SurveyResponse from "../components/survey-response";
 import { QuestionsResponseData } from "@/lib/types";
+import { getSurveyQuestionsAndResponses } from "@/app/actions";
+import { cookies } from "next/headers";
 
 const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
   //if u took the servey based on cookie get message that u took the survey
@@ -28,16 +30,9 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ["survey", surveyId, "questions", 1],
-    queryFn: () => getSurveyQuestions(surveyId, 1),
+    queryKey: ["survey", surveyId, "questions-responses", 1],
+    queryFn: () => getSurveyQuestionsAndResponses(surveyId, collector.id, 1),
   });
-
-  const pageQuestions = queryClient.getQueryData<QuestionsResponseData>([
-    "survey",
-    surveyId,
-    "questions",
-    1,
-  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

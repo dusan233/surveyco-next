@@ -4,6 +4,7 @@ import {
   CopyQuestionData,
   OperationPosition,
   Question,
+  QuestionResponse,
   QuestionsResponseData,
   QuizResponseData,
   SaveQuestionData,
@@ -357,6 +358,37 @@ export const createSurveyPage = async (
 
   if (!res.ok) {
     throw new Error(`Failed to create page for survey with id: ${surveyId}`);
+  }
+
+  return await res.json();
+};
+
+export const getSurveyQuestionsAndResponses = async (
+  surveyId: string,
+  collectorId: string,
+  pageNumber: number
+): Promise<{
+  questions: Question[];
+  questionResponses: QuestionResponse[];
+}> => {
+  const surveyResponsesCookieVal = cookies().get("surveyResponses");
+
+  const res = await fetch(
+    `http://localhost:8080/quiz/${surveyId}/responseData?collectorId=${collectorId}&page=${pageNumber}`,
+    {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Cookie: surveyResponsesCookieVal
+          ? surveyResponsesCookieVal.name + "=" + surveyResponsesCookieVal.value
+          : "",
+      },
+    }
+  );
+
+  if (!res.ok) {
+    // throw new Error(`Failed to create page for survey with id: ${surveyId}`);
+    console.log("error questions-responses thing");
   }
 
   return await res.json();

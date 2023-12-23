@@ -46,6 +46,18 @@ export type UnsavedTextQuestion = {
   description: string;
   number: number;
 };
+export type QuestionResponse = {
+  id: string;
+  surveyResponseId: string;
+  questionId: string;
+  answer: {
+    id: string;
+    questionResponseId: string;
+    questionOptionId: string | null;
+    questionId: string;
+    textAnswer: string | null;
+  }[];
+};
 
 export type CopyQuestionData = z.infer<typeof placeQuestionSchema>;
 export type CopyPageData = z.infer<typeof placePageSchema>;
