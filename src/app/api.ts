@@ -31,8 +31,9 @@ export const getSurveyQuestionsAndResponses = async (
 export const saveSurveyResponse = async (
   surveyId: string,
   data: QuestionsResponsesData,
-  collectorId: string
-): Promise<{ message: string }> => {
+  collectorId: string,
+  submit: boolean
+): Promise<{ submitted: boolean }> => {
   const res = await fetch(`http://localhost:8080/quiz/${surveyId}/response`, {
     method: "PUT",
     credentials: "include",
@@ -42,6 +43,7 @@ export const saveSurveyResponse = async (
     body: JSON.stringify({
       questionResponses: data.questionResponses,
       collectorId,
+      ...(submit && { submit: true }),
     }),
   });
 

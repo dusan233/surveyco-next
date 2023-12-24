@@ -56,9 +56,10 @@ const SurveyResponse = ({ surveyId, collectorId }: SurveyResponseProps) => {
         surveyId={surveyId}
         collectorId={collectorId}
         key={
-          !isFetching
-            ? surveyPages?.find((page) => page.number === displayPageNum)?.id
-            : ""
+          displayPageNum
+          // !isFetching
+          //   ? surveyPages?.find((page) => page.number === displayPageNum)?.id
+          //   : ""
         }
         isFetchingPage={isFetching}
         questions={questions!}

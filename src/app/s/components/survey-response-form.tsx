@@ -1,6 +1,5 @@
 "use client";
 
-import { saveSurveyResponse } from "@/app/api";
 import QuestionResponseComp from "@/components/questions/response/question-response";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -14,6 +13,7 @@ import {
 } from "@/lib/types";
 import { questionsResponsesSchema } from "@/lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
@@ -53,6 +53,7 @@ const SurveyResponseForm = ({
       : questionRes.answer[0].questionOptionId!;
   };
 
+  const { replace } = useRouter();
   const { saveResponseMutationAsync, isPending } = useSaveSurveyResponse();
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
@@ -79,8 +80,19 @@ const SurveyResponseForm = ({
   });
 
   const handleSubmit = async (values: QuestionsResponsesData) => {
-    await saveResponseMutationAsync({ surveyId, data: values, collectorId });
-    setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
+    const submit =
+      surveyPages[surveyPages.length - 1].number === displayPageNum;
+    const surveyResponse = await saveResponseMutationAsync({
+      surveyId,
+      data: values,
+      collectorId,
+      submit,
+    });
+    if (surveyResponse.submitted) {
+      replace("/survey-thanks");
+    } else {
+      setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
+    }
   };
 
   const showNextBtn =

@@ -15,9 +15,14 @@ export default function useSaveSurveyResponse() {
       surveyId: string;
       data: QuestionsResponsesData;
       collectorId: string;
+      submit: boolean;
     }) =>
-      saveSurveyResponse(payload.surveyId, payload.data, payload.collectorId),
-    onSuccess(data, variables, context) {},
+      saveSurveyResponse(
+        payload.surveyId,
+        payload.data,
+        payload.collectorId,
+        payload.submit
+      ),
   });
 
   return {

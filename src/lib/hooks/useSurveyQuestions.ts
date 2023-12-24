@@ -8,6 +8,7 @@ export default function useSurveyQuestions(surveyId: string, page: number) {
     queryFn: () => getSurveyQuestions(surveyId, page),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
+    
   });
 
   return { questions: data?.questions, isLoading, isFetching, isRefetching };
