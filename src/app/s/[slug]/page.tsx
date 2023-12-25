@@ -32,6 +32,8 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
 
   const surveyId = collector.surveyId;
 
+  const surveyResposneStartTime = new Date();
+
   const prefetchSurveyPages = queryClient.prefetchQuery({
     queryKey: ["survey", collector.surveyId, "pages"],
     queryFn: () => getSurveyPages(surveyId),
@@ -47,7 +49,11 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="mx-auto max-w-3xl p-10">
-        <SurveyResponse collectorId={collector.id} surveyId={surveyId} />
+        <SurveyResponse
+          surveyResposneStartTime={surveyResposneStartTime}
+          collectorId={collector.id}
+          surveyId={surveyId}
+        />
       </div>
     </HydrationBoundary>
   );

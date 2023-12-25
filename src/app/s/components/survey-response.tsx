@@ -6,15 +6,25 @@ import React, { useEffect, useRef, useState } from "react";
 import SurveyResponseForm from "./survey-response-form";
 import { Question } from "@/lib/types";
 import useQuestionsAndResponses from "@/lib/hooks/useQuestionsAndResponses";
+import SurveyModifiedAlertDialog from "./survey-modified-alert-dialog";
+import { Button } from "@/components/ui/button";
 
 type SurveyResponseProps = {
   surveyId: string;
   collectorId: string;
+  surveyResposneStartTime: Date;
 };
 
-const SurveyResponse = ({ surveyId, collectorId }: SurveyResponseProps) => {
+const SurveyResponse = ({
+  surveyId,
+  collectorId,
+  surveyResposneStartTime,
+}: SurveyResponseProps) => {
   const [selectedPageNum, setSelectedPageNum] = useState(1);
   const [displayPageNum, setDisplayPageNum] = useState(1);
+  const [startTime, setStartTime] = useState(surveyResposneStartTime);
+  const [showSurveyModifiedDialog, setShowSurveyModifiedDialog] =
+    useState(false);
 
   const { surveyPages, isLoading: loadingPages } = useSurveyPages(surveyId);
   const {
@@ -28,6 +38,10 @@ const SurveyResponse = ({ surveyId, collectorId }: SurveyResponseProps) => {
   const [questionResponses, setQuestionResponses] = useState(
     questionResponsesData
   );
+
+  const resetSurveyStartTime = () => {
+    setStartTime(new Date());
+  };
 
   useEffect(() => {
     if (!isFetching) {
@@ -52,9 +66,16 @@ const SurveyResponse = ({ surveyId, collectorId }: SurveyResponseProps) => {
           />
         ) : null;
       })} */}
+      <SurveyModifiedAlertDialog
+        isOpen={showSurveyModifiedDialog}
+        onOpenChange={() => setShowSurveyModifiedDialog((show) => !show)}
+      />
+
       <SurveyResponseForm
         surveyId={surveyId}
         collectorId={collectorId}
+        surveyResposneStartTime={startTime}
+        resetSurveyStartTime={resetSurveyStartTime}
         key={
           displayPageNum
           // !isFetching
@@ -67,6 +88,7 @@ const SurveyResponse = ({ surveyId, collectorId }: SurveyResponseProps) => {
         surveyPages={surveyPages!}
         setSelectedPageNum={setSelectedPageNum}
         displayPageNum={displayPageNum}
+        setShowSurveyModifiedDialog={setShowSurveyModifiedDialog}
       />
     </div>
   );

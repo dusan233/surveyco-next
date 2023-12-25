@@ -16,12 +16,14 @@ export default function useSaveSurveyResponse() {
       data: QuestionsResponsesData;
       collectorId: string;
       submit: boolean;
+      surveyResposneStartTime: Date;
     }) =>
       saveSurveyResponse(
         payload.surveyId,
         payload.data,
         payload.collectorId,
-        payload.submit
+        payload.submit,
+        payload.surveyResposneStartTime
       ),
   });
 

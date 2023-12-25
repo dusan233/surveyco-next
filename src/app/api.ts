@@ -32,7 +32,8 @@ export const saveSurveyResponse = async (
   surveyId: string,
   data: QuestionsResponsesData,
   collectorId: string,
-  submit: boolean
+  submit: boolean,
+  surveyResposneStartTime: Date
 ): Promise<{ submitted: boolean }> => {
   const res = await fetch(`http://localhost:8080/quiz/${surveyId}/response`, {
     method: "PUT",
@@ -43,13 +44,21 @@ export const saveSurveyResponse = async (
     body: JSON.stringify({
       questionResponses: data.questionResponses,
       collectorId,
+      surveyResposneStartTime,
       ...(submit && { submit: true }),
     }),
   });
 
   if (!res.ok) {
-    // throw new Error(`Failed to create page for survey with id: ${surveyId}`);
-    console.log("error cookie thing");
+    if (res.status === 409) {
+      const error = new Error(`Survey data has been updated.`);
+      error.name = "CONFLICT";
+      throw error;
+    }
+
+    throw new Error(
+      `Failed to save survey response for survey with id: ${surveyId}`
+    );
   }
 
   return await res.json();

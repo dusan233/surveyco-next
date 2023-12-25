@@ -25,7 +25,10 @@ type SurveyResponseFormProps = {
   collectorId: string;
   displayPageNum: number;
   isFetchingPage: boolean;
+  surveyResposneStartTime: Date;
   setSelectedPageNum: React.Dispatch<React.SetStateAction<number>>;
+  resetSurveyStartTime: () => void;
+  setShowSurveyModifiedDialog: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const SurveyResponseForm = ({
@@ -37,6 +40,9 @@ const SurveyResponseForm = ({
   displayPageNum,
   surveyId,
   collectorId,
+  surveyResposneStartTime,
+  resetSurveyStartTime,
+  setShowSurveyModifiedDialog,
 }: SurveyResponseFormProps) => {
   const getInitialAnswer = (question: Question) => {
     const questionRes = questionResponses.find(
@@ -54,7 +60,7 @@ const SurveyResponseForm = ({
   };
 
   const { replace } = useRouter();
-  const { saveResponseMutationAsync, isPending } = useSaveSurveyResponse();
+  const { saveResponseMutation, isPending } = useSaveSurveyResponse();
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
     defaultValues: {
@@ -82,17 +88,31 @@ const SurveyResponseForm = ({
   const handleSubmit = async (values: QuestionsResponsesData) => {
     const submit =
       surveyPages[surveyPages.length - 1].number === displayPageNum;
-    const surveyResponse = await saveResponseMutationAsync({
-      surveyId,
-      data: values,
-      collectorId,
-      submit,
-    });
-    if (surveyResponse.submitted) {
-      replace("/survey-thanks");
-    } else {
-      setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
-    }
+    saveResponseMutation(
+      {
+        surveyId,
+        data: values,
+        collectorId,
+        submit,
+        surveyResposneStartTime,
+      },
+      {
+        onSuccess(data, variables, context) {
+          if (data.submitted) {
+            replace("/survey-thanks");
+          } else {
+            setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
+          }
+        },
+        onError(error, variables, context) {
+          if (error.name === "CONFLICT") {
+            setShowSurveyModifiedDialog(true);
+            setSelectedPageNum(1);
+            resetSurveyStartTime();
+          }
+        },
+      }
+    );
   };
 
   const showNextBtn =
