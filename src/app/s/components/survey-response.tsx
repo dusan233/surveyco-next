@@ -45,7 +45,6 @@ const SurveyResponse = ({
 
   useEffect(() => {
     if (!isFetching) {
-      console.log(questionsData, questionResponsesData);
       setQuestions(questionsData);
       setQuestionResponses(questionResponsesData);
       setDisplayPageNum(selectedPageNum);
