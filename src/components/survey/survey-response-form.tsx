@@ -1,64 +1,89 @@
 "use client";
 
-import { Question, SurveyPage } from "@/lib/types";
+import QuestionResponseComp from "@/components/questions/response/question-response";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import useSaveSurveyResponse from "@/lib/hooks/useSaveSurveyResponse";
+import {
+  Question,
+  QuestionType,
+  QuestionsResponsesData,
+  SurveyPage,
+} from "@/lib/types";
+import { questionsResponsesSchema } from "@/lib/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import React from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
-import { Form } from "../ui/form";
-import { Button } from "../ui/button";
-
-import QuestionResponse from "../questions/response/question-response";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { questionsResponsesSchema } from "@/lib/validationSchemas";
-
-type SurveResponseFormProps = {
+type SurveyResponseFormProps = {
   questions: Question[];
   surveyPages: SurveyPage[];
+  surveyId: string;
+  collectorId: string;
   displayPageNum: number;
-  setSelectedPageNum: React.Dispatch<React.SetStateAction<number>>;
   isFetchingPage: boolean;
-  setIsPreviewFinished: React.Dispatch<React.SetStateAction<boolean>>;
-  saveQuestionsResponsesData: (
-    questionsResponsesData: {
-      id: string;
-      answer: string | string[];
-    }[]
-  ) => void;
-  initValue: {
-    id: string;
+  surveyResposneStartTime: Date;
+  onSurveyChange: () => void;
+  onSubmit: (data: QuestionsResponsesData, submitted: boolean) => void;
+  setSelectedPageNum: React.Dispatch<React.SetStateAction<number>>;
+  initialResponses: {
+    id?: string;
+    questionId: string;
     answer: string | string[];
-  }[];
-  questionsResponses: {
-    pageNum: number;
-    questionsResponses: {
-      id: string;
-      answer: string | string[];
-    }[];
+    questionType: QuestionType;
   }[];
 };
 
 const SurveyResponseForm = ({
   questions,
   surveyPages,
-  displayPageNum,
   setSelectedPageNum,
   isFetchingPage,
-  initValue,
-  saveQuestionsResponsesData,
-  setIsPreviewFinished,
-  questionsResponses,
-}: SurveResponseFormProps) => {
-  const form = useForm({
+  displayPageNum,
+  surveyId,
+  collectorId,
+  surveyResposneStartTime,
+  onSurveyChange,
+  initialResponses,
+  onSubmit,
+}: SurveyResponseFormProps) => {
+  const { saveResponseMutation, isPending } = useSaveSurveyResponse();
+  const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
     defaultValues: {
-      questions: initValue,
+      questionResponses: initialResponses,
     },
   });
   const { fields } = useFieldArray({
     control: form.control,
-    name: "questions",
+    name: "questionResponses",
     keyName: "qId",
   });
+
+  const handleSubmit = async (values: QuestionsResponsesData) => {
+    const submit =
+      surveyPages[surveyPages.length - 1].number === displayPageNum;
+    saveResponseMutation(
+      {
+        surveyId,
+        data: values,
+        collectorId,
+        submit,
+        surveyResposneStartTime,
+      },
+      {
+        onSuccess(data) {
+          onSubmit(values, data.submitted);
+        },
+        onError(error) {
+          if (error.name === "CONFLICT") {
+            onSurveyChange();
+          }
+        },
+      }
+    );
+  };
 
   const showNextBtn =
     surveyPages.findIndex((page) => page.number > displayPageNum) !== -1;
@@ -66,20 +91,11 @@ const SurveyResponseForm = ({
     surveyPages.findIndex((page) => page.number < displayPageNum) !== -1;
   const showSendBtn = displayPageNum === surveyPages.length;
 
-  const handleSubmit = (values: any) => {
-    console.log(questionsResponses);
-    setIsPreviewFinished(true);
-  };
-
-  const handleNextPage = () => {
-    saveQuestionsResponsesData(form.getValues().questions);
-    setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
-  };
-
   const handlePrevPage = () => {
-    saveQuestionsResponsesData(form.getValues().questions);
     setSelectedPageNum((selectedPageNum) => selectedPageNum - 1);
   };
+
+  const buttonsInactive = isFetchingPage || isPending;
 
   return (
     <FormProvider {...form}>
@@ -90,8 +106,8 @@ const SurveyResponseForm = ({
               const questionData = questions[index];
 
               return (
-                <QuestionResponse
-                  key={questionField.id}
+                <QuestionResponseComp
+                  key={questionField.qId}
                   question={questionData}
                   index={index}
                   defaultValue={questionField.answer}
@@ -102,24 +118,21 @@ const SurveyResponseForm = ({
           <div className="flex justify-end gap-2 mt-10">
             {showPrevBtn && (
               <Button
-                disabled={isFetchingPage}
+                disabled={buttonsInactive}
                 onClick={handlePrevPage}
                 size="lg"
+                type="button"
               >
                 Previous
               </Button>
             )}
             {showNextBtn && (
-              <Button
-                disabled={isFetchingPage}
-                onClick={handleNextPage}
-                size="lg"
-              >
+              <Button disabled={buttonsInactive} size="lg" type="submit">
                 Next
               </Button>
             )}
             {showSendBtn && (
-              <Button disabled={isFetchingPage} size="lg" type="submit">
+              <Button disabled={buttonsInactive} size="lg" type="submit">
                 Send
               </Button>
             )}
@@ -131,3 +144,147 @@ const SurveyResponseForm = ({
 };
 
 export default SurveyResponseForm;
+
+// "use client";
+
+// import {
+//   Question,
+//   QuestionType,
+//   QuestionsResponsesData,
+//   SurveyPage,
+// } from "@/lib/types";
+// import React from "react";
+// import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+
+// import { Form } from "../ui/form";
+// import { Button } from "../ui/button";
+
+// import QuestionResponse from "../questions/response/question-response";
+// import { zodResolver } from "@hookform/resolvers/zod";
+// import { questionsResponsesSchema } from "@/lib/validationSchemas";
+// import useSaveSurveyResponse from "@/lib/hooks/useSaveSurveyResponse";
+
+// type SurveResponseFormProps = {
+//   surveyId: string;
+//   collectorId: string;
+//   questions: Question[];
+//   surveyPages: SurveyPage[];
+//   displayPageNum: number;
+//   onSurveyChange: () => void;
+//   onSubmit: (data: QuestionsResponsesData, submitted?: boolean) => void;
+//   setSelectedPageNum: React.Dispatch<React.SetStateAction<number>>;
+//   isFetchingPage: boolean;
+//   surveyResposneStartTime: Date;
+//   initialValue: {
+//     questionId: string;
+//     answer: string | string[];
+//     questionType: QuestionType;
+//   }[];
+// };
+
+// const SurveyResponseForm = ({
+//   surveyId,
+//   collectorId,
+//   questions,
+//   surveyPages,
+//   displayPageNum,
+//   setSelectedPageNum,
+//   isFetchingPage,
+//   initialValue,
+//   surveyResposneStartTime,
+//   onSurveyChange,
+//   onSubmit,
+// }: SurveResponseFormProps) => {
+//   const { saveResponseMutation, isPending } = useSaveSurveyResponse();
+//   const form = useForm({
+//     resolver: zodResolver(questionsResponsesSchema),
+//     defaultValues: {
+//       questionResponses: initialValue,
+//     },
+//   });
+//   const { fields } = useFieldArray({
+//     control: form.control,
+//     name: "questionResponses",
+//     keyName: "qId",
+//   });
+
+//   const showNextBtn =
+//     surveyPages.findIndex((page) => page.number > displayPageNum) !== -1;
+//   const showPrevBtn =
+//     surveyPages.findIndex((page) => page.number < displayPageNum) !== -1;
+//   const showSendBtn = displayPageNum === surveyPages.length;
+
+//   const handleSubmit = async (values: QuestionsResponsesData) => {
+//     const submit =
+//       surveyPages[surveyPages.length - 1].number === displayPageNum;
+//     saveResponseMutation(
+//       {
+//         surveyId,
+//         data: values,
+//         collectorId,
+//         submit,
+//         surveyResposneStartTime,
+//       },
+//       {
+//         onSuccess(data, variables, context) {
+//           onSubmit(values, data.submitted);
+//         },
+//         onError(error, variables, context) {
+//           if (error.name === "CONFLICT") {
+//             onSurveyChange();
+//           }
+//         },
+//       }
+//     );
+//   };
+
+//   const handlePrevPage = () => {
+//     setSelectedPageNum((selectedPageNum) => selectedPageNum - 1);
+//   };
+
+//   return (
+//     <FormProvider {...form}>
+//       <Form {...form}>
+//         <form onSubmit={form.handleSubmit(handleSubmit)}>
+//           <div className="flex flex-col gap-6">
+//             {fields.map((questionField, index) => {
+//               const questionData = questions[index];
+
+//               return (
+//                 <QuestionResponse
+//                   key={questionField.qId}
+//                   question={questionData}
+//                   index={index}
+//                   defaultValue={questionField.answer}
+//                 />
+//               );
+//             })}
+//           </div>
+//           <div className="flex justify-end gap-2 mt-10">
+//             {showPrevBtn && (
+//               <Button
+//                 disabled={isFetchingPage}
+//                 onClick={handlePrevPage}
+//                 size="lg"
+//               >
+//                 Previous
+//               </Button>
+//             )}
+//             {showNextBtn && (
+//               <Button disabled={isFetchingPage} size="lg" type="submit">
+//                 Next
+//               </Button>
+//             )}
+//             {showSendBtn && (
+//               <Button disabled={isFetchingPage} size="lg" type="submit">
+//                 Send
+//               </Button>
+//             )}
+//           </div>
+//         </form>
+//       </Form>
+//     </FormProvider>
+//   );
+// };
+
+// export default SurveyResponseForm;

@@ -4,7 +4,7 @@ import SurveyResponseForm from "@/components/survey/survey-response-form";
 import Spinner from "@/components/ui/spinner";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
-import { Question, QuestionType } from "@/lib/types";
+import { Question, QuestionType, QuestionsResponsesData } from "@/lib/types";
 
 import React, { useEffect, useState } from "react";
 import PreviewEnd from "./components/preview-end";
@@ -16,6 +16,9 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
   const [isPreviewFinished, setIsPreviewFinished] = useState(false);
   const [selectedPageNum, setSelectedPageNum] = useState(1);
   const [displayPageNum, setDisplayPageNum] = useState(-1);
+  const [surveyResposneStartTime, setSurveyResponseStartTime] = useState(
+    new Date()
+  );
   const [questions, setQuestions] = useState<Question[] | undefined>([]);
   const { surveyPages, isLoading: loadingPages } = useSurveyPages(surveyId);
   const {
@@ -26,12 +29,20 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
   const [questionsResponses, setQuestionsResponses] = useState<
     {
       pageNum: number;
-      questionsResponses: { id: string; answer: string | string[] }[];
+      questionsResponses: {
+        questionId: string;
+        answer: string | string[];
+        questionType: QuestionType;
+      }[];
     }[]
   >([]);
 
   const saveQuestionsResponsesData = (
-    questionsResponsesData: { id: string; answer: string | string[] }[]
+    questionsResponsesData: {
+      questionId: string;
+      answer: string | string[];
+      questionType: QuestionType;
+    }[]
   ) => {
     setQuestionsResponses((currentQuestionsResponses) => {
       const pageQuestionsResponsesExist = currentQuestionsResponses.find(
@@ -56,12 +67,31 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
     });
   };
 
-  const restartPreview = async () => {
+  const restartPreview = () => {
     queryClient.clear();
     setIsPreviewFinished(false);
     setSelectedPageNum(1);
     setQuestionsResponses([]);
     setQuestions([]);
+    setSurveyResponseStartTime(new Date());
+  };
+
+  const onSurveyChange = () => {
+    setSelectedPageNum(1);
+    restartPreview();
+  };
+
+  const onSubmit = (
+    data: QuestionsResponsesData,
+    submitted: boolean = false
+  ) => {
+    if (submitted) {
+      setIsPreviewFinished(true);
+      saveQuestionsResponsesData(data.questionResponses);
+    } else {
+      saveQuestionsResponsesData(data.questionResponses);
+      setSelectedPageNum((selectedPageNum) => selectedPageNum + 1);
+    }
   };
 
   useEffect(() => {
@@ -92,30 +122,33 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
           const pageQuestionsResponsesExist = questionsResponses.find(
             (page) => page.pageNum === displayPageNum
           );
-          const initFormValues = pageQuestionsResponsesExist
+          const initialResponses = pageQuestionsResponsesExist
             ? pageQuestionsResponsesExist.questionsResponses
             : questions!.map((question) => {
                 return {
-                  id: question.id,
+                  questionId: question.id,
                   answer:
                     question.type === QuestionType.checkboxes
                       ? ([] as string[])
                       : "",
+                  questionType: question.type,
                 };
               });
 
           return page.number === displayPageNum ? (
             <SurveyResponseForm
+              onSurveyChange={onSurveyChange}
+              onSubmit={onSubmit}
+              surveyResposneStartTime={surveyResposneStartTime}
+              surveyId={surveyId}
+              collectorId="preview"
               key={page.id}
               displayPageNum={displayPageNum}
               setSelectedPageNum={setSelectedPageNum}
               surveyPages={surveyPages!}
               questions={questions!}
-              isFetchingPage={isFetching}
-              initValue={initFormValues}
-              saveQuestionsResponsesData={saveQuestionsResponsesData}
-              setIsPreviewFinished={setIsPreviewFinished}
-              questionsResponses={questionsResponses}
+              isFetchingPage={isFetching || selectedPageNum !== displayPageNum}
+              initialResponses={initialResponses}
             />
           ) : null;
         })}
