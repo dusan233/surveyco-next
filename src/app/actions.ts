@@ -363,6 +363,29 @@ export const createSurveyPage = async (
   return await res.json();
 };
 
+export const getSurveyCollectors = async (
+  surveyId: string
+): Promise<Collector[]> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(`http://localhost:8080/quiz/${surveyId}/collectors`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch collectors for survey with id: ${surveyId}`
+    );
+  }
+
+  return await res.json();
+};
+
 export const getSurveyQuestionsAndResponses = async (
   surveyId: string,
   collectorId: string,

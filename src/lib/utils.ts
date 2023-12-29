@@ -4,7 +4,8 @@ import { HiSelector } from "react-icons/hi";
 import { FaListUl } from "react-icons/fa6";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { PiTextboxBold } from "react-icons/pi";
-import { QuestionType } from "./types";
+import { CollectorType, QuestionType } from "./types";
+import { Link } from "lucide-react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
