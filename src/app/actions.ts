@@ -1,6 +1,7 @@
 "use server";
 import {
   Collector,
+  CollectorType,
   CopyQuestionData,
   OperationPosition,
   Question,
@@ -13,6 +14,7 @@ import {
 import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
 import cookie from "cookie";
+import { revalidatePath } from "next/cache";
 
 export const getSurvey = async (
   surveyId: string
@@ -370,6 +372,7 @@ export const getSurveyCollectors = async (
   const token = await getToken();
 
   const res = await fetch(`http://localhost:8080/quiz/${surveyId}/collectors`, {
+    cache: "no-cache",
     method: "GET",
     credentials: "include",
     headers: {
@@ -382,6 +385,33 @@ export const getSurveyCollectors = async (
       `Failed to fetch collectors for survey with id: ${surveyId}`
     );
   }
+
+  return await res.json();
+};
+
+export const createSurveyCollector = async (
+  surveyId: string
+): Promise<Collector> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(`http://localhost:8080/collector`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ surveyId, type: CollectorType.web_link }),
+  });
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch collectors for survey with id: ${surveyId}`
+    );
+  }
+
+  revalidatePath(`/survey/${surveyId}/collectors`);
 
   return await res.json();
 };

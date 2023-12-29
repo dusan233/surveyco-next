@@ -135,4 +135,6 @@ export interface Collector {
   updated_at: Date;
   status: string;
   surveyId: string;
+  name: string;
+  total_responses: number;
 }

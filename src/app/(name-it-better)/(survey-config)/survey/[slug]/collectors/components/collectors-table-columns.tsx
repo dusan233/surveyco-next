@@ -4,14 +4,17 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Collector, CollectorType } from "@/lib/types";
 import { format } from "date-fns";
 import { useState } from "react";
-import { Link } from "lucide-react";
+import { LinkIcon } from "lucide-react";
+import Link from "next/link";
+import CollectorActions from "./collector-actions";
+import CopyCollectorWebLink from "./copy-collector-web-link";
 
 export const getCollectorTypeIcon = (type: CollectorType) => {
   switch (type) {
     case CollectorType.web_link:
-      return <Link />;
+      return <LinkIcon />;
     default:
-      return <Link />;
+      return <LinkIcon />;
   }
 };
 
@@ -35,7 +38,16 @@ export const columns: ColumnDef<Collector>[] = [
       const dateVal: string = row.getValue("created_at");
 
       const formattedDate = format(dateVal, "dd/MM/yyyy");
-      return <div className="font-medium text-sm">Created {formattedDate}</div>;
+      return (
+        <div className="font-medium text-sm space-y-1">
+          <Link href={`/`} className="text-blue-700 hover:underline font-bold">
+            {row.original.name}
+          </Link>
+
+          <CopyCollectorWebLink collectorId={row.original.id} />
+          <div>Created {formattedDate}</div>
+        </div>
+      );
     },
   },
   {
@@ -55,8 +67,13 @@ export const columns: ColumnDef<Collector>[] = [
     },
   },
   {
-    accessorKey: "responses",
+    accessorKey: "total_responses",
     header: "Responses",
+    cell: ({ row }) => {
+      const totalResponses: number = row.getValue("total_responses");
+
+      return <div className="text-sm">{totalResponses}</div>;
+    },
   },
   {
     accessorKey: "updated_at",
@@ -71,7 +88,11 @@ export const columns: ColumnDef<Collector>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      return <div className="font-medium text-sm">actions</div>;
+      return (
+        <div className="text-sm">
+          <CollectorActions collector={row.original} />
+        </div>
+      );
     },
   },
 ];
