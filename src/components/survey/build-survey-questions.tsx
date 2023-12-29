@@ -62,8 +62,9 @@ const BuildSurveyQuestions = ({
   useLoadingToast(isFetching, "Loading page...");
 
   const addNewQuestion = (type: QuestionType) => {
-    const lastQuestionNumber = (questions[questions.length - 1] as Question)
-      .number;
+    const lastQuestionNumber = questions.length
+      ? (questions[questions.length - 1] as Question).number
+      : 0;
     setQuestions((questions) => {
       const newQuestion =
         type === QuestionType.textbox
