@@ -96,7 +96,7 @@ const ToastTitle = React.forwardRef<
     {...props}
   >
     <div className="flex gap-3 items-center">
-      <Settings className="animate-spin" />
+      {/* <Settings className="animate-spin" /> */}
       <span className="text-white">{props.children}</span>
     </div>
   </ToastPrimitives.Title>
