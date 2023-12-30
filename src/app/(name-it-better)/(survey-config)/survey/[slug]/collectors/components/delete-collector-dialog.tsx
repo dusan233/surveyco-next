@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteSurveyCollector } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -26,7 +27,9 @@ const DeleteCollectorDialog = ({
   const [isPending, startTransition] = useTransition();
 
   const handleDeleteCollector = () => {
-    startTransition(() => {});
+    startTransition(() => {
+      deleteSurveyCollector(collector.id, collector.surveyId);
+    });
   };
 
   return (
@@ -65,7 +68,7 @@ const DeleteCollectorDialog = ({
           <Button
             variant="destructive"
             disabled={isPending}
-            onClick={() => {}}
+            onClick={handleDeleteCollector}
             size="sm"
           >
             Delete collector

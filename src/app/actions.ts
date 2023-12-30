@@ -416,6 +416,31 @@ export const createSurveyCollector = async (
   return await res.json();
 };
 
+export const deleteSurveyCollector = async (
+  collectorId: string,
+  surveyId: string
+) => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/collector/${collectorId}`,
+    {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to delete collector with id: ${collectorId}`);
+  }
+
+  revalidatePath(`/survey/${surveyId}/collectors`);
+};
+
 export const getSurveyQuestionsAndResponses = async (
   surveyId: string,
   collectorId: string,
