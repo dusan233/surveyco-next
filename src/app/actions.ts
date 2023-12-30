@@ -16,6 +16,7 @@ import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
 import cookie from "cookie";
 import { revalidatePath } from "next/cache";
+import { updateCollectorNameSchema } from "@/lib/validationSchemas";
 
 export const getSurvey = async (
   surveyId: string
@@ -98,6 +99,22 @@ export const getSurveyCollector = async (
     throw new Error(
       `Failed to fetch collector ${collectorId} for survey with id: ${surveyId}`
     );
+  }
+
+  return await res.json();
+};
+
+export const getCollector = async (collectorId: string): Promise<Collector> => {
+  const res = await fetch(
+    `${process.env.BACKEND_API}/collector/${collectorId}`,
+    {
+      cache: "no-cache",
+      credentials: "include",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch collector ${collectorId} for survey`);
   }
 
   return await res.json();
@@ -417,6 +434,72 @@ export const createSurveyCollector = async (
   return await res.json();
 };
 
+export type UpdateCollectorFormState = {
+  collector: Collector;
+  message: string | null;
+  errors: {
+    name?: string[] | undefined;
+  } | null;
+  errorType: string | null;
+};
+
+export const updateSurveyCollector = async (
+  prevState: UpdateCollectorFormState,
+  formData: FormData
+): Promise<UpdateCollectorFormState> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const validatedFields = updateCollectorNameSchema.safeParse({
+    name: formData.get("name"),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      collector: prevState.collector,
+      errorType: "validation_error",
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Validation error!",
+    };
+  }
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/collector/${prevState.collector.id}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ name: formData.get("name") }),
+    }
+  );
+
+  if (!res.ok) {
+    // throw new Error(`Failed to delete collector with id: ${collectorId}`);
+    return {
+      collector: prevState.collector,
+      errorType: "backend_error",
+      errors: null,
+      message: "Error here",
+    };
+  }
+
+  const collector: Collector = await res.json();
+
+  revalidatePath(
+    `/survey/${collector.surveyId}/collectors/${prevState.collector.id}`
+  );
+
+  return {
+    collector,
+    message: "Success here",
+    errors: null,
+    errorType: null,
+  };
+};
+
 export const updateSurveyCollectorStatus = async (
   collectorId: string,
   status: CollectorStatus
@@ -425,7 +508,7 @@ export const updateSurveyCollectorStatus = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/collector/${collectorId}`,
+    `${process.env.BACKEND_API}/collector/${collectorId}/status`,
     {
       method: "PUT",
       credentials: "include",

@@ -4,7 +4,11 @@ import { CollectorsTable } from "./components/collectors-table";
 import { columns } from "./components/collectors-table-columns";
 import CollectorsHeader from "./components/collectors-header";
 
-const CollectResponses = async ({ params }: { params: { slug: string } }) => {
+const CollectResponsesPage = async ({
+  params,
+}: {
+  params: { slug: string };
+}) => {
   const surveyId = params.slug;
 
   const collectors = await getSurveyCollectors(surveyId);
@@ -17,4 +21,4 @@ const CollectResponses = async ({ params }: { params: { slug: string } }) => {
   );
 };
 
-export default CollectResponses;
+export default CollectResponsesPage;

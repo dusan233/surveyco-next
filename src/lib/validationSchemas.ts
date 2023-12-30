@@ -27,6 +27,12 @@ export const placePageSchema = z.object({
   pageId: z.string(),
 });
 
+export const updateCollectorNameSchema = z.object({
+  name: z
+    .string()
+    .min(1, "You must enter at least one character for your collector name."),
+});
+
 export const questionsResponsesSchema = z.object({
   questionResponses: z.array(
     z.object({

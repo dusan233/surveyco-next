@@ -40,7 +40,10 @@ export const columns: ColumnDef<Collector>[] = [
       const formattedDate = format(dateVal, "dd/MM/yyyy");
       return (
         <div className="font-medium text-sm space-y-1">
-          <Link href={`/`} className="text-blue-700 hover:underline font-bold">
+          <Link
+            href={`/survey/${row.original.surveyId}/collector/${row.original.id}`}
+            className="text-blue-700 hover:underline font-bold"
+          >
             {row.original.name}
           </Link>
 

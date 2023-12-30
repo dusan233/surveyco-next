@@ -8,7 +8,7 @@ const surveyBuildLinks = [
   { slug: "summary", text: "summary" },
   { slug: "build", text: "build survey" },
   { slug: "preview", text: "preview" },
-  { slug: "collect-responses", text: "collect responses" },
+  { slug: "collectors", text: "collect responses" },
   { slug: "results", text: "results" },
 ];
 
@@ -20,7 +20,10 @@ const BuildSurveyNavigation = () => {
     <div className="border-b flex gap-6 mb-4 bg-white h-12 z-10 uppercase text-sm sticky top-0">
       {surveyBuildLinks.map((link, index) => {
         const href = `/survey/${surveyId}/${link.slug}`;
-        const isActive = segment.join("") === href.replaceAll("/", "");
+        const isActive =
+          segment.length === 4 && link.slug === "collectors"
+            ? true
+            : segment.join("") === href.replaceAll("/", "");
 
         return (
           <BuildSurveyNavigationLink
