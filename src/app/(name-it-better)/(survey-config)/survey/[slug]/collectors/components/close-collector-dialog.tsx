@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteSurveyCollector } from "@/app/actions";
+import { updateSurveyCollectorStatus } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,26 +9,27 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Collector } from "@/lib/types";
+import { Collector, CollectorStatus } from "@/lib/types";
 import { AlertTriangle } from "lucide-react";
 import React, { useTransition } from "react";
 
-type DeleteCollectorDialogProps = {
+type CloseCollectorDialogProps = {
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen: boolean;
   collector: Collector;
 };
 
-const DeleteCollectorDialog = ({
+const CloseCollectorDialog = ({
   onOpenChange,
-  isOpen,
   collector,
-}: DeleteCollectorDialogProps) => {
+  isOpen,
+}: CloseCollectorDialogProps) => {
   const [isPending, startTransition] = useTransition();
 
-  const handleDeleteCollector = () => {
+  const handleUpdateCollectorStatus = () => {
+    onOpenChange(false);
     startTransition(() => {
-      deleteSurveyCollector(collector.id, collector.surveyId);
+      updateSurveyCollectorStatus(collector.id, CollectorStatus.closed);
     });
   };
 
@@ -36,21 +37,20 @@ const DeleteCollectorDialog = ({
     <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
-          <DialogTitle>Delete collector</DialogTitle>
+          <DialogTitle>Close {collector.name}</DialogTitle>
         </DialogHeader>
         <div className="flex gap-4 mt-5">
-          <AlertTriangle className="text-red-500 h-12 w-12" />
+          <AlertTriangle className="text-red-500  h-12 w-12" />
           <div className="flex-1">
             <p className="font-medium">
-              Are you sure you want to delete this collector?
+              {`You’re turning off the survey for this collector.`}
             </p>
-            <div className="space-y-2 mt-3.5">
-              <p>Name: {collector.name}</p>
+            <div className="space-y-3.5 mt-3.5">
               <p>
-                Date Created: {new Date(collector.created_at).toISOString()}
+                {`Once you click close, people can’t access or take the survey. You can reopen the collector at any time.`}
               </p>
               <p>
-                Date Updated: {new Date(collector.updated_at).toISOString()}
+                {`Closing this collector doesn’t impact other collectors you’re using.`}
               </p>
             </div>
           </div>
@@ -68,10 +68,10 @@ const DeleteCollectorDialog = ({
           <Button
             variant="destructive"
             disabled={isPending}
-            onClick={handleDeleteCollector}
+            onClick={handleUpdateCollectorStatus}
             size="sm"
           >
-            Delete collector
+            Close collector
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -79,4 +79,4 @@ const DeleteCollectorDialog = ({
   );
 };
 
-export default DeleteCollectorDialog;
+export default CloseCollectorDialog;

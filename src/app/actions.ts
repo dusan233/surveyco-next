@@ -1,6 +1,7 @@
 "use server";
 import {
   Collector,
+  CollectorStatus,
   CollectorType,
   CopyQuestionData,
   OperationPosition,
@@ -414,6 +415,37 @@ export const createSurveyCollector = async (
   revalidatePath(`/survey/${surveyId}/collectors`);
 
   return await res.json();
+};
+
+export const updateSurveyCollectorStatus = async (
+  collectorId: string,
+  status: CollectorStatus
+): Promise<Collector> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/collector/${collectorId}`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to delete collector with id: ${collectorId}`);
+  }
+
+  const collector = await res.json();
+
+  revalidatePath(`/survey/${collector.surveyId}/collectors`);
+
+  return collector;
 };
 
 export const deleteSurveyCollector = async (

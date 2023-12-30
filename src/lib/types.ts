@@ -138,3 +138,7 @@ export interface Collector {
   name: string;
   total_responses: number;
 }
+export enum CollectorStatus {
+  open = "open",
+  closed = "closed",
+}
