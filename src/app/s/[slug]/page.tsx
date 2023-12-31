@@ -1,4 +1,8 @@
-import { getSurveyCollector, getSurveyPages } from "@/app/actions";
+import {
+  getCollector,
+  getSurveyCollector,
+  getSurveyPages,
+} from "@/app/actions";
 import React from "react";
 
 import {
@@ -17,7 +21,7 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
 
   const queryClient = new QueryClient();
 
-  const collector = await getSurveyCollector(params.slug, "das");
+  const collector = await getCollector(params.slug);
 
   const blockedCollectorsCookie = cookies().get("blocked_col")?.value;
   if (blockedCollectorsCookie) {
@@ -48,7 +52,7 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="mx-auto max-w-3xl p-10">
+      <div className="mx-auto max-w-3xl min-h-screen p-10">
         <SurveyResponse
           surveyResposneStartTime={surveyResposneStartTime}
           collectorId={collector.id}
