@@ -7,6 +7,7 @@ import {
   OperationPosition,
   Question,
   QuestionResponse,
+  QuestionResult,
   QuestionsResponseData,
   QuizResponseData,
   SaveQuestionData,
@@ -554,6 +555,34 @@ export const deleteSurveyCollector = async (
   }
 
   revalidatePath(`/survey/${surveyId}/collectors`);
+};
+
+export const getQuestionResults = async (
+  surveyId: string,
+  questionIds: string[]
+): Promise<QuestionResult[]> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/results`,
+    {
+      method: "POST",
+      cache: "no-store",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ questionIds }),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to get results for survey with id: ${surveyId}`);
+  }
+
+  return await res.json();
 };
 
 export const getSurveyQuestionsAndResponses = async (

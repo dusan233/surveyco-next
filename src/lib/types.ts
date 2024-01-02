@@ -30,6 +30,10 @@ export interface QuestionBase {
   number: number;
   surveyPageId: string;
 }
+export interface QuestionResultBase extends QuestionBase {
+  answeredCount: number;
+  skippedCount: number;
+}
 export type UnsavedQuestion = UnsavedMultiChoiceQuestion | UnsavedTextQuestion;
 export type UnsavedMultiChoiceQuestion = {
   id?: string;
@@ -84,6 +88,23 @@ export interface Option {
 export interface OptionsQuestion {
   options: Option[];
 }
+export interface ChoicesResult {
+  choices: ChoiceResult[];
+}
+
+export interface ChoiceResult extends Option {
+  answeredCount: number;
+}
+export interface MultipleChoiceQuestionResult
+  extends QuestionResultBase,
+    ChoicesResult {}
+export interface TextboxQuestionResult extends QuestionResultBase {
+  answers: {
+    id: string;
+    questionResponseId: string;
+    text: string | null;
+  }[];
+}
 
 export interface MultipleChoiceQuestion extends QuestionBase, OptionsQuestion {}
 
@@ -104,6 +125,9 @@ export interface SurveyPage {
   totalQuestions: number;
 }
 
+export type QuestionResult =
+  | TextboxQuestionResult
+  | MultipleChoiceQuestionResult;
 export type Question =
   | MultipleChoiceQuestion
   | CheckboxesQuestion
