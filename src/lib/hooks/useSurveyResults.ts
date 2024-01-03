@@ -29,7 +29,7 @@ export const useQuestionResults = (surveyId: string, questions: Question[]) => {
         )
         .map((q) => q.id);
 
-      return nextQuestionIds;
+      return nextQuestionIds.length ? nextQuestionIds : null;
     },
   });
 

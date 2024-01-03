@@ -24,7 +24,9 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SurveyResults questions={questions} surveyId={surveyId} />
+      <div className="bg-slate-100 p-10">
+        <SurveyResults questions={questions} surveyId={surveyId} />
+      </div>
     </HydrationBoundary>
   );
 };
