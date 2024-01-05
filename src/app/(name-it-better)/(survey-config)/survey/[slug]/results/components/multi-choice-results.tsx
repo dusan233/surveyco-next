@@ -33,7 +33,7 @@ const MultiChoiceQuestionResults = ({
   const showChart = form.watch("showChart");
   const showTable = form.watch("showTable");
 
-  const resultsData = questionResult.choices.map((choice) => {
+  const resultsDataa = questionResult.choices.map((choice) => {
     const percenteges =
       questionResult.answeredCount === 0
         ? "0"
@@ -46,6 +46,95 @@ const MultiChoiceQuestionResults = ({
       percenteges,
     };
   });
+
+  const resultsData = [
+    ...resultsDataa,
+    { answeredCount: 5, description: "dwq", percenteges: "50", id: "124fas" },
+    {
+      answeredCount: 5,
+      description: "dwq12",
+      percenteges: "65",
+      id: "dwq124fas",
+    },
+    {
+      answeredCount: 5,
+      description: "dwqdas",
+      percenteges: "89",
+      id: "12fgag4fas",
+    },
+    {
+      answeredCount: 5,
+      description: "no",
+      percenteges: "70",
+      id: "12fgag4fagggs",
+    },
+    {
+      answeredCount: 5,
+      description: "no",
+      percenteges: "75",
+      id: "12fgag4fagggqqwe2s",
+    },
+    {
+      answeredCount: 5,
+      description: "no",
+      percenteges: "40",
+      id: "12fgag4fagggsff",
+    },
+    {
+      answeredCount: 5,
+      description: "no",
+      percenteges: "30",
+      id: "12fgag4fagggdqws",
+    },
+    {
+      answeredCount: 5,
+      description: "no",
+      percenteges: "25",
+      id: "111111132444",
+    },
+    {
+      answeredCount: 5,
+      description: "no",
+      percenteges: "92",
+      id: "11111113244405",
+    },
+    {
+      answeredCount: 5,
+      description: "no",
+      percenteges: "27",
+      id: "11111113244400",
+    },
+    {
+      answeredCount: 5,
+      description: "no",
+      percenteges: "98",
+      id: "111111132444055",
+    },
+    {
+      answeredCount: 0,
+      description: "no",
+      percenteges: "0",
+      id: "111111132444001",
+    },
+    {
+      answeredCount: 0,
+      description: "no",
+      percenteges: "0",
+      id: "1111111324440551",
+    },
+    {
+      answeredCount: 0,
+      description: "no",
+      percenteges: "43",
+      id: "111111132444001qw",
+    },
+    {
+      answeredCount: 0,
+      description: "no",
+      percenteges: "56",
+      id: "1111111324440551pp",
+    },
+  ];
 
   return (
     <div className="p-5 shadow-sm rounded-lg bg-white">
@@ -110,7 +199,12 @@ const MultiChoiceQuestionResults = ({
       </div>
 
       <div className="mt-10 flex gap-10 justify-center flex-wrap items-start">
-        {showChart && <BarChartResults data={resultsData} />}
+        {showChart &&
+          (questionResult.answeredCount !== 0 ? (
+            <BarChartResults data={resultsData} />
+          ) : (
+            <p>No results.</p>
+          ))}
 
         {showTable && (
           <div className="flex-1">

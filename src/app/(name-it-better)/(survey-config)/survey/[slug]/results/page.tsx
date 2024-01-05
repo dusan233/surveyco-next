@@ -1,4 +1,8 @@
-import { getQuestionResults, getSurveyQuestions } from "@/app/actions";
+import {
+  getQuestionResults,
+  getSurvey,
+  getSurveyQuestions,
+} from "@/app/actions";
 
 import {
   HydrationBoundary,
@@ -12,7 +16,11 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;
   const queryClient = new QueryClient();
 
-  const questionsData = await getSurveyQuestions(surveyId, 1);
+  const [survey, questionsData] = await Promise.all([
+    getSurvey(surveyId),
+    getSurveyQuestions(surveyId, 1),
+  ]);
+
   const questions = questionsData.questions;
   const questionIds = questions.slice(0, 5).map((q) => q.id);
 
@@ -24,8 +32,12 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="bg-slate-100 p-10">
-        <SurveyResults questions={questions} surveyId={surveyId} />
+      <div>
+        <SurveyResults
+          survey={survey}
+          questions={questions}
+          surveyId={surveyId}
+        />
       </div>
     </HydrationBoundary>
   );

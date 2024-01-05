@@ -10,7 +10,7 @@ type Props = {
 const BuildSurveyNavigationLink = ({ href, children, isActive }: Props) => {
   return (
     <Link
-      className={`py-3 inline-flex font-medium items-center border-b-0 ${
+      className={`p-3 inline-flex font-medium items-center border-b-0 ${
         isActive
           ? "text-blue-600 border-b-4  border-blue-600"
           : "text-neutral-800"

@@ -142,6 +142,7 @@ export interface QuizResponseData {
   created_at: Date;
   updated_at: Date;
   questions: Question[];
+  responses_count: number;
 }
 
 export interface QuestionsResponseData {

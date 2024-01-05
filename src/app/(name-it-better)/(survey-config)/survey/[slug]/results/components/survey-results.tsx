@@ -7,17 +7,24 @@ import {
   MultipleChoiceQuestionResult,
   Question,
   QuestionType,
+  QuizResponseData,
+  TextboxQuestionResult,
 } from "@/lib/types";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import React, { useEffect } from "react";
 import MultiChoiceQuestionResults from "./multi-choice-results";
+import TextboxQuestionResults from "./textbox-question-results";
+import { AlertTriangleIcon } from "lucide-react";
+import Link from "next/link";
+import NoResponses from "./no-responses";
 
 type SurveyResultsProps = {
+  survey: QuizResponseData;
   questions: Question[];
   surveyId: string;
 };
 
-const SurveyResults = ({ surveyId, questions }: SurveyResultsProps) => {
+const SurveyResults = ({ surveyId, questions, survey }: SurveyResultsProps) => {
   const { questionResults, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useQuestionResults(surveyId, questions);
   const listRef = React.useRef<HTMLDivElement | null>(null);
@@ -30,9 +37,15 @@ const SurveyResults = ({ surveyId, questions }: SurveyResultsProps) => {
   });
   const virtualItems = virtualizer.getVirtualItems();
 
+  if (survey.responses_count === 0) {
+    return <NoResponses surveyId={surveyId} />;
+  }
+
   return (
     <div className="flex flex-col gap-5 ">
-      {isFetchingNextPage && <div className="fixed top-10 left-0">sadd</div>}
+      <div className="p-5 shadow-sm rounded-lg bg-white">
+        <h2 className="font-bold text-lg">Total responses: 15</h2>
+      </div>
       <div ref={listRef}>
         <div
           className="w-full relative"
@@ -68,11 +81,9 @@ const SurveyResults = ({ surveyId, questions }: SurveyResultsProps) => {
                       questionResult={qResult as MultipleChoiceQuestionResult}
                     />
                   ) : (
-                    <div className="bg-teal-300 h-80" key={qResult.id}>
-                      <p>{qResult.id}</p>
-                      <p>{qResult.number}</p>
-                      <p>{qResult.type}</p>
-                    </div>
+                    <TextboxQuestionResults
+                      questionResult={qResult as TextboxQuestionResult}
+                    />
                   )}
                 </div>
               );

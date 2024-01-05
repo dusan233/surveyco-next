@@ -1,29 +1,25 @@
 "use client";
 
-import { useSelectedLayoutSegments } from "next/navigation";
+import { usePathname, useSelectedLayoutSegments } from "next/navigation";
 import React from "react";
 import BuildSurveyNavigationLink from "./build-survey-navigation-link";
 
-const surveyBuildLinks = [
-  { slug: "summary", text: "summary" },
-  { slug: "build", text: "build survey" },
-  { slug: "preview", text: "preview" },
-  { slug: "collectors", text: "collect responses" },
-  { slug: "results", text: "results" },
-];
+type BuildSurveyNavigationProps = {
+  links: { slug: string; regex: string; text: string }[];
+};
 
-const BuildSurveyNavigation = () => {
-  const segment = useSelectedLayoutSegments();
-  const surveyId = segment[1];
+const BuildSurveyNavigation = ({ links }: BuildSurveyNavigationProps) => {
+  const segments = usePathname().split("/").slice(1);
+  const pathname = usePathname();
+  const surveyId = segments[1];
+  console.log(pathname);
 
   return (
     <div className="border-b flex gap-6 mb-4 bg-white h-12 z-10 uppercase text-sm sticky top-0">
-      {surveyBuildLinks.map((link, index) => {
+      {links.map((link, index) => {
         const href = `/survey/${surveyId}/${link.slug}`;
-        const isActive =
-          segment.length === 4 && link.slug === "collectors"
-            ? true
-            : segment.join("") === href.replaceAll("/", "");
+
+        let isActive = new RegExp(link.regex).test(pathname);
 
         return (
           <BuildSurveyNavigationLink
