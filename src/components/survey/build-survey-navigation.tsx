@@ -16,7 +16,6 @@ const BuildSurveyNavigation = ({
   const segments = usePathname().split("/").slice(1);
   const pathname = usePathname();
   const surveyId = segments[1];
-  console.log(pathname);
 
   return (
     <div
