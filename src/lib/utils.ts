@@ -30,6 +30,18 @@ export const getQuestionTypes = () => {
   return questionTypesData;
 };
 
+export const getQuestionChartTypes = (qType: QuestionType) => {
+  if (qType === QuestionType.checkboxes)
+    return [{ label: "Bar chart", value: "bar" }];
+  if (qType !== QuestionType.textbox)
+    return [
+      { label: "Bar chart", value: "bar" },
+      { label: "Pie chart", value: "pie" },
+    ];
+
+  return [];
+};
+
 export const getQuestionTypeLable = (type: QuestionType) => {
   return questionTypesData.find((qType) => qType.type === type)!.title;
 };

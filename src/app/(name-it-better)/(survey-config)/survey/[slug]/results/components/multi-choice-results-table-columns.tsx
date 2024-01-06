@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 export const columns: ColumnDef<{
   description: string;
-  percenteges: string;
+  percenteges: number;
   answeredCount: number;
   id: string;
 }>[] = [

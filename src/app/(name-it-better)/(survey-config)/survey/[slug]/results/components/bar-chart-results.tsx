@@ -5,6 +5,7 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   Rectangle,
   Text,
   Tooltip,
@@ -15,11 +16,21 @@ import {
 type BarChartResultsProps = {
   data: {
     description: string;
-    percenteges: string;
+    percenteges: number;
     answeredCount: number;
     id: string;
   }[];
 };
+
+const COLORS = [
+  "#00BF6F",
+  "#F9BE00",
+  "#6BC8CD",
+  "#FF8B4F",
+  "#D25F90",
+  "#DB4D5C",
+  "#768086",
+];
 
 const BarChartResults = ({ data }: BarChartResultsProps) => {
   const barRef = useRef(null);
@@ -58,22 +69,21 @@ const BarChartResults = ({ data }: BarChartResultsProps) => {
       />
       <Tooltip content={CustomTooltipContent} />
 
-      <Bar
-        ref={barRef}
-        dataKey="percenteges"
-        fill="#B4FF00"
-        activeBar={<Rectangle fill="#B4FF00" stroke="#002340" />}
-      />
+      <Bar ref={barRef} dataKey="percenteges" fill="#B4FF00">
+        {data.map((_, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Bar>
     </BarChart>
   );
 };
 
-const CustomTooltipContent = ({ payload, label, active }: any) => {
+const CustomTooltipContent = ({ payload, active }: any) => {
   if (active && payload && payload.length) {
     const dataItem = payload[0].payload; // Get the data item associated with the active tooltip
     return (
-      <div className="p-2 rounded-sm bg-slate-800 text-white text-sm">
-        <p className="text-sm max-w-[150px] break-all ...">
+      <div className="p-2 rounded-sm bg-slate-800 text-white text-xs">
+        <p className="text-xs max-w-[150px] break-all ...">
           {dataItem.description}
         </p>
         <p className="text-[#B4FF00]">{` ${dataItem.answeredCount} (${

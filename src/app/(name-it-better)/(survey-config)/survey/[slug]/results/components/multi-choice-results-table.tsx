@@ -6,7 +6,7 @@ import { columns } from "./multi-choice-results-table-columns";
 type MultiChoiceResultsTableProps = {
   data: {
     description: string;
-    percenteges: string;
+    percenteges: number;
     answeredCount: number;
     id: string;
   }[];
