@@ -9,7 +9,7 @@ const surveyResultLinks = [
   {
     slug: "results/individual",
     regex: "^/survey/[^/]+/results/individual$",
-    text: "build survey",
+    text: "individual responses",
   },
 ];
 
@@ -20,7 +20,7 @@ export default function SurveyResultsLayout({
 }) {
   return (
     <div className="bg-slate-100 p-10">
-      <BuildSurveyNavigation links={surveyResultLinks} />
+      <BuildSurveyNavigation sticky={false} links={surveyResultLinks} />
 
       <div className="mt-10">{children}</div>
     </div>

@@ -6,16 +6,24 @@ import BuildSurveyNavigationLink from "./build-survey-navigation-link";
 
 type BuildSurveyNavigationProps = {
   links: { slug: string; regex: string; text: string }[];
+  sticky?: boolean;
 };
 
-const BuildSurveyNavigation = ({ links }: BuildSurveyNavigationProps) => {
+const BuildSurveyNavigation = ({
+  links,
+  sticky = true,
+}: BuildSurveyNavigationProps) => {
   const segments = usePathname().split("/").slice(1);
   const pathname = usePathname();
   const surveyId = segments[1];
   console.log(pathname);
 
   return (
-    <div className="border-b flex gap-6 mb-4 bg-white h-12 z-10 uppercase text-sm sticky top-0">
+    <div
+      className={`border-b flex gap-6 mb-4 bg-white h-12 z-10 uppercase text-sm ${
+        sticky && "sticky top-0"
+      }`}
+    >
       {links.map((link, index) => {
         const href = `/survey/${surveyId}/${link.slug}`;
 

@@ -10,7 +10,8 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import React from "react";
-import SurveyResults from "./components/survey-results";
+import SurveyQuestionResults from "./components/survey-question-results";
+import NoResponses from "./components/no-responses";
 
 const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;
@@ -30,10 +31,14 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
     initialPageParam: questionIds,
   });
 
+  if (survey.responses_count === 0) {
+    return <NoResponses surveyId={surveyId} />;
+  }
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div>
-        <SurveyResults
+        <SurveyQuestionResults
           survey={survey}
           questions={questions}
           surveyId={surveyId}

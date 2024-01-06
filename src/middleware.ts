@@ -3,7 +3,14 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export default authMiddleware({
-  publicRoutes: ["/", "/build", "/sso-callback", "/s/:path"],
+  publicRoutes: [
+    "/",
+    "/build",
+    "/sso-callback",
+    "/s/:path",
+    "/survey-thanks",
+    "/survey-taken",
+  ],
   async afterAuth(auth, req, eve) {
     const isAuthenticated = auth.userId;
     const isPublicRoute = auth.isPublicRoute;

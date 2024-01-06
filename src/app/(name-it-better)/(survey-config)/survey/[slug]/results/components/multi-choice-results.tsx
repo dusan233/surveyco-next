@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form";
 import BarChartResults from "./bar-chart-results";
 import MultiChoiceResultsTable from "./multi-choice-results-table";
+import { getQuestionTypeLable } from "@/lib/utils";
 
 type MultiChoiceQuestionResultsProps = {
   questionResult: MultipleChoiceQuestionResult;
@@ -49,91 +50,91 @@ const MultiChoiceQuestionResults = ({
 
   const resultsData = [
     ...resultsDataa,
-    { answeredCount: 5, description: "dwq", percenteges: "50", id: "124fas" },
-    {
-      answeredCount: 5,
-      description: "dwq12",
-      percenteges: "65",
-      id: "dwq124fas",
-    },
-    {
-      answeredCount: 5,
-      description: "dwqdas",
-      percenteges: "89",
-      id: "12fgag4fas",
-    },
-    {
-      answeredCount: 5,
-      description: "no",
-      percenteges: "70",
-      id: "12fgag4fagggs",
-    },
-    {
-      answeredCount: 5,
-      description: "no",
-      percenteges: "75",
-      id: "12fgag4fagggqqwe2s",
-    },
-    {
-      answeredCount: 5,
-      description: "no",
-      percenteges: "40",
-      id: "12fgag4fagggsff",
-    },
-    {
-      answeredCount: 5,
-      description: "no",
-      percenteges: "30",
-      id: "12fgag4fagggdqws",
-    },
-    {
-      answeredCount: 5,
-      description: "no",
-      percenteges: "25",
-      id: "111111132444",
-    },
-    {
-      answeredCount: 5,
-      description: "no",
-      percenteges: "92",
-      id: "11111113244405",
-    },
-    {
-      answeredCount: 5,
-      description: "no",
-      percenteges: "27",
-      id: "11111113244400",
-    },
-    {
-      answeredCount: 5,
-      description: "no",
-      percenteges: "98",
-      id: "111111132444055",
-    },
-    {
-      answeredCount: 0,
-      description: "no",
-      percenteges: "0",
-      id: "111111132444001",
-    },
-    {
-      answeredCount: 0,
-      description: "no",
-      percenteges: "0",
-      id: "1111111324440551",
-    },
-    {
-      answeredCount: 0,
-      description: "no",
-      percenteges: "43",
-      id: "111111132444001qw",
-    },
-    {
-      answeredCount: 0,
-      description: "no",
-      percenteges: "56",
-      id: "1111111324440551pp",
-    },
+    // { answeredCount: 5, description: "dwq", percenteges: "50", id: "124fas" },
+    // {
+    //   answeredCount: 5,
+    //   description: "dwq12",
+    //   percenteges: "65",
+    //   id: "dwq124fas",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "dwqdas",
+    //   percenteges: "89",
+    //   id: "12fgag4fas",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "no",
+    //   percenteges: "70",
+    //   id: "12fgag4fagggs",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "no",
+    //   percenteges: "75",
+    //   id: "12fgag4fagggqqwe2s",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "no",
+    //   percenteges: "40",
+    //   id: "12fgag4fagggsff",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "no",
+    //   percenteges: "30",
+    //   id: "12fgag4fagggdqws",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "no",
+    //   percenteges: "25",
+    //   id: "111111132444",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "no",
+    //   percenteges: "92",
+    //   id: "11111113244405",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "no",
+    //   percenteges: "27",
+    //   id: "11111113244400",
+    // },
+    // {
+    //   answeredCount: 5,
+    //   description: "no",
+    //   percenteges: "98",
+    //   id: "111111132444055",
+    // },
+    // {
+    //   answeredCount: 0,
+    //   description: "no",
+    //   percenteges: "0",
+    //   id: "111111132444001",
+    // },
+    // {
+    //   answeredCount: 0,
+    //   description: "no",
+    //   percenteges: "0",
+    //   id: "1111111324440551",
+    // },
+    // {
+    //   answeredCount: 0,
+    //   description: "no",
+    //   percenteges: "43",
+    //   id: "111111132444001qw",
+    // },
+    // {
+    //   answeredCount: 0,
+    //   description: "no",
+    //   percenteges: "56",
+    //   id: "1111111324440551pp",
+    // },
   ];
 
   return (
@@ -144,9 +145,14 @@ const MultiChoiceQuestionResults = ({
           {convert(questionResult.description)}
         </h4>
       </div>
-      <div className="flex gap-3 mt-5 text-slate-400">
-        <span>Answered: {questionResult.answeredCount}</span>
-        <span>Skipped: {questionResult.skippedCount}</span>
+      <div className="flex gap-6 mt-5 text-gray-500">
+        <span className="text-black">
+          Type: {getQuestionTypeLable(questionResult.type)}
+        </span>
+        <div className="flex gap-3">
+          <span>Answered: {questionResult.answeredCount}</span>
+          <span>Skipped: {questionResult.skippedCount}</span>
+        </div>
       </div>
       <div className="mt-10 flex gap-3">
         <FormProvider {...form}>
@@ -198,20 +204,22 @@ const MultiChoiceQuestionResults = ({
         </FormProvider>
       </div>
 
-      <div className="mt-10 flex gap-10 justify-center flex-wrap items-start">
-        {showChart &&
-          (questionResult.answeredCount !== 0 ? (
-            <BarChartResults data={resultsData} />
-          ) : (
-            <p>No results.</p>
-          ))}
+      {(showChart || showTable) && (
+        <div className="flex mt-10 gap-10 justify-center flex-wrap items-start">
+          {showChart &&
+            (questionResult.answeredCount !== 0 ? (
+              <BarChartResults data={resultsData} />
+            ) : (
+              <p>No matching responses.</p>
+            ))}
 
-        {showTable && (
-          <div className="flex-1">
-            <MultiChoiceResultsTable data={resultsData} />
-          </div>
-        )}
-      </div>
+          {showTable && (
+            <div className="flex-1">
+              <MultiChoiceResultsTable data={resultsData} />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

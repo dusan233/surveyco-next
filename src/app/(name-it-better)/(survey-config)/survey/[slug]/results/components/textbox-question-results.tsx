@@ -1,4 +1,5 @@
 import { TextboxQuestionResult } from "@/lib/types";
+import { getQuestionTypeLable } from "@/lib/utils";
 import { convert } from "html-to-text";
 import React from "react";
 
@@ -17,14 +18,22 @@ const TextboxQuestionResults = ({
           {convert(questionResult.description)}
         </h4>
       </div>
-      <div className="flex gap-3 mt-5 text-slate-400">
-        <span>Answered: {questionResult.answeredCount}</span>
-        <span>Skipped: {questionResult.skippedCount}</span>
+      <div className="flex gap-6 mt-5 text-gray-500">
+        <span className="text-black">
+          Type: {getQuestionTypeLable(questionResult.type)}
+        </span>
+        <div className="flex gap-3">
+          <span>Answered: {questionResult.answeredCount}</span>
+          <span>Skipped: {questionResult.skippedCount}</span>
+        </div>
       </div>
       <div className="mt-10 flex flex-col gap-2">
         {questionResult.answers.map((answer) => {
           return (
-            <div className="bg-slate-300 rounded-sm p-2" key={answer.id}>
+            <div
+              className="bg-slate-50 border rounded-sm py-1 px-1.5"
+              key={answer.id}
+            >
               {answer.text}
             </div>
           );

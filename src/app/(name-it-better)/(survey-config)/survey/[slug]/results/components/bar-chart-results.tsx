@@ -1,10 +1,12 @@
-import React from "react";
+"use client";
+
+import React, { useRef } from "react";
 import {
   Bar,
   BarChart,
   CartesianGrid,
   Rectangle,
-  ResponsiveContainer,
+  Text,
   Tooltip,
   XAxis,
   YAxis,
@@ -20,6 +22,7 @@ type BarChartResultsProps = {
 };
 
 const BarChartResults = ({ data }: BarChartResultsProps) => {
+  const barRef = useRef(null);
   return (
     <BarChart
       width={500}
@@ -29,7 +32,7 @@ const BarChartResults = ({ data }: BarChartResultsProps) => {
         top: 5,
         right: 30,
         left: 20,
-        bottom: 5,
+        bottom: 2,
       }}
     >
       <CartesianGrid strokeDasharray="3 3" />
@@ -38,6 +41,7 @@ const BarChartResults = ({ data }: BarChartResultsProps) => {
         minTickGap={1}
         dataKey="description"
         tick={CustomXAxisTick}
+        className="relative"
       />
       <YAxis
         ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
@@ -48,6 +52,7 @@ const BarChartResults = ({ data }: BarChartResultsProps) => {
       <Tooltip content={CustomTooltipContent} />
 
       <Bar
+        ref={barRef}
         dataKey="percenteges"
         fill="#B4FF00"
         activeBar={<Rectangle fill="#B4FF00" stroke="#002340" />}
@@ -61,7 +66,9 @@ const CustomTooltipContent = ({ payload, label, active }: any) => {
     const dataItem = payload[0].payload; // Get the data item associated with the active tooltip
     return (
       <div className="p-2 rounded-sm bg-slate-800 text-white text-sm">
-        <p className="text-sm max-w-[150px]">{dataItem.description}</p>
+        <p className="text-sm max-w-[150px] break-all ...">
+          {dataItem.description}
+        </p>
         <p className="text-[#B4FF00]">{` ${dataItem.answeredCount} (${
           dataItem.percenteges + "%"
         })`}</p>
@@ -71,42 +78,56 @@ const CustomTooltipContent = ({ payload, label, active }: any) => {
   return null;
 };
 
-const CustomXAxisTick = ({ x, y, payload }: any) => {
+const CustomXAxisTick = (s: any) => {
   return (
-    <text
-      x={x}
-      y={y}
-      dy={16}
-      className="text-xs"
-      textAnchor="middle"
-      fill="#666"
-      style={{
-        maxWidth: `${100}px`,
-        overflow: "hidden",
-        textOverflow: "ellipsis",
-        whiteSpace: "nowrap",
-      }}
+    // <g transform={`translate(${s.x - },${s.y})`}>
+    <foreignObject
+      x={s.x}
+      y={s.y}
+      transform="translate(50%)"
+      textAnchor="end"
+      width="100%"
+      height="100px"
     >
-      {`${payload.value}`} {/* Custom text */}
-    </text>
+      <div
+        title={s.payload.value}
+        className="text-xs  border-r leading-3 w-10 border-red-50 break-all line-clamp-2"
+      >
+        {s.payload.value}
+      </div>
+    </foreignObject>
+    // </g>
+  );
+
+  return (
+    <div
+      style={{
+        left: s.x,
+        top: s.y,
+      }}
+      className="absolute z-50 bg-red-50"
+    >{`${s.payload.value}`}</div>
+    // <Text
+    //   className="text-xs break-all ..."
+    //   x={s.x}
+    //   y={s.y}
+    //   width={10}
+    //   height={20}
+    //   textAnchor="middle"
+    //   verticalAnchor="start"
+    //   overflow="hidden"
+    // >
+    //   {`${s.payload.value}`}
+    // </Text>
   );
 };
 
 const CustomYAxisTick = (props: any) => {
-  const { x, y, payload, dy, dx } = props;
-  return (
-    <text className="text-xs" x={x} y={y} dy={4} textAnchor="end" fill="#666">
-      {`${payload.value}%`}
-    </text>
-  );
-};
-
-const CustomYAxisLabel = (props: any) => {
   const { x, y, payload } = props;
   return (
-    <text x={x} y={y} dy={-10} textAnchor="middle" fill="#666">
-      {`213%`}
-    </text>
+    <Text className="text-xs" x={x} y={y} dy={4} textAnchor="end" fill="#666">
+      {`${payload.value}%`}
+    </Text>
   );
 };
 

@@ -24,7 +24,11 @@ type SurveyResultsProps = {
   surveyId: string;
 };
 
-const SurveyResults = ({ surveyId, questions, survey }: SurveyResultsProps) => {
+const SurveyQuestionResults = ({
+  surveyId,
+  questions,
+  survey,
+}: SurveyResultsProps) => {
   const { questionResults, isFetchingNextPage, hasNextPage, fetchNextPage } =
     useQuestionResults(surveyId, questions);
   const listRef = React.useRef<HTMLDivElement | null>(null);
@@ -37,14 +41,12 @@ const SurveyResults = ({ surveyId, questions, survey }: SurveyResultsProps) => {
   });
   const virtualItems = virtualizer.getVirtualItems();
 
-  if (survey.responses_count === 0) {
-    return <NoResponses surveyId={surveyId} />;
-  }
-
   return (
     <div className="flex flex-col gap-5 ">
       <div className="p-5 shadow-sm rounded-lg bg-white">
-        <h2 className="font-bold text-lg">Total responses: 15</h2>
+        <h2 className="font-bold text-lg">
+          Total responses: {survey.responses_count}
+        </h2>
       </div>
       <div ref={listRef}>
         <div
@@ -104,4 +106,4 @@ const SurveyResults = ({ surveyId, questions, survey }: SurveyResultsProps) => {
   );
 };
 
-export default SurveyResults;
+export default SurveyQuestionResults;
