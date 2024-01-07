@@ -30,5 +30,6 @@ export const columns: ColumnDef<{
         </div>
       );
     },
+    size: 200,
   },
 ];
