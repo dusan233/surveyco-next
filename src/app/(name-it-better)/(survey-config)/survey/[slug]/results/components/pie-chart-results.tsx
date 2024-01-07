@@ -123,6 +123,7 @@ const PieChartResults = ({ data }: PieChartResultsProps) => {
       <Pie
         dataKey="percenteges"
         data={answeredChoices}
+        isAnimationActive
         cx="50%"
         cy="50%"
         // nameKey="description"
