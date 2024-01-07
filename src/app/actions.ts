@@ -557,7 +557,7 @@ export const deleteSurveyCollector = async (
   revalidatePath(`/survey/${surveyId}/collectors`);
 };
 
-export const getQuestionResults = async (
+export const getQuestionsResult = async (
   surveyId: string,
   questionIds: string[]
 ): Promise<QuestionResult[]> => {
@@ -565,7 +565,7 @@ export const getQuestionResults = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/results`,
+    `${process.env.BACKEND_API}/quiz/${surveyId}/questions/result`,
     {
       method: "POST",
       cache: "no-store",

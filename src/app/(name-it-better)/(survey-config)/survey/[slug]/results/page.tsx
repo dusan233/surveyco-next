@@ -1,5 +1,5 @@
 import {
-  getQuestionResults,
+  getQuestionsResult,
   getSurvey,
   getSurveyQuestions,
 } from "@/app/actions";
@@ -27,7 +27,7 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ["questions", "results", 1],
-    queryFn: ({ pageParam }) => getQuestionResults(surveyId, pageParam),
+    queryFn: ({ pageParam }) => getQuestionsResult(surveyId, pageParam),
     initialPageParam: questionIds,
   });
 
