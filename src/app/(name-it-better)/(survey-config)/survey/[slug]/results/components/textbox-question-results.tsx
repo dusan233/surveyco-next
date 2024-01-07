@@ -2,6 +2,7 @@ import { TextboxQuestionResult } from "@/lib/types";
 import { getQuestionTypeLable } from "@/lib/utils";
 import { convert } from "html-to-text";
 import React from "react";
+import { format } from "date-fns";
 
 type TextboxQuestionResultsProps = {
   questionResult: TextboxQuestionResult;
@@ -31,10 +32,13 @@ const TextboxQuestionResults = ({
         {questionResult.answers.map((answer) => {
           return (
             <div
-              className="bg-slate-50 border rounded-sm py-1 px-1.5"
+              className="bg-slate-50 text-gray-500 border rounded-sm py-1 px-1.5"
               key={answer.id}
             >
-              {answer.text}
+              <div className="font-medium text-black"> {answer.text}</div>
+              <div className="text-sm mt-2">
+                {format(new Date(answer.updated_at), "MM/dd/yyyy hh:mm a")}
+              </div>
             </div>
           );
         })}

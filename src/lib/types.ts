@@ -103,6 +103,7 @@ export interface TextboxQuestionResult extends QuestionResultBase {
     id: string;
     questionResponseId: string;
     text: string | null;
+    updated_at: string;
   }[];
 }
 
