@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { ScrollArea } from "./scroll-area";
 
 interface CollectorsTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -46,10 +47,10 @@ export function DataTable<TData, TValue>({
 
   return (
     // h-72 overflow-scroll
-    <div ref={parentRef} className="overflow-auto h-[200px]">
+    <div ref={parentRef} className="h-96 overflow-auto">
       <div style={{ height: `${virtualizer.getTotalSize()}px` }}>
         <Table className="bg-white">
-          <TableHeader>
+          <TableHeader className="sticky top-0 bg-white z-10">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -71,63 +72,71 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody className=" ">
-            {rows.length ? (
-              virtualizer.getVirtualItems().map((virtualRow, index) => {
-                const row = rows[virtualRow.index];
+            {virtualizer.getVirtualItems().map((virtualRow, index) => {
+              const row = rows[virtualRow.index];
 
-                return (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    style={{
-                      height: `${virtualRow.size}px`,
-                      transform: `translateY(${
-                        virtualRow.start - index * virtualRow.size
-                      }px)`,
-                    }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        className="text-gray-500 text-sm h-4  py-1.5 px-4"
-                        key={cell.id}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                );
-              })
-            ) : (
-              // table.getRowModel().rows.map((row) => (
-              //   <TableRow
-              //     key={row.id}
-              //     data-state={row.getIsSelected() && "selected"}
-              //   >
-              //     {row.getVisibleCells().map((cell) => (
-              //       <TableCell
-              //         className="text-gray-500 text-sm h-4  py-1.5 px-4"
-              //         key={cell.id}
-              //       >
-              //         {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              //       </TableCell>
-              //     ))}
-              //   </TableRow>
-              // ))
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
+              return (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  style={{
+                    height: `${virtualRow.size}px`,
+                    transform: `translateY(${
+                      virtualRow.start - index * virtualRow.size
+                    }px)`,
+                  }}
                 >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      className="text-gray-500 text-sm 
+                      h-4 py-1.5 px-4
+                     
+                      "
+                      key={cell.id}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>
     </div>
   );
 }
+// h-8
+// h-4 py-1.5 px-4
+
+// {rows.length ? (
+// : (
+
+//   <TableRow>
+//     <TableCell
+//       colSpan={columns.length}
+//       className="h-24 text-center"
+//     >
+//       No results.
+//     </TableCell>
+//   </TableRow>
+// )
+
+// table.getRowModel().rows.map((row) => (
+//   <TableRow
+//     key={row.id}
+//     data-state={row.getIsSelected() && "selected"}
+//   >
+//     {row.getVisibleCells().map((cell) => (
+//       <TableCell
+//         className="text-gray-500 text-sm h-4  py-1.5 px-4"
+//         key={cell.id}
+//       >
+//         {flexRender(cell.column.columnDef.cell, cell.getContext())}
+//       </TableCell>
+//     ))}
+//   </TableRow>
+// ))
