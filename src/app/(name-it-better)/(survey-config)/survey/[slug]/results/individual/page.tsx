@@ -1,4 +1,4 @@
-import { getSurvey } from "@/app/actions";
+import { getSurvey, getSurveyResponses } from "@/app/actions";
 import {
   HydrationBoundary,
   QueryClient,
@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import React from "react";
 import NoResponses from "../components/no-responses";
+import SurveyResponsesView from "../components/survey-responses-view";
 
 const SurveyResultsIndividualPage = async ({
   params,
@@ -15,7 +16,13 @@ const SurveyResultsIndividualPage = async ({
   const surveyId = params.slug;
   const queryClient = new QueryClient();
 
-  const [survey] = await Promise.all([getSurvey(surveyId)]);
+  const [survey] = await Promise.all([
+    getSurvey(surveyId),
+    queryClient.prefetchQuery({
+      queryKey: ["survey", surveyId, "responses", 1],
+      queryFn: () => getSurveyResponses(surveyId, 1),
+    }),
+  ]);
 
   if (survey.responses_count === 0) {
     return <NoResponses surveyId={surveyId} />;
@@ -23,7 +30,7 @@ const SurveyResultsIndividualPage = async ({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div>dasdsad</div>
+      <SurveyResponsesView survey={survey} />
     </HydrationBoundary>
   );
 };

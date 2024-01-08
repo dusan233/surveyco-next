@@ -150,6 +150,22 @@ export interface QuestionsResponseData {
   questions: Question[];
 }
 
+export interface SurveyResponse {
+  id: string;
+  created_at: Date;
+  updated_at: Date | null;
+  surveyId: string;
+  collectorId: string;
+  collector: Collector;
+}
+
+export interface SurveyResponsesResData {
+  current_page: number;
+  data: SurveyResponse[];
+  next_page: number | undefined;
+  responses_count: number;
+}
+
 export enum CollectorType {
   web_link = "web_link",
 }

@@ -1,4 +1,4 @@
-import { getQuestionResults } from "@/app/actions";
+import { getQuestionsResult } from "@/app/actions";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { Question } from "../types";
 
@@ -13,7 +13,7 @@ export const useQuestionResults = (surveyId: string, questions: Question[]) => {
     status,
   } = useInfiniteQuery({
     queryKey: ["questions", "results", 1],
-    queryFn: ({ pageParam }) => getQuestionResults(surveyId, pageParam),
+    queryFn: ({ pageParam }) => getQuestionsResult(surveyId, pageParam),
     initialPageParam: ["dw"],
     getNextPageParam: (lastPage, pages) => {
       const lastFetchedQuestions = lastPage.toSorted(
