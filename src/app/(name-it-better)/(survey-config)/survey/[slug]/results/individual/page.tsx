@@ -16,11 +16,16 @@ const SurveyResultsIndividualPage = async ({
   const surveyId = params.slug;
   const queryClient = new QueryClient();
 
+  const initialSort: { name: string; type: "asc" | "desc" } = {
+    name: "updated_at",
+    type: "desc",
+  };
+
   const [survey] = await Promise.all([
     getSurvey(surveyId),
     queryClient.prefetchQuery({
-      queryKey: ["survey", surveyId, "responses", 1],
-      queryFn: () => getSurveyResponses(surveyId, 1),
+      queryKey: ["survey", surveyId, "responses", 1, initialSort],
+      queryFn: () => getSurveyResponses(surveyId, 1, initialSort),
     }),
   ]);
 

@@ -560,13 +560,17 @@ export const deleteSurveyCollector = async (
 
 export const getSurveyResponses = async (
   surveyId: string,
-  page: number
+  page: number,
+  sort: { name: string; type: "asc" | "desc" }
 ): Promise<SurveyResponsesResData> => {
   const { getToken } = auth();
   const token = await getToken();
 
+  const sortName = sort.name;
+  const sortType = sort.type;
+
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/responses?page=${page}`,
+    `${process.env.BACKEND_API}/quiz/${surveyId}/responses?page=${page}&sort=${sortName}:${sortType}`,
     {
       credentials: "include",
       cache: "no-store",

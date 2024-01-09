@@ -2,7 +2,7 @@
 
 import useSurveyResponses from "@/lib/hooks/useSurveyResponses";
 import { QuizResponseData } from "@/lib/types";
-import React from "react";
+import React, { useCallback } from "react";
 import { SurveyResponsesTable } from "./survey-responses-table";
 import { columns } from "./survey-responses-table-columns";
 
@@ -11,11 +11,37 @@ type SurveyResponsesProps = {
 };
 
 const SurveyResponsesView = ({ survey }: SurveyResponsesProps) => {
-  const { responses, page, setPage } = useSurveyResponses(survey.id);
+  const {
+    responses,
+    pagination,
+    setPagination,
+    pageCount,
+    isLoading,
+    isFetching,
+    sorting,
+    setSorting,
+  } = useSurveyResponses(survey.id);
+
+  // const updatePage = useCallback(
+  //   (newPage: number) => {
+  //     setPage(newPage);
+  //   },
+  //   [setPage]
+  // );
 
   return (
     <div>
-      <SurveyResponsesTable columns={columns} data={responses!} />
+      <SurveyResponsesTable
+        pageCount={pageCount}
+        loading={isFetching}
+        columns={columns}
+        data={responses!}
+        onPaginationChange={setPagination}
+        onSortingChange={setSorting}
+        sortingState={sorting}
+        paginationState={pagination}
+        responsesCount={survey.responses_count}
+      />
     </div>
   );
 };

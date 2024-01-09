@@ -164,6 +164,7 @@ export interface SurveyResponsesResData {
   data: SurveyResponse[];
   next_page: number | undefined;
   responses_count: number;
+  total_pages: number;
 }
 
 export enum CollectorType {

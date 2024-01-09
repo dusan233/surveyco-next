@@ -19,7 +19,7 @@ const BuildSurveyNavigation = ({
 
   return (
     <div
-      className={`border-b flex gap-6 mb-4 bg-white h-12 z-10 uppercase text-sm ${
+      className={`border-b rounded-md flex gap-6 mb-4 bg-white h-12 z-10 uppercase text-sm ${
         sticky && "sticky top-0"
       }`}
     >
