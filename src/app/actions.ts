@@ -12,6 +12,7 @@ import {
   QuizResponseData,
   SaveQuestionData,
   SurveyPage,
+  SurveyResponse,
   SurveyResponsesResData,
 } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
@@ -556,6 +557,31 @@ export const deleteSurveyCollector = async (
   }
 
   revalidatePath(`/survey/${surveyId}/collectors`);
+};
+
+export const getSurveyResponse = async (
+  surveyId: string,
+  responseId: string
+): Promise<SurveyResponse> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/response/${responseId}`,
+    {
+      credentials: "include",
+      cache: "no-store",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to get responses for survey with id: ${surveyId}`);
+  }
+
+  return await res.json();
 };
 
 export const getSurveyResponses = async (
