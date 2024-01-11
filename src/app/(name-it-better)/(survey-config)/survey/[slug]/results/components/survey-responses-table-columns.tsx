@@ -12,6 +12,14 @@ import {
 
 export const columns: ColumnDef<SurveyResponse>[] = [
   {
+    id: "displayNumber",
+    cell: ({ row }) => {
+      const displayNumber = row.original.display_number;
+
+      return <div className="text-md">{displayNumber}</div>;
+    },
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => {
       const isSortedValue = column.getIsSorted();
@@ -32,9 +40,10 @@ export const columns: ColumnDef<SurveyResponse>[] = [
     },
 
     cell: ({ row }) => {
+      const isCompleteResponse = row.getValue("status") === "complete";
       return (
         <div className=" flex items-center">
-          {row.index % 2 ? (
+          {isCompleteResponse ? (
             <div className="py-1 px-2 bg-green-500 text-white font-medium rounded-sm">
               Complete
             </div>
@@ -130,7 +139,9 @@ export const columns: ColumnDef<SurveyResponse>[] = [
       );
     },
     cell: ({ row }) => {
-      return <div>178.148.100.108</div>;
+      const ipAddress: string = row.getValue("ip_address");
+
+      return <div>{ipAddress}</div>;
     },
   },
 

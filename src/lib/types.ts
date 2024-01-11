@@ -157,6 +157,9 @@ export interface SurveyResponse {
   surveyId: string;
   collectorId: string;
   collector: Collector;
+  ip_address: string;
+  status: "incomplete" | "complete";
+  display_number: number;
 }
 
 export interface SurveyResponsesResData {

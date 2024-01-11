@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 export default function useSurveyResponses(surveyId: string) {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 3,
+    pageSize: 30,
   });
   const [sort, setSort] = useState<{ name: string; type: "desc" | "asc" }>({
     name: "updated_at",

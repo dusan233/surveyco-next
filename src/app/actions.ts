@@ -16,7 +16,7 @@ import {
 } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
-import cookie from "cookie";
+
 import { revalidatePath } from "next/cache";
 import { updateCollectorNameSchema } from "@/lib/validationSchemas";
 
