@@ -5,6 +5,8 @@ import { QuizResponseData } from "@/lib/types";
 import React, { useCallback } from "react";
 import { SurveyResponsesTable } from "./survey-responses-table";
 import { columns } from "./survey-responses-table-columns";
+import { useIndividualResponseStore } from "@/lib/hooks/store/useIndividualResponseStore";
+import IndividualResponseDialog from "./individual-response-dialog";
 
 type SurveyResponsesProps = {
   survey: QuizResponseData;
@@ -21,16 +23,18 @@ const SurveyResponsesView = ({ survey }: SurveyResponsesProps) => {
     sorting,
     setSorting,
   } = useSurveyResponses(survey.id);
-
-  // const updatePage = useCallback(
-  //   (newPage: number) => {
-  //     setPage(newPage);
-  //   },
-  //   [setPage]
-  // );
+  const { showDialog, collectorId, responseId, setShowDialog } =
+    useIndividualResponseStore();
 
   return (
     <div>
+      <IndividualResponseDialog
+        onOpenChange={setShowDialog}
+        isOpen={showDialog}
+        collectorId={collectorId}
+        surveyId={survey.id}
+        responseId={responseId}
+      />
       <SurveyResponsesTable
         pageCount={pageCount}
         loading={isFetching}

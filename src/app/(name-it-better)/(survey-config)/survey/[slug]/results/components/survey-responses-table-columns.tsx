@@ -9,6 +9,8 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
+import { useState } from "react";
+import SurveyResponseTableAction from "./survey-response-table-action";
 
 export const columns: ColumnDef<SurveyResponse>[] = [
   {
@@ -149,9 +151,10 @@ export const columns: ColumnDef<SurveyResponse>[] = [
     id: "actions",
     cell: ({ row }) => {
       return (
-        <div className="flex text-blue-500 justify-end">
-          <button>View</button>
-        </div>
+        <SurveyResponseTableAction
+          collectorId={row.original.collectorId}
+          responseId={row.original.id}
+        />
       );
     },
   },
