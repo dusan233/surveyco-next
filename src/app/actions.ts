@@ -559,6 +559,37 @@ export const deleteSurveyCollector = async (
   revalidatePath(`/survey/${surveyId}/collectors`);
 };
 
+export const getSurveyResponseAnswers = async (
+  surveyId: string,
+  responseId: string,
+  page: number
+): Promise<{
+  questions: Question[];
+  questionResponses: QuestionResponse[];
+}> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/response/${responseId}/answers?page=${page}`,
+    {
+      credentials: "include",
+      cache: "no-store",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to get answers for survey response with id: ${responseId}`
+    );
+  }
+
+  return await res.json();
+};
+
 export const getSurveyResponse = async (
   surveyId: string,
   responseId: string

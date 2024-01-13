@@ -10,11 +10,14 @@ import {
 import Spinner from "@/components/ui/spinner";
 import { useIndividualResponseStore } from "@/lib/hooks/store/useIndividualResponseStore";
 import useSurveyResponse from "@/lib/hooks/useSurveyResponse";
+import useSurveyResponseAnswers from "@/lib/hooks/useSurveyResponseAnswers";
 import useSurveyResponses from "@/lib/hooks/useSurveyResponses";
 import { CollectorType } from "@/lib/types";
 import { format } from "date-fns";
-import { ChevronLeft, ChevronRight, ChevronsRight } from "lucide-react";
-import React, { useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState } from "react";
+import IndividualResponseAnswers from "./individual-response/individual-response-answers";
+import useSurveyPages from "@/lib/hooks/useSurveyPages";
 
 type IndividualResponseProps = {
   surveyId: string;
@@ -28,11 +31,22 @@ const IndividualResponse = ({
   const setResponseData = useIndividualResponseStore(
     (state) => state.setResponseData
   );
+
   const { responses } = useSurveyResponses(surveyId);
-  const { surveyResponse, isLoading, isFetching } = useSurveyResponse(
-    surveyId,
-    responseId
-  );
+  const { surveyPages, isLoading: loadingSurveyPages } =
+    useSurveyPages(surveyId);
+  const {
+    surveyResponse,
+    isLoading: loadingResponse,
+    isFetching: fetchingResponse,
+  } = useSurveyResponse(surveyId, responseId);
+  const [page, setPage] = useState(1);
+  const {
+    questions,
+    questionResponses,
+    isLoading: loadingAnswers,
+    isFetching: fetchingAnswers,
+  } = useSurveyResponseAnswers(surveyId, responseId, page);
 
   const handleNextResponse = () => {
     const currentResponseId = responseId;
@@ -93,7 +107,7 @@ const IndividualResponse = ({
     }
   };
 
-  if (isLoading) {
+  if (loadingResponse || loadingAnswers || loadingSurveyPages) {
     return (
       <div className="flex justify-center">
         <Spinner size="md" />
@@ -121,7 +135,7 @@ const IndividualResponse = ({
               }}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Select Page" />
+                <SelectValue placeholder="Select respondent" />
               </SelectTrigger>
 
               <SelectContent>
@@ -143,7 +157,29 @@ const IndividualResponse = ({
             <ChevronRight />
           </Button>
         </div>
-        {isFetching && <Spinner size="sm" />}
+        {(fetchingAnswers || fetchingResponse) && <Spinner size="sm" />}
+      </div>
+      <div>
+        <div className="max-w-20">
+          <Select
+            value={page.toString()}
+            onValueChange={(value) => {
+              setPage(Number(value));
+            }}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select Page" />
+            </SelectTrigger>
+
+            <SelectContent>
+              {surveyPages!.map((page) => (
+                <SelectItem key={page.id} value={page.number.toString()}>
+                  Page {page.number}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <div className="space-y-2">
         <div className="flex gap-2 font-bold">
@@ -176,6 +212,15 @@ const IndividualResponse = ({
           <span className="font-bold">IP Address:</span>
           <span>{surveyResponse!.ip_address}</span>
         </div>
+      </div>
+      <div className="mt-6">
+        <p className="mb-2 text-lg font-medium">
+          Respondent {surveyResponse?.display_number} (Page 1)
+        </p>
+        <IndividualResponseAnswers
+          questionResponses={questionResponses!}
+          questions={questions!}
+        />
       </div>
     </div>
   );
