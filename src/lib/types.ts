@@ -144,6 +144,13 @@ export interface QuizResponseData {
   updated_at: Date;
   questions: Question[];
   responses_count: number;
+  question_count: number;
+  page_count: number;
+}
+
+export interface VolumeByDay {
+  day: string;
+  response_count: number;
 }
 
 export interface QuestionsResponseData {

@@ -1,141 +1,46 @@
-import React from "react";
+import React, { Suspense } from "react";
+import SurveySummary from "./components/survey-summary";
+import MarketResearch from "./components/market-research";
+import CollectorsSummary from "./components/collectors-summary";
+import SummarySectionHeading from "./components/summary-section-heading";
+import ResponsesVolume from "./components/responses-volume";
 
-const SurveySummary = () => {
-  return <div>SurveySummary</div>;
+const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
+  const surveyId = params.slug;
+
+  return (
+    <div className="p-10 bg-slate-100">
+      <div className="flex gap-5 flex-wrap">
+        <div className="flex-1 max-w-xs">
+          <div className="space-y-2">
+            <SummarySectionHeading> Did you know?</SummarySectionHeading>
+
+            <MarketResearch />
+          </div>
+        </div>
+        <div className="flex-1">
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <SummarySectionHeading>Summary</SummarySectionHeading>
+              <Suspense fallback={"Loading..."}>
+                <SurveySummary surveyId={surveyId} />
+              </Suspense>
+            </div>
+            <div className="space-y-2">
+              <SummarySectionHeading>Collectors</SummarySectionHeading>
+              <Suspense fallback={"Loading..."}>
+                <CollectorsSummary surveyId={surveyId} />
+              </Suspense>
+            </div>
+            <div className="space-y-2">
+              <SummarySectionHeading>Responses Volume</SummarySectionHeading>
+              <ResponsesVolume surveyId={surveyId} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
-export default SurveySummary;
-
-// "use client";
-
-// import React from "react";
-// import {
-//   MultipleChoiceQuestion,
-//   OperationPosition,
-//   Question,
-//   QuestionType,
-//   QuestionsResponseData,
-//   TextboxQuestion,
-//   UnsavedQuestion,
-// } from "../../lib/types";
-// import MultiChoiceQuestion from "./multichoice-question";
-// import TextboxQuestionn from "./textbox-question";
-// import EditQuestion from "./edit-question";
-// import QuestionPreview from "./question-preview";
-// import { StrictModeDroppable } from "../strict-mode-droppable";
-// import {
-//   DragDropContext,
-//   DropResult,
-//   ResponderProvided,
-// } from "react-beautiful-dnd";
-// import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
-// import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
-// import { useQueryClient } from "@tanstack/react-query";
-
-// type BuildQuestionsListProps = {
-//   questions: (Question | UnsavedQuestion)[];
-//   selectedQuestion: string | number | null;
-//   surveyId: string;
-//   addingQuestion: boolean;
-//   currentPageId: string;
-//   currentPageNumber: number;
-// };
-
-// const BuildQuestionsList = ({
-//   questions,
-//   selectedQuestion,
-//   addingQuestion,
-//   surveyId,
-//   currentPageId,
-//   currentPageNumber,
-// }: BuildQuestionsListProps) => {
-//   const { isPending, moveQuestionMutation } = useMoveQuestion();
-//   const lastQuestionIndex = questions.length - 1;
-//   const queryClient = useQueryClient();
-
-//   const renderQuestion = (
-//     question: Question | UnsavedQuestion,
-//     index: number
-//   ) => {
-//     return question.id === selectedQuestion ||
-//       (lastQuestionIndex === index && addingQuestion) ? (
-//       <EditQuestion
-//         key={question.id}
-//         question={question}
-//         questionIndex={index}
-//         lastQuestionIndex={lastQuestionIndex}
-//         addingQuestion={addingQuestion}
-//         surveyId={surveyId}
-//       />
-//     ) : (
-//       <QuestionPreview
-//         index={index}
-//         key={question.id}
-//         surveyId={surveyId}
-//         question={question as Question}
-//       />
-//     );
-//   };
-
-//   useLoadingToast(isPending);
-
-//   const handleDragEnd = (result: DropResult, provided: ResponderProvided) => {
-//     console.log(result);
-
-//     if (!result.destination || result.destination.index === result.source.index)
-//       return;
-
-//     const movingQuestionId = result.draggableId;
-//     const destinationIndex = result.destination?.index;
-//     const sourceIndex = result.source.index;
-
-//     const position =
-//       sourceIndex > destinationIndex
-//         ? OperationPosition.before
-//         : OperationPosition.after;
-
-//     const targetQuestion = questions.find(
-//       (_, index) => index === destinationIndex
-//     ) as Question;
-
-//     moveQuestionMutation({
-//       surveyId,
-//       questionId: movingQuestionId,
-//       pageNumber: currentPageNumber,
-//       data: {
-//         position,
-//         questionId: targetQuestion.id,
-//         pageId: currentPageId,
-//       },
-//     });
-//   };
-
-//   return (
-//     <DragDropContext onDragEnd={handleDragEnd}>
-//       <StrictModeDroppable droppableId="list">
-//         {(provided) => {
-//           const lastQuestion = questions[questions.length - 1];
-//           const filteredQuestions = addingQuestion
-//             ? questions.filter((q) => q.id)
-//             : questions;
-//           return (
-//             <>
-//               <div ref={provided.innerRef} {...provided.droppableProps}>
-//                 <div className="rounded-sm  bg-slate-100">
-//                   {filteredQuestions.map((question, index) => {
-//                     return renderQuestion(question, index);
-//                   })}
-//                   {provided.placeholder}
-//                   {addingQuestion &&
-//                     renderQuestion(lastQuestion, questions.length - 1)}
-//                 </div>
-//               </div>
-//             </>
-//           );
-//         }}
-//       </StrictModeDroppable>
-//     </DragDropContext>
-//   );
-// };
-
-// export default BuildQuestionsList;
+export default SurveySummaryPage;

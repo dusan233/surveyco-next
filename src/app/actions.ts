@@ -14,6 +14,7 @@ import {
   SurveyPage,
   SurveyResponse,
   SurveyResponsesResData,
+  VolumeByDay,
 } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 import { cookies } from "next/headers";
@@ -557,6 +558,30 @@ export const deleteSurveyCollector = async (
   }
 
   revalidatePath(`/survey/${surveyId}/collectors`);
+};
+
+export const getSurveyResponsesVolume = async (
+  surveyId: string
+): Promise<VolumeByDay[]> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/responses/volume`,
+    {
+      cache: "no-cache",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`ith id: ${surveyId}`);
+  }
+
+  return await res.json();
 };
 
 export const getSurveyResponseAnswers = async (
