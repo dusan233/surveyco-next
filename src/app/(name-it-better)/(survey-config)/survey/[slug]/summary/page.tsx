@@ -5,6 +5,7 @@ import CollectorsSummary from "./components/collectors-summary";
 import SummarySectionHeading from "./components/summary-section-heading";
 import ResponsesVolume from "./components/responses-volume";
 import SurveySummarySkeleton from "./components/survey-summary-skeleton";
+import CollectorsSummarySkeleton from "./components/collectors-summary-skeleton";
 
 const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;
@@ -31,16 +32,16 @@ const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
             </div> */}
             <div className="space-y-2">
               <SummarySectionHeading>Collectors</SummarySectionHeading>
-              <Suspense fallback={"Loading..."}>
+              <Suspense fallback={<CollectorsSummarySkeleton />}>
                 <CollectorsSummary surveyId={surveyId} />
               </Suspense>
             </div>
-            {/* <div className="space-y-2">
+            <div className="space-y-2">
               <SummarySectionHeading>Responses Volume</SummarySectionHeading>
               <Suspense fallback={"Loading..."}>
                 <ResponsesVolume surveyId={surveyId} />
               </Suspense>
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
