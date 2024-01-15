@@ -1,6 +1,7 @@
 import { Content } from "@tiptap/react";
 import { z } from "zod";
 import {
+  createSurveySchema,
   multiChoiceQuestionSchema,
   placePageSchema,
   placeQuestionSchema,
@@ -77,6 +78,8 @@ export type TextQuestionData = z.infer<typeof textboxQuestionSchema> & {
   id?: string;
   type: QuestionType;
 };
+
+export type CreateSurveyData = z.infer<typeof createSurveySchema>;
 
 export type SaveQuestionData = MultiChoiceQuestionData | TextQuestionData;
 
@@ -194,4 +197,11 @@ export interface Collector {
 export enum CollectorStatus {
   open = "open",
   closed = "closed",
+}
+export enum SurveyCategory {
+  market_research = "market_research",
+  academic_research = "academic_research",
+  student_feedback = "student_feedback",
+  event_feedback = "event_feedback",
+  customer_feedback = "customer_feedback",
 }

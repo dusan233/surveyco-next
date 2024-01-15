@@ -8,7 +8,7 @@ const inputVariants = cva(
   {
     variants: {
       inputSize: {
-        default: "py-1.5 text-base",
+        default: "py-2 text-sm",
         sm: "py-1 text-sm",
         md: "py-1.5 text-base",
       },

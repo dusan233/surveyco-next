@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { OperationPosition, QuestionType } from "./types";
+import { OperationPosition, QuestionType, SurveyCategory } from "./types";
 
 export const multiChoiceQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
@@ -15,6 +15,11 @@ export const multiChoiceQuestionSchema = z.object({
 
 export const textboxQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
+});
+
+export const createSurveySchema = z.object({
+  title: z.string().min(1, "You must enter survey title."),
+  category: z.nativeEnum(SurveyCategory).or(z.literal("")),
 });
 
 export const placeQuestionSchema = z.object({

@@ -4,6 +4,7 @@ import {
   CollectorStatus,
   CollectorType,
   CopyQuestionData,
+  CreateSurveyData,
   OperationPosition,
   Question,
   QuestionResponse,
@@ -383,6 +384,31 @@ export const createSurveyPage = async (
   if (!res.ok) {
     throw new Error(`Failed to create page for survey with id: ${surveyId}`);
   }
+
+  return await res.json();
+};
+
+export const createSurvey = async (
+  data: CreateSurveyData
+): Promise<QuizResponseData> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(`http://localhost:8080/quiz/create-quiz`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to create new survey`);
+  }
+
+  revalidatePath(`/library`);
 
   return await res.json();
 };
