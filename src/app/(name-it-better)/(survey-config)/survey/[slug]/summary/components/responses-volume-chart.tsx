@@ -11,6 +11,7 @@ import {
   Text,
   XAxis,
   YAxis,
+  ResponsiveContainer,
 } from "recharts";
 
 type ResponsesVolumeChartProps = {
@@ -43,53 +44,59 @@ const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
   const barRef = useRef(null);
   const [xAxisTickWidth, setXAxisTickWidth] = useState(20);
 
-  useEffect(() => {
-    // @ts-ignore
-    const width = barRef.current?.props.xAxis.bandSize || 20;
-    setXAxisTickWidth(width);
-    // @ts-ignore
-  }, [barRef.current?.props.xAxis.bandSize]);
   const maxNumber = data.toSorted(
     (a, b) => b.response_count - a.response_count
   )[0].response_count;
 
   return (
-    <BarChart
-      id="dowqdow123"
-      width={800}
-      height={300}
-      data={data}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 10,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis
-        interval={0}
-        minTickGap={1}
-        dataKey="day"
-        tick={(props) => (
-          <CustomXAxisTick
-            {...props}
-            // @ts-ignore
-            width={xAxisTickWidth}
-          />
-        )}
-        className="relative"
-      />
-      <YAxis
-        ticks={generateTicks(maxNumber)}
-        tick={CustomYAxisTick}
-        interval={0}
-        minTickGap={1}
-      />
-      <Tooltip />
+    <ResponsiveContainer
+      onResize={() => {
+        // @ts-ignore
 
-      <Bar ref={barRef} dataKey="response_count" fill="#B4FF00" />
-    </BarChart>
+        const width = barRef.current?.props.xAxis.bandSize || 20;
+        setXAxisTickWidth(width);
+      }}
+      width="100%"
+      height={300}
+    >
+      <BarChart
+        id="dowqdow123"
+        // width={800}
+        // height={300}
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 10,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          interval={0}
+          minTickGap={1}
+          dataKey="day"
+          tick={(props) => (
+            <CustomXAxisTick
+              {...props}
+              // @ts-ignore
+              width={xAxisTickWidth}
+            />
+          )}
+          className="relative"
+        />
+        <YAxis
+          width={25}
+          ticks={generateTicks(maxNumber)}
+          tick={CustomYAxisTick}
+          interval={0}
+          minTickGap={1}
+        />
+        <Tooltip />
+
+        <Bar ref={barRef} dataKey="response_count" fill="#B4FF00" />
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 

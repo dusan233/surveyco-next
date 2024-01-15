@@ -12,8 +12,8 @@ const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div className="p-10 bg-slate-100">
-      <div className="flex gap-5 flex-wrap">
-        <div className="flex-1 max-w-xs">
+      <div className="gap-5 flex flex-col md:flex-row">
+        <div className="flex-1 max-w-xs min-w-[215px]">
           <div className="space-y-2">
             <SummarySectionHeading> Did you know?</SummarySectionHeading>
             <MarketResearch />
@@ -27,9 +27,6 @@ const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
                 <SurveySummary surveyId={surveyId} />
               </Suspense>
             </div>
-            {/* <div className="space-y-2">
-              <SurveySummarySkeleton />
-            </div> */}
             <div className="space-y-2">
               <SummarySectionHeading>Collectors</SummarySectionHeading>
               <Suspense fallback={<CollectorsSummarySkeleton />}>

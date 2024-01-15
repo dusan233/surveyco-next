@@ -2,7 +2,7 @@ import { getSurveyResponsesVolume } from "@/app/actions";
 import React from "react";
 
 import dynamic from "next/dynamic";
-import ResponsesVolumeChart from "./responses-volume-chart";
+import Spinner from "@/components/ui/spinner";
 
 type ResponsesVolumeProps = {
   surveyId: string;
@@ -10,7 +10,7 @@ type ResponsesVolumeProps = {
 
 const DynamicResponsesVolumeChart = dynamic(
   () => import("./responses-volume-chart"),
-  { ssr: false }
+  { ssr: false, loading: () => <Spinner size="md" /> }
 );
 
 const ResponsesVolume = async ({ surveyId }: ResponsesVolumeProps) => {
