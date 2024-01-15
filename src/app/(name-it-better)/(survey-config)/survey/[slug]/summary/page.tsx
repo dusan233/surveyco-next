@@ -4,6 +4,7 @@ import MarketResearch from "./components/market-research";
 import CollectorsSummary from "./components/collectors-summary";
 import SummarySectionHeading from "./components/summary-section-heading";
 import ResponsesVolume from "./components/responses-volume";
+import SurveySummarySkeleton from "./components/survey-summary-skeleton";
 
 const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;
@@ -14,7 +15,6 @@ const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
         <div className="flex-1 max-w-xs">
           <div className="space-y-2">
             <SummarySectionHeading> Did you know?</SummarySectionHeading>
-
             <MarketResearch />
           </div>
         </div>
@@ -22,20 +22,25 @@ const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
           <div className="space-y-5">
             <div className="space-y-2">
               <SummarySectionHeading>Summary</SummarySectionHeading>
-              <Suspense fallback={"Loading..."}>
+              <Suspense fallback={<SurveySummarySkeleton />}>
                 <SurveySummary surveyId={surveyId} />
               </Suspense>
             </div>
+            {/* <div className="space-y-2">
+              <SurveySummarySkeleton />
+            </div> */}
             <div className="space-y-2">
               <SummarySectionHeading>Collectors</SummarySectionHeading>
               <Suspense fallback={"Loading..."}>
                 <CollectorsSummary surveyId={surveyId} />
               </Suspense>
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <SummarySectionHeading>Responses Volume</SummarySectionHeading>
-              <ResponsesVolume surveyId={surveyId} />
-            </div>
+              <Suspense fallback={"Loading..."}>
+                <ResponsesVolume surveyId={surveyId} />
+              </Suspense>
+            </div> */}
           </div>
         </div>
       </div>
