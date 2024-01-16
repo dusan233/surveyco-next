@@ -180,6 +180,11 @@ export interface SurveyResponsesResData {
   total_pages: number;
 }
 
+export interface UserSurveysResData {
+  data: QuizResponseData[];
+  total_pages: number;
+}
+
 export enum CollectorType {
   web_link = "web_link",
 }

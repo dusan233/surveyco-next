@@ -26,9 +26,11 @@ const Navbar = () => {
           >
             Create survey
           </Button>
-          <Button size="sm" variant="ghost">
-            My surveys
-          </Button>
+          <Link href={`/library`}>
+            <Button size="sm" variant="ghost">
+              My surveys
+            </Button>
+          </Link>
         </div>
         <div className="flex gap-2">
           {isSignedIn ? (

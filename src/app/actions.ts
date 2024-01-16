@@ -15,6 +15,7 @@ import {
   SurveyPage,
   SurveyResponse,
   SurveyResponsesResData,
+  UserSurveysResData,
   VolumeByDay,
 } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
@@ -661,6 +662,34 @@ export const getSurveyResponse = async (
 
   if (!res.ok) {
     throw new Error(`Failed to get responses for survey with id: ${surveyId}`);
+  }
+
+  return await res.json();
+};
+
+export const getUserSurveys = async (
+  page: number,
+  sort: { column: string; type: "asc" | "desc" }
+): Promise<UserSurveysResData> => {
+  const { getToken, userId } = auth();
+  const token = await getToken();
+
+  const sortColumn = sort.column;
+  const sortType = sort.type;
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/user/${userId}/surveys?page=${page}&sort=${sortColumn}:${sortType}`,
+    {
+      credentials: "include",
+      cache: "no-store",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to get surveys for user with id: ${userId}`);
   }
 
   return await res.json();

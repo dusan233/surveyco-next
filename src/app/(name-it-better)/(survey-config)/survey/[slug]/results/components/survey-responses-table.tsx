@@ -44,7 +44,7 @@ interface SurveyResponsesTableProps<TData, TValue> {
   paginationState: PaginationState;
   onSortingChange: Dispatch<SetStateAction<SortingState>>;
   onPaginationChange: Dispatch<React.SetStateAction<PaginationState>>;
-  responsesCount: number;
+  responsesCount?: number;
 }
 
 export function SurveyResponsesTable<TData, TValue>({
@@ -200,9 +200,11 @@ export function SurveyResponsesTable<TData, TValue>({
           </Button>
           {loading && <Spinner size="sm" />}
         </div>
-        <div className="flex-1 text-right font-medium">
-          Total responses: {responsesCount}
-        </div>
+        {responsesCount !== undefined && (
+          <div className="flex-1 text-right font-medium">
+            Total responses: {responsesCount}
+          </div>
+        )}
       </div>
     </div>
   );
