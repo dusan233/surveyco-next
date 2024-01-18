@@ -1,4 +1,7 @@
+"use client";
+
 import { Editor } from "@tiptap/react";
+import { ImageIcon } from "lucide-react";
 import React from "react";
 import {
   FaBold,
@@ -117,6 +120,26 @@ const TextEditorMenu = ({ editor }: TextEditorMenuProps) => {
         className={regularBtnClassNames}
       >
         <ImRedo2 />
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          editor
+            .chain()
+            .focus()
+            .setImage({
+              src: "https://images.pexels.com/photos/14850795/pexels-photo-14850795.jpeg",
+            })
+            .run();
+        }}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          editor.chain().focus().run();
+        }}
+        // disabled={!editor.can().chain().focus().redo().run()}
+        className={regularBtnClassNames}
+      >
+        <ImageIcon className="h-4 w-4" />
       </button>
     </div>
   );

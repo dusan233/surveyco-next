@@ -4,6 +4,7 @@ import "../../styles/richText.css";
 import Highlight from "@tiptap/extension-highlight";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
+import Image from "@tiptap/extension-image";
 import Underline from "@tiptap/extension-underline";
 import { EditorContent, useEditor, Content } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -51,6 +52,7 @@ export const RichTextEditor = ({
       }),
       Highlight,
       Underline,
+      Image,
       Placeholder.configure({
         emptyEditorClass: "is-editor-empty",
         placeholder: placeholder,
@@ -58,7 +60,7 @@ export const RichTextEditor = ({
     ],
     onUpdate: ({ editor }) => {
       const htmlContent = editor.getHTML();
-
+      console.log(editor.getJSON());
       onChange(editor.isEmpty ? "" : htmlContent);
     },
     editorProps: {
