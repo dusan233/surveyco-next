@@ -2,8 +2,18 @@
   margin-top: 0.75em;
 }
 .tiptap img {
-  max-width: 100%;
-  height: auto;
+  /* max-width: 100%;
+  height: auto; */
+  overflow: hidden;
+  cursor: pointer;
+  display: inline-block;
+  content: url("../../public/icon-image.svg");
+  width: 16px;
+  height: 16px;
+  /* padding-left: 16px; */
+  margin: 0 3px;
+
+  vertical-align: middle;
 }
 
 .tiptap p.is-editor-empty:first-child::before {

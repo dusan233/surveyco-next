@@ -2,7 +2,7 @@
 
 import { Editor } from "@tiptap/react";
 import { ImageIcon } from "lucide-react";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import {
   FaBold,
   FaItalic,
@@ -13,13 +13,28 @@ import { ImRedo2, ImUndo2 } from "react-icons/im";
 
 type TextEditorMenuProps = {
   editor: Editor | null;
+  openInsertImageDialog: () => void;
 };
 
-const TextEditorMenu = ({ editor }: TextEditorMenuProps) => {
+const TextEditorMenu = ({
+  editor,
+  openInsertImageDialog,
+}: TextEditorMenuProps) => {
   const regularBtnClassNames =
     "bg-indigo-400 text-white p-1 hover:bg-indigo-300 hover:text-slate-700";
   const highlightedBtnClassNames =
     "bg-indigo-600 text-white p-1 hover:bg-indigo-300 hover:text-slate-700";
+
+  const addCustomImage = () => {
+    console.log("dw");
+    editor!
+      .chain()
+      .focus()
+      .setImage({
+        src: "https://images.pexels.com/photos/19284514/pexels-photo-19284514/free-photo-of-a-black-and-white-photo-of-a-pine-tree.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      })
+      .run();
+  };
 
   if (!editor) {
     return null;
@@ -124,13 +139,22 @@ const TextEditorMenu = ({ editor }: TextEditorMenuProps) => {
       <button
         type="button"
         onClick={() => {
-          editor
-            .chain()
-            .focus()
-            .setImage({
-              src: "https://images.pexels.com/photos/14850795/pexels-photo-14850795.jpeg",
-            })
-            .run();
+          addCustomImage();
+        }}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          editor.chain().focus().run();
+        }}
+        // disabled={!editor.can().chain().focus().redo().run()}
+        className={regularBtnClassNames}
+      >
+        <ImageIcon className="h-4 w-4" />
+      </button>
+
+      <button
+        type="button"
+        onClick={() => {
+          openInsertImageDialog();
         }}
         onMouseDown={(e) => {
           e.preventDefault();
