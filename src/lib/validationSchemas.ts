@@ -3,6 +3,22 @@ import { OperationPosition, QuestionType, SurveyCategory } from "./types";
 
 export const multiChoiceQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
+  descriptionImage: z.any().refine(
+    (value) => {
+      // Add your image file validation logic here
+      // For example, you can check if the file extension is an image format
+      const supportedImageExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
+      const fileExtension = value.split(".").pop()?.toLowerCase();
+
+      return (
+        !!fileExtension && supportedImageExtensions.includes(fileExtension)
+      );
+    },
+    {
+      message:
+        "Invalid image file. Supported formats: jpg, jpeg, png, gif, bmp",
+    }
+  ),
   options: z
     .array(
       z.object({
