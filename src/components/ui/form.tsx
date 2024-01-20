@@ -4,9 +4,12 @@ import { Slot } from "@radix-ui/react-slot";
 import {
   Controller,
   ControllerProps,
+  FieldError,
+  FieldErrorsImpl,
   FieldPath,
   FieldValues,
   FormProvider,
+  Merge,
   useFormContext,
 } from "react-hook-form";
 
@@ -143,10 +146,16 @@ FormDescription.displayName = "FormDescription";
 
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
->(({ className, children, ...props }, ref) => {
+  React.HTMLAttributes<HTMLParagraphElement> & {
+    outsideError?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
+  }
+>(({ className, children, outsideError, ...props }, ref) => {
   const { error, formMessageId } = useFormField();
-  const body = error ? String(error?.message) : children;
+  const body = error
+    ? String(error?.message)
+    : outsideError
+    ? String(outsideError?.message)
+    : children;
 
   if (!body) {
     return null;

@@ -20,7 +20,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { Node } from "@tiptap/react";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import AutoAnimate from "../auto-animate";
-import { FieldError } from "react-hook-form";
+import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import TextEditorMenu from "./text-editor-menu";
 import { ImageIcon } from "lucide-react";
 import InsertImageDialog from "./insert-image-dialog";
@@ -30,7 +30,7 @@ type RichTextEditorProps = {
   onBlur: () => void;
   placeholder: string;
   content: Content;
-  error?: FieldError;
+  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 };
 
 export const RichTextEditor = ({
@@ -73,9 +73,7 @@ export const RichTextEditor = ({
       }),
     ],
     onUpdate: ({ editor }) => {
-      const htmlContent = editor.getHTML();
-
-      onChange(editor.isEmpty ? "" : htmlContent);
+      onChange(editor);
     },
     editorProps: {
       attributes: {
@@ -85,6 +83,16 @@ export const RichTextEditor = ({
     content: `${content}`,
   });
   const [insertImageOpen, setInsertImageOpen] = useState(false);
+
+  const addImageToEditor = (src: string) => {
+    editor!
+      .chain()
+      .focus()
+      .setImage({
+        src,
+      })
+      .run();
+  };
 
   useEffect(() => {
     editor?.setOptions({
@@ -101,6 +109,7 @@ export const RichTextEditor = ({
       <InsertImageDialog
         onOpenChange={setInsertImageOpen}
         isOpen={insertImageOpen}
+        addImageToEditor={addImageToEditor}
       />
       <div className={`cursor-text relative`}>
         <AutoAnimate duration={200}>

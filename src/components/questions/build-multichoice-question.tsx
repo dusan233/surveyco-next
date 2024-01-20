@@ -26,6 +26,7 @@ import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "../ui/use-toast";
 import AutoAnimate from "../auto-animate";
+import { Editor, JSONContent } from "@tiptap/react";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -59,31 +60,33 @@ const BuildMultiChoiceQuestion = ({
   const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (
     data
   ) => {
-    const questionData: MultiChoiceQuestionData = {
-      description: data.description,
-      type: question.type,
-      options: data.options,
-      ...(question.id && { id: question.id }),
-    };
+    console.log(data);
+    // const questionData: MultiChoiceQuestionData = {
+    //   description: data.description,
+    //   type: question.type,
+    //   options: data.options,
+    //   descriptionImage: null,
+    //   ...(question.id && { id: question.id }),
+    // };
 
-    setCanSelectQuestion(false);
-    const addingQuestionToast = toast({
-      variant: "default",
-      title: "Saving question...",
-    });
-    saveQuestionMutation(
-      { surveyId, currentPage: currentPage!, data: questionData },
-      {
-        onSuccess(data) {
-          setCanSelectQuestion(true);
-          setAddingQuestion(false);
-          if (!questionData.id) {
-            setPendingQuestion(data.id);
-          }
-          addingQuestionToast.dismiss();
-        },
-      }
-    );
+    // setCanSelectQuestion(false);
+    // const addingQuestionToast = toast({
+    //   variant: "default",
+    //   title: "Saving question...",
+    // });
+    // saveQuestionMutation(
+    //   { surveyId, currentPage: currentPage!, data: questionData },
+    //   {
+    //     onSuccess(data) {
+    //       setCanSelectQuestion(true);
+    //       setAddingQuestion(false);
+    //       if (!questionData.id) {
+    //         setPendingQuestion(data.id);
+    //       }
+    //       addingQuestionToast.dismiss();
+    //     },
+    //   }
+    // );
   };
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
     const fn = form.handleSubmit(onSubmit);
@@ -108,13 +111,35 @@ const BuildMultiChoiceQuestion = ({
                     <RichTextEditor
                       content={field.value}
                       placeholder="Enter your question"
-                      onChange={field.onChange}
+                      onChange={(editor: Editor) => {
+                        const htmlContent = editor.getHTML();
+
+                        let imageExists = false;
+                        editor.state.doc.content.descendants((node) => {
+                          if (node.type.name === "image") {
+                            imageExists = true;
+                          }
+                        });
+
+                        if (!imageExists && form.getValues().descriptionImage) {
+                          console.log("unregistrujem");
+                          form.unregister("descriptionImage", {
+                            keepIsValid: false,
+                          });
+                        }
+                        field.onChange(editor.isEmpty ? "" : htmlContent);
+                      }}
                       onBlur={field.onBlur}
-                      error={fieldState.error}
+                      error={
+                        fieldState.error ||
+                        form.formState.errors.descriptionImage
+                      }
                     />
                   </FormControl>
                   <AutoAnimate>
-                    <FormMessage />
+                    <FormMessage
+                      outsideError={form.formState.errors.descriptionImage}
+                    />
                   </AutoAnimate>
                 </FormItem>
               )}

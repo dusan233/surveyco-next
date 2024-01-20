@@ -22,6 +22,7 @@ import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "../ui/use-toast";
 import AutoAnimate from "../auto-animate";
+import { Editor } from "@tiptap/react";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
@@ -105,7 +106,15 @@ const BuildTextboxQuestion = ({
                   <RichTextEditor
                     content={field.value}
                     placeholder="Enter your question"
-                    onChange={field.onChange}
+                    onChange={(editor: Editor) => {
+                      const jsonContent = editor.getJSON();
+                      const htmlContent = editor.getHTML();
+                      const imageExists = !!jsonContent.content?.find(
+                        (el) => el.type === "image"
+                      );
+
+                      field.onChange(editor.isEmpty ? "" : htmlContent);
+                    }}
                     onBlur={field.onBlur}
                     error={fieldState.error}
                   />

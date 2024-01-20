@@ -1,24 +1,28 @@
 import { z } from "zod";
 import { OperationPosition, QuestionType, SurveyCategory } from "./types";
 
+const MAX_FILE_SIZE = 6000000;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
 export const multiChoiceQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
-  descriptionImage: z.any().refine(
-    (value) => {
-      // Add your image file validation logic here
-      // For example, you can check if the file extension is an image format
-      const supportedImageExtensions = ["jpg", "jpeg", "png", "gif", "bmp"];
-      const fileExtension = value.split(".").pop()?.toLowerCase();
+  descriptionImage: z
+    .any()
+    .refine(
+      (file) => file?.size <= MAX_FILE_SIZE,
+      `Max allowed image size is 1MB.`
+    )
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      "Accepted files: .png, .jpg, .jpge, .webp"
+    )
+    .optional(),
 
-      return (
-        !!fileExtension && supportedImageExtensions.includes(fileExtension)
-      );
-    },
-    {
-      message:
-        "Invalid image file. Supported formats: jpg, jpeg, png, gif, bmp",
-    }
-  ),
   options: z
     .array(
       z.object({
