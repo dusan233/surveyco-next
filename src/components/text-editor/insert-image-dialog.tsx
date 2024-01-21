@@ -4,11 +4,12 @@ import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 
 import InsertEditorImage from "./insert-editor-image";
+import { Editor } from "@tiptap/react";
 
 type CopyQuestionDialogProps = {
   isOpen: boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-  addImageToEditor: (src: string) => void;
+  addImageToEditor: (file: File) => void;
 };
 
 const InsertImageDialog = ({

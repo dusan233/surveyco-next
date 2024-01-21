@@ -14,6 +14,7 @@ import {
   NodeViewWrapper,
   mergeAttributes,
   NodeViewContent,
+  Editor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
@@ -27,6 +28,7 @@ import InsertImageDialog from "./insert-image-dialog";
 
 type RichTextEditorProps = {
   onChange: (...event: any[]) => void;
+  onAddImage: (editor: Editor, file: File) => void;
   onBlur: () => void;
   placeholder: string;
   content: Content;
@@ -35,6 +37,7 @@ type RichTextEditorProps = {
 
 export const RichTextEditor = ({
   onChange,
+  onAddImage,
   placeholder,
   content,
   error,
@@ -84,14 +87,8 @@ export const RichTextEditor = ({
   });
   const [insertImageOpen, setInsertImageOpen] = useState(false);
 
-  const addImageToEditor = (src: string) => {
-    editor!
-      .chain()
-      .focus()
-      .setImage({
-        src,
-      })
-      .run();
+  const addImageToEditor = (imageFile: File) => {
+    onAddImage(editor!, imageFile);
   };
 
   useEffect(() => {

@@ -3,10 +3,13 @@ import { useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 import { DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
+import { uploadQuestionImageSchema } from "@/lib/validationSchemas";
+import { ZodError, ZodIssue } from "zod";
+import { Editor } from "@tiptap/react";
 
 type InsertEditorImageProps = {
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-  addImageToEditor: (src: string) => void;
+  addImageToEditor: (file: File) => void;
 };
 
 const InsertEditorImage = ({
@@ -14,6 +17,7 @@ const InsertEditorImage = ({
   addImageToEditor,
 }: InsertEditorImageProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [error, setError] = useState<ZodIssue | null>(null);
   const { setValue } = useFormContext();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -27,15 +31,30 @@ const InsertEditorImage = ({
         <Input
           accept=".jpg, .jpeg, .png, .webp"
           type="file"
+          state={error ? "error" : "default"}
           onChange={(e) => {
-            setValue("descriptionImage", e.target.files?.[0]);
             if (e.target.files) {
               const imageFile = e.target.files[0];
-              setImageFile(imageFile);
-              setImagePreview(URL.createObjectURL(imageFile));
+
+              try {
+                const data = uploadQuestionImageSchema.parse(imageFile);
+
+                setImageFile(data);
+                setImagePreview(URL.createObjectURL(data));
+              } catch (err) {
+                if (err instanceof ZodError) {
+                  const error = err.errors[0];
+                  setError(error);
+                }
+              }
             }
           }}
         />
+        {error && (
+          <div className="text-xs font-medium text-destructive">
+            {error.message}
+          </div>
+        )}
       </div>
       <DialogFooter className="mt-5">
         <Button
@@ -48,11 +67,8 @@ const InsertEditorImage = ({
         </Button>
         <Button
           onClick={() => {
-            if (imageFile && imagePreview) {
-              setValue("descriptionImage", imageFile, {
-                shouldValidate: true,
-              });
-              addImageToEditor(imagePreview);
+            if (imageFile) {
+              addImageToEditor(imageFile);
             }
 
             onOpenChange(false);

@@ -27,6 +27,8 @@ import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "../ui/use-toast";
 import AutoAnimate from "../auto-animate";
 import { Editor, JSONContent } from "@tiptap/react";
+import { uploadMedia } from "@/app/actions";
+import { Button } from "../ui/button";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -45,6 +47,7 @@ const BuildMultiChoiceQuestion = ({
     defaultValues: {
       description: question.description,
       options: question.options,
+      descriptionImage: question.description_image,
     },
   });
 
@@ -61,32 +64,33 @@ const BuildMultiChoiceQuestion = ({
     data
   ) => {
     console.log(data);
-    // const questionData: MultiChoiceQuestionData = {
-    //   description: data.description,
-    //   type: question.type,
-    //   options: data.options,
-    //   descriptionImage: null,
-    //   ...(question.id && { id: question.id }),
-    // };
 
-    // setCanSelectQuestion(false);
-    // const addingQuestionToast = toast({
-    //   variant: "default",
-    //   title: "Saving question...",
-    // });
-    // saveQuestionMutation(
-    //   { surveyId, currentPage: currentPage!, data: questionData },
-    //   {
-    //     onSuccess(data) {
-    //       setCanSelectQuestion(true);
-    //       setAddingQuestion(false);
-    //       if (!questionData.id) {
-    //         setPendingQuestion(data.id);
-    //       }
-    //       addingQuestionToast.dismiss();
-    //     },
-    //   }
-    // );
+    const questionData: MultiChoiceQuestionData = {
+      description: data.description,
+      type: question.type,
+      options: data.options,
+      descriptionImage: data.descriptionImage,
+      ...(question.id && { id: question.id }),
+    };
+
+    setCanSelectQuestion(false);
+    const addingQuestionToast = toast({
+      variant: "default",
+      title: "Saving question...",
+    });
+    saveQuestionMutation(
+      { surveyId, currentPage: currentPage!, data: questionData },
+      {
+        onSuccess(data) {
+          setCanSelectQuestion(true);
+          setAddingQuestion(false);
+          if (!questionData.id) {
+            setPendingQuestion(data.id);
+          }
+          addingQuestionToast.dismiss();
+        },
+      }
+    );
   };
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
     const fn = form.handleSubmit(onSubmit);
@@ -123,29 +127,51 @@ const BuildMultiChoiceQuestion = ({
 
                         if (!imageExists && form.getValues().descriptionImage) {
                           console.log("unregistrujem");
-                          form.unregister("descriptionImage", {
-                            keepIsValid: false,
-                          });
+                          form.setValue("descriptionImage", null);
                         }
+
                         field.onChange(editor.isEmpty ? "" : htmlContent);
                       }}
+                      onAddImage={async (editor: Editor, file: File) => {
+                        console.log(editor, file);
+                        try {
+                          const formData = new FormData();
+
+                          formData.append("file", file);
+                          const uploadedImageRes = await uploadMedia(
+                            surveyId,
+                            formData
+                          );
+                          form.setValue(
+                            "descriptionImage",
+                            uploadedImageRes.fileUrl
+                          );
+                          editor!
+                            .chain()
+                            .focus()
+                            .setImage({
+                              src: uploadedImageRes.fileUrl,
+                            })
+                            .run();
+
+                          await form.handleSubmit(onSubmit)();
+                        } catch (err) {
+                          console.log(err);
+                        }
+                      }}
                       onBlur={field.onBlur}
-                      error={
-                        fieldState.error ||
-                        form.formState.errors.descriptionImage
-                      }
+                      error={fieldState.error}
                     />
                   </FormControl>
                   <AutoAnimate>
-                    <FormMessage
-                      outsideError={form.formState.errors.descriptionImage}
-                    />
+                    <FormMessage />
                   </AutoAnimate>
                 </FormItem>
               )}
             />
             <Separator className="my-5" />
             <QuestionOptionList control={form.control} />
+
             <QuestionFooter questionIndex={index} isDisabled={isPending} />
           </form>
         </Form>

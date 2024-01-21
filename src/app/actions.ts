@@ -5,6 +5,7 @@ import {
   CollectorType,
   CopyQuestionData,
   CreateSurveyData,
+  MediaUploadResData,
   OperationPosition,
   Question,
   QuestionResponse,
@@ -23,6 +24,55 @@ import { cookies } from "next/headers";
 
 import { revalidatePath } from "next/cache";
 import { updateCollectorNameSchema } from "@/lib/validationSchemas";
+
+export const doIt = async (): Promise<any> => {
+  const formData = new FormData();
+
+  formData.append("description", "Hello");
+  formData.append("options", JSON.stringify([{ ds: "ds" }, { ds: "ds" }]));
+  const secfORM = new FormData();
+  secfORM.append;
+
+  const res = await fetch(`${process.env.BACKEND_API}/tuku/dasdl12321l`, {
+    cache: "no-cache",
+    credentials: "include",
+    method: "PUT",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch data for survey with id: `);
+  }
+
+  return await res.json();
+};
+
+export const uploadMedia = async (
+  surveyId: string,
+  formData: FormData
+): Promise<MediaUploadResData> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/media/create?surveyId=${surveyId}`,
+    {
+      cache: "no-cache",
+      credentials: "include",
+      method: "POST",
+      body: formData,
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to upload media file`);
+  }
+
+  return await res.json();
+};
 
 export const getSurvey = async (
   surveyId: string

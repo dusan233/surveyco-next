@@ -9,20 +9,20 @@ const ACCEPTED_IMAGE_TYPES = [
   "image/webp",
 ];
 
+export const uploadQuestionImageSchema = z
+  .any()
+  .refine(
+    (file) => file?.size <= MAX_FILE_SIZE,
+    `Max allowed image size is 1MB.`
+  )
+  .refine(
+    (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+    "Accepted files: .png, .jpg, .jpge, .webp"
+  );
+
 export const multiChoiceQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
-  descriptionImage: z
-    .any()
-    .refine(
-      (file) => file?.size <= MAX_FILE_SIZE,
-      `Max allowed image size is 1MB.`
-    )
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      "Accepted files: .png, .jpg, .jpge, .webp"
-    )
-    .optional(),
-
+  descriptionImage: z.string().or(z.null()),
   options: z
     .array(
       z.object({

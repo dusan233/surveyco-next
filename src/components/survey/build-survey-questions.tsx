@@ -71,12 +71,14 @@ const BuildSurveyQuestions = ({
           ? {
               type: type,
               description: "",
+              description_image: null,
               updated_at: null,
               number: lastQuestionNumber + 1,
             }
           : {
               type: type,
               description: "",
+              description_image: null,
               updated_at: null,
               number: lastQuestionNumber + 1,
               options: [

@@ -28,6 +28,7 @@ export interface QuestionBase {
   updated_at: string;
   created_at: string;
   description: string;
+  description_image: string | null;
   number: number;
   surveyPageId: string;
 }
@@ -41,6 +42,7 @@ export type UnsavedMultiChoiceQuestion = {
   updated_at: null;
   type: QuestionType;
   description: string;
+  description_image: null;
   options: Option[];
   number: number;
 };
@@ -49,6 +51,7 @@ export type UnsavedTextQuestion = {
   updated_at: null;
   type: QuestionType;
   description: string;
+  description_image: null;
   number: number;
 };
 export type QuestionResponse = {
@@ -209,4 +212,8 @@ export enum SurveyCategory {
   student_feedback = "student_feedback",
   event_feedback = "event_feedback",
   customer_feedback = "customer_feedback",
+}
+export interface MediaUploadResData {
+  success: boolean;
+  fileUrl: string;
 }

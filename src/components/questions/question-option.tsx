@@ -6,6 +6,7 @@ import { Control, useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import AutoAnimate from "../auto-animate";
+import { Editor } from "@tiptap/react";
 
 type QuestionOptionProps = {
   option: Option;
@@ -25,6 +26,8 @@ const QuestionOption = ({
 }: QuestionOptionProps) => {
   const {
     getValues,
+    setValue,
+
     formState: { errors },
   } = useFormContext();
   return (
@@ -39,7 +42,24 @@ const QuestionOption = ({
                 <RichTextEditor
                   content={field.value}
                   placeholder="Enter an answer choice"
-                  onChange={field.onChange}
+                  onAddImage={(editor: Editor, file: File) => {}}
+                  onChange={(editor: Editor) => {
+                    const htmlContent = editor.getHTML();
+
+                    let imageExists = false;
+                    editor.state.doc.content.descendants((node) => {
+                      if (node.type.name === "image") {
+                        imageExists = true;
+                      }
+                    });
+
+                    if (!imageExists && getValues().descriptionImage) {
+                      console.log("unregistrujem");
+                      setValue("descriptionImage", null);
+                    }
+                    console.log(htmlContent);
+                    field.onChange(editor.isEmpty ? "" : htmlContent);
+                  }}
                   onBlur={field.onBlur}
                   error={fieldState.error}
                 />

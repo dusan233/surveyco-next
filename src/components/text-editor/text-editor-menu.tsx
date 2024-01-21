@@ -26,7 +26,6 @@ const TextEditorMenu = ({
     "bg-indigo-600 text-white p-1 hover:bg-indigo-300 hover:text-slate-700";
 
   const addCustomImage = () => {
-    console.log("dw");
     editor!
       .chain()
       .focus()
