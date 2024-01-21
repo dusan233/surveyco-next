@@ -2,19 +2,23 @@ import React from "react";
 import { FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import { RichTextEditor } from "../text-editor/rich-text";
 import { Option } from "@/lib/types";
-import { Control, useFormContext } from "react-hook-form";
+import { Control, SubmitHandler, useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import AutoAnimate from "../auto-animate";
 import { Editor } from "@tiptap/react";
+import { uploadMedia } from "@/app/actions";
+import { MultiChoiceData } from "./build-multichoice-question";
 
 type QuestionOptionProps = {
   option: Option;
+  surveyId: string;
   control: Control<any, any>;
   index: number;
   removeOption: (optionIndex: number) => void;
   removeDisabled: boolean;
   addAnotherOption: (currentIndex: number) => void;
+  onQuestionSubmit: () => Promise<void>;
 };
 
 const QuestionOption = ({
@@ -23,11 +27,13 @@ const QuestionOption = ({
   addAnotherOption,
   removeOption,
   removeDisabled,
+  surveyId,
+  onQuestionSubmit,
 }: QuestionOptionProps) => {
   const {
     getValues,
     setValue,
-
+    handleSubmit,
     formState: { errors },
   } = useFormContext();
   return (
@@ -42,7 +48,33 @@ const QuestionOption = ({
                 <RichTextEditor
                   content={field.value}
                   placeholder="Enter an answer choice"
-                  onAddImage={(editor: Editor, file: File) => {}}
+                  onAddImage={async (editor: Editor, file: File) => {
+                    console.log(editor, file);
+                    try {
+                      const formData = new FormData();
+
+                      formData.append("file", file);
+                      const uploadedImageRes = await uploadMedia(
+                        surveyId,
+                        formData
+                      );
+                      setValue(
+                        `options.${index}.descriptionImage`,
+                        uploadedImageRes.fileUrl
+                      );
+                      editor!
+                        .chain()
+                        .focus()
+                        .setImage({
+                          src: uploadedImageRes.fileUrl,
+                        })
+                        .run();
+
+                      await onQuestionSubmit();
+                    } catch (err) {
+                      console.log(err);
+                    }
+                  }}
                   onChange={(editor: Editor) => {
                     const htmlContent = editor.getHTML();
 
@@ -54,8 +86,7 @@ const QuestionOption = ({
                     });
 
                     if (!imageExists && getValues().descriptionImage) {
-                      console.log("unregistrujem");
-                      setValue("descriptionImage", null);
+                      setValue(`options.${index}.descriptionImage`, null);
                     }
                     console.log(htmlContent);
                     field.onChange(editor.isEmpty ? "" : htmlContent);

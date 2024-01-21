@@ -23,15 +23,14 @@ import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "../ui/use-toast";
 import AutoAnimate from "../auto-animate";
 import { Editor } from "@tiptap/react";
+import { textboxQuestionSchema } from "@/lib/validationSchemas";
+import { uploadMedia } from "@/app/actions";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
   surveyId: string;
   index: number;
 };
-export const textboxQuestionSchema = z.object({
-  description: z.string().min(1, "You must enter question text."),
-});
 
 const BuildTextboxQuestion = ({
   question,
@@ -43,6 +42,7 @@ const BuildTextboxQuestion = ({
     resolver: zodResolver(textboxQuestionSchema),
     defaultValues: {
       description: question.description,
+      descriptionImage: question.description_image,
     },
   });
 
@@ -60,6 +60,7 @@ const BuildTextboxQuestion = ({
   ) => {
     const questionData: TextQuestionData = {
       description: data.description,
+      descriptionImage: data.descriptionImage,
       type: question.type,
       ...(question.id && { id: question.id }),
     };
@@ -107,13 +108,48 @@ const BuildTextboxQuestion = ({
                     content={field.value}
                     placeholder="Enter your question"
                     onChange={(editor: Editor) => {
-                      const jsonContent = editor.getJSON();
                       const htmlContent = editor.getHTML();
-                      const imageExists = !!jsonContent.content?.find(
-                        (el) => el.type === "image"
-                      );
+
+                      let imageExists = false;
+                      editor.state.doc.content.descendants((node) => {
+                        if (node.type.name === "image") {
+                          imageExists = true;
+                        }
+                      });
+
+                      if (!imageExists && form.getValues().descriptionImage) {
+                        console.log("unregistrujem");
+                        form.setValue("descriptionImage", null);
+                      }
 
                       field.onChange(editor.isEmpty ? "" : htmlContent);
+                    }}
+                    onAddImage={async (editor: Editor, file: File) => {
+                      console.log(editor, file);
+                      try {
+                        const formData = new FormData();
+
+                        formData.append("file", file);
+                        const uploadedImageRes = await uploadMedia(
+                          surveyId,
+                          formData
+                        );
+                        form.setValue(
+                          "descriptionImage",
+                          uploadedImageRes.fileUrl
+                        );
+                        editor!
+                          .chain()
+                          .focus()
+                          .setImage({
+                            src: uploadedImageRes.fileUrl,
+                          })
+                          .run();
+
+                        await form.handleSubmit(onSubmit)();
+                      } catch (err) {
+                        console.log(err);
+                      }
                     }}
                     onBlur={field.onBlur}
                     error={fieldState.error}

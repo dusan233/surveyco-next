@@ -88,6 +88,7 @@ export type SaveQuestionData = MultiChoiceQuestionData | TextQuestionData;
 
 export interface Option {
   description: string;
+  description_image: string | null;
   id: string;
 }
 

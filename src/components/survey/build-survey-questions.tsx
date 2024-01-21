@@ -84,9 +84,11 @@ const BuildSurveyQuestions = ({
               options: [
                 {
                   description: "",
+                  description_image: null,
                 },
                 {
                   description: "",
+                  description_image: null,
                 },
               ],
             };

@@ -28,6 +28,7 @@ export const multiChoiceQuestionSchema = z.object({
       z.object({
         id: z.string().optional(),
         description: z.string().min(1, "You must enter option text."),
+        descriptionImage: z.string().or(z.null()),
       })
     )
     .nonempty("You must add at least one option."),
@@ -35,6 +36,7 @@ export const multiChoiceQuestionSchema = z.object({
 
 export const textboxQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
+  descriptionImage: z.string().or(z.null()),
 });
 
 export const createSurveySchema = z.object({

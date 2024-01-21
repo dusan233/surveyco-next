@@ -1,15 +1,21 @@
 import React from "react";
-import { Control, useFieldArray } from "react-hook-form";
+import { Control, SubmitHandler, useFieldArray } from "react-hook-form";
 import QuestionOption from "./question-option";
-import {} from "./build-multichoice-question";
+import { MultiChoiceData } from "./build-multichoice-question";
 import { z } from "zod";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 
 type QuestionOptionListProps = {
   control: Control<z.infer<typeof multiChoiceQuestionSchema>, any>;
+  surveyId: string;
+  onQuestionSubmit: () => Promise<void>;
 };
 
-const QuestionOptionList = ({ control }: QuestionOptionListProps) => {
+const QuestionOptionList = ({
+  control,
+  surveyId,
+  onQuestionSubmit,
+}: QuestionOptionListProps) => {
   const {
     fields: options,
     insert,
@@ -24,6 +30,7 @@ const QuestionOptionList = ({ control }: QuestionOptionListProps) => {
     const newOptionIndex = currentIndex + 1;
     insert(newOptionIndex, {
       description: "",
+      descriptionImage: null,
     });
   };
 
@@ -41,8 +48,10 @@ const QuestionOptionList = ({ control }: QuestionOptionListProps) => {
             removeDisabled={options.length === 1}
             key={option.optionId}
             control={control}
+            onQuestionSubmit={onQuestionSubmit}
             option={option}
             index={index}
+            surveyId={surveyId}
           />
         );
       })}

@@ -30,6 +30,7 @@ import { Editor, JSONContent } from "@tiptap/react";
 import { uploadMedia } from "@/app/actions";
 import { Button } from "../ui/button";
 
+export type MultiChoiceData = z.infer<typeof multiChoiceQuestionSchema>;
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
   surveyId: string;
@@ -42,11 +43,15 @@ const BuildMultiChoiceQuestion = ({
   surveyId,
 }: MultiChoiceQuestionProps) => {
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof multiChoiceQuestionSchema>>({
+  const form = useForm<MultiChoiceData>({
     resolver: zodResolver(multiChoiceQuestionSchema),
     defaultValues: {
       description: question.description,
-      options: question.options,
+      options: question.options.map((qChoice) => ({
+        description: qChoice.description,
+        descriptionImage: qChoice.description_image,
+        ...(qChoice.id && { id: qChoice.id }),
+      })),
       descriptionImage: question.description_image,
     },
   });
@@ -60,9 +65,7 @@ const BuildMultiChoiceQuestion = ({
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
-  const onSubmit: SubmitHandler<z.infer<typeof multiChoiceQuestionSchema>> = (
-    data
-  ) => {
+  const onSubmit: SubmitHandler<MultiChoiceData> = (data) => {
     console.log(data);
 
     const questionData: MultiChoiceQuestionData = {
@@ -92,6 +95,10 @@ const BuildMultiChoiceQuestion = ({
       }
     );
   };
+  const handleSubmit = async () => {
+    await form.handleSubmit(onSubmit)();
+  };
+
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
     const fn = form.handleSubmit(onSubmit);
     await fn();
@@ -170,7 +177,11 @@ const BuildMultiChoiceQuestion = ({
               )}
             />
             <Separator className="my-5" />
-            <QuestionOptionList control={form.control} />
+            <QuestionOptionList
+              onQuestionSubmit={handleSubmit}
+              surveyId={surveyId}
+              control={form.control}
+            />
 
             <QuestionFooter questionIndex={index} isDisabled={isPending} />
           </form>
