@@ -23,6 +23,7 @@ export const uploadQuestionImageSchema = z
 export const multiChoiceQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
   descriptionImage: z.string().or(z.null()),
+  required: z.boolean(),
   options: z
     .array(
       z.object({
@@ -37,6 +38,7 @@ export const multiChoiceQuestionSchema = z.object({
 export const textboxQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
   descriptionImage: z.string().or(z.null()),
+  required: z.boolean(),
 });
 
 export const createSurveySchema = z.object({

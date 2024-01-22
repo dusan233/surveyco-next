@@ -31,6 +31,7 @@ export interface QuestionBase {
   description_image: string | null;
   number: number;
   surveyPageId: string;
+  required: boolean;
 }
 export interface QuestionResultBase extends QuestionBase {
   answeredCount: number;
@@ -45,6 +46,7 @@ export type UnsavedMultiChoiceQuestion = {
   description_image: null;
   options: Option[];
   number: number;
+  required: boolean;
 };
 export type UnsavedTextQuestion = {
   id?: string;
@@ -53,6 +55,7 @@ export type UnsavedTextQuestion = {
   description: string;
   description_image: null;
   number: number;
+  required: boolean;
 };
 export type QuestionResponse = {
   id: string;

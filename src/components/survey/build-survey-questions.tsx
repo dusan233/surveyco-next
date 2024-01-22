@@ -73,6 +73,7 @@ const BuildSurveyQuestions = ({
               description: "",
               description_image: null,
               updated_at: null,
+              required: false,
               number: lastQuestionNumber + 1,
             }
           : {
@@ -80,6 +81,7 @@ const BuildSurveyQuestions = ({
               description: "",
               description_image: null,
               updated_at: null,
+              required: false,
               number: lastQuestionNumber + 1,
               options: [
                 {

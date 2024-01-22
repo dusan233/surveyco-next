@@ -29,6 +29,7 @@ import AutoAnimate from "../auto-animate";
 import { Editor, JSONContent } from "@tiptap/react";
 import { uploadMedia } from "@/app/actions";
 import { Button } from "../ui/button";
+import QuestionSettings from "./question-settings";
 
 export type MultiChoiceData = z.infer<typeof multiChoiceQuestionSchema>;
 type MultiChoiceQuestionProps = {
@@ -52,6 +53,7 @@ const BuildMultiChoiceQuestion = ({
         descriptionImage: qChoice.description_image,
         ...(qChoice.id && { id: qChoice.id }),
       })),
+      required: question.required,
       descriptionImage: question.description_image,
     },
   });
@@ -72,6 +74,7 @@ const BuildMultiChoiceQuestion = ({
       description: data.description,
       type: question.type,
       options: data.options,
+      required: data.required,
       descriptionImage: data.descriptionImage,
       ...(question.id && { id: question.id }),
     };
@@ -182,7 +185,7 @@ const BuildMultiChoiceQuestion = ({
               surveyId={surveyId}
               control={form.control}
             />
-
+            <QuestionSettings question={question} />
             <QuestionFooter questionIndex={index} isDisabled={isPending} />
           </form>
         </Form>

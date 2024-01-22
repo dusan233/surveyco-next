@@ -25,6 +25,7 @@ import AutoAnimate from "../auto-animate";
 import { Editor } from "@tiptap/react";
 import { textboxQuestionSchema } from "@/lib/validationSchemas";
 import { uploadMedia } from "@/app/actions";
+import QuestionSettings from "./question-settings";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
@@ -41,6 +42,7 @@ const BuildTextboxQuestion = ({
   const form = useForm<z.infer<typeof textboxQuestionSchema>>({
     resolver: zodResolver(textboxQuestionSchema),
     defaultValues: {
+      required: question.required,
       description: question.description,
       descriptionImage: question.description_image,
     },
@@ -60,6 +62,7 @@ const BuildTextboxQuestion = ({
   ) => {
     const questionData: TextQuestionData = {
       description: data.description,
+      required: data.required,
       descriptionImage: data.descriptionImage,
       type: question.type,
       ...(question.id && { id: question.id }),
@@ -161,6 +164,7 @@ const BuildTextboxQuestion = ({
               </FormItem>
             )}
           />
+          <QuestionSettings question={question} />
           <QuestionFooter questionIndex={index} isDisabled={isPending} />
         </form>
       </Form>
