@@ -24,6 +24,7 @@ export const multiChoiceQuestionSchema = z.object({
   description: z.string().min(1, "You must enter question text."),
   descriptionImage: z.string().or(z.null()),
   required: z.boolean(),
+  randomize: z.boolean(),
   options: z
     .array(
       z.object({
@@ -73,7 +74,10 @@ export const questionsResponsesSchema = z.object({
         questionType: z.nativeEnum(QuestionType),
       })
       .refine((question) => {
-        if (question.questionType && question.required) {
+        if (
+          question.questionType === QuestionType.textbox &&
+          question.required
+        ) {
           if (question.answer === "") return false;
         } else {
           if (question.required && question.answer.length === 0) return false;
