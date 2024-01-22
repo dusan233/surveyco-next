@@ -78,6 +78,7 @@ const SurveyResponse = ({
         ...(questionResponse &&
           questionResponse.id && { id: questionResponse.id }),
         questionId: question.id,
+        required: question.required,
         answer: getInitialAnswer(question),
         questionType: question.type,
       };

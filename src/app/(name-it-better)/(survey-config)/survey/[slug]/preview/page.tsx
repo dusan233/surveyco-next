@@ -127,6 +127,7 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
             : questions!.map((question) => {
                 return {
                   questionId: question.id,
+                  required: question.required,
                   answer:
                     question.type === QuestionType.checkboxes
                       ? ([] as string[])

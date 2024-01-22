@@ -3,11 +3,18 @@
 import React from "react";
 import QuestionCard from "../question-card";
 import QuestionDescription from "../question-description";
-import { MultipleChoiceQuestion, Question, QuestionType } from "@/lib/types";
+import {
+  MultipleChoiceQuestion,
+  Question,
+  QuestionType,
+  QuestionsResponsesData,
+} from "@/lib/types";
 import TextboxQuestionResponse from "./textbox-question-response";
 import DropdownQuestionResponse from "./dropdown-question-response";
 import MultiChoiceQuestionResponse from "./multichoice-question-response";
 import CheckboxesQuestionResponse from "./checkboxes-question-response";
+import { useFormContext } from "react-hook-form";
+import { FormMessage } from "@/components/ui/form";
 
 type QuestionResponseProps = {
   question: Question;
@@ -57,9 +64,20 @@ const QuestionResponse = ({
   index,
   defaultValue,
 }: QuestionResponseProps) => {
+  const {
+    formState: { errors },
+  } = useFormContext<QuestionsResponsesData>();
+
+  const error = errors.questionResponses?.[index];
+
   return (
     <QuestionCard>
       <>
+        {error && (
+          <p className="text-xs font-medium text-destructive">
+            {error.message}
+          </p>
+        )}
         <QuestionDescription question={question} />
         <div className="mt-7 ml-7">
           {renderQuestionResponseContent(question, index, defaultValue)}

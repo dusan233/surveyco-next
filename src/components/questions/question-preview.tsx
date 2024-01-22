@@ -9,6 +9,7 @@ import MultiChoiceQuestionResponse from "./multichoice-question-response";
 import DropdownQuestionResponse from "./dropdown-question-response";
 import TextboxQuestionResponse from "./textbox-question-response";
 import CheckboxesQuestionResponse from "./checkboxes-question-response";
+import QuestionDescription from "./question-description";
 
 type QuestionPreviewProps = {
   question: Question;
@@ -104,15 +105,7 @@ const QuestionPreview = ({
         "outline-dashed outline-2 outline-blue-500 outline-offset-4"
       } shadow-sm !cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:z-[100] after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full`}
     >
-      <div className="flex items-start gap-3">
-        <span className="font-bold text-xl">{question.number}.</span>
-        <h4
-          className="flex-1 text-xl"
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(question.description),
-          }}
-        ></h4>
-      </div>
+      <QuestionDescription question={question} />
 
       <div className="mt-7 ml-7">
         {renderQuestionPreviewResponseInput(question)}

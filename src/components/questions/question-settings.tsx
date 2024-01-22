@@ -16,8 +16,8 @@ const QuestionSettings = ({ question }: QuestionSettingsProps) => {
   const qType = question.type;
 
   return (
-    <div className=" mt-6 rounded-sm text-gray-600 ">
-      <div className="border-t border-b">
+    <div className=" mt-6 rounded-sm text-gray-600 bg-amber-100 shadow-sm">
+      <div className=" border-b border-gray-300">
         <FormField
           control={control}
           name={"required"}
@@ -45,7 +45,7 @@ const QuestionSettings = ({ question }: QuestionSettingsProps) => {
         />
       </div>
       {qType !== QuestionType.textbox && (
-        <div className="border-b">
+        <div>
           <FormField
             control={control}
             name={"required"}
