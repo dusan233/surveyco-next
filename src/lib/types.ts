@@ -47,6 +47,7 @@ export type UnsavedMultiChoiceQuestion = {
   options: Option[];
   number: number;
   required: boolean;
+  randomize: boolean;
 };
 export type UnsavedTextQuestion = {
   id?: string;
@@ -117,13 +118,18 @@ export interface TextboxQuestionResult extends QuestionResultBase {
   }[];
 }
 
-export interface MultipleChoiceQuestion extends QuestionBase, OptionsQuestion {}
+export interface MultipleChoiceQuestion extends QuestionBase, OptionsQuestion {
+  randomize: boolean;
+}
 
 export interface CheckboxesQuestion extends QuestionBase, OptionsQuestion {
   options: Option[];
+  randomize: boolean;
 }
 
-export interface DropdownQuestion extends QuestionBase, OptionsQuestion {}
+export interface DropdownQuestion extends QuestionBase, OptionsQuestion {
+  randomize: boolean;
+}
 
 export interface TextboxQuestion extends QuestionBase {}
 

@@ -54,6 +54,7 @@ const BuildMultiChoiceQuestion = ({
         ...(qChoice.id && { id: qChoice.id }),
       })),
       required: question.required,
+      randomize: question.randomize,
       descriptionImage: question.description_image,
     },
   });
@@ -75,6 +76,7 @@ const BuildMultiChoiceQuestion = ({
       type: question.type,
       options: data.options,
       required: data.required,
+      randomize: data.randomize,
       descriptionImage: data.descriptionImage,
       ...(question.id && { id: question.id }),
     };

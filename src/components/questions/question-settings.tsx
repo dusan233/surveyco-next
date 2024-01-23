@@ -12,7 +12,7 @@ type QuestionSettingsProps = {
 
 const QuestionSettings = ({ question }: QuestionSettingsProps) => {
   const { control } = useFormContext();
-  const id = useId();
+
   const qType = question.type;
 
   return (
@@ -26,11 +26,11 @@ const QuestionSettings = ({ question }: QuestionSettingsProps) => {
               <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                 <FormControl>
                   <FormLabel
-                    htmlFor={id}
+                    htmlFor={"q-required"}
                     className="font-normal cursor-pointer w-full p-2.5 pl-3 flex items-center gap-1.5 text-xs"
                   >
                     <Checkbox
-                      id={id}
+                      id="q-required"
                       checked={field.value}
                       onCheckedChange={(checked) => {
                         field.onChange(checked);
@@ -48,17 +48,17 @@ const QuestionSettings = ({ question }: QuestionSettingsProps) => {
         <div>
           <FormField
             control={control}
-            name={"required"}
+            name={"randomize"}
             render={({ field }) => {
               return (
                 <FormItem className="flex flex-row items-center space-x-3 space-y-0">
                   <FormControl>
                     <FormLabel
-                      htmlFor={id}
+                      htmlFor="q-choices-randomize"
                       className="font-normal w-full p-2.5 pl-3 flex cursor-pointer items-center gap-1.5 text-xs"
                     >
                       <Checkbox
-                        id={id}
+                        id="q-choices-randomize"
                         checked={field.value}
                         onCheckedChange={(checked) => {
                           field.onChange(checked);

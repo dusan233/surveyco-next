@@ -82,6 +82,7 @@ const BuildSurveyQuestions = ({
               description_image: null,
               updated_at: null,
               required: false,
+              randomize: false,
               number: lastQuestionNumber + 1,
               options: [
                 {
