@@ -12,6 +12,7 @@ export default function useQuestionsAndResponses(
     queryFn: () => getSurveyQuestionsAndResponses(surveyId, collectorId, page),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   return {
