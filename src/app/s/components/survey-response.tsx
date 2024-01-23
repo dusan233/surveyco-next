@@ -3,7 +3,12 @@
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import React, { useEffect, useState } from "react";
 
-import { Question, QuestionType, QuestionsResponsesData } from "@/lib/types";
+import {
+  MultipleChoiceQuestion,
+  Question,
+  QuestionType,
+  QuestionsResponsesData,
+} from "@/lib/types";
 import useQuestionsAndResponses from "@/lib/hooks/useQuestionsAndResponses";
 import SurveyModifiedAlertDialog from "./survey-modified-alert-dialog";
 
@@ -48,6 +53,31 @@ const SurveyResponse = ({
   useEffect(() => {
     if (!isFetching) {
       setQuestions(questionsData);
+      // (currentQuestions) => {
+      //   if (currentQuestions) {
+      //     return currentQuestions.map((q) => {
+      //       if (q.type !== QuestionType.textbox) {
+      //         return {
+      //           ...q,
+      //           options: (q as MultipleChoiceQuestion).options.map(
+      //             (qChoice) => {
+      //               const sameQ = questionsData?.find(
+      //                 (newQ) => newQ.id === q.id
+      //               );
+      //               const sameChoice = (
+      //                 sameQ as MultipleChoiceQuestion
+      //               )?.options.find((newChoice) => newChoice.id === qChoice.id);
+      //               return sameChoice ?? qChoice;
+      //             }
+      //           ),
+      //         };
+      //       }
+
+      //       return q;
+      //     });
+      //   }
+      //   return currentQuestions;
+      // }
       setQuestionResponses(questionResponsesData);
       setDisplayPageNum(selectedPageNum);
     }
