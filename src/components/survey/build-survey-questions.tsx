@@ -105,7 +105,7 @@ const BuildSurveyQuestions = ({
   };
 
   return (
-    <div className="p-10 rounded-sm  bg-slate-100">
+    <div className="p-10 rounded-sm bg-accent">
       <PageControlBar
         currentPageNumber={currentPageNumber}
         setCurrentPageNumber={setCurrentPageNumber}
