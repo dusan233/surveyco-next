@@ -14,7 +14,7 @@ const CollectResponsesPage = async ({
   const collectors = await getSurveyCollectors(surveyId);
 
   return (
-    <div className="container mx-auto py-10 bg-slate-100">
+    <div className=" py-10 bg-slate-100">
       <CollectorsHeader surveyId={surveyId} />
       <CollectorsTable columns={columns} data={collectors} />
     </div>

@@ -17,7 +17,7 @@ const SurveyCollectorPage = async ({
   console.log(collector);
 
   return (
-    <div className="bg-slate-100 container mx-auto py-10">
+    <div className="bg-slate-100 py-10">
       <div className="mb-10">
         <Link
           className="text-blue-500 inline-flex gap-1 items-center text-lg hover:underline"
