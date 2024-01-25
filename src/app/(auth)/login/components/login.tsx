@@ -1,19 +1,17 @@
-"use client";
-
 import React from "react";
-import { Card } from "./ui/card";
+import { Card } from "../../../../components/ui/card";
 import Link from "next/link";
 
-import SigninOauth from "./signin-oauth";
-import SignInForm from "./signin-form";
+import SigninOauth from "../../../../components/signin-oauth";
+import LoginForm from "./login-form";
 
-const SignIn = () => {
+const Login = () => {
   return (
-    <Card className="max-w-sm w-full p-5">
-      <h1 className="text-2xl text-center mb-3 font-semibold tracking-tight">
-        Sign in
+    <Card className="max-w-sm w-full p-5 drop-shadow-xl">
+      <h1 className="text-3xl text-center mb-3 font-medium tracking-tight">
+        Log in
       </h1>
-      <SignInForm />
+      <LoginForm />
       <div className="relative my-4">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
@@ -46,4 +44,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default Login;

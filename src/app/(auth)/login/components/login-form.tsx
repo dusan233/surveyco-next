@@ -1,7 +1,6 @@
-import { zodResolver } from "@hookform/resolvers/zod";
+"use client";
+
 import React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -9,27 +8,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+} from "../../../../components/ui/form";
+import { Input } from "../../../../components/ui/input";
+import { Button } from "../../../../components/ui/button";
 import { useSignIn } from "@clerk/nextjs";
+import useLoginForm from "./useLoginForm";
+import { LoginData } from "@/lib/types";
 
-const signInSchema = z.object({
-  email: z.string().email("Please provide a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long."),
-});
-
-const SignInForm = () => {
+const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
-  const form = useForm<z.infer<typeof signInSchema>>({
-    resolver: zodResolver(signInSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  const form = useLoginForm();
 
-  async function onSubmit(values: z.infer<typeof signInSchema>) {
+  async function onSubmit(values: LoginData) {
     if (!isLoaded) return;
 
     try {
@@ -78,11 +68,11 @@ const SignInForm = () => {
         />
 
         <Button className="block w-full" type="submit">
-          Sign in
+          Login
         </Button>
       </form>
     </Form>
   );
 };
 
-export default SignInForm;
+export default LoginForm;

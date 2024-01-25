@@ -41,7 +41,7 @@ const Navbar = () => {
               <UserButton afterSignOutUrl="/" />
             ) : (
               <>
-                <Link href="/sign-in">
+                <Link href="/login">
                   <Button size="sm" variant="outline">
                     Sign in
                   </Button>

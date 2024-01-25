@@ -14,7 +14,7 @@ const AppLogo = () => {
         className={`${cinzelFont.className} text-2xl flex justify-center items-center text-secondary`}
       >
         <span className="text-primary font-bold text-4xl">Surv</span>
-        <span className="">eyco</span>
+        <span className="font-bold">eyco</span>
       </span>
     </Link>
   );

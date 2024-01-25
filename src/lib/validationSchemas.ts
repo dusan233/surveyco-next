@@ -47,6 +47,11 @@ export const createSurveySchema = z.object({
   category: z.nativeEnum(SurveyCategory).or(z.literal("")),
 });
 
+export const loginSchema = z.object({
+  email: z.string().email("Please provide a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters long."),
+});
+
 export const placeQuestionSchema = z.object({
   pageId: z.string(),
   position: z.nativeEnum(OperationPosition).optional(),
