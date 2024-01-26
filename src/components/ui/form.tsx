@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
@@ -15,6 +17,8 @@ import {
 
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
+import { AlertTriangleIcon } from "lucide-react";
+import AutoAnimate from "../auto-animate";
 
 const Form = FormProvider;
 
@@ -91,12 +95,12 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => {
-  const { error, formItemId } = useFormField();
+  const { formItemId } = useFormField();
 
   return (
     <Label
       ref={ref}
-      className={cn(error && "text-destructive", className)}
+      className={cn(className)}
       htmlFor={formItemId}
       {...props}
     />
@@ -157,19 +161,28 @@ const FormMessage = React.forwardRef<
     ? String(outsideError?.message)
     : children;
 
-  if (!body) {
-    return null;
-  }
+  // if (!body) {
+  //   return null;
+  // }
 
   return (
-    <p
-      ref={ref}
-      id={formMessageId}
-      className={cn("text-xs font-medium text-destructive", className)}
-      {...props}
-    >
-      {body}
-    </p>
+    <AutoAnimate duration={100}>
+      {body && (
+        <p
+          ref={ref}
+          id={formMessageId}
+          className={cn(
+            "text-xs font-medium flex gap-1 items-center text-destructive",
+            className
+          )}
+          {...props}
+        >
+          <AlertTriangleIcon className="h-3 w-3" />
+
+          {body}
+        </p>
+      )}
+    </AutoAnimate>
   );
 });
 FormMessage.displayName = "FormMessage";

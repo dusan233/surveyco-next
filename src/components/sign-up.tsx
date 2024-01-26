@@ -4,7 +4,7 @@ import React from "react";
 import { Card } from "./ui/card";
 import Link from "next/link";
 import SignUpForm from "./signup-form";
-import SigninOauth from "./signin-oauth";
+import SigninOauth from "./auth/oauth-providers-flow";
 
 const SignUp = () => {
   return (

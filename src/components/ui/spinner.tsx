@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority";
 import React from "react";
 
 export interface SpinnerProps {
-  size: "sm" | "md" | "lg" | "xl";
+  size: "sm" | "md" | "lg" | "xl" | "xs";
   className?: string;
 }
 
@@ -12,7 +12,8 @@ const spinnerVariants = cva(
   {
     variants: {
       size: {
-        sm: "w-6 h-6 mr-2",
+        xs: "w-5 h-5",
+        sm: "w-6 h-6 ",
         md: "w-8 h-8 mr-2",
         lg: "w-10 h-10 mr-2",
         xl: "w-12 h-12 mr-2",
@@ -44,6 +45,6 @@ const Spinner = React.forwardRef<SVGElement, SpinnerProps>(
   }
 );
 
-Spinner.displayName = "Button";
+Spinner.displayName = "Spinner";
 
 export default Spinner;

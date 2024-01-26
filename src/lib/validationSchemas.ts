@@ -48,8 +48,8 @@ export const createSurveySchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.string().email("Please provide a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long."),
+  email: z.string().email("Please provide a valid email address."),
+  password: z.string().min(1, "Please provide password."),
 });
 
 export const placeQuestionSchema = z.object({

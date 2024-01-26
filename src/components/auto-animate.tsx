@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactNode } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { AutoAnimateOptions } from "@formkit/auto-animate";
