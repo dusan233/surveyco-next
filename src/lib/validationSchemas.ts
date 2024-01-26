@@ -52,6 +52,13 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Please provide password."),
 });
 
+export const signUpSchema = z.object({
+  email: z.string().email("Please provide a valid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters long."),
+  firstName: z.string().min(1, "Please provide first name"),
+  lastName: z.string().min(1, "Please provide last name"),
+});
+
 export const placeQuestionSchema = z.object({
   pageId: z.string(),
   position: z.nativeEnum(OperationPosition).optional(),

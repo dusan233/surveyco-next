@@ -35,7 +35,7 @@ export default authMiddleware({
       if (isAccountVerified) {
         if (
           pathName === "/sign-up" ||
-          pathName === "/sign-in" ||
+          pathName === "/login" ||
           pathName === "/email-verification"
         ) {
           const homePage = new URL("/", req.nextUrl.origin);

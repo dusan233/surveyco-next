@@ -1,7 +1,6 @@
-import React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
+"use client";
+
+import React, { useState } from "react";
 
 import {
   Form,
@@ -12,36 +11,26 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-
-const signUpSchema = z.object({
-  email: z.string().email("Please provide a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long."),
-  firstName: z.string().min(1, "Please provide first name"),
-  lastName: z.string().min(1, "Please provide last name"),
-});
+import { SignUpData } from "@/lib/types";
+import useSignUpForm from "./useSignUpForm";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertTriangleIcon } from "lucide-react";
+import { getAuthErrorMessage } from "@/lib/utils";
 
 const SignUpForm = () => {
   const router = useRouter();
   const { isLoaded, signUp, setActive } = useSignUp();
-  //   const { signIn, setActive } = useSignIn();
+  const [isLoading, setIsLoading] = useState(false);
+  const form = useSignUpForm();
 
-  const form = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      firstName: "",
-      lastName: "",
-    },
-  });
-
-  async function onSubmit(values: z.infer<typeof signUpSchema>) {
+  async function onSubmit(values: SignUpData) {
     if (!isLoaded) return;
 
     try {
+      setIsLoading(true);
       const result = await signUp.create({
         emailAddress: values.email,
         password: values.password,
@@ -50,19 +39,30 @@ const SignUpForm = () => {
       });
 
       if (result.status === "complete") {
-        console.log("signup successfully done!");
         await setActive!({ session: result.createdSessionId });
 
         router.push("/email-verification");
       }
     } catch (err) {
-      console.error(JSON.stringify(err, null, 2));
+      const errorMsg = getAuthErrorMessage(err);
+      form.setError("root", { message: errorMsg });
+    } finally {
+      setIsLoading(false);
     }
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        {form.formState.errors.root && (
+          <Alert variant="destructive">
+            <AlertTriangleIcon className="h-4 w-4" />
+
+            <AlertDescription>
+              {form.formState.errors.root.message}
+            </AlertDescription>
+          </Alert>
+        )}
         <FormField
           control={form.control}
           name="email"
@@ -70,7 +70,11 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input
+                  state={form.formState.errors.email && "error"}
+                  placeholder="Email"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -83,7 +87,12 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
+                <Input
+                  state={form.formState.errors.password && "error"}
+                  type="password"
+                  placeholder="Password"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -96,7 +105,11 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>First Name</FormLabel>
               <FormControl>
-                <Input placeholder="First name" {...field} />
+                <Input
+                  state={form.formState.errors.firstName && "error"}
+                  placeholder="First name"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -109,13 +122,22 @@ const SignUpForm = () => {
             <FormItem>
               <FormLabel>Last Name</FormLabel>
               <FormControl>
-                <Input placeholder="Last name" {...field} />
+                <Input
+                  state={form.formState.errors.lastName && "error"}
+                  placeholder="Last name"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button className="block w-full" type="submit">
+        <Button
+          loading={isLoading}
+          disabled={isLoading}
+          className="w-full"
+          type="submit"
+        >
           Sign up
         </Button>
       </form>

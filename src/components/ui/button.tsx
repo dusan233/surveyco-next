@@ -61,7 +61,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        <span>{children}</span>
+        {children}
         {loading && <Spinner size="xs" />}
       </Comp>
     );

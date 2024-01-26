@@ -11,30 +11,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs";
 import useLoginForm from "./useLoginForm";
 import { LoginData } from "@/lib/types";
-import LoginError from "./login-error";
-import Spinner from "@/components/ui/spinner";
-
-const getLoginErrorMessage = (err: any) => {
-  if (isClerkAPIResponseError(err)) {
-    const error = err.errors[0];
-    let errorMsg = "";
-    if (err.status === 500) {
-      errorMsg = "Something went wrong! Please try again.";
-    } else if (err.status === 429) {
-      errorMsg =
-        "Sorry, too many incorrect login attempts. For security reasons, please wait 1h before trying again.";
-    } else if (err.status === 422) {
-      errorMsg =
-        "Your login info is invalid. Please try again with correct credentials.";
-    }
-    return errorMsg;
-  } else {
-    return "Something went wrong! Please try again.";
-  }
-};
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertTriangleIcon } from "lucide-react";
+import { getAuthErrorMessage } from "@/lib/utils";
 
 const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -56,7 +38,7 @@ const LoginForm = () => {
         await setActive({ session: result.createdSessionId });
       }
     } catch (err) {
-      const errorMsg = getLoginErrorMessage(err);
+      const errorMsg = getAuthErrorMessage(err);
       form.setError("root", { message: errorMsg });
     } finally {
       setIsLoading(false);
@@ -67,7 +49,13 @@ const LoginForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
         {form.formState.errors.root && (
-          <LoginError message={form.formState.errors.root.message} />
+          <Alert variant="destructive">
+            <AlertTriangleIcon className="h-4 w-4" />
+
+            <AlertDescription>
+              {form.formState.errors.root.message}
+            </AlertDescription>
+          </Alert>
         )}
         <FormField
           control={form.control}
@@ -111,9 +99,8 @@ const LoginForm = () => {
           disabled={isLoading}
           className="w-full"
           type="submit"
-          size="sm"
         >
-          Login
+          Log in
         </Button>
       </form>
     </Form>

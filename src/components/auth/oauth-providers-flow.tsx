@@ -9,9 +9,13 @@ import Spinner from "../ui/spinner";
 
 type OauthProvidersFlowProps = {
   login?: boolean;
+  direction?: "col" | "row";
 };
 
-const OauthProvidersFlow = ({ login = false }: OauthProvidersFlowProps) => {
+const OauthProvidersFlow = ({
+  login = false,
+  direction = "row",
+}: OauthProvidersFlowProps) => {
   const { signIn, isLoaded } = useSignIn();
   const { toast } = useToast();
 
@@ -32,22 +36,42 @@ const OauthProvidersFlow = ({ login = false }: OauthProvidersFlowProps) => {
   };
 
   if (!isLoaded) {
-    return <Spinner size="md" />;
+    return (
+      <div className="flex justify-center items-center">
+        <Spinner size="md" />
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      style={{
+        gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))",
+      }}
+      className={` ${
+        direction === "row" ? "grid gap-2" : "flex gap-2 flex-col"
+      }`}
+    >
       <OauthProviderButton
+        direction={direction}
         provider="google"
         onClick={() => signinWithProvicer("oauth_google")}
       >
-        {login ? "Login" : "Sign up"} with Google
+        {login ? "Log in with Google" : "Google"}
       </OauthProviderButton>
       <OauthProviderButton
+        direction={direction}
         provider="facebook"
         onClick={() => signinWithProvicer("oauth_facebook")}
       >
-        {login ? "Login" : "Sign up"} with Facebook
+        {login ? "Log in with Facebook" : "Facebook"}
+      </OauthProviderButton>
+      <OauthProviderButton
+        direction={direction}
+        provider="microsoft"
+        onClick={() => signinWithProvicer("oauth_microsoft")}
+      >
+        {login ? "Log in with Microsoft" : "Microsoft"}
       </OauthProviderButton>
     </div>
   );

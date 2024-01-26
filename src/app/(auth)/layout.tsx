@@ -12,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-slate-100 sm:p-7 p-3 min-h-screen">
-      <div className="flex mb-10">
+    <div className="bg-white sm:bg-slate-100 py-5  min-h-screen">
+      <div className="flex justify-center sm:justify-start mb-5 sm:mb-10 sm:px-7 p-3">
         <AppLogo />
       </div>
       {children}
