@@ -25,7 +25,6 @@ import { useToast } from "@/components/ui/use-toast";
 const getVerifyEmailErrorMsg = (err: any) => {
   let errorMsg = "";
   if (isClerkAPIResponseError(err)) {
-    console.log(err.errors);
     if (err.status === 422 && err.errors[0].code === "form_code_incorrect") {
       errorMsg = "Invalid code! Please provide valid verification code.";
     } else if (err.status === 400) {
@@ -68,7 +67,7 @@ const VerifyEmailForm = () => {
       await user?.emailAddresses[0].attemptVerification({
         code: values.code,
       });
-      console.log("uspesno verified");
+
       router.push("/");
     } catch (err) {
       const errorMsg = getVerifyEmailErrorMsg(err);

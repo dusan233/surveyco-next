@@ -1,5 +1,5 @@
-import VerifyEmailForm from "@/app/(auth)/email-verification/components/verify-email-form";
-import { currentUser } from "@clerk/nextjs";
+import VerifyEmailForm from "./components/verify-email-form";
+
 import React from "react";
 
 const EmailVerificationPage = async () => {

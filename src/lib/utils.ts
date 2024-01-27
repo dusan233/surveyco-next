@@ -56,6 +56,8 @@ export const getAuthErrorMessage = (err: any) => {
       if (err.errors[0].code === "form_password_pwned") {
         errorMsg =
           "Password has been found in an online data breach.  For account safety, please use a different password.";
+      } else if (err.errors[0].code === "form_identifier_exists") {
+        errorMsg = "Account with that email address already exists.";
       } else {
         errorMsg =
           "Your login info is invalid. Please try again with correct credentials.";
