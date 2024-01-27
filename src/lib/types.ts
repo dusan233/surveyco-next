@@ -9,6 +9,7 @@ import {
   questionsResponsesSchema,
   signUpSchema,
   textboxQuestionSchema,
+  verifyEmailAddressSchema,
 } from "./validationSchemas";
 
 export enum QuestionType {
@@ -88,6 +89,7 @@ export type TextQuestionData = z.infer<typeof textboxQuestionSchema> & {
   type: QuestionType;
 };
 
+export type VerifyEmailAddressData = z.infer<typeof verifyEmailAddressSchema>;
 export type CreateSurveyData = z.infer<typeof createSurveySchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type SignUpData = z.infer<typeof signUpSchema>;

@@ -26,7 +26,7 @@ const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const form = useSignUpForm();
 
-  async function onSubmit(values: SignUpData) {
+  async function handleSubmit(values: SignUpData) {
     if (!isLoaded) return;
 
     try {
@@ -39,7 +39,14 @@ const SignUpForm = () => {
       });
 
       if (result.status === "complete") {
-        await setActive!({ session: result.createdSessionId });
+        await setActive!({
+          session: result.createdSessionId,
+          beforeEmit: async (s) => {
+            await s?.user.emailAddresses[0].prepareVerification({
+              strategy: "email_code",
+            });
+          },
+        });
 
         router.push("/email-verification");
       }
@@ -53,7 +60,7 @@ const SignUpForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-3">
         {form.formState.errors.root && (
           <Alert variant="destructive">
             <AlertTriangleIcon className="h-4 w-4" />

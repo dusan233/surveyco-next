@@ -47,6 +47,15 @@ export const createSurveySchema = z.object({
   category: z.nativeEnum(SurveyCategory).or(z.literal("")),
 });
 
+export const verifyEmailAddressSchema = z.object({
+  code: z
+    .string()
+    .length(
+      6,
+      "Please enter the 6-digit number that was sent to your email address."
+    ),
+});
+
 export const loginSchema = z.object({
   email: z.string().email("Please provide a valid email address."),
   password: z.string().min(1, "Please provide password."),

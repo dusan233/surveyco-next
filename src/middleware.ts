@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export default authMiddleware({
   publicRoutes: [
     "/",
-    "/build",
     "/sso-callback",
     "/s/:path",
     "/survey-thanks",
