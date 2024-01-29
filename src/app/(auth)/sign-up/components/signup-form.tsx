@@ -30,12 +30,14 @@ const SignUpForm = () => {
     if (!isLoaded) return;
 
     try {
+      const firstName = values.fullName.split(" ")[0];
+      const lastName = values.fullName.split(" ")[1];
       setIsLoading(true);
       const result = await signUp.create({
         emailAddress: values.email,
         password: values.password,
-        firstName: values.firstName,
-        lastName: values.lastName,
+        firstName: firstName,
+        lastName: lastName,
       });
 
       if (result.status === "complete") {
@@ -105,33 +107,17 @@ const SignUpForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
-          name="firstName"
+          name="fullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>First Name</FormLabel>
+              <FormLabel>Full Name</FormLabel>
               <FormControl>
                 <Input
-                  state={form.formState.errors.firstName && "error"}
-                  placeholder="First name"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input
-                  state={form.formState.errors.lastName && "error"}
-                  placeholder="Last name"
+                  state={form.formState.errors.fullName && "error"}
+                  placeholder="Full Name"
                   {...field}
                 />
               </FormControl>

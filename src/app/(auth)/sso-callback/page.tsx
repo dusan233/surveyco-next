@@ -7,7 +7,7 @@ import React from "react";
 const SSOCallbackPage = () => {
   return (
     <div className="flex justify-center items-center">
-      <AuthenticateWithRedirectCallback />
+      <AuthenticateWithRedirectCallback  />
       <Spinner size="lg" />
     </div>
   );

@@ -64,8 +64,7 @@ export const loginSchema = z.object({
 export const signUpSchema = z.object({
   email: z.string().email("Please provide a valid email address"),
   password: z.string().min(8, "Password must be at least 8 characters long."),
-  firstName: z.string().min(1, "Please provide first name"),
-  lastName: z.string().min(1, "Please provide last name"),
+  fullName: z.string().min(1, "Please provide your full name."),
 });
 
 export const placeQuestionSchema = z.object({

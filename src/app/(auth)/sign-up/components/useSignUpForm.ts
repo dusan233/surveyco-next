@@ -9,8 +9,7 @@ const useSignUpForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      firstName: "",
-      lastName: "",
+      fullName: "",
     },
   });
 
