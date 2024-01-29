@@ -24,29 +24,8 @@ import { Label } from "../ui/label";
 import { createSurvey } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-
-const surveyCategories = [
-  {
-    value: SurveyCategory.customer_feedback,
-    label: "Customer feedback",
-  },
-  {
-    value: SurveyCategory.event_feedback,
-    label: "Event feedback",
-  },
-  {
-    value: SurveyCategory.student_feedback,
-    label: "Student feedback",
-  },
-  {
-    value: SurveyCategory.academic_research,
-    label: "Academic research",
-  },
-  {
-    value: SurveyCategory.market_research,
-    label: "General market research",
-  },
-];
+import { surveyCategoriesList } from "@/lib/utils";
+import { useToast } from "../ui/use-toast";
 
 type CreateSurveyFormProps = {
   onCreate: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,21 +34,29 @@ type CreateSurveyFormProps = {
 const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
   const { push } = useRouter();
   const [pending, setPending] = useState(false);
+  const { toast } = useToast();
   const form = useForm<CreateSurveyData>({
     resolver: zodResolver(createSurveySchema),
     defaultValues: {
       title: "",
-      category: "",
     },
   });
 
   const handleSubmit = async (values: CreateSurveyData) => {
-    setPending(true);
+    try {
+      setPending(true);
+      const newSurvey = await createSurvey(values);
+      push(`/survey/${newSurvey.id}/build`);
 
-    const newSurvey = await createSurvey(values);
-    push(`/survey/${newSurvey.id}/build`);
-
-    onCreate(false);
+      onCreate(false);
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!",
+      });
+    } finally {
+      setPending(false);
+    }
   };
 
   return (
@@ -110,7 +97,7 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {surveyCategories.map((category) => (
+                    {surveyCategoriesList.map((category) => (
                       <SelectItem key={category.value} value={category.value}>
                         {category.label}
                       </SelectItem>
@@ -123,7 +110,7 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
           />
         </div>
         <div className="flex justify-end">
-          <Button disabled={pending} type="submit">
+          <Button loading={pending} disabled={pending} type="submit">
             Create survey
           </Button>
         </div>

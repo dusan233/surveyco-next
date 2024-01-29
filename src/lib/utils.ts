@@ -4,7 +4,7 @@ import { HiSelector } from "react-icons/hi";
 import { FaListUl } from "react-icons/fa6";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { PiTextboxBold } from "react-icons/pi";
-import { CollectorType, QuestionType } from "./types";
+import { CollectorType, QuestionType, SurveyCategory } from "./types";
 import { Link } from "lucide-react";
 import { isClerkAPIResponseError } from "@clerk/nextjs";
 
@@ -75,6 +75,29 @@ export const getAuthErrorMessage = (err: any) => {
 export const getQuestionTypeLable = (type: QuestionType) => {
   return questionTypesData.find((qType) => qType.type === type)!.title;
 };
+
+export const surveyCategoriesList = [
+  {
+    value: SurveyCategory.customer_feedback,
+    label: "Customer feedback",
+  },
+  {
+    value: SurveyCategory.event_feedback,
+    label: "Event feedback",
+  },
+  {
+    value: SurveyCategory.student_feedback,
+    label: "Student feedback",
+  },
+  {
+    value: SurveyCategory.academic_research,
+    label: "Academic research",
+  },
+  {
+    value: SurveyCategory.market_research,
+    label: "General market research",
+  },
+];
 
 export function on<T extends Window | Document | HTMLElement | EventTarget>(
   obj: T | null,
