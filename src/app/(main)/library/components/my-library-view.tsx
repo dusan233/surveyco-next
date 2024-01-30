@@ -17,7 +17,7 @@ const MyLibraryView = () => {
   } = useUserSurveys();
 
   return (
-    <div className="max-w-screen-lg mx-auto">
+    <>
       <h1 className="text-2xl mb-5">My Surveys</h1>
       <UserSurveysTable
         columns={columns}
@@ -30,7 +30,7 @@ const MyLibraryView = () => {
         onSortingChange={setSorting}
         noDataMsg="No surveys."
       />
-    </div>
+    </>
   );
 };
 

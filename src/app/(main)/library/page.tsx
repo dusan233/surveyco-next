@@ -24,7 +24,7 @@ const MyLibraryPage = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="p-5 h-full sm:p-10">
+      <div className="p-5 h-full sm:p-10 max-w-screen-lg mx-auto">
         <MyLibraryView />
       </div>
     </HydrationBoundary>
