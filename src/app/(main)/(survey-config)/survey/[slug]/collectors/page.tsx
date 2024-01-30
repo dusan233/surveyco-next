@@ -22,7 +22,7 @@ const CollectResponsesPage = async ({
     type: "desc",
   };
 
-  await queryClient.prefetchQuery({
+  await queryClient.fetchQuery({
     queryKey: ["survey", surveyId, "collectors", 1, initialSort],
     queryFn: () => getSurveyCollectors(surveyId, 1, initialSort),
   });

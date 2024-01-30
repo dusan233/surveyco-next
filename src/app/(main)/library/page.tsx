@@ -17,7 +17,7 @@ const MyLibraryPage = async () => {
     type: "desc",
   };
 
-  await queryClient.prefetchQuery({
+  await queryClient.fetchQuery({
     queryKey: ["user", "surveys", 1, initialSort],
     queryFn: () => getUserSurveys(1, initialSort),
   });

@@ -2,10 +2,13 @@ import { getUserSurveys } from "@/app/actions";
 
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SortObject } from "../types";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function useUserSurveys() {
+  const { toast } = useToast();
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 30,
@@ -18,7 +21,7 @@ export default function useUserSurveys() {
     { id: "updated_at", desc: true },
   ]);
 
-  const { data, isLoading, isFetching, isRefetching } = useQuery({
+  const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
     staleTime: 0,
     queryKey: ["user", "surveys", pagination.pageIndex + 1, sort],
     queryFn: () => getUserSurveys(pagination.pageIndex + 1, sort),
@@ -27,7 +30,16 @@ export default function useUserSurveys() {
     refetchOnWindowFocus: false,
   });
 
+  const lastSuccessData = useRef(data);
+
   useEffect(() => {
+    if (isError) {
+      toast({ variant: "destructive", title: "Something went wrong!" });
+    }
+  }, [isError, toast]);
+
+  useEffect(() => {
+    if (data) lastSuccessData.current = data;
     if (data?.data.length !== 0) {
       setPagination((pagination) => ({
         pageIndex: 0,
@@ -38,7 +50,7 @@ export default function useUserSurveys() {
         type: sorting[0].desc ? "desc" : "asc",
       });
     }
-  }, [sorting, data?.data]);
+  }, [sorting, data]);
 
   return {
     surveys: data?.data,
@@ -50,5 +62,7 @@ export default function useUserSurveys() {
     setPagination,
     isFetching,
     isRefetching,
+    isError,
+    lastSuccessData,
   };
 }

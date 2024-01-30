@@ -19,21 +19,20 @@ const SurveyCollectors = ({ surveyId }: SurveyCollectorsProps) => {
     setPagination,
     setSorting,
     isFetching,
+    lastSuccessData,
   } = useSurveyCollectors(surveyId);
-
-  console.log(collectors);
 
   return (
     <div>
       <CollectorsHeader surveyId={surveyId} />
       <CollectorsTable
-        pageCount={pageCount}
+        pageCount={pageCount || lastSuccessData.current?.total_pages!}
         paginationState={pagination}
         sortingState={sorting}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
         loading={isFetching}
-        data={collectors!}
+        data={collectors! || lastSuccessData.current?.data}
         columns={columns}
         noDataMsg="No collectors"
       />
