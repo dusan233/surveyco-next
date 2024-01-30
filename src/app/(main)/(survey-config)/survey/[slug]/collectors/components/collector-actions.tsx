@@ -22,6 +22,7 @@ import DeleteCollectorDialog from "./delete-collector-dialog";
 import { Collector, CollectorStatus } from "@/lib/types";
 import CloseCollectorDialog from "./close-collector-dialog";
 import OpenCollectorDialog from "./open-collector-dialog";
+import Link from "next/link";
 
 type CollectorActionsProps = {
   collector: Collector;
@@ -52,7 +53,7 @@ const CollectorActions = ({ collector }: CollectorActionsProps) => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
+          <Button variant="icon" size="icon">
             <MoreHorizontal className="h-6 w-6" />
           </Button>
         </DropdownMenuTrigger>
@@ -76,12 +77,16 @@ const CollectorActions = ({ collector }: CollectorActionsProps) => {
                 <MessageCircleIcon className="h-4 w-4" />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              Edit collector
-              <DropdownMenuShortcut>
-                <PencilIcon className="h-4 w-4" />
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
+            <Link
+              href={`/survey/${collector.surveyId}/collector/${collector.id}`}
+            >
+              <DropdownMenuItem>
+                Edit collector
+                <DropdownMenuShortcut>
+                  <PencilIcon className="h-4 w-4" />
+                </DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
 

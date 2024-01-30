@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 import { Collector } from "@/lib/types";
 import { AlertTriangle } from "lucide-react";
 import React, { useTransition } from "react";
@@ -25,10 +26,19 @@ const DeleteCollectorDialog = ({
   collector,
 }: DeleteCollectorDialogProps) => {
   const [isPending, startTransition] = useTransition();
+  const { toast } = useToast();
 
   const handleDeleteCollector = () => {
-    startTransition(() => {
-      deleteSurveyCollector(collector.id, collector.surveyId);
+    onOpenChange(false);
+    startTransition(async () => {
+      try {
+        await deleteSurveyCollector(collector.id, collector.surveyId);
+      } catch (err) {
+        toast({
+          variant: "destructive",
+          title: "Something went wrong!",
+        });
+      }
     });
   };
 
@@ -68,6 +78,7 @@ const DeleteCollectorDialog = ({
           <Button
             variant="destructive"
             disabled={isPending}
+            loading={isPending}
             onClick={handleDeleteCollector}
             size="sm"
           >

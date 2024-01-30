@@ -14,6 +14,7 @@ import {
   QuizResponseData,
   SaveQuestionData,
   SortObject,
+  SurveyCollectorsResData,
   SurveyPage,
   SurveyResponse,
   SurveyResponsesResData,
@@ -465,30 +466,6 @@ export const createSurvey = async (
   return await res.json();
 };
 
-export const getSurveyCollectors = async (
-  surveyId: string
-): Promise<Collector[]> => {
-  const { getToken } = auth();
-  const token = await getToken();
-
-  const res = await fetch(`http://localhost:8080/quiz/${surveyId}/collectors`, {
-    cache: "no-cache",
-    method: "GET",
-    credentials: "include",
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  });
-
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch collectors for survey with id: ${surveyId}`
-    );
-  }
-
-  return await res.json();
-};
-
 export const createSurveyCollector = async (
   surveyId: string
 ): Promise<Collector> => {
@@ -713,6 +690,38 @@ export const getSurveyResponse = async (
 
   if (!res.ok) {
     throw new Error(`Failed to get responses for survey with id: ${surveyId}`);
+  }
+
+  return await res.json();
+};
+
+export const getSurveyCollectors = async (
+  surveyId: string,
+  page: number,
+  sort: SortObject
+): Promise<SurveyCollectorsResData> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const sortColumn = sort.column;
+  const sortType = sort.type;
+
+  const res = await fetch(
+    `http://localhost:8080/quiz/${surveyId}/collectors?page=${page}&sort=${sortColumn}:${sortType}`,
+    {
+      cache: "no-cache",
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(
+      `Failed to fetch collectors for survey with id: ${surveyId}`
+    );
   }
 
   return await res.json();

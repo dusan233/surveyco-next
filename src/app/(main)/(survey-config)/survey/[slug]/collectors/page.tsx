@@ -1,8 +1,12 @@
 import { getSurveyCollectors } from "@/app/actions";
 import React from "react";
-import { CollectorsTable } from "./components/collectors-table";
-import { columns } from "./components/collectors-table-columns";
-import CollectorsHeader from "./components/collectors-header";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
+import { SortObject } from "@/lib/types";
+import SurveyCollectors from "./components/survey-collectors";
 
 const CollectResponsesPage = async ({
   params,
@@ -11,13 +15,24 @@ const CollectResponsesPage = async ({
 }) => {
   const surveyId = params.slug;
 
-  const collectors = await getSurveyCollectors(surveyId);
+  const queryClient = new QueryClient();
+
+  const initialSort: SortObject = {
+    column: "updated_at",
+    type: "desc",
+  };
+
+  await queryClient.prefetchQuery({
+    queryKey: ["survey", surveyId, "collectors", 1, initialSort],
+    queryFn: () => getSurveyCollectors(surveyId, 1, initialSort),
+  });
 
   return (
-    <div className="p-5 sm:p-10 bg-slate-100 max-w-screen-lg mx-auto">
-      <CollectorsHeader surveyId={surveyId} />
-      <CollectorsTable columns={columns} data={collectors} />
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className="p-5 sm:p-10 bg-slate-100 max-w-screen-lg mx-auto">
+        <SurveyCollectors surveyId={surveyId} />
+      </div>
+    </HydrationBoundary>
   );
 };
 

@@ -19,7 +19,7 @@ const DataTableHeader = <TData,>({
           {headerGroup.headers.map((header, index) => {
             return (
               <TableHead
-                className={`bg-white ${
+                className={`bg-white max-w-[200px] ${
                   index === 0 && "sticky left-0 top-0 max-w-[100px]"
                 }`}
                 key={header.id}

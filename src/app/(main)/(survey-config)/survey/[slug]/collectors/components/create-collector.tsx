@@ -35,8 +35,8 @@ const CreateCollector = ({ surveyId }: CreateCollectorProps) => {
       className="uppercase"
       size="lg"
     >
-      CREATE NEW COLLECTOR
-      {!isPending && <PlusIcon className="ml-2 h-4 w-4" />}
+      <span className="flex-1">CREATE NEW COLLECTOR</span>
+      {!isPending && <PlusIcon className="h-4 w-4" />}
     </Button>
   );
 };

@@ -20,7 +20,7 @@ const DataTableBody = <TData,>({
           <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
             {row.getVisibleCells().map((cell, index) => (
               <TableCell
-                className={`px-4 bg-white py-2 h-10 truncate ... ${
+                className={`px-4 bg-white py-2 h-10 truncate max-w-[200px] ... ${
                   index === 0 && "sticky left-0 top-0 max-w-[100px]"
                 }`}
                 key={cell.id}

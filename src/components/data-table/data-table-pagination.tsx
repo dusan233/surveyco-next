@@ -95,7 +95,6 @@ const DataTablePagination = ({
       >
         <ChevronsRight />
       </Button>
-      {loading && <Spinner size="sm" />}
     </div>
   );
 };

@@ -16,6 +16,7 @@ import DataTableHeader from "./data-table-header";
 import DataTableBody from "./data-table-body";
 import DataTablePagination from "./data-table-pagination";
 import { ScrollArea } from "../ui/scroll-area";
+import Spinner from "../ui/spinner";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -81,28 +82,27 @@ export function DataTable<TData, TValue>({
           />
         </Table>
       </div>
-      {(pageCount > 1 || totalItemCount !== undefined) && (
-        <div className="flex px-4 items-center h-16">
-          {pageCount > 1 && (
-            <DataTablePagination
-              nextPage={nextPage}
-              previousPage={previousPage}
-              nextPageDisabled={!getCanNextPage() || loading}
-              previousPageDisabled={!getCanPreviousPage() || loading}
-              pageCount={getPageCount()}
-              loading={loading}
-              pageVal={(paginationState.pageIndex + 1).toString()}
-              setPageIndex={setPageIndex}
-            />
-          )}
 
-          {totalItemCount !== undefined && (
-            <div className="flex-1 text-right font-medium">
-              Total: {totalItemCount}
-            </div>
-          )}
-        </div>
-      )}
+      <div className="flex px-4 border-t items-center h-16">
+        {pageCount > 1 && (
+          <DataTablePagination
+            nextPage={nextPage}
+            previousPage={previousPage}
+            nextPageDisabled={!getCanNextPage() || loading}
+            previousPageDisabled={!getCanPreviousPage() || loading}
+            pageCount={getPageCount()}
+            loading={loading}
+            pageVal={(paginationState.pageIndex + 1).toString()}
+            setPageIndex={setPageIndex}
+          />
+        )}
+        {loading && <Spinner size="sm" />}
+        {totalItemCount !== undefined && (
+          <div className="flex-1 text-right font-medium">
+            Total: {totalItemCount}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

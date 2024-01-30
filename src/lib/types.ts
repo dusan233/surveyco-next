@@ -202,6 +202,12 @@ export interface SurveyResponsesResData {
   total_pages: number;
 }
 
+export interface SurveyCollectorsResData {
+  data: Collector[];
+  total_pages: number;
+  collector_count: number;
+}
+
 export interface UserSurveysResData {
   data: QuizResponseData[];
   total_pages: number;

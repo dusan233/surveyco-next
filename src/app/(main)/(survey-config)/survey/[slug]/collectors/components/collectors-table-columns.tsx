@@ -8,6 +8,7 @@ import { LinkIcon } from "lucide-react";
 import Link from "next/link";
 import CollectorActions from "./collector-actions";
 import CopyCollectorWebLink from "./copy-collector-web-link";
+import SortableHeader from "@/components/data-table/sortable-header";
 
 export const getCollectorTypeIcon = (type: CollectorType) => {
   switch (type) {
@@ -32,10 +33,20 @@ export const columns: ColumnDef<Collector>[] = [
     },
   },
   {
-    accessorKey: "created_at",
-    header: "Name",
+    accessorKey: "name",
+    header: ({ column }) => {
+      const isSortedValue = column.getIsSorted();
+      return (
+        <SortableHeader
+          isSortedValue={isSortedValue}
+          toggleSorting={column.toggleSorting}
+        >
+          Name
+        </SortableHeader>
+      );
+    },
     cell: ({ row }) => {
-      const dateVal: string = row.getValue("created_at");
+      const dateVal = row.original.created_at;
 
       const formattedDate = format(dateVal, "dd/MM/yyyy");
       return (
@@ -55,7 +66,17 @@ export const columns: ColumnDef<Collector>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => {
+      const isSortedValue = column.getIsSorted();
+      return (
+        <SortableHeader
+          isSortedValue={isSortedValue}
+          toggleSorting={column.toggleSorting}
+        >
+          Status
+        </SortableHeader>
+      );
+    },
     cell: ({ row }) => {
       const statusVal: string = row.getValue("status");
       const classNames = statusVal === "open" ? "bg-green-500" : "bg-red-500";
@@ -71,7 +92,17 @@ export const columns: ColumnDef<Collector>[] = [
   },
   {
     accessorKey: "total_responses",
-    header: "Responses",
+    header: ({ column }) => {
+      const isSortedValue = column.getIsSorted();
+      return (
+        <SortableHeader
+          isSortedValue={isSortedValue}
+          toggleSorting={column.toggleSorting}
+        >
+          Responses
+        </SortableHeader>
+      );
+    },
     cell: ({ row }) => {
       const totalResponses: number = row.getValue("total_responses");
 
@@ -80,7 +111,17 @@ export const columns: ColumnDef<Collector>[] = [
   },
   {
     accessorKey: "updated_at",
-    header: "Date modified",
+    header: ({ column }) => {
+      const isSortedValue = column.getIsSorted();
+      return (
+        <SortableHeader
+          isSortedValue={isSortedValue}
+          toggleSorting={column.toggleSorting}
+        >
+          Date Modified
+        </SortableHeader>
+      );
+    },
     cell: ({ row }) => {
       const dateVal: string = row.getValue("updated_at");
       const formattedDate = format(dateVal, "dd/MM/yyyy");
