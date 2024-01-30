@@ -12,7 +12,7 @@ const BuildSurveyNavigationLink = ({ href, children, isActive }: Props) => {
     <Link
       className={`p-3 inline-flex font-medium items-center border-b-0 ${
         isActive
-          ? "text-blue-600 border-b-4  border-blue-600"
+          ? "text-emerald-600 border-b-4  border-primary"
           : "text-neutral-800"
       }`}
       href={href}
