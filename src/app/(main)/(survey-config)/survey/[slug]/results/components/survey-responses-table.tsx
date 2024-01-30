@@ -88,17 +88,22 @@ export function SurveyResponsesTable<TData, TValue>({
 
   return (
     <div className="bg-white rounded-md b">
-      <div className="overflow-auto max-h-[500px]">
-        <Table className="bg-white rounded-md">
+      <div className="overflow-auto rounded-md max-h-[500px]">
+        <Table className="bg-white">
           <TableHeader>
             {getHeaderGroups().map((headerGroup) => (
               <TableRow
-                className="shadow-sm bg-white  sticky top-0"
+                className="shadow-sm bg-white sticky top-0"
                 key={headerGroup.id}
               >
-                {headerGroup.headers.map((header) => {
+                {headerGroup.headers.map((header, index) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      className={`bg-white ${
+                        index === 0 && "sticky left-0 top-0 max-w-[100px]"
+                      }`}
+                      key={header.id}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -118,8 +123,13 @@ export function SurveyResponsesTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell className="px-4 py-2 h-10" key={cell.id}>
+                  {row.getVisibleCells().map((cell, index) => (
+                    <TableCell
+                      className={`px-4 bg-white py-2 h-10 truncate ... ${
+                        index === 0 && "sticky left-0 top-0 max-w-[100px]"
+                      }`}
+                      key={cell.id}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -146,6 +156,7 @@ export function SurveyResponsesTable<TData, TValue>({
           <Button
             variant="ghost"
             size="icon"
+            className="hidden sm:inline-flex"
             disabled={!getCanPreviousPage() || loading}
             onClick={() => setPageIndex(0)}
           >
@@ -193,6 +204,7 @@ export function SurveyResponsesTable<TData, TValue>({
           <Button
             variant="ghost"
             size="icon"
+            className="hidden sm:inline-flex"
             disabled={!getCanNextPage() || loading}
             onClick={() => setPageIndex(getPageCount() - 1)}
           >

@@ -2,9 +2,8 @@
 
 import useUserSurveys from "@/lib/hooks/useUserSurveys";
 import React from "react";
-import { SurveyResponsesTable } from "../../(survey-config)/survey/[slug]/results/components/survey-responses-table";
 import { columns } from "./surveys-table-columns";
-import { doIt } from "@/app/actions";
+import { DataTable as UserSurveysTable } from "@/components/data-table/data-table";
 
 const MyLibraryView = () => {
   const {
@@ -18,9 +17,9 @@ const MyLibraryView = () => {
   } = useUserSurveys();
 
   return (
-    <div>
+    <div className="max-w-screen-lg mx-auto">
       <h1 className="text-2xl mb-5">My Surveys</h1>
-      <SurveyResponsesTable
+      <UserSurveysTable
         columns={columns}
         loading={isFetching}
         data={surveys!}
@@ -29,15 +28,8 @@ const MyLibraryView = () => {
         sortingState={sorting}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
+        noDataMsg="No surveys."
       />
-      <button
-        onClick={async () => {
-          const ds = await doIt();
-          console.log(ds, "dwdw");
-        }}
-      >
-        sda
-      </button>
     </div>
   );
 };

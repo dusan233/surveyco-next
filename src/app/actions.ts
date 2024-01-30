@@ -13,6 +13,7 @@ import {
   QuestionsResponseData,
   QuizResponseData,
   SaveQuestionData,
+  SortObject,
   SurveyPage,
   SurveyResponse,
   SurveyResponsesResData,
@@ -719,7 +720,7 @@ export const getSurveyResponse = async (
 
 export const getUserSurveys = async (
   page: number,
-  sort: { column: string; type: "asc" | "desc" }
+  sort: SortObject
 ): Promise<UserSurveysResData> => {
   const { getToken, userId } = auth();
   const token = await getToken();

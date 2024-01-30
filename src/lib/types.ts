@@ -94,6 +94,10 @@ export type CreateSurveyData = z.infer<typeof createSurveySchema>;
 export type LoginData = z.infer<typeof loginSchema>;
 export type SignUpData = z.infer<typeof signUpSchema>;
 export type SaveQuestionData = MultiChoiceQuestionData | TextQuestionData;
+export type SortObject = {
+  column: string;
+  type: "asc" | "desc";
+};
 
 export interface Option {
   description: string;

@@ -7,11 +7,12 @@ import {
 } from "@tanstack/react-query";
 import React from "react";
 import MyLibraryView from "./components/my-library-view";
+import { SortObject } from "@/lib/types";
 
 const MyLibraryPage = async () => {
   const queryClient = new QueryClient();
 
-  const initialSort: { column: string; type: "asc" | "desc" } = {
+  const initialSort: SortObject = {
     column: "updated_at",
     type: "desc",
   };
@@ -23,7 +24,7 @@ const MyLibraryPage = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="p-10 bg-slate-100">
+      <div className="p-5 h-full sm:p-10">
         <MyLibraryView />
       </div>
     </HydrationBoundary>

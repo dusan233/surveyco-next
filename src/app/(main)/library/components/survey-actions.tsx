@@ -28,7 +28,7 @@ const SurveyActions = ({ survey }: CollectorActionsProps) => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
+          <Button variant="icon" size="icon">
             <MoreHorizontal className="h-6 w-6" />
           </Button>
         </DropdownMenuTrigger>
