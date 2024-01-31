@@ -32,7 +32,7 @@ export default function BuildSurveyLayout({
 
   return (
     <>
-      <div className="bg-white flex items-center min-h-[150px] p-4 sm:p-10">
+      <div className="bg-white flex items-center min-h-[100px] px-4 sm:px-10 ">
         {isLoading ? (
           <Skeleton className="h-8 w-full max-w-md" />
         ) : (
