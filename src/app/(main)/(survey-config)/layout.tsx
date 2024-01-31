@@ -1,4 +1,9 @@
+"use client";
+
 import BuildSurveyNavigation from "@/components/survey/build-survey-navigation";
+import { Skeleton } from "@/components/ui/skeleton";
+import useSurvey from "@/lib/hooks/useQuiz";
+import { useParams } from "next/navigation";
 
 const surveyBuildLinks = [
   { slug: "summary", regex: "^/survey/[^/]+/summary$", text: "summary" },
@@ -21,12 +26,20 @@ export default function BuildSurveyLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const surveyId = useParams().slug;
+
+  const { survey, isLoading } = useSurvey(surveyId as string);
+
   return (
     <>
-      <div>
-        <h1 className="text-2xl font-bold py-4">
-          This is the title of survey/quiz
-        </h1>
+      <div className="bg-white flex items-center min-h-[150px] p-4 sm:p-10">
+        {isLoading ? (
+          <Skeleton className="h-8 w-full max-w-md" />
+        ) : (
+          <h1 className="text-2xl font-bold py-4 break-words">
+            {survey!.title}
+          </h1>
+        )}
       </div>
       <BuildSurveyNavigation links={surveyBuildLinks} />
       {children}
