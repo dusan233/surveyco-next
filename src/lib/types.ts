@@ -171,6 +171,7 @@ export interface QuizResponseData {
   responses_count: number;
   question_count: number;
   page_count: number;
+  survey_status: SurveyStatus;
 }
 
 export interface VolumeByDay {
@@ -215,6 +216,12 @@ export interface UserSurveysResData {
 
 export enum CollectorType {
   web_link = "web_link",
+}
+
+export enum SurveyStatus {
+  open = "open",
+  close = "close",
+  draft = "draft",
 }
 
 export interface Collector {

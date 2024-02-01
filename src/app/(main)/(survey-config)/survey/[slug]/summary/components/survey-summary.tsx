@@ -1,6 +1,7 @@
 import { getSurvey } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { SurveyStatus } from "@/lib/types";
 import { format } from "date-fns";
 import Link from "next/link";
 import React from "react";
@@ -25,8 +26,16 @@ const SurveySummary = async ({ surveyId }: SurveySummaryProps) => {
         <Separator orientation="vertical" />
         <div className="uppercase flex max-w-xs w-full flex-col gap-2 sm:gap-6">
           <p className="text-sm text-gray-500">survey status</p>
-          <div className="font-medium text-2xl text-green-500 uppercase">
-            open
+          <div
+            className={`font-medium text-2xl ${
+              survey.survey_status === SurveyStatus.close
+                ? "text-red-500"
+                : survey.survey_status === SurveyStatus.draft
+                ? "text-orange-300"
+                : "text-green-500"
+            } uppercase`}
+          >
+            {survey.survey_status}
           </div>
         </div>
         <Separator orientation="vertical" />

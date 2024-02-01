@@ -32,11 +32,11 @@ export default function BuildSurveyLayout({
 
   return (
     <>
-      <div className="bg-white flex items-center min-h-[100px] px-4 sm:px-10 ">
+      <div className="bg-slate-800 flex items-center min-h-[100px] px-4 sm:px-10 ">
         {isLoading ? (
           <Skeleton className="h-8 w-full max-w-md" />
         ) : (
-          <h1 className="text-2xl font-bold py-4 break-words">
+          <h1 className="text-2xl text-white font-bold py-4 break-words">
             {survey!.title}
           </h1>
         )}

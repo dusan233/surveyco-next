@@ -2,7 +2,7 @@
 
 import { VolumeByDay } from "@/lib/types";
 import { format } from "date-fns";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useId, useRef, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -41,6 +41,7 @@ function generateTicks(maxValue: number) {
 console.log(generateTicks(33));
 
 const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
+  const chartId = useId();
   const barRef = useRef(null);
   const [xAxisTickWidth, setXAxisTickWidth] = useState(20);
 
@@ -60,9 +61,7 @@ const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
       height={300}
     >
       <BarChart
-        id="dowqdow123"
-        // width={800}
-        // height={300}
+        id={chartId}
         data={data}
         margin={{
           top: 5,
