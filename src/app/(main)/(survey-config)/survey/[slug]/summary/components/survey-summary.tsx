@@ -13,6 +13,13 @@ type SurveySummaryProps = {
 const SurveySummary = async ({ surveyId }: SurveySummaryProps) => {
   const survey = await getSurvey(surveyId);
 
+  const links = [
+    { text: "Edit design", href: `/survey/${surveyId}/build` },
+    { text: "Preview survey", href: `/survey/${surveyId}/preview` },
+    { text: "Send survey", href: `/survey/${surveyId}/collectors` },
+    { text: "Survey results", href: `/survey/${surveyId}/results` },
+  ];
+
   return (
     <div className="p-5 shadow-sm rounded-lg bg-white ">
       <div className="text-xs  text-gray-500">
@@ -55,26 +62,13 @@ const SurveySummary = async ({ surveyId }: SurveySummaryProps) => {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-2 mt-4 justify-center sm:justify-end">
-        <Link href={`/survey/${surveyId}/build`}>
-          <Button className="w-full" variant="secondary" size="sm">
-            Edit design
-          </Button>
-        </Link>
-        <Link href={`/survey/${surveyId}/preview`}>
-          <Button className="w-full" variant="secondary" size="sm">
-            Preview survey
-          </Button>
-        </Link>
-        <Link href={`/survey/${surveyId}/collectors`}>
-          <Button className="w-full" variant="secondary" size="sm">
-            Send survey
-          </Button>
-        </Link>
-        <Link href={`/survey/${surveyId}/results`}>
-          <Button className="w-full" variant="secondary" size="sm">
-            Survey results
-          </Button>
-        </Link>
+        {links.map((link) => (
+          <Link key={link.text} href={link.href}>
+            <Button className="w-full" variant="neutral" size="sm">
+              {link.text}
+            </Button>
+          </Link>
+        ))}
       </div>
     </div>
   );

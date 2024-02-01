@@ -698,7 +698,8 @@ export const getSurveyResponse = async (
 export const getSurveyCollectors = async (
   surveyId: string,
   page: number,
-  sort: SortObject
+  sort: SortObject,
+  take?: number
 ): Promise<SurveyCollectorsResData> => {
   const { getToken } = auth();
   const token = await getToken();
@@ -707,7 +708,7 @@ export const getSurveyCollectors = async (
   const sortType = sort.type;
 
   const res = await fetch(
-    `http://localhost:8080/quiz/${surveyId}/collectors?page=${page}&sort=${sortColumn}:${sortType}`,
+    `http://localhost:8080/quiz/${surveyId}/collectors?page=${page}&sort=${sortColumn}:${sortType}&take=${take}`,
     {
       cache: "no-cache",
       method: "GET",
