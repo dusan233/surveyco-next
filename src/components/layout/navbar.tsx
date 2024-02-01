@@ -6,39 +6,50 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import CreateSurveyDialog from "../survey/create-survey-dialog";
 import AppLogo from "./logo";
+import { BellIcon } from "lucide-react";
+import NavbarLink from "../navbar-link";
 
 const Navbar = () => {
   const { isSignedIn } = useAuth();
   const [createSurveyOpen, setCreateSurveyOpen] = useState(false);
 
   return (
-    <header className="border-b">
-      <div className="flex py-2.5 px-7 items-center">
+    <header className="bg-slate-800">
+      <div className="flex py-2.5 px-7 gap-7 items-center">
         <CreateSurveyDialog
           isOpen={createSurveyOpen}
           onOpenChange={setCreateSurveyOpen}
         />
         <div className="max-w-xs font-bold">
-          <AppLogo />
+          <AppLogo theme="dark" />
         </div>
-        <div className="flex-1 gap-3 flex justify-end">
-          <div className="flex gap-2">
+        <div className="flex-1 gap-5 flex items-center">
+          {isSignedIn && <NavbarLink href="/library">My surveys</NavbarLink>}
+          <NavbarLink href="/pricing">Plans & Pricing</NavbarLink>
+        </div>
+        <div className="flex-1 gap-7 flex items-center justify-end">
+          {isSignedIn && (
             <Button
               onClick={() => setCreateSurveyOpen(true)}
               size="sm"
-              variant="ghost"
+              variant="outline"
             >
               Create survey
             </Button>
-            <Link href={`/library`}>
-              <Button size="sm" variant="ghost">
-                My surveys
-              </Button>
-            </Link>
-          </div>
-          <div className="flex gap-2">
+          )}
+
+          <div className="flex gap-4 items-center">
             {isSignedIn ? (
-              <UserButton afterSignOutUrl="/" />
+              <>
+                <Button
+                  onClick={() => setCreateSurveyOpen(true)}
+                  size="icon"
+                  variant="icon"
+                >
+                  <BellIcon className="h-4 w-4" />
+                </Button>
+                <UserButton afterSignOutUrl="/" />
+              </>
             ) : (
               <>
                 <Link href="/login">

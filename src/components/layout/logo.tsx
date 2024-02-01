@@ -7,13 +7,23 @@ const cinzelFont = Cinzel({
   subsets: ["latin"],
 });
 
-const AppLogo = () => {
+type AppLogoProps = {
+  theme?: "light" | "dark";
+};
+
+const AppLogo = ({ theme = "light" }: AppLogoProps) => {
   return (
     <Link href={"/"}>
       <span
         className={`${cinzelFont.className} text-2xl flex justify-center items-center text-secondary`}
       >
-        <span className="text-primary font-bold text-4xl">Surv</span>
+        <span
+          className={`${
+            theme === "light" ? "text-primary" : "text-slate-100"
+          } font-bold text-4xl`}
+        >
+          Surv
+        </span>
         <span className="font-bold">eyco</span>
       </span>
     </Link>

@@ -10,10 +10,10 @@ type Props = {
 const BuildSurveyNavigationLink = ({ href, children, isActive }: Props) => {
   return (
     <Link
-      className={`p-3 inline-flex font-medium items-center border-b-0 ${
+      className={`px-3 py-2 inline-flex font-medium items-center ${
         isActive
-          ? "text-secondary border-b-4  border-secondary"
-          : "text-slate-200"
+          ? "text-primary border-b-4 border-t-white border-t-4 border-secondary"
+          : "text-slate-500 border-y-4 border-white"
       }`}
       href={href}
     >
