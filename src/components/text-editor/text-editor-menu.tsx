@@ -21,9 +21,9 @@ const TextEditorMenu = ({
   openInsertImageDialog,
 }: TextEditorMenuProps) => {
   const regularBtnClassNames =
-    "bg-indigo-400 text-white p-1 hover:bg-indigo-300 hover:text-slate-700";
+    "bg-slate-500 text-white p-1 hover:bg-primary hover:text-secondary";
   const highlightedBtnClassNames =
-    "bg-indigo-600 text-white p-1 hover:bg-indigo-300 hover:text-slate-700";
+    "bg-primary text-secondary p-1 hover:bg-primary hover:text-secondary";
 
   const addCustomImage = () => {
     editor!
@@ -135,21 +135,6 @@ const TextEditorMenu = ({
       >
         <ImRedo2 />
       </button>
-      <button
-        type="button"
-        onClick={() => {
-          addCustomImage();
-        }}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.chain().focus().run();
-        }}
-        // disabled={!editor.can().chain().focus().redo().run()}
-        className={regularBtnClassNames}
-      >
-        <ImageIcon className="h-4 w-4" />
-      </button>
-
       <button
         type="button"
         onClick={() => {

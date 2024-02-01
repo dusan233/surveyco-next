@@ -27,15 +27,17 @@ const Navbar = () => {
           {isSignedIn && <NavbarLink href="/library">My surveys</NavbarLink>}
           <NavbarLink href="/pricing">Plans & Pricing</NavbarLink>
         </div>
-        <div className="flex-1 gap-7 flex items-center justify-end">
+        <div className="flex-1 gap-4 flex items-center justify-end">
           {isSignedIn && (
-            <Button
-              onClick={() => setCreateSurveyOpen(true)}
-              size="sm"
-              variant="outline"
-            >
-              Create survey
-            </Button>
+            <>
+              <Button
+                onClick={() => setCreateSurveyOpen(true)}
+                size="sm"
+                variant="secondary"
+              >
+                Create survey
+              </Button>
+            </>
           )}
 
           <div className="flex gap-4 items-center">
@@ -53,12 +55,14 @@ const Navbar = () => {
             ) : (
               <>
                 <Link href="/login">
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="secondary">
                     Sign in
                   </Button>
                 </Link>
                 <Link href="/sign-up">
-                  <Button size="sm">Sign up</Button>
+                  <Button variant="neutral" size="sm">
+                    Sign up
+                  </Button>
                 </Link>
               </>
             )}
