@@ -3,7 +3,7 @@ import React from "react";
 import UpdateCollectorNameForm from "../components/update-collector-name-form";
 import Link from "next/link";
 import { ChevronsLeftIcon } from "lucide-react";
-import WebLinkCollector from "../components/web-link-collector";
+import CopyWebLink from "../components/web-link-collector";
 
 const SurveyCollectorPage = async ({
   params,
@@ -14,10 +14,9 @@ const SurveyCollectorPage = async ({
   const surveyId = params.slug;
 
   const collector = await getCollector(collectorId);
-  console.log(collector);
 
   return (
-    <div className="bg-slate-100 py-10">
+    <div className="p-5 sm:p-10 bg-slate-100 max-w-screen-lg mx-auto">
       <div className="mb-10">
         <Link
           className="text-blue-500 inline-flex gap-1 items-center text-lg hover:underline"
@@ -28,7 +27,7 @@ const SurveyCollectorPage = async ({
         </Link>
       </div>
       <UpdateCollectorNameForm collector={collector} />
-      <WebLinkCollector collector={collector} />
+      <CopyWebLink collector={collector} />
     </div>
   );
 };

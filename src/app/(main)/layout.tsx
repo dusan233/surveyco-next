@@ -1,10 +1,7 @@
 import "../../styles/global.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
 import Navbar from "@/components/layout/navbar";
-import Providers from "../providers";
-import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +18,7 @@ export default function RootLayout({
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+
       <main className="flex-1 bg-accent">{children}</main>
     </div>
   );

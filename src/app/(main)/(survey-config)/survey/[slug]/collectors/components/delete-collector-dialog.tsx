@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { Collector } from "@/lib/types";
+import { format } from "date-fns";
 import { AlertTriangle } from "lucide-react";
 import React, { useTransition } from "react";
 
@@ -57,10 +58,18 @@ const DeleteCollectorDialog = ({
             <div className="space-y-2 mt-3.5">
               <p>Name: {collector.name}</p>
               <p>
-                Date Created: {new Date(collector.created_at).toISOString()}
+                Date Created:{" "}
+                {format(
+                  new Date(collector.created_at),
+                  "EEEE, MMMM dd, yyyy H:mm"
+                )}
               </p>
               <p>
-                Date Updated: {new Date(collector.updated_at).toISOString()}
+                Date Updated:{" "}
+                {format(
+                  new Date(collector.updated_at),
+                  "EEEE, MMMM dd, yyyy H:mm"
+                )}
               </p>
             </div>
           </div>

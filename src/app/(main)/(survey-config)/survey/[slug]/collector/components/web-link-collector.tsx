@@ -7,11 +7,11 @@ import { Collector } from "@/lib/types";
 import { Link, LinkIcon } from "lucide-react";
 import React from "react";
 
-type WebLinkCollectorProps = {
+type CopyWebLinkProps = {
   collector: Collector;
 };
 
-const WebLinkCollector = ({ collector }: WebLinkCollectorProps) => {
+const CopyWebLink = ({ collector }: CopyWebLinkProps) => {
   const [_, copyToClipboard] = useCopyToClipboard();
   const { toast } = useToast();
   const collectorWebLink = `http://localhost:3000/s/${collector.id}`;
@@ -33,8 +33,8 @@ const WebLinkCollector = ({ collector }: WebLinkCollectorProps) => {
         or on social media. This kind of collector is open by default and the
         link works until you close it.
       </p>
-      <div className="p-5 bg-white flex items-center gap-2">
-        <LinkIcon />
+      <div className="p-5 bg-white flex flex-col sm:flex-row  gap-2">
+        <LinkIcon className="hidden sm:block" />
         <div className="truncate ... flex-1  p-1.5">{collectorWebLink}</div>
         <Button
           onClick={handleCopyCollectorWebLink}
@@ -48,4 +48,4 @@ const WebLinkCollector = ({ collector }: WebLinkCollectorProps) => {
   );
 };
 
-export default WebLinkCollector;
+export default CopyWebLink;

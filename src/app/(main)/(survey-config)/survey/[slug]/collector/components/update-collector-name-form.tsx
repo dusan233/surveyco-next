@@ -40,7 +40,7 @@ const UpdateCollectorNameForm = ({
         <SubmitButton />
       </form>
       {formState.errors?.name && (
-        <p className={"text-xs font-medium text-destructive"}>
+        <p className={"text-xs font-medium mt-1 text-destructive"}>
           {formState.errors.name[0]}
         </p>
       )}
