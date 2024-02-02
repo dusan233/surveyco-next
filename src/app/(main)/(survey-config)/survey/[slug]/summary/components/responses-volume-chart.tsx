@@ -2,7 +2,7 @@
 
 import { VolumeByDay } from "@/lib/types";
 import { format } from "date-fns";
-import React, { useId, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -44,16 +44,40 @@ const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
   const chartId = useId();
   const barRef = useRef(null);
   const [xAxisTickWidth, setXAxisTickWidth] = useState(20);
+  const [hideXAxis, setHideXAxis] = useState(() => {
+    if (window.innerWidth < 400) {
+      return true;
+    } else if (window.innerWidth >= 400) {
+      return false;
+    }
+  });
 
   const maxNumber = data.toSorted(
     (a, b) => b.response_count - a.response_count
   )[0].response_count;
 
+  useEffect(() => {
+    const onWindowResize = (e: Event) => {
+      console.log(window.innerWidth < 400 && !hideXAxis);
+      if (window.innerWidth < 400 && !hideXAxis) {
+        setHideXAxis(true);
+      } else if (window.innerWidth >= 400 && hideXAxis) {
+        setHideXAxis(false);
+      }
+      // @ts-ignore
+      const width = barRef.current?.props.xAxis.bandSize || 20;
+      setXAxisTickWidth(width);
+    };
+
+    window.addEventListener("resize", onWindowResize);
+
+    return () => window.removeEventListener("resize", onWindowResize);
+  }, [hideXAxis]);
+
   return (
     <ResponsiveContainer
       onResize={() => {
         // @ts-ignore
-
         const width = barRef.current?.props.xAxis.bandSize || 20;
         setXAxisTickWidth(width);
       }}
@@ -78,8 +102,8 @@ const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
           tick={(props) => (
             <CustomXAxisTick
               {...props}
-              // @ts-ignore
               width={xAxisTickWidth}
+              hideXAxis={hideXAxis}
             />
           )}
           className="relative"
@@ -100,7 +124,7 @@ const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
 };
 
 const CustomXAxisTick = (s: any) => {
-  return (
+  return !s.hideXAxis ? (
     <g transform={`translate(${s.x - (s.width - 10) / 2},${s.y})`}>
       <foreignObject textAnchor="middle" width="100%" height="100%">
         <div
@@ -114,11 +138,12 @@ const CustomXAxisTick = (s: any) => {
         </div>
       </foreignObject>
     </g>
-  );
+  ) : null;
 };
 
 const CustomYAxisTick = (props: any) => {
   const { x, y, payload } = props;
+
   return (
     <Text className="text-xs" x={x} y={y} dy={4} textAnchor="end" fill="#666">
       {`${payload.value}`}
