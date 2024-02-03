@@ -50,7 +50,7 @@ const MultiChoiceQuestionResponse = ({
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(option.description),
                     }}
-                    className="font-normal text-lg"
+                    className="font-normal min-w-[1%] break-words text-lg"
                   ></FormLabel>
                 </FormItem>
               ))}

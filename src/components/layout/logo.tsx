@@ -8,7 +8,7 @@ const cinzelFont = Cinzel({
 });
 
 type AppLogoProps = {
-  theme?: "light" | "dark";
+  theme?: "light" | "dark" | "light-white";
 };
 
 const AppLogo = ({ theme = "light" }: AppLogoProps) => {
@@ -19,7 +19,7 @@ const AppLogo = ({ theme = "light" }: AppLogoProps) => {
       >
         <span
           className={`${
-            theme === "light" ? "text-primary" : "text-slate-100"
+            theme === "light" ? "text-primary" : theme=== "dark"? "text-slate-100" : "text-white"
           } font-bold text-4xl`}
         >
           Surv

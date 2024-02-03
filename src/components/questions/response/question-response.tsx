@@ -79,7 +79,7 @@ const QuestionResponse = ({
           </p>
         )}
         <QuestionDescription question={question} />
-        <div className="mt-7 ml-7">
+        <div className="mt-7 ml-4 sm:ml-7">
           {renderQuestionResponseContent(question, index, defaultValue)}
         </div>
       </>

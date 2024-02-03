@@ -61,7 +61,7 @@ const CheckboxesQuestionResponse = ({
                       />
                     </FormControl>
                     <FormLabel
-                      className="font-normal text-lg"
+                      className="font-normal min-w-[1%] break-words text-lg"
                       dangerouslySetInnerHTML={{
                         __html: DOMPurify.sanitize(option.description),
                       }}

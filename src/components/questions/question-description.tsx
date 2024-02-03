@@ -8,13 +8,13 @@ type QuestionDescriptionProps = {
 
 const QuestionDescription = ({ question }: QuestionDescriptionProps) => {
   return (
-    <div className="flex items-start gap-3">
+    <div className="block sm:flex items-start gap-3">
       <span className="font-bold text-xl">
         {question.required && "*"}
         {question.number}.
       </span>
       <h4
-        className="flex-1 text-xl"
+        className="w-full min-w-[1%] text-xl break-words"
         dangerouslySetInnerHTML={{
           __html: DOMPurify.sanitize(question.description),
         }}
