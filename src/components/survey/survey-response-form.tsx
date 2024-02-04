@@ -1,21 +1,20 @@
 "use client";
 
-import QuestionResponseComp from "@/components/questions/response/question-response";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import useSaveSurveyResponse from "@/lib/hooks/useSaveSurveyResponse";
 import {
   Question,
-  QuestionType,
+  QuestionResponseData,
   QuestionsResponsesData,
   SurveyPage,
 } from "@/lib/types";
 import { questionsResponsesSchema } from "@/lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 
 import React from "react";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
+import QuestionResponseList from "../questions/response/question-response-list";
 
 type SurveyResponseFormProps = {
   questions: Question[];
@@ -31,12 +30,7 @@ type SurveyResponseFormProps = {
     submitted: boolean
   ) => void;
   onPreviousPage: () => void;
-  initialResponses: {
-    id?: string;
-    questionId: string;
-    answer: string | string[];
-    questionType: QuestionType;
-  }[];
+  initialResponses: QuestionResponseData[];
 };
 
 const SurveyResponseForm = ({
@@ -52,18 +46,12 @@ const SurveyResponseForm = ({
   initialResponses,
   onSuccessfulSubmit,
 }: SurveyResponseFormProps) => {
-  const queryClient = useQueryClient();
   const { saveResponseMutation, isPending } = useSaveSurveyResponse();
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
     defaultValues: {
       questionResponses: initialResponses,
     },
-  });
-  const { fields } = useFieldArray({
-    control: form.control,
-    name: "questionResponses",
-    keyName: "qId",
   });
 
   const handleSubmit = async (values: QuestionsResponsesData) => {
@@ -96,30 +84,17 @@ const SurveyResponseForm = ({
     surveyPages.findIndex((page) => page.number < displayPageNum) !== -1;
   const showSendBtn = displayPageNum === surveyPages.length;
 
-  const buttonsInactive = isFetchingPage || isPending;
+  const controlsInactive = isFetchingPage || isPending;
 
   return (
     <FormProvider {...form}>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="flex flex-col gap-6">
-            {fields.map((questionField, index) => {
-              const questionData = questions[index];
-
-              return (
-                <QuestionResponseComp
-                  key={questionField.qId}
-                  question={questionData}
-                  index={index}
-                  defaultValue={questionField.answer}
-                />
-              );
-            })}
-          </div>
+          <QuestionResponseList questions={questions} />
           <div className="flex justify-end gap-2 mt-10">
             {showPrevBtn && (
               <Button
-                disabled={buttonsInactive}
+                disabled={controlsInactive}
                 onClick={onPreviousPage}
                 size="lg"
                 type="button"
@@ -128,12 +103,12 @@ const SurveyResponseForm = ({
               </Button>
             )}
             {showNextBtn && (
-              <Button disabled={buttonsInactive} size="lg" type="submit">
+              <Button disabled={controlsInactive} size="lg" type="submit">
                 Next
               </Button>
             )}
             {showSendBtn && (
-              <Button disabled={buttonsInactive} size="lg" type="submit">
+              <Button disabled={controlsInactive} size="lg" type="submit">
                 Send
               </Button>
             )}

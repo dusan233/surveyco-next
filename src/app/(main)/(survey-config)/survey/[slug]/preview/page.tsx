@@ -39,7 +39,7 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div className="bg-slate-100 p-5 sm:p-10">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <SurveyResponseForm
           onSurveyChange={handleSurveyDataChanged}
           onSuccessfulSubmit={handleSuccessfullPageSubmission}

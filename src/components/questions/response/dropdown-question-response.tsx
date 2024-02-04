@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/select";
 import { MultipleChoiceQuestion } from "@/lib/types";
 import React from "react";
+import DOMPurify from "isomorphic-dompurify";
+import { convert } from "html-to-text";
 import { useFormContext } from "react-hook-form";
 
 type DropdownQuestionResponseProps = {
@@ -29,6 +31,7 @@ const DropdownQuestionResponse = ({
   defaultValue,
 }: DropdownQuestionResponseProps) => {
   const { control } = useFormContext();
+  const options = question.options;
 
   return (
     <FormField
@@ -43,9 +46,9 @@ const DropdownQuestionResponse = ({
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {question.options.map((option) => (
+              {options.map((option) => (
                 <SelectItem key={option.id} value={option.id}>
-                  {option.description}
+                  {convert(DOMPurify.sanitize(option.description))}
                 </SelectItem>
               ))}
             </SelectContent>

@@ -22,7 +22,6 @@ type CheckboxesQuestionResponseProps = {
 const CheckboxesQuestionResponse = ({
   name,
   question,
-  defaultValue,
 }: CheckboxesQuestionResponseProps) => {
   const { control } = useFormContext();
 

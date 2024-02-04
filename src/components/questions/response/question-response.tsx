@@ -14,7 +14,8 @@ import DropdownQuestionResponse from "./dropdown-question-response";
 import MultiChoiceQuestionResponse from "./multichoice-question-response";
 import CheckboxesQuestionResponse from "./checkboxes-question-response";
 import { useFormContext } from "react-hook-form";
-import { FormMessage } from "@/components/ui/form";
+import AutoAnimate from "@/components/auto-animate";
+import { AlertTriangleIcon } from "lucide-react";
 
 type QuestionResponseProps = {
   question: Question;
@@ -71,19 +72,22 @@ const QuestionResponse = ({
   const error = errors.questionResponses?.[index];
 
   return (
-    <QuestionCard>
+    <div>
       <>
-        {error && (
-          <p className="text-xs font-medium text-destructive">
-            {error.message}
-          </p>
-        )}
+        <AutoAnimate duration={100}>
+          {error && (
+            <p className="text-xs mb-2 font-medium flex gap-1 items-center text-destructive">
+              <AlertTriangleIcon className="h-3.5 w-3.5" />
+              {error.message}
+            </p>
+          )}
+        </AutoAnimate>
         <QuestionDescription question={question} />
         <div className="mt-7 ml-4 sm:ml-7">
           {renderQuestionResponseContent(question, index, defaultValue)}
         </div>
       </>
-    </QuestionCard>
+    </div>
   );
 };
 

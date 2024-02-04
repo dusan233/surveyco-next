@@ -25,7 +25,7 @@ const MultiChoiceQuestionResponse = ({
   defaultValue,
 }: MultichoiceQuestionResponseProps) => {
   const { control } = useFormContext();
-
+  const choices = question.options;
   return (
     <FormField
       control={control}
@@ -38,7 +38,7 @@ const MultiChoiceQuestionResponse = ({
               defaultValue={defaultValue}
               className="flex flex-col space-y-1"
             >
-              {question.options.map((option) => (
+              {choices.map((option) => (
                 <FormItem
                   key={option.id}
                   className="flex items-center space-x-3 space-y-0"
@@ -50,7 +50,7 @@ const MultiChoiceQuestionResponse = ({
                     dangerouslySetInnerHTML={{
                       __html: DOMPurify.sanitize(option.description),
                     }}
-                    className="font-normal min-w-[1%] break-words text-lg"
+                    className="font-normal  min-w-[1%] break-words text-lg"
                   ></FormLabel>
                 </FormItem>
               ))}
