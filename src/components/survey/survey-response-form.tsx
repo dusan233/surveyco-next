@@ -12,6 +12,7 @@ import {
 } from "@/lib/types";
 import { questionsResponsesSchema } from "@/lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 
 import React from "react";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -25,8 +26,11 @@ type SurveyResponseFormProps = {
   isFetchingPage: boolean;
   surveyResposneStartTime: Date;
   onSurveyChange: () => void;
-  onSubmit: (data: QuestionsResponsesData, submitted: boolean) => void;
-  setSelectedPageNum: React.Dispatch<React.SetStateAction<number>>;
+  onSuccessfulSubmit: (
+    data: QuestionsResponsesData,
+    submitted: boolean
+  ) => void;
+  onPreviousPage: () => void;
   initialResponses: {
     id?: string;
     questionId: string;
@@ -38,7 +42,7 @@ type SurveyResponseFormProps = {
 const SurveyResponseForm = ({
   questions,
   surveyPages,
-  setSelectedPageNum,
+  onPreviousPage,
   isFetchingPage,
   displayPageNum,
   surveyId,
@@ -46,8 +50,9 @@ const SurveyResponseForm = ({
   surveyResposneStartTime,
   onSurveyChange,
   initialResponses,
-  onSubmit,
+  onSuccessfulSubmit,
 }: SurveyResponseFormProps) => {
+  const queryClient = useQueryClient();
   const { saveResponseMutation, isPending } = useSaveSurveyResponse();
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
@@ -74,7 +79,7 @@ const SurveyResponseForm = ({
       },
       {
         onSuccess(data) {
-          onSubmit(values, data.submitted);
+          onSuccessfulSubmit(values, data.submitted);
         },
         onError(error) {
           if (error.name === "CONFLICT") {
@@ -90,10 +95,6 @@ const SurveyResponseForm = ({
   const showPrevBtn =
     surveyPages.findIndex((page) => page.number < displayPageNum) !== -1;
   const showSendBtn = displayPageNum === surveyPages.length;
-
-  const handlePrevPage = () => {
-    setSelectedPageNum((selectedPageNum) => selectedPageNum - 1);
-  };
 
   const buttonsInactive = isFetchingPage || isPending;
 
@@ -119,7 +120,7 @@ const SurveyResponseForm = ({
             {showPrevBtn && (
               <Button
                 disabled={buttonsInactive}
-                onClick={handlePrevPage}
+                onClick={onPreviousPage}
                 size="lg"
                 type="button"
               >

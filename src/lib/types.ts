@@ -77,6 +77,13 @@ export type QuestionResponse = {
 export type CopyQuestionData = z.infer<typeof placeQuestionSchema>;
 export type CopyPageData = z.infer<typeof placePageSchema>;
 export type QuestionsResponsesData = z.infer<typeof questionsResponsesSchema>;
+export type QuestionResponseData = {
+  questionId: string;
+  required: boolean;
+  answer: (string | string[]) & (string | string[] | undefined);
+  questionType: QuestionType;
+  id?: string | undefined;
+};
 
 export type MultiChoiceQuestionData = z.infer<
   typeof multiChoiceQuestionSchema
@@ -181,6 +188,7 @@ export interface VolumeByDay {
 
 export interface QuestionsResponseData {
   questions: Question[];
+  page: number;
 }
 
 export interface SurveyResponse {

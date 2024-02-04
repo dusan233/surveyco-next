@@ -128,6 +128,10 @@ const SurveyResponse = ({
     }
   };
 
+  const onPreviousPage = () => {
+    setSelectedPageNum((selectedPageNum) => selectedPageNum - 1);
+  };
+
   return (
     <div>
       {/* {surveyPages!.map((page) => {
@@ -152,7 +156,7 @@ const SurveyResponse = ({
         collectorId={collectorId}
         surveyResposneStartTime={startTime}
         onSurveyChange={onSurveyChange}
-        onSubmit={onSubmit}
+        onSuccessfulSubmit={onSubmit}
         key={
           displayPageNum
           // !isFetching
@@ -163,7 +167,7 @@ const SurveyResponse = ({
         isFetchingPage={isFetching || selectedPageNum !== displayPageNum}
         questions={questions!}
         surveyPages={surveyPages!}
-        setSelectedPageNum={setSelectedPageNum}
+        onPreviousPage={onPreviousPage}
         displayPageNum={displayPageNum}
       />
     </div>
