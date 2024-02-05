@@ -1,19 +1,15 @@
 "use client";
 
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import {
-  MultipleChoiceQuestion,
-  Question,
-  QuestionType,
-  QuestionsResponsesData,
-} from "@/lib/types";
+import { Question, QuestionType, QuestionsResponsesData } from "@/lib/types";
 import useQuestionsAndResponses from "@/lib/hooks/useQuestionsAndResponses";
 import SurveyModifiedAlertDialog from "./survey-modified-alert-dialog";
 
 import { useRouter } from "next/navigation";
 import SurveyResponseForm from "@/components/survey/survey-response-form";
+import { useQueryClient } from "@tanstack/react-query";
 
 type SurveyResponseProps = {
   surveyId: string;
@@ -26,6 +22,7 @@ const SurveyResponse = ({
   collectorId,
   surveyResposneStartTime,
 }: SurveyResponseProps) => {
+  const queryClient = useQueryClient();
   const { replace } = useRouter();
   const [selectedPageNum, setSelectedPageNum] = useState(1);
   const [displayPageNum, setDisplayPageNum] = useState(1);
@@ -33,55 +30,13 @@ const SurveyResponse = ({
   const [showSurveyModifiedDialog, setShowSurveyModifiedDialog] =
     useState(false);
 
-  const { surveyPages, isLoading: loadingPages } = useSurveyPages(surveyId);
-  const {
-    questions: questionsData,
-    questionResponses: questionResponsesData,
-    isLoading: loadingQuestions,
-    isFetching,
-  } = useQuestionsAndResponses(surveyId, collectorId, selectedPageNum);
-
-  const [questions, setQuestions] = useState(questionsData);
-  const [questionResponses, setQuestionResponses] = useState(
-    questionResponsesData
-  );
+  const { surveyPages } = useSurveyPages(surveyId);
+  const { questions, questionResponses, page, isFetching } =
+    useQuestionsAndResponses(surveyId, collectorId, selectedPageNum);
 
   const resetSurveyStartTime = () => {
     setStartTime(new Date());
   };
-
-  useEffect(() => {
-    if (!isFetching) {
-      setQuestions(questionsData);
-      // (currentQuestions) => {
-      //   if (currentQuestions) {
-      //     return currentQuestions.map((q) => {
-      //       if (q.type !== QuestionType.textbox) {
-      //         return {
-      //           ...q,
-      //           options: (q as MultipleChoiceQuestion).options.map(
-      //             (qChoice) => {
-      //               const sameQ = questionsData?.find(
-      //                 (newQ) => newQ.id === q.id
-      //               );
-      //               const sameChoice = (
-      //                 sameQ as MultipleChoiceQuestion
-      //               )?.options.find((newChoice) => newChoice.id === qChoice.id);
-      //               return sameChoice ?? qChoice;
-      //             }
-      //           ),
-      //         };
-      //       }
-
-      //       return q;
-      //     });
-      //   }
-      //   return currentQuestions;
-      // }
-      setQuestionResponses(questionResponsesData);
-      setDisplayPageNum(selectedPageNum);
-    }
-  }, [isFetching, selectedPageNum, questionsData, questionResponsesData]);
 
   const getInitialAnswer = (question: Question) => {
     const questionRes = questionResponses!.find(
@@ -114,6 +69,28 @@ const SurveyResponse = ({
       };
     });
   };
+  const clearPagesCachedData = useCallback(
+    (discludeCurrentPage: boolean = false) => {
+      queryClient.resetQueries({
+        predicate(query) {
+          const queryKey = query.queryKey;
+          console.log(query);
+          const condition =
+            queryKey[0] === "survey" &&
+            queryKey[1] === surveyId &&
+            queryKey[2] === "questions-responses" &&
+            (discludeCurrentPage ? queryKey[3] !== page : true);
+
+          if (condition) {
+            return true;
+          }
+
+          return false;
+        },
+      });
+    },
+    [queryClient, page, surveyId]
+  );
 
   const onSurveyChange = () => {
     setShowSurveyModifiedDialog(true);
@@ -132,20 +109,15 @@ const SurveyResponse = ({
     setSelectedPageNum((selectedPageNum) => selectedPageNum - 1);
   };
 
+  useEffect(() => {
+    if (questions && page && questionResponses) {
+      console.log("happening");
+      clearPagesCachedData(true);
+    }
+  }, [questions, page, clearPagesCachedData, questionResponses]);
+
   return (
-    <div>
-      {/* {surveyPages!.map((page) => {
-        return page.number === displayPageNum ? (
-          <SurveyResponseForm
-            key={page.id}
-            displayPageNum={displayPageNum}
-            setSelectedPageNum={setSelectedPageNum}
-            surveyPages={surveyPages!}
-            questions={questions!}
-            isFetchingPage={isFetching}
-          />
-        ) : null;
-      })} */}
+    <>
       <SurveyModifiedAlertDialog
         isOpen={showSurveyModifiedDialog}
         onOpenChange={() => setShowSurveyModifiedDialog((show) => !show)}
@@ -157,20 +129,15 @@ const SurveyResponse = ({
         surveyResposneStartTime={startTime}
         onSurveyChange={onSurveyChange}
         onSuccessfulSubmit={onSubmit}
-        key={
-          displayPageNum
-          // !isFetching
-          //   ? surveyPages?.find((page) => page.number === displayPageNum)?.id
-          //   : ""
-        }
+        key={page}
         initialResponses={getInitialResponses()}
-        isFetchingPage={isFetching || selectedPageNum !== displayPageNum}
+        isFetchingPage={isFetching}
         questions={questions!}
         surveyPages={surveyPages!}
         onPreviousPage={onPreviousPage}
-        displayPageNum={displayPageNum}
+        displayPageNum={page!}
       />
-    </div>
+    </>
   );
 };
 

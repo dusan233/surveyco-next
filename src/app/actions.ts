@@ -820,6 +820,7 @@ export const getSurveyQuestionsAndResponses = async (
 ): Promise<{
   questions: Question[];
   questionResponses: QuestionResponse[];
+  page: number;
 }> => {
   const surveyResponsesCookieVal = cookies().get("surveyResponses");
 
@@ -837,8 +838,7 @@ export const getSurveyQuestionsAndResponses = async (
   );
 
   if (!res.ok) {
-    // throw new Error(`Failed to create page for survey with id: ${surveyId}`);
-    console.log("error questions-responses thing");
+    throw new Error(`Failed to create page for survey with id: ${surveyId}`);
   }
 
   return await res.json();

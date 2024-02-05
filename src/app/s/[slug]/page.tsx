@@ -1,8 +1,4 @@
-import {
-  getCollector,
-  getSurveyCollector,
-  getSurveyPages,
-} from "@/app/actions";
+import { getCollector, getSurveyPages } from "@/app/actions";
 import React from "react";
 
 import {
@@ -17,8 +13,6 @@ import { cookies } from "next/headers";
 import { RedirectType, permanentRedirect } from "next/navigation";
 
 const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
-  //if u took the servey based on cookie get message that u took the survey
-
   const queryClient = new QueryClient();
 
   const collector = await getCollector(params.slug);
@@ -38,12 +32,12 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
 
   const surveyResposneStartTime = new Date();
 
-  const prefetchSurveyPages = queryClient.prefetchQuery({
+  const prefetchSurveyPages = queryClient.fetchQuery({
     queryKey: ["survey", collector.surveyId, "pages"],
     queryFn: () => getSurveyPages(surveyId),
   });
 
-  const prefetchQuestionsAndResponses = queryClient.prefetchQuery({
+  const prefetchQuestionsAndResponses = queryClient.fetchQuery({
     queryKey: ["survey", surveyId, "questions-responses", 1],
     queryFn: () => getSurveyQuestionsAndResponses(surveyId, collector.id, 1),
   });
@@ -52,7 +46,7 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="mx-auto max-w-3xl min-h-screen p-10">
+      <div className="mx-auto max-w-4xl">
         <SurveyResponse
           surveyResposneStartTime={surveyResposneStartTime}
           collectorId={collector.id}

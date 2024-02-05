@@ -18,6 +18,7 @@ export default function useQuestionsAndResponses(
   return {
     questions: data?.questions,
     questionResponses: data?.questionResponses,
+    page: data?.page,
     isLoading,
     isFetching,
     isRefetching,
