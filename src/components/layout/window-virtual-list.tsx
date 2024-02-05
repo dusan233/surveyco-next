@@ -1,19 +1,24 @@
 "use client";
 
-import { Virtualizer } from "@tanstack/react-virtual";
-import React, { ReactNode } from "react";
+import { VirtualItem, useWindowVirtualizer } from "@tanstack/react-virtual";
+import React, { ReactNode, useRef } from "react";
 
-type WindowVirtualListProps = {
-  children: ReactNode;
-  listRef: React.MutableRefObject<HTMLDivElement | null>;
-  virtualizer: Virtualizer<Window, Element>;
+type WindowVirtualListProps<T> = {
+  items: T[];
+  renderItem: (item: VirtualItem) => ReactNode;
 };
 
-const WindowVirtualList = ({
-  children,
-  listRef,
-  virtualizer,
-}: WindowVirtualListProps) => {
+const WindowVirtualList = <T,>({
+  renderItem,
+  items,
+}: WindowVirtualListProps<T>) => {
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const virtualizer = useWindowVirtualizer({
+    count: items.length,
+    estimateSize: () => 50,
+    overscan: 5,
+    scrollMargin: listRef.current?.offsetTop ?? 0,
+  });
   const virtualItems = virtualizer.getVirtualItems();
 
   return (
@@ -37,7 +42,18 @@ const WindowVirtualList = ({
             }px)`,
           }}
         >
-          {children}
+          {virtualItems.map((virtualRow) => {
+            return (
+              <div
+                key={virtualRow.key}
+                data-index={virtualRow.index}
+                ref={virtualizer.measureElement}
+                className="pb-7"
+              >
+                {renderItem(virtualRow)}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -15,7 +15,6 @@ import { Dispatch, SetStateAction } from "react";
 import DataTableHeader from "./data-table-header";
 import DataTableBody from "./data-table-body";
 import DataTablePagination from "./data-table-pagination";
-import { ScrollArea } from "../ui/scroll-area";
 import Spinner from "../ui/spinner";
 
 interface DataTableProps<TData, TValue> {
