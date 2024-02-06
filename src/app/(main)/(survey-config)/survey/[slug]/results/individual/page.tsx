@@ -6,9 +6,10 @@ import {
 } from "@tanstack/react-query";
 import React from "react";
 import NoResponses from "../components/no-responses";
-import SurveyResponsesView from "../components/survey-responses-view";
+import IndividualResponses from "../components/individual-responses";
+import { SortObject } from "@/lib/types";
 
-const SurveyResultsIndividualPage = async ({
+const IndividualResponsesPage = async ({
   params,
 }: {
   params: { slug: string };
@@ -16,14 +17,14 @@ const SurveyResultsIndividualPage = async ({
   const surveyId = params.slug;
   const queryClient = new QueryClient();
 
-  const initialSort: { name: string; type: "asc" | "desc" } = {
-    name: "updated_at",
+  const initialSort: SortObject = {
+    column: "updated_at",
     type: "desc",
   };
 
   const [survey] = await Promise.all([
     getSurvey(surveyId),
-    queryClient.prefetchQuery({
+    queryClient.fetchQuery({
       queryKey: ["survey", surveyId, "responses", 1, initialSort],
       queryFn: () => getSurveyResponses(surveyId, 1, initialSort),
     }),
@@ -35,9 +36,9 @@ const SurveyResultsIndividualPage = async ({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <SurveyResponsesView survey={survey} />
+      <IndividualResponses survey={survey} />
     </HydrationBoundary>
   );
 };
 
-export default SurveyResultsIndividualPage;
+export default IndividualResponsesPage;

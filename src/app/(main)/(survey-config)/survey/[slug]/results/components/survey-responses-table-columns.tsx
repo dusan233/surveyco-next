@@ -1,16 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { Collector, CollectorType, SurveyResponse } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
-import { useState } from "react";
 import SurveyResponseTableAction from "./survey-response-table-action";
+import SortableHeader from "@/components/data-table/sortable-header";
 
 export const columns: ColumnDef<SurveyResponse>[] = [
   {
@@ -26,18 +18,12 @@ export const columns: ColumnDef<SurveyResponse>[] = [
     header: ({ column }) => {
       const isSortedValue = column.getIsSorted();
       return (
-        <button
-          className="w-full flex gap-0.5 items-center"
-          onClick={() => column.toggleSorting(isSortedValue === "asc")}
+        <SortableHeader
+          isSortedValue={isSortedValue}
+          toggleSorting={column.toggleSorting}
         >
           Status
-          {isSortedValue &&
-            (isSortedValue === "asc" ? (
-              <ArrowUp className="h-4 w-4" />
-            ) : (
-              <ArrowDown className="h-4 w-4" />
-            ))}
-        </button>
+        </SortableHeader>
       );
     },
 
@@ -64,18 +50,12 @@ export const columns: ColumnDef<SurveyResponse>[] = [
     header: ({ column }) => {
       const isSortedValue = column.getIsSorted();
       return (
-        <button
-          className="w-full flex gap-0.5 items-center"
-          onClick={() => column.toggleSorting(isSortedValue === "asc")}
+        <SortableHeader
+          isSortedValue={isSortedValue}
+          toggleSorting={column.toggleSorting}
         >
           Last Modified
-          {isSortedValue &&
-            (isSortedValue === "asc" ? (
-              <ArrowUp className="h-4 w-4" />
-            ) : (
-              <ArrowDown className="h-4 w-4" />
-            ))}
-        </button>
+        </SortableHeader>
       );
     },
 
@@ -94,18 +74,12 @@ export const columns: ColumnDef<SurveyResponse>[] = [
     header: ({ column }) => {
       const isSortedValue = column.getIsSorted();
       return (
-        <button
-          className="w-full flex gap-0.5 items-center"
-          onClick={() => column.toggleSorting(isSortedValue === "asc")}
+        <SortableHeader
+          isSortedValue={isSortedValue}
+          toggleSorting={column.toggleSorting}
         >
           Collector
-          {isSortedValue &&
-            (isSortedValue === "asc" ? (
-              <ArrowUp className="h-4 w-4" />
-            ) : (
-              <ArrowDown className="h-4 w-4" />
-            ))}
-        </button>
+        </SortableHeader>
       );
     },
     cell: ({ row }) => {
@@ -126,18 +100,12 @@ export const columns: ColumnDef<SurveyResponse>[] = [
     header: ({ column }) => {
       const isSortedValue = column.getIsSorted();
       return (
-        <button
-          className="w-full flex gap-0.5 items-center"
-          onClick={() => column.toggleSorting(isSortedValue === "asc")}
+        <SortableHeader
+          isSortedValue={isSortedValue}
+          toggleSorting={column.toggleSorting}
         >
-          IP Addresss
-          {isSortedValue &&
-            (isSortedValue === "asc" ? (
-              <ArrowUp className="h-4 w-4" />
-            ) : (
-              <ArrowDown className="h-4 w-4" />
-            ))}
-        </button>
+          IP Address
+        </SortableHeader>
       );
     },
     cell: ({ row }) => {

@@ -1,16 +1,15 @@
-import { getSurveyCollectors, getUserSurveys } from "@/app/actions";
-
+import { getSurveyResponses } from "@/app/actions";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useRef, useState } from "react";
 import { SortObject } from "../types";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function useSurveyCollectors(surveyId: string) {
+export default function useSurveyIndividualResponses(surveyId: string) {
   const { toast } = useToast();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 15,
+    pageSize: 30,
   });
   const [sort, setSort] = useState<SortObject>({
     column: "updated_at",
@@ -22,15 +21,8 @@ export default function useSurveyCollectors(surveyId: string) {
 
   const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
     staleTime: 0,
-    queryKey: [
-      "survey",
-      surveyId,
-      "collectors",
-      pagination.pageIndex + 1,
-      sort,
-    ],
-    queryFn: () =>
-      getSurveyCollectors(surveyId, pagination.pageIndex + 1, sort),
+    queryKey: ["survey", surveyId, "responses", pagination.pageIndex + 1, sort],
+    queryFn: () => getSurveyResponses(surveyId, pagination.pageIndex + 1, sort),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
@@ -56,10 +48,10 @@ export default function useSurveyCollectors(surveyId: string) {
         type: sorting[0].desc ? "desc" : "asc",
       });
     }
-  }, [sorting, data?.data]);
+  }, [sorting, data]);
 
   return {
-    collectors: data?.data,
+    responses: data?.data,
     pageCount: data?.total_pages || 0,
     isLoading,
     pagination,
@@ -69,6 +61,5 @@ export default function useSurveyCollectors(surveyId: string) {
     isFetching,
     isRefetching,
     lastSuccessData,
-    isError,
   };
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import {
@@ -12,7 +14,6 @@ type IndividualResponseDialogProps = {
   isOpen: boolean;
   onOpenChange: (show: boolean) => void;
   surveyId: string;
-  collectorId: string;
   responseId: string;
 };
 

@@ -1,9 +1,9 @@
 "use client";
 
-import useSurveyResponses from "@/lib/hooks/useSurveyResponses";
+import useSurveyIndividualResponses from "@/lib/hooks/useSurveIndividualResponses";
 import { QuizResponseData } from "@/lib/types";
-import React, { useCallback } from "react";
-import { SurveyResponsesTable } from "./survey-responses-table";
+import React from "react";
+import { DataTable as IndividualResponsesTable } from "@/components/data-table/data-table";
 import { columns } from "./survey-responses-table-columns";
 import { useIndividualResponseStore } from "@/lib/hooks/store/useIndividualResponseStore";
 import IndividualResponseDialog from "./individual-response-dialog";
@@ -12,42 +12,43 @@ type SurveyResponsesProps = {
   survey: QuizResponseData;
 };
 
-const SurveyResponsesView = ({ survey }: SurveyResponsesProps) => {
+const IndividualResponses = ({ survey }: SurveyResponsesProps) => {
   const {
     responses,
     pagination,
     setPagination,
     pageCount,
-    isLoading,
     isFetching,
     sorting,
     setSorting,
-  } = useSurveyResponses(survey.id);
-  const { showDialog, collectorId, responseId, setShowDialog } =
+    lastSuccessData,
+  } = useSurveyIndividualResponses(survey.id);
+  const { showDialog, responseId, setShowDialog } =
     useIndividualResponseStore();
 
   return (
-    <div>
+    <>
       <IndividualResponseDialog
         onOpenChange={setShowDialog}
         isOpen={showDialog}
-        collectorId={collectorId}
         surveyId={survey.id}
         responseId={responseId}
       />
-      <SurveyResponsesTable
-        pageCount={pageCount}
+      <h1 className="text-2xl mb-5">Individual Responses</h1>
+      <IndividualResponsesTable
+        pageCount={pageCount || lastSuccessData.current?.total_pages!}
         loading={isFetching}
         columns={columns}
-        data={responses!}
+        data={responses! || lastSuccessData.current?.data}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
         sortingState={sorting}
         paginationState={pagination}
-        responsesCount={survey.responses_count}
+        totalItemCount={survey.responses_count}
+        noDataMsg="No responses"
       />
-    </div>
+    </>
   );
 };
 
-export default SurveyResponsesView;
+export default IndividualResponses;

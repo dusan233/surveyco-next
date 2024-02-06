@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 export default function useSurveyPages(
   surveyId: string,
   options?: {
-    refetchOnMount: boolean;
-    refetchOnWindowFocus: boolean;
+    refetchOnMount?: boolean;
+    refetchOnWindowFocus?: boolean;
   }
 ) {
   const { data, isLoading } = useQuery({

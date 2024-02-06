@@ -759,12 +759,12 @@ export const getUserSurveys = async (
 export const getSurveyResponses = async (
   surveyId: string,
   page: number,
-  sort: { name: string; type: "asc" | "desc" }
+  sort: { column: string; type: "asc" | "desc" }
 ): Promise<SurveyResponsesResData> => {
   const { getToken } = auth();
   const token = await getToken();
 
-  const sortName = sort.name;
+  const sortName = sort.column;
   const sortType = sort.type;
 
   const res = await fetch(

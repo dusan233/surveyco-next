@@ -11,7 +11,7 @@ import Spinner from "@/components/ui/spinner";
 import { useIndividualResponseStore } from "@/lib/hooks/store/useIndividualResponseStore";
 import useSurveyResponse from "@/lib/hooks/useSurveyResponse";
 import useSurveyResponseAnswers from "@/lib/hooks/useSurveyResponseAnswers";
-import useSurveyResponses from "@/lib/hooks/useSurveyResponses";
+import useSurveyResponses from "@/lib/hooks/useSurveIndividualResponses";
 import { CollectorType } from "@/lib/types";
 import { format } from "date-fns";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -62,7 +62,7 @@ const IndividualResponse = ({
     )?.id;
 
     if (nextResponseId) {
-      setResponseData({ collectorId: "", responseId: nextResponseId });
+      setResponseData({ responseId: nextResponseId });
     }
   };
 
@@ -103,7 +103,7 @@ const IndividualResponse = ({
     )?.id;
 
     if (previousResponseId) {
-      setResponseData({ collectorId: "", responseId: previousResponseId });
+      setResponseData({ responseId: previousResponseId });
     }
   };
 
@@ -118,7 +118,7 @@ const IndividualResponse = ({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex gap-2 justify-between border items-center rounded-md p-2 bg-slate-50">
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
@@ -131,7 +131,7 @@ const IndividualResponse = ({
             <Select
               value={responseId}
               onValueChange={(value) => {
-                setResponseData({ collectorId: "", responseId: value });
+                setResponseData({ responseId: value });
               }}
             >
               <SelectTrigger>
@@ -215,12 +215,19 @@ const IndividualResponse = ({
       </div>
       <div className="mt-6">
         <p className="mb-2 text-lg font-medium">
-          Respondent {surveyResponse?.display_number} (Page 1)
+          Respondent {surveyResponse?.display_number} (Page {page})
         </p>
-        <IndividualResponseAnswers
-          questionResponses={questionResponses!}
-          questions={questions!}
-        />
+
+        {questions?.length === 0 ? (
+          <div className="border p-4 text-center">
+            There are no questions on this page.
+          </div>
+        ) : (
+          <IndividualResponseAnswers
+            questionResponses={questionResponses!}
+            questions={questions!}
+          />
+        )}
       </div>
     </div>
   );
