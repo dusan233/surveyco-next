@@ -8,7 +8,7 @@ export default function useSurveyPages(
     refetchOnWindowFocus?: boolean;
   }
 ) {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["survey", surveyId, "pages"],
     queryFn: () => getSurveyPages(surveyId),
     refetchOnMount: false,
@@ -16,5 +16,5 @@ export default function useSurveyPages(
     ...options,
   });
 
-  return { surveyPages: data, isLoading };
+  return { surveyPages: data, isLoading, isError };
 }

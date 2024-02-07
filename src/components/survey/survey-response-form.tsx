@@ -15,7 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import QuestionResponseList from "../questions/response/question-response-list";
-import { useQueryClient } from "@tanstack/react-query";
+import { useToast } from "../ui/use-toast";
 
 type SurveyResponseFormProps = {
   questions: Question[];
@@ -47,6 +47,7 @@ const SurveyResponseForm = ({
   initialResponses,
   onSuccessfulSubmit,
 }: SurveyResponseFormProps) => {
+  const { toast } = useToast();
   const { saveResponseMutation, isPending } = useSaveSurveyResponse();
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
@@ -73,6 +74,8 @@ const SurveyResponseForm = ({
         onError(error) {
           if (error.name === "CONFLICT") {
             onSurveyChange();
+          } else {
+            toast({ variant: "destructive", title: "Something went wrong!" });
           }
         },
       }

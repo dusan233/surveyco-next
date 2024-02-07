@@ -9,7 +9,7 @@ export default function useSurveyQuestions(
     refetchOnWindowFocus?: boolean;
   }
 ) {
-  const { data, isLoading, isFetching, isRefetching } = useQuery({
+  const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
     staleTime: 0,
     queryKey: ["survey", surveyId, "questions", page],
     queryFn: () => getSurveyQuestions(surveyId, page),
@@ -25,5 +25,6 @@ export default function useSurveyQuestions(
     isLoading,
     isFetching,
     isRefetching,
+    isError,
   };
 }

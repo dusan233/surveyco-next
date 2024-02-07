@@ -21,18 +21,30 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
     questions,
     page,
     fetchingPageQuestions,
+    isError,
   } = useSurveyPreview(surveyId);
+
+  if (isError)
+    return (
+      <div className="mx-auto space-y-4 max-w-sm text-center p-5 sm:p-10">
+        <h1 className="text-2xl font-medium">Internal Server Error</h1>
+        <p className="text-lg">
+          Sorry, we had some tehnical problems during your last operation.
+          Please try again in a bit.
+        </p>
+      </div>
+    );
 
   if (isLoading)
     return (
-      <div className="flex justify-center pt-10">
+      <div className="flex justify-center p-5 sm:p-10">
         <Spinner size="xl" />
       </div>
     );
 
   if (isPreviewFinished)
     return (
-      <div className="max-w-3xl mx-auto mt-10">
+      <div className="max-w-3xl mx-auto mt-10 p-5 sm:p-10">
         <PreviewEnd restartPreview={restartPreview} surveyId={surveyId} />
       </div>
     );
