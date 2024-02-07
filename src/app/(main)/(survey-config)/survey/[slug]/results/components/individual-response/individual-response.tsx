@@ -4,11 +4,11 @@ import Spinner from "@/components/ui/spinner";
 import useSurveyResponse from "@/lib/hooks/useSurveyResponse";
 import useSurveyResponses from "@/lib/hooks/useSurveIndividualResponses";
 import React, { useState } from "react";
-import IndividualResponseAnswers from "./individual-response/individual-response-answers";
+import IndividualResponseAnswers from "./individual-response-answers";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import IndividualResponsePagination from "./individual-response/individual-response-pagination";
-import IndividualResponseInfo from "./individual-response/individual-response-info";
-import useSurveyResponsesPagination from "./individual-response/useSurveyResponsesPagination";
+import IndividualResponsePagination from "./individual-response-pagination";
+import IndividualResponseInfo from "./individual-response-info";
+import useSurveyResponsesPagination from "./useSurveyResponsesPagination";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 

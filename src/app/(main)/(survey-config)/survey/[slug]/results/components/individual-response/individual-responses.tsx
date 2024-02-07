@@ -4,7 +4,7 @@ import useSurveyIndividualResponses from "@/lib/hooks/useSurveIndividualResponse
 import { QuizResponseData } from "@/lib/types";
 import React from "react";
 import { DataTable as IndividualResponsesTable } from "@/components/data-table/data-table";
-import { columns } from "./survey-responses-table-columns";
+import { columns } from "../survey-responses-table-columns";
 import { useIndividualResponseStore } from "@/lib/hooks/store/useIndividualResponseStore";
 import IndividualResponseDialog from "./individual-response-dialog";
 

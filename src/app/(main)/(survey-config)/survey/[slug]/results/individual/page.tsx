@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-query";
 import React from "react";
 import NoResponses from "../components/no-responses";
-import IndividualResponses from "../components/individual-responses";
+import IndividualResponses from "../components/individual-response/individual-responses";
 import { SortObject } from "@/lib/types";
 
 const IndividualResponsesPage = async ({
