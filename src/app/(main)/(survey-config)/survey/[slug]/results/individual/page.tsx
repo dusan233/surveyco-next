@@ -1,4 +1,4 @@
-import { getSurvey, getSurveyResponses } from "@/app/actions";
+import { getSurvey, getSurveyPages, getSurveyResponses } from "@/app/actions";
 import {
   HydrationBoundary,
   QueryClient,
@@ -27,6 +27,10 @@ const IndividualResponsesPage = async ({
     queryClient.fetchQuery({
       queryKey: ["survey", surveyId, "responses", 1, initialSort],
       queryFn: () => getSurveyResponses(surveyId, 1, initialSort),
+    }),
+    queryClient.fetchQuery({
+      queryKey: ["survey", surveyId, "pages"],
+      queryFn: () => getSurveyPages(surveyId),
     }),
   ]);
 

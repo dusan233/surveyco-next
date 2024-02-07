@@ -672,13 +672,19 @@ export const getSurveyResponseAnswers = async (
 
 export const getSurveyResponse = async (
   surveyId: string,
-  responseId: string
-): Promise<SurveyResponse> => {
+  responseId: string,
+  page: number
+): Promise<{
+  surveyResponse: SurveyResponse;
+  questions: Question[];
+  questionResponses: QuestionResponse[];
+  page: number;
+}> => {
   const { getToken } = auth();
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/response/${responseId}`,
+    `${process.env.BACKEND_API}/quiz/${surveyId}/response/${responseId}?page=${page}`,
     {
       credentials: "include",
       cache: "no-store",
