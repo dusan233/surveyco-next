@@ -18,7 +18,7 @@ export default function useTakeSurvey(
     useState(false);
 
   const { surveyPages } = useSurveyPages(surveyId);
-  const { questions, questionResponses, page, isFetching } =
+  const { questions, questionResponses, page, isFetching, isError } =
     useQuestionsAndResponses(surveyId, collectorId, selectedPageNum);
 
   const resetSurveyStartTime = () => {
@@ -120,5 +120,6 @@ export default function useTakeSurvey(
     showSurveyModifiedDialog,
     setShowSurveyModifiedDialog,
     startTime,
+    isError,
   };
 }

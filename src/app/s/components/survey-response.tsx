@@ -30,7 +30,19 @@ const SurveyResponse = ({
     showSurveyModifiedDialog,
     setShowSurveyModifiedDialog,
     page,
+    isError,
   } = useTakeSurvey(surveyId, collectorId, surveyResposneStartTime);
+
+  if (isError)
+    return (
+      <div className="mx-auto space-y-4 max-w-sm text-center p-5 sm:p-10">
+        <h1 className="text-2xl font-medium">Internal Server Error</h1>
+        <p className="text-lg">
+          Sorry, we had some tehnical problems during your last operation.
+          Please try again in a bit.
+        </p>
+      </div>
+    );
 
   return (
     <>
