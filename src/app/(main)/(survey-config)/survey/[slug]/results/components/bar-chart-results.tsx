@@ -6,12 +6,17 @@ import {
   BarChart,
   CartesianGrid,
   Cell,
-  Rectangle,
+  ResponsiveContainer,
   Text,
   Tooltip,
+  TooltipProps,
   XAxis,
   YAxis,
 } from "recharts";
+import {
+  NameType,
+  ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 type BarChartResultsProps = {
   data: {
@@ -35,50 +40,52 @@ const COLORS = [
 const BarChartResults = ({ data }: BarChartResultsProps) => {
   const barRef = useRef(null);
   return (
-    <BarChart
-      width={500}
-      height={300}
-      data={data}
-      margin={{
-        top: 5,
-        right: 30,
-        left: 20,
-        bottom: 10,
-      }}
-    >
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis
-        interval={0}
-        minTickGap={1}
-        dataKey="description"
-        tick={(props) => (
-          <CustomXAxisTick
-            {...props}
-            // @ts-ignore
-            width={barRef.current?.props.xAxis.bandSize || 20}
-          />
-        )}
-        className="relative"
-      />
-      <YAxis
-        onClick={() => console.log(barRef.current)}
-        ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
-        tick={CustomYAxisTick}
-        interval={0}
-        minTickGap={1}
-      />
-      <Tooltip content={CustomTooltipContent} />
+    <ResponsiveContainer minWidth={400} width="100%" height={300}>
+      <BarChart
+        data={data}
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 10,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          interval={0}
+          minTickGap={1}
+          dataKey="description"
+          tick={(props) => (
+            <CustomXAxisTick
+              {...props}
+              // @ts-ignore
+              width={barRef.current?.props.xAxis.bandSize || 20}
+            />
+          )}
+          className="relative"
+        />
+        <YAxis
+          ticks={[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+          tick={CustomYAxisTick}
+          interval={0}
+          minTickGap={1}
+        />
+        <Tooltip content={CustomTooltipContent} />
 
-      <Bar ref={barRef} dataKey="percenteges" fill="#B4FF00">
-        {data.map((_, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Bar>
-    </BarChart>
+        <Bar ref={barRef} dataKey="percenteges" fill="#B4FF00">
+          {data.map((_, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
   );
 };
 
-const CustomTooltipContent = ({ payload, active }: any) => {
+const CustomTooltipContent = ({
+  payload,
+  active,
+}: TooltipProps<ValueType, NameType>) => {
   if (active && payload && payload.length) {
     const dataItem = payload[0].payload; // Get the data item associated with the active tooltip
     return (
@@ -104,7 +111,7 @@ const CustomXAxisTick = (s: any) => {
           style={{
             width: s.width - 10,
           }}
-          className="text-xs p-0.5  text-center border-r leading-[12px] border-red-50 break-all line-clamp-2"
+          className="text-xs p-0.5  text-center border-r leading-[12px] border-red-50 break-words line-clamp-2"
         >
           <div>{s.payload.value}</div>
         </div>

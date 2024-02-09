@@ -35,7 +35,7 @@ const IndividualResponseAnswers = ({
                   (choice) => choice.id === qAnswer.questionOptionId
                 );
                 return (
-                  <div key={qAnswer.id}>
+                  <div className="break-all" key={qAnswer.id}>
                     - {convert(choiceContent!.description)}
                   </div>
                 );
@@ -43,16 +43,18 @@ const IndividualResponseAnswers = ({
 
         return (
           <div key={question.id}>
-            <div className="flex items-start gap-3">
+            <div className="flex gap-2 items-start">
               <span className="font-bold">Q{question.number}</span>
-              <h4 className="flex-1 ">{convert(question.description)}</h4>
+              <h4 className="break-all w-full min-w-[1%]">
+                {convert(question.description)}
+              </h4>
             </div>
             {questionSkipped ? (
               <div className="text-sm mt-2 text-gray-400">
                 Respondent skipped this question
               </div>
             ) : (
-              <div className="text-sm mt-2 text-gray-500 flex flex-col gap-1">
+              <div className="text-sm mt-2 break-all text-gray-500 flex flex-col gap-1">
                 {answer}
               </div>
             )}

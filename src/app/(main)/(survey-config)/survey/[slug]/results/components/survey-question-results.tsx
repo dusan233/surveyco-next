@@ -23,11 +23,13 @@ type SurveyResultsProps = {
 
 const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
   const [selectedPage, setSelectedPage] = useState(1);
-  const { questionResults, isFetching } = useQuestionResults(
+  const { questionResults, isFetching, lastSuccessData } = useQuestionResults(
     surveyId,
     selectedPage
   );
   const { surveyPages } = useSurveyPages(surveyId);
+
+  const questionResultsData = questionResults || lastSuccessData.current;
 
   useLoadingToast(isFetching, "Loading results...");
 
@@ -41,9 +43,9 @@ const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
       />
 
       <WindowVirtualList
-        items={questionResults!}
+        items={questionResultsData!}
         renderItem={(virtualRow) => {
-          const qResult = questionResults![virtualRow.index];
+          const qResult = questionResultsData![virtualRow.index];
           return qResult.type !== QuestionType.textbox ? (
             <MultiChoiceQuestionResults
               questionResult={qResult as MultipleChoiceQuestionResult}
