@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import QuestionResultDescription from "./question-result-description";
 
 type MultiChoiceQuestionResultsProps = {
   questionResult: MultipleChoiceQuestionResult;
@@ -68,21 +69,7 @@ const MultiChoiceQuestionResults = ({
 
   return (
     <div className="p-5 shadow-sm rounded-lg bg-white">
-      <div className="flex items-start gap-3">
-        <span className="font-bold text-xl">Q{questionResult.number}</span>
-        <h4 className="flex-1 text-xl">
-          {convert(questionResult.description)}
-        </h4>
-      </div>
-      <div className="flex gap-6 mt-5 text-gray-500">
-        <span className="text-black">
-          Type: {getQuestionTypeLable(questionResult.type)}
-        </span>
-        <div className="flex gap-3">
-          <span>Answered: {questionResult.answeredCount}</span>
-          <span>Skipped: {questionResult.skippedCount}</span>
-        </div>
-      </div>
+      <QuestionResultDescription questionResult={questionResult} />
       {questionResult.answeredCount !== 0 ? (
         <>
           <div className="mt-10 flex gap-3">
@@ -186,7 +173,7 @@ const MultiChoiceQuestionResults = ({
         </>
       ) : (
         <div className="mt-10 text-center">
-          <p>No matching responses .</p>
+          <p>No matching responses.</p>
         </div>
       )}
     </div>

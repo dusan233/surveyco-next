@@ -791,6 +791,30 @@ export const getSurveyResponses = async (
   return await res.json();
 };
 
+export const getQuestionResults = async (
+  surveyId: string,
+  page: number
+): Promise<QuestionResult[]> => {
+  const { getToken } = auth();
+  const token = await getToken();
+
+  const res = await fetch(
+    `${process.env.BACKEND_API}/quiz/${surveyId}/questions/result?page=${page}`,
+    {
+      cache: "no-store",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to get results for survey with id: ${surveyId}`);
+  }
+
+  return await res.json();
+};
+
 export const getQuestionsResult = async (
   surveyId: string,
   questionIds: string[]

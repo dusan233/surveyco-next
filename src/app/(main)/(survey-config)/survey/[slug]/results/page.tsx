@@ -1,8 +1,4 @@
-import {
-  getQuestionsResult,
-  getSurvey,
-  getSurveyQuestions,
-} from "@/app/actions";
+import { getQuestionResults, getSurvey, getSurveyPages } from "@/app/actions";
 
 import {
   HydrationBoundary,
@@ -17,19 +13,17 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;
   const queryClient = new QueryClient();
 
-  const [survey, questionsData] = await Promise.all([
+  const [survey] = await Promise.all([
     getSurvey(surveyId),
-    getSurveyQuestions(surveyId, 1),
+    queryClient.fetchQuery({
+      queryKey: ["survey", surveyId, "pages"],
+      queryFn: () => getSurveyPages(surveyId),
+    }),
+    queryClient.fetchQuery({
+      queryKey: ["survey", surveyId, "questions", "results", 1],
+      queryFn: () => getQuestionResults(surveyId, 1),
+    }),
   ]);
-
-  const questions = questionsData.questions;
-  const questionIds = questions.slice(0, 5).map((q) => q.id);
-
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["questions", "results", 1],
-    queryFn: ({ pageParam }) => getQuestionsResult(surveyId, pageParam),
-    initialPageParam: questionIds,
-  });
 
   if (survey.responses_count === 0) {
     return <NoResponses surveyId={surveyId} />;
@@ -37,13 +31,7 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div>
-        <SurveyQuestionResults
-          survey={survey}
-          questions={questions}
-          surveyId={surveyId}
-        />
-      </div>
+      <SurveyQuestionResults survey={survey} surveyId={surveyId} />
     </HydrationBoundary>
   );
 };

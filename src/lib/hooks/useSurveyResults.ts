@@ -1,46 +1,20 @@
-import { getQuestionsResult } from "@/app/actions";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { Question } from "../types";
+import { getQuestionResults } from "@/app/actions";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-export const useQuestionResults = (surveyId: string, questions: Question[]) => {
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ["questions", "results", 1],
-    queryFn: ({ pageParam }) => getQuestionsResult(surveyId, pageParam),
-    initialPageParam: ["dw"],
-    getNextPageParam: (lastPage, pages) => {
-      const lastFetchedQuestions = lastPage.toSorted(
-        (a, b) => a.number - b.number
-      );
-      const lastQuestion =
-        lastFetchedQuestions[lastFetchedQuestions.length - 1];
-      const nextQuestionIds = questions
-        .filter(
-          (q) =>
-            q.number > lastQuestion.number &&
-            q.number <= lastQuestion.number + 5
-        )
-        .map((q) => q.id);
-
-      return nextQuestionIds.length ? nextQuestionIds : null;
-    },
+export const useQuestionResults = (surveyId: string, page: number) => {
+  const { data, error, isFetching, status } = useQuery({
+    staleTime: 0,
+    queryKey: ["survey", surveyId, "questions", "results", page],
+    queryFn: () => getQuestionResults(surveyId, page),
+    placeholderData: keepPreviousData,
+    refetchOnMount: false,
   });
 
-  const questionResults = data?.pages.flat();
+  const questionResults = data;
   return {
     questionResults,
     error,
-    fetchNextPage,
-    hasNextPage,
     isFetching,
-    isFetchingNextPage,
     status,
   };
 };

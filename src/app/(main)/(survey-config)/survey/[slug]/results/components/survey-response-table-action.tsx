@@ -22,7 +22,7 @@ const SurveyResponseTableAction = ({
       <button
         onClick={() => {
           setShowDialog(true);
-          setResponseData({ collectorId, responseId });
+          setResponseData({ responseId });
         }}
       >
         View
