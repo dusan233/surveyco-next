@@ -5,37 +5,23 @@ import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
 import { useSelectedQuestion } from "@/lib/hooks/useSelectedQuestion";
 import { Question, QuestionType, UnsavedQuestion } from "@/lib/types";
 import { QuestionsListContext } from "@/lib/context";
-import BuildQuestionsList from "../questions/build-questions-list";
-import AddQuestion from "../questions/add-question";
+import BuildQuestionsList from "./build-questions-list";
+import AddQuestion from "./add-question";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-  ResponderProvided,
-} from "react-beautiful-dnd";
+
 import PageControlBar from "./page-control-bar";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
-import { StrictModeDroppable } from "../strict-mode-droppable";
 
-const BuildSurveyQuestions = ({
-  surveyId,
-  currentSurveyPage,
-}: {
-  surveyId: string;
-  currentSurveyPage: number;
-}) => {
-  const [currentPageNumber, setCurrentPageNumber] = useState(currentSurveyPage);
+const BuildSurveyQuestions = ({ surveyId }: { surveyId: string }) => {
+  const [currentPageNumber, setCurrentPageNumber] = useState(1);
   const { surveyPages } = useSurveyPages(surveyId);
   const currentPage = surveyPages!.find(
     (page) => page.number === currentPageNumber
   );
-  const {
-    questions: questionsData,
-    isLoading,
-    isFetching,
-  } = useSurveyQuestions(surveyId, currentPageNumber);
+  const { questions: questionsData, isFetching } = useSurveyQuestions(
+    surveyId,
+    currentPageNumber
+  );
 
   const [questions, setQuestions] = useState<(Question | UnsavedQuestion)[]>(
     []

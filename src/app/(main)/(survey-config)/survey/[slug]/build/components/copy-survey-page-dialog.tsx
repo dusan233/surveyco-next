@@ -5,25 +5,31 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import { CopyPageData, OperationPosition, SurveyPage } from "@/lib/types";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { placePageSchema } from "@/lib/validationSchemas";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
-import useMoveSurveyPage from "@/lib/hooks/useMoveSurveyPage";
+import useCopySurveyPage from "@/lib/hooks/useCopySurveyPage";
 
-type MovePageDialogProps = {
+type CopyPageDialogProps = {
   isOpen: boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
   surveyId: string;
@@ -31,16 +37,15 @@ type MovePageDialogProps = {
   setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const MoveSurvePageDialog = ({
+const CopySurvePageDialog = ({
   isOpen,
   onOpenChange,
   surveyId,
   currentPage,
   setCurrentPageNumber,
-}: MovePageDialogProps) => {
+}: CopyPageDialogProps) => {
   const { surveyPages } = useSurveyPages(surveyId);
-
-  const { movePageMutation, isPending } = useMoveSurveyPage();
+  const { copyPageMutation, isPending } = useCopySurveyPage();
   const form = useForm<CopyPageData>({
     resolver: zodResolver(placePageSchema),
     defaultValues: {
@@ -53,7 +58,7 @@ const MoveSurvePageDialog = ({
 
   const handleSubmit = (values: CopyPageData) => {
     console.log(values);
-    movePageMutation(
+    copyPageMutation(
       {
         surveyId,
         sourcePageId: currentPage.id,
@@ -76,7 +81,7 @@ const MoveSurvePageDialog = ({
     <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
-          <DialogTitle>Move Page {currentPage.number}</DialogTitle>
+          <DialogTitle>Copy Page {currentPage.number}</DialogTitle>
         </DialogHeader>
         <div className="gap-2 mt-5">
           <Form {...form}>
@@ -143,7 +148,7 @@ const MoveSurvePageDialog = ({
               Cancel
             </Button>
             <Button onClick={form.handleSubmit(handleSubmit)} size="sm">
-              Move page
+              Copy page
             </Button>
           </DialogFooter>
         </div>
@@ -152,4 +157,4 @@ const MoveSurvePageDialog = ({
   );
 };
 
-export default MoveSurvePageDialog;
+export default CopySurvePageDialog;

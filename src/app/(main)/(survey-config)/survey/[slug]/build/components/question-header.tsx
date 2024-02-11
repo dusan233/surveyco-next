@@ -4,7 +4,7 @@ import React, { useContext } from "react";
 
 import QuestionActions from "./question-actions";
 import { QuestionsListContext } from "@/lib/context";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { Lightbulb, Settings } from "lucide-react";
 
 type QuestionHeaderProps = {

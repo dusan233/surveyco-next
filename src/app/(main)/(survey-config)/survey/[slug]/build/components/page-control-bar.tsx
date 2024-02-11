@@ -7,11 +7,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import useCreateSurveyPage from "@/lib/hooks/useCreateSurveyPage";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import PageActions from "./page-actions";
 import { SurveyPage } from "@/lib/types";
 

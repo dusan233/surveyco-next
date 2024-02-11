@@ -8,7 +8,7 @@ import {
 import React from "react";
 import MultiChoiceQuestion from "./build-multichoice-question";
 import TextboxQuestionn from "./build-textbox-question";
-import QuestionCard from "./question-card";
+import QuestionCard from "@/components/questions/question-card";
 import QuestionHeader from "./question-header";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";

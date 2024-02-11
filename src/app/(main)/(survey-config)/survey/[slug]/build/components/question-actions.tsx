@@ -10,12 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, MoreVertical, Trash2 } from "lucide-react";
 import useDeleteQuestion from "@/lib/hooks/useDeleteQuestion";
 import { SurveyPage } from "@/lib/types";
-import { useToast } from "../ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import CopyQuestionDialog from "./copy-question-dialog";
 import MoveQuestionDialog from "./move-question-dialog";
 

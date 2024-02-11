@@ -1,14 +1,18 @@
 import React from "react";
-import { FormControl, FormField, FormItem, FormMessage } from "../ui/form";
-import { RichTextEditor } from "../text-editor/rich-text";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { RichTextEditor } from "@/components/text-editor/rich-text";
 import { Option } from "@/lib/types";
-import { Control, SubmitHandler, useFormContext } from "react-hook-form";
-import { Button } from "../ui/button";
+import { Control, useFormContext } from "react-hook-form";
+
 import { FaPlus, FaMinus } from "react-icons/fa6";
-import AutoAnimate from "../auto-animate";
+import AutoAnimate from "@/components/auto-animate";
 import { Editor } from "@tiptap/react";
 import { uploadMedia } from "@/app/actions";
-import { MultiChoiceData } from "./build-multichoice-question";
 
 type QuestionOptionProps = {
   option: Option;

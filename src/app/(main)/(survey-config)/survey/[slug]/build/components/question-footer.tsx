@@ -1,6 +1,6 @@
 import { QuestionsListContext } from "@/lib/context";
 import React, { useContext } from "react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 const QuestionFooter = ({
   questionIndex,

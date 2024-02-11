@@ -17,7 +17,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { OperationPosition, Question, UnsavedQuestion } from "../../lib/types";
+import { OperationPosition, Question, UnsavedQuestion } from "@/lib/types";
 import EditQuestion from "./edit-question";
 import QuestionPreview from "./question-preview";
 

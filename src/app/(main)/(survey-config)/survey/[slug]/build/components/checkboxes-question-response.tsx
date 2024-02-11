@@ -1,7 +1,7 @@
 import { MultipleChoiceQuestion } from "@/lib/types";
 import React from "react";
-import { FormItem } from "../ui/form";
-import { Checkbox } from "../ui/checkbox";
+import { FormItem } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type CheckboxesQuestionResponseProps = {
   question: MultipleChoiceQuestion;

@@ -1,7 +1,6 @@
 import React from "react";
-import { Control, SubmitHandler, useFieldArray } from "react-hook-form";
+import { Control, useFieldArray } from "react-hook-form";
 import QuestionOption from "./question-option";
-import { MultiChoiceData } from "./build-multichoice-question";
 import { z } from "zod";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 

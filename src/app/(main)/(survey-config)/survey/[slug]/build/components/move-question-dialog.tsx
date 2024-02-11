@@ -8,19 +8,19 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { OperationPosition } from "@/lib/types";
 import useDownsizedQuestions from "@/lib/hooks/useDownsizedQuestions";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
 

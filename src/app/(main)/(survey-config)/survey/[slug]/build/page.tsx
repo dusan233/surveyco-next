@@ -1,6 +1,6 @@
 import React from "react";
 
-import BuildSurveyQuestions from "@/components/survey/build-survey-questions";
+import BuildSurveyQuestions from "./components/build-survey-questions";
 import { getSurveyPages, getSurveyQuestions } from "@/app/actions";
 import {
   HydrationBoundary,
@@ -8,37 +8,31 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 
-const BuildSurveyPage = async ({
+const BuildSurveyQuestionsPage = async ({
   params,
-  searchParams,
 }: {
   params: { slug: string };
-  searchParams?: {
-    page?: string;
-  };
 }) => {
   const queryClient = new QueryClient();
   const surveyId = params.slug;
-  const currenSurveyPage = Number(searchParams?.page) || 1;
 
-  await queryClient.prefetchQuery({
+  const prefetchSurveyPages = queryClient.fetchQuery({
     queryKey: ["survey", surveyId, "pages"],
     queryFn: () => getSurveyPages(surveyId),
   });
 
-  await queryClient.prefetchQuery({
-    queryKey: ["survey", surveyId, "questions", currenSurveyPage],
-    queryFn: () => getSurveyQuestions(surveyId, currenSurveyPage),
+  const prefetchSurveyPageQuestions = queryClient.fetchQuery({
+    queryKey: ["survey", surveyId, "questions", 1],
+    queryFn: () => getSurveyQuestions(surveyId, 1),
   });
+
+  await Promise.all([prefetchSurveyPages, prefetchSurveyPageQuestions]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <BuildSurveyQuestions
-        currentSurveyPage={currenSurveyPage}
-        surveyId={surveyId}
-      />
+      <BuildSurveyQuestions surveyId={surveyId} />
     </HydrationBoundary>
   );
 };
 
-export default BuildSurveyPage;
+export default BuildSurveyQuestionsPage;

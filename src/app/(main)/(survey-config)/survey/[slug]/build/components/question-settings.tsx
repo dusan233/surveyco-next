@@ -1,9 +1,14 @@
 "use client";
 
 import React, { useId } from "react";
-import { FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { useFormContext } from "react-hook-form";
-import { Checkbox } from "../ui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Question, QuestionType, UnsavedQuestion } from "@/lib/types";
 
 type QuestionSettingsProps = {

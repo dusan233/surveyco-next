@@ -6,7 +6,7 @@ import {
   UnsavedMultiChoiceQuestion,
 } from "@/lib/types";
 import React, { useContext } from "react";
-import { RichTextEditor } from "../text-editor/rich-text";
+import { RichTextEditor } from "@/components/text-editor/rich-text";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
   Form,
@@ -14,8 +14,8 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "../ui/form";
-import { Separator } from "../ui/separator";
+} from "@/components/ui/form";
+import { Separator } from "@/components/ui/separator";
 import QuestionOptionList from "./question-option-list";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,11 +24,11 @@ import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import { QuestionsListContext } from "@/lib/context";
-import { useToast } from "../ui/use-toast";
-import AutoAnimate from "../auto-animate";
+import { useToast } from "@/components/ui/use-toast";
+import AutoAnimate from "@/components/auto-animate";
 import { Editor, JSONContent } from "@tiptap/react";
 import { uploadMedia } from "@/app/actions";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import QuestionSettings from "./question-settings";
 
 export type MultiChoiceData = z.infer<typeof multiChoiceQuestionSchema>;

@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "../ui/dialog";
+} from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
 import {
   Select,
@@ -16,13 +16,19 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import { Button } from "../ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { CopyQuestionData, OperationPosition } from "@/lib/types";
 import useDownsizedQuestions from "@/lib/hooks/useDownsizedQuestions";
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { z } from "zod";
 import { placeQuestionSchema } from "@/lib/validationSchemas";
 import useCopyQuestion from "@/lib/hooks/useCopyQuestion";
