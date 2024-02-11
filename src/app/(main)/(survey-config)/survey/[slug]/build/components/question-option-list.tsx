@@ -48,7 +48,6 @@ const QuestionOptionList = ({
             key={option.optionId}
             control={control}
             onQuestionSubmit={onQuestionSubmit}
-            option={option}
             index={index}
             surveyId={surveyId}
           />

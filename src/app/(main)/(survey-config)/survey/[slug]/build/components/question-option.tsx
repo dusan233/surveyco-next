@@ -15,7 +15,6 @@ import { Editor } from "@tiptap/react";
 import { uploadMedia } from "@/app/actions";
 
 type QuestionOptionProps = {
-  option: Option;
   surveyId: string;
   control: Control<any, any>;
   index: number;
