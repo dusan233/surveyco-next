@@ -90,8 +90,12 @@ const BuildQuestionsList = ({ surveyId }: BuildQuestionsListProps) => {
 
   useEffect(() => {
     const questionIndex = questions.findIndex((q) => q.id === selectedQuestion);
+    const lastQuestion = questions[questions.length - 1];
     if (questionIndex !== -1)
       scrollToQuestionIndex(questionIndex, { aling: "start" });
+    else if (questions.length && !lastQuestion.id) {
+      scrollToQuestionIndex(questions.length - 1, { aling: "start" });
+    }
   }, [selectedQuestion, questions, virtualizer, scrollToQuestionIndex]);
 
   function handleDragStart(event: any) {

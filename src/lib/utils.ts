@@ -4,13 +4,51 @@ import { HiSelector } from "react-icons/hi";
 import { FaListUl } from "react-icons/fa6";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { PiTextboxBold } from "react-icons/pi";
-import { CollectorType, QuestionType, SurveyCategory } from "./types";
-import { Link } from "lucide-react";
+import { QuestionType, SurveyCategory } from "./types";
 import { isClerkAPIResponseError } from "@clerk/nextjs";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const createTextboxQuestion = (number: number) => ({
+  type: QuestionType.textbox,
+  description: "",
+  description_image: null,
+  required: false,
+  number,
+});
+
+export const createMultichoiceQuestion = (
+  number: number,
+  type: QuestionType
+) => ({
+  type: type,
+  description: "",
+  description_image: null,
+  required: false,
+  randomize: false,
+  number,
+  options: [
+    {
+      description: "",
+      description_image: null,
+    },
+    {
+      description: "",
+      description_image: null,
+    },
+  ],
+});
+
+export const createNewQuestion = (type: QuestionType, number: number) => {
+  const createdQuestion =
+    type === QuestionType.textbox
+      ? createTextboxQuestion(number)
+      : createMultichoiceQuestion(number, type);
+
+  return createdQuestion;
+};
 
 export const questionTypesData = [
   {

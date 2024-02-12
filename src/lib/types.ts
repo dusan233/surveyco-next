@@ -43,7 +43,6 @@ export interface QuestionResultBase extends QuestionBase {
 export type UnsavedQuestion = UnsavedMultiChoiceQuestion | UnsavedTextQuestion;
 export type UnsavedMultiChoiceQuestion = {
   id?: string;
-  updated_at: null;
   type: QuestionType;
   description: string;
   description_image: null;
@@ -54,7 +53,6 @@ export type UnsavedMultiChoiceQuestion = {
 };
 export type UnsavedTextQuestion = {
   id?: string;
-  updated_at: null;
   type: QuestionType;
   description: string;
   description_image: null;
