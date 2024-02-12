@@ -13,21 +13,15 @@ import { Button } from "@/components/ui/button";
 import useCreateSurveyPage from "@/lib/hooks/useCreateSurveyPage";
 import { useToast } from "@/components/ui/use-toast";
 import PageActions from "./page-actions";
-import { SurveyPage } from "@/lib/types";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 type PageControlBarProps = {
   surveyId: string;
-  setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
-  currentPageNumber: number;
-  currentPage: SurveyPage;
 };
 
-const PageControlBar = ({
-  surveyId,
-  setCurrentPageNumber,
-  currentPageNumber,
-  currentPage,
-}: PageControlBarProps) => {
+const PageControlBar = ({ surveyId }: PageControlBarProps) => {
+  const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { toast } = useToast();
   const { surveyPages } = useSurveyPages(surveyId);
   const { createPageMutation, isPending } = useCreateSurveyPage();
@@ -43,7 +37,7 @@ const PageControlBar = ({
       {
         onSuccess(data) {
           createPageToast.dismiss();
-          setCurrentPageNumber(data.number);
+          setCurrentPage(data);
         },
       }
     );
@@ -54,9 +48,11 @@ const PageControlBar = ({
       <div className="flex flex-1 items-center gap-5">
         <div className="max-w-xs flex-1 flex items-center">
           <Select
-            value={currentPageNumber.toString()}
+            value={currentPage!.number.toString()}
             onValueChange={(value) => {
-              setCurrentPageNumber(Number(value));
+              setCurrentPage(
+                surveyPages?.find((page) => page.number === Number(value))!
+              );
             }}
           >
             <SelectTrigger>
@@ -83,11 +79,7 @@ const PageControlBar = ({
         </Button>
       </div>
       <div>
-        <PageActions
-          setCurrentPageNumber={setCurrentPageNumber}
-          currentPage={currentPage}
-          surveyId={surveyId}
-        />
+        <PageActions surveyId={surveyId} />
       </div>
     </div>
   );

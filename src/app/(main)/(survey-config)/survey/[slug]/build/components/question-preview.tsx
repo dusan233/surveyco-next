@@ -1,6 +1,5 @@
-import { QuestionsListContext } from "@/lib/context";
 import { MultipleChoiceQuestion, Question, QuestionType } from "@/lib/types";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
@@ -10,11 +9,10 @@ import DropdownQuestionResponse from "./dropdown-question-response";
 import TextboxQuestionResponse from "./textbox-question-response";
 import CheckboxesQuestionResponse from "./checkboxes-question-response";
 import QuestionDescription from "@/components/questions/question-description";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 type QuestionPreviewProps = {
   question: Question;
-  surveyId: string;
-  index: number;
   isOverlay?: boolean;
   activeId: string | null;
 };
@@ -23,11 +21,11 @@ const QuestionPreview = ({
   question,
   isOverlay = false,
   activeId,
-  surveyId,
-  index,
 }: QuestionPreviewProps) => {
-  const { setPendingQuestion, setAddingQuestion } =
-    useContext(QuestionsListContext);
+  const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
+  const setAddingQuestion = useBuildQuestionsContext(
+    (s) => s.setAddingQuestion
+  );
   const [showDraggableState, setShowDraggableState] = useState(() => isOverlay);
 
   const {
@@ -87,8 +85,8 @@ const QuestionPreview = ({
       data-question="true"
       onClick={() => {
         console.log("seting" + question.id);
-        setPendingQuestion(question.id!);
-        // setAddingQuestion(false);
+        setQueueQuestion(question.id);
+        setAddingQuestion(false);
       }}
       onMouseOver={() => {
         setShowDraggableState(true);

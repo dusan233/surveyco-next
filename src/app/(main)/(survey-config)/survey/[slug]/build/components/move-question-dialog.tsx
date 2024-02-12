@@ -23,6 +23,7 @@ import useDownsizedQuestions from "@/lib/hooks/useDownsizedQuestions";
 import { Skeleton } from "@/components/ui/skeleton";
 import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 type CopyQuestionDialogProps = {
   isOpen: boolean;
@@ -39,6 +40,7 @@ const MoveQuestionDialog = ({
 }: CopyQuestionDialogProps) => {
   const { surveyPages } = useSurveyPages(surveyId);
   const { moveQuestionMutation, isPending } = useMoveQuestion();
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const [formPageId, setFormPageId] = useState(() => {
     return surveyPages!.find((page) => page.number === 1)!.id;
   });
@@ -47,9 +49,7 @@ const MoveQuestionDialog = ({
     OperationPosition.after
   );
 
-  const currentPageNumber = surveyPages!.find(
-    (page) => page.id === formPageId
-  )!.number;
+  const currentPageNumber = currentPage!.number;
   const { questions, isLoading } = useDownsizedQuestions(
     surveyId,
     currentPageNumber

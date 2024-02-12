@@ -28,24 +28,22 @@ import { placePageSchema } from "@/lib/validationSchemas";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
 import useMoveSurveyPage from "@/lib/hooks/useMoveSurveyPage";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 type MovePageDialogProps = {
   isOpen: boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
   surveyId: string;
-  currentPage: SurveyPage;
-  setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const MoveSurvePageDialog = ({
   isOpen,
   onOpenChange,
   surveyId,
-  currentPage,
-  setCurrentPageNumber,
 }: MovePageDialogProps) => {
   const { surveyPages } = useSurveyPages(surveyId);
-
+  const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { movePageMutation, isPending } = useMoveSurveyPage();
   const form = useForm<CopyPageData>({
     resolver: zodResolver(placePageSchema),
@@ -62,12 +60,12 @@ const MoveSurvePageDialog = ({
     movePageMutation(
       {
         surveyId,
-        sourcePageId: currentPage.id,
+        sourcePageId: currentPage!.id,
         data: { position: values.position, pageId: values.pageId },
       },
       {
         onSuccess(data) {
-          setCurrentPageNumber(data.number);
+          setCurrentPage(data);
           form.reset({
             position: OperationPosition.after,
             pageId: surveyPages!.find((page) => page.number === 1)?.id ?? "",
@@ -82,7 +80,7 @@ const MoveSurvePageDialog = ({
     <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
-          <DialogTitle>Move Page {currentPage.number}</DialogTitle>
+          <DialogTitle>Move Page {currentPage!.number}</DialogTitle>
         </DialogHeader>
         <div className="gap-2 mt-5">
           <Form {...form}>

@@ -29,9 +29,9 @@ export default function useDeleteQuestion(currentPage: SurveyPage) {
                   return { ...question, number: question.number - 1 };
                 return question;
               });
-            return { questions: updatedQuestions };
+            return { questions: updatedQuestions, page: questionsData.page };
           } else {
-            return questionsData;
+            return;
           }
         }
       );

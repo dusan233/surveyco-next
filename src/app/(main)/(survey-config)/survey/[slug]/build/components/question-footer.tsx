@@ -1,6 +1,8 @@
-import { QuestionsListContext } from "@/lib/context";
-import React, { useContext } from "react";
+"use client";
+
+import React from "react";
 import { Button } from "@/components/ui/button";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 const QuestionFooter = ({
   questionIndex,
@@ -9,12 +11,14 @@ const QuestionFooter = ({
   questionIndex: number;
   isDisabled: boolean;
 }) => {
-  const {
-    setPendingQuestion,
-    lastQuestionIndex,
-    addingQuestion,
-    setAddingQuestion,
-  } = useContext(QuestionsListContext);
+  const questions = useBuildQuestionsContext((s) => s.questions);
+  const lastQuestionIndex = questions.length - 1;
+  const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
+  const setAddingQuestion = useBuildQuestionsContext(
+    (s) => s.setAddingQuestion
+  );
+  const addingQuestion = useBuildQuestionsContext((s) => s.addingQuestion);
+
   return (
     <div className="flex justify-end gap-2 mt-5">
       <Button
@@ -22,7 +26,7 @@ const QuestionFooter = ({
           if (addingQuestion && lastQuestionIndex === questionIndex) {
             setAddingQuestion(false);
           } else {
-            setPendingQuestion(null);
+            setQueueQuestion(null);
           }
         }}
         variant="outline"

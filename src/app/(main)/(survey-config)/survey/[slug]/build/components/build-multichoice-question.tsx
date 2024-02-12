@@ -23,13 +23,13 @@ import QuestionFooter from "./question-footer";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
-import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "@/components/ui/use-toast";
 import AutoAnimate from "@/components/auto-animate";
 import { Editor, JSONContent } from "@tiptap/react";
 import { uploadMedia } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import QuestionSettings from "./question-settings";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 export type MultiChoiceData = z.infer<typeof multiChoiceQuestionSchema>;
 type MultiChoiceQuestionProps = {
@@ -59,12 +59,14 @@ const BuildMultiChoiceQuestion = ({
     },
   });
 
-  const {
-    setCanSelectQuestion,
-    setAddingQuestion,
-    setPendingQuestion,
-    currentPage,
-  } = useContext(QuestionsListContext);
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
+  const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
+  const setCanSelectQuestion = useBuildQuestionsContext(
+    (s) => s.setCanSelectQuestion
+  );
+  const setAddingQuestion = useBuildQuestionsContext(
+    (s) => s.setAddingQuestion
+  );
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
@@ -93,7 +95,7 @@ const BuildMultiChoiceQuestion = ({
           setCanSelectQuestion(true);
           setAddingQuestion(false);
           if (!questionData.id) {
-            setPendingQuestion(data.id);
+            setQueueQuestion(data.id);
           }
           addingQuestionToast.dismiss();
         },

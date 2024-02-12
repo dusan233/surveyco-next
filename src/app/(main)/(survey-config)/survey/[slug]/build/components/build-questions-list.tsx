@@ -25,28 +25,13 @@ import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useSmoothScrollToQuestion } from "@/lib/hooks/useSmoothScroll";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 type BuildQuestionsListProps = {
-  questions: (Question | UnsavedQuestion)[];
-  selectedQuestion: string | number | null;
   surveyId: string;
-  addingQuestion: boolean;
-  currentPageId: string;
-  currentPageNumber: number;
-  setQuestions: (
-    value: React.SetStateAction<(Question | UnsavedQuestion)[]>
-  ) => void;
 };
 
-const BuildQuestionsList = ({
-  questions,
-  selectedQuestion,
-  addingQuestion,
-  surveyId,
-  currentPageId,
-  currentPageNumber,
-  setQuestions,
-}: BuildQuestionsListProps) => {
+const BuildQuestionsList = ({ surveyId }: BuildQuestionsListProps) => {
   const [activeId, setActiveId] = useState(null);
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -55,6 +40,12 @@ const BuildQuestionsList = ({
     })
   );
   const listRef = React.useRef<HTMLDivElement | null>(null);
+
+  const questions = useBuildQuestionsContext((s) => s.questions);
+  const updateQuestions = useBuildQuestionsContext((s) => s.updateQuestions);
+  const addingQuestion = useBuildQuestionsContext((s) => s.addingQuestion);
+  const selectedQuestion = useBuildQuestionsContext((s) => s.selectedQuestion);
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
 
   const { isPending, moveQuestionMutation } = useMoveQuestion();
   const lastQuestionIndex = questions.length - 1;
@@ -83,14 +74,11 @@ const BuildQuestionsList = ({
         question={question}
         questionIndex={index}
         lastQuestionIndex={lastQuestionIndex}
-        addingQuestion={addingQuestion}
         surveyId={surveyId}
       />
     ) : (
       <QuestionPreview
-        index={index}
         key={question.id}
-        surveyId={surveyId}
         activeId={activeId}
         question={question as Question}
       />
@@ -125,18 +113,18 @@ const BuildQuestionsList = ({
           ? OperationPosition.before
           : OperationPosition.after;
 
-      setQuestions((prev) => {
+      updateQuestions((prev) => {
         return arrayMove(prev, sourceIndex, destinationIndex);
       });
       setActiveId(null);
       moveQuestionMutation({
         surveyId,
         questionId: movingQuestionId,
-        pageNumber: currentPageNumber,
+        pageNumber: currentPage!.number,
         data: {
           position,
           questionId: over.id,
-          pageId: currentPageId,
+          pageId: currentPage!.id,
         },
       });
     } else {
@@ -197,9 +185,7 @@ const BuildQuestionsList = ({
       <DragOverlay modifiers={[restrictToVerticalAxis]}>
         {activeId ? (
           <QuestionPreview
-            index={activeIndex}
             key={activeQuestion.id}
-            surveyId={surveyId}
             isOverlay
             question={activeQuestion}
             activeId={activeId}

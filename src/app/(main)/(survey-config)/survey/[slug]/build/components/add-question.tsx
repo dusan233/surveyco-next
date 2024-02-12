@@ -11,14 +11,60 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { getQuestionTypes } from "@/lib/utils";
-import { QuestionType } from "@/lib/types";
+import { Question, QuestionType } from "@/lib/types";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
-type AddQuestionProps = {
-  addQuestion: (type: QuestionType) => void;
-};
-
-const AddQuestion = ({ addQuestion }: AddQuestionProps) => {
+const AddQuestion = () => {
   const [open, setOpen] = useState(false);
+  const questions = useBuildQuestionsContext((s) => s.questions);
+  const updateQuestions = useBuildQuestionsContext((s) => s.updateQuestions);
+  const setAddingQuestion = useBuildQuestionsContext(
+    (s) => s.setAddingQuestion
+  );
+  const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
+
+  const addNewQuestion = (type: QuestionType) => {
+    const lastQuestionNumber = questions.length
+      ? (questions[questions.length - 1] as Question).number
+      : 0;
+    updateQuestions((questions) => {
+      const newQuestion =
+        type === QuestionType.textbox
+          ? {
+              type: type,
+              description: "",
+              description_image: null,
+              updated_at: null,
+              required: false,
+              number: lastQuestionNumber + 1,
+            }
+          : {
+              type: type,
+              description: "",
+              description_image: null,
+              updated_at: null,
+              required: false,
+              randomize: false,
+              number: lastQuestionNumber + 1,
+              options: [
+                {
+                  description: "",
+                  description_image: null,
+                },
+                {
+                  description: "",
+                  description_image: null,
+                },
+              ],
+            };
+      const filteredQuestions = questions.filter((question) => question.id);
+      const newQuestions = [...filteredQuestions, newQuestion];
+
+      return newQuestions;
+    });
+    setQueueQuestion(null);
+    setAddingQuestion(true);
+  };
 
   return (
     <>
@@ -42,7 +88,7 @@ const AddQuestion = ({ addQuestion }: AddQuestionProps) => {
                 return (
                   <button
                     onClick={() => {
-                      addQuestion(questionType.type);
+                      addNewQuestion(questionType.type);
                       setOpen(false);
                     }}
                     className="flex gap-2 hover:bg-slate-100 items-center p-2"

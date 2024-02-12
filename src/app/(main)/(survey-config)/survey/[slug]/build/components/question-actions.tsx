@@ -14,24 +14,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, MoreVertical, Trash2 } from "lucide-react";
 import useDeleteQuestion from "@/lib/hooks/useDeleteQuestion";
-import { SurveyPage } from "@/lib/types";
 import { useToast } from "@/components/ui/use-toast";
 import CopyQuestionDialog from "./copy-question-dialog";
 import MoveQuestionDialog from "./move-question-dialog";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 type QuestionActionsProps = {
-  currentPage: SurveyPage;
   surveyId: string;
   questionId: string;
 };
 
-const QuestionActions = ({
-  currentPage,
-  surveyId,
-  questionId,
-}: QuestionActionsProps) => {
+const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { toast } = useToast();
-  const { deleteQuestionMutation } = useDeleteQuestion(currentPage);
+  const { deleteQuestionMutation } = useDeleteQuestion(currentPage!);
   const [isCopyOpen, setIsCopyOpen] = useState(false);
   const [isMoveOpen, setIsMoveOpen] = useState(false);
 
@@ -40,7 +36,7 @@ const QuestionActions = ({
       variant: "destructive",
       title: "Deleting question...",
     });
-    console.log(surveyId, questionId, currentPage.number);
+
     deleteQuestionMutation(
       { surveyId, questionId },
       {

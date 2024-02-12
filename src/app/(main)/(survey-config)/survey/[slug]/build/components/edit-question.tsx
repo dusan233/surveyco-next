@@ -12,13 +12,13 @@ import QuestionCard from "@/components/questions/question-card";
 import QuestionHeader from "./question-header";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 type EditQuestionProps = {
   question: Question | UnsavedQuestion;
   questionIndex: number;
   surveyId: string;
   lastQuestionIndex: number;
-  addingQuestion: boolean;
 };
 
 const EditQuestion = ({
@@ -26,18 +26,11 @@ const EditQuestion = ({
   questionIndex,
   surveyId,
   lastQuestionIndex,
-  addingQuestion,
 }: EditQuestionProps) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    setActivatorNodeRef,
-    isDragging,
-    transform,
-    transition,
-  } = useSortable({ id: question.id || "unsavedQuestion" });
-
+  const { setNodeRef, isDragging, transform, transition } = useSortable({
+    id: question.id || "unsavedQuestion",
+  });
+  const addingQuestion = useBuildQuestionsContext((s) => s.addingQuestion);
   const style = {
     opacity: isDragging ? "0.4" : undefined,
     transform: CSS.Transform.toString(transform),
@@ -77,11 +70,7 @@ const EditQuestion = ({
       className="mb-4"
     >
       <QuestionCard>
-        <QuestionHeader
-          surveyId={surveyId}
-          index={questionIndex}
-          question={question}
-        />
+        <QuestionHeader surveyId={surveyId} question={question} />
         {renderQuestionEditor(question, questionIndex)}
       </QuestionCard>
     </div>

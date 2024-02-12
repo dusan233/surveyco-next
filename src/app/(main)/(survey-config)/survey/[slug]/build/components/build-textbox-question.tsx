@@ -18,13 +18,13 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
-import { QuestionsListContext } from "@/lib/context";
 import { useToast } from "@/components/ui/use-toast";
 import AutoAnimate from "@/components/auto-animate";
 import { Editor } from "@tiptap/react";
 import { textboxQuestionSchema } from "@/lib/validationSchemas";
 import { uploadMedia } from "@/app/actions";
 import QuestionSettings from "./question-settings";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
@@ -47,12 +47,14 @@ const BuildTextboxQuestion = ({
     },
   });
 
-  const {
-    setCanSelectQuestion,
-    currentPage,
-    setAddingQuestion,
-    setPendingQuestion,
-  } = useContext(QuestionsListContext);
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
+  const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
+  const setCanSelectQuestion = useBuildQuestionsContext(
+    (s) => s.setCanSelectQuestion
+  );
+  const setAddingQuestion = useBuildQuestionsContext(
+    (s) => s.setAddingQuestion
+  );
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
@@ -78,7 +80,7 @@ const BuildTextboxQuestion = ({
           setCanSelectQuestion(true);
           setAddingQuestion(false);
           if (!questionData.id) {
-            setPendingQuestion(data.id);
+            setQueueQuestion(data.id);
           }
           addingQuestionToast.dismiss();
         },

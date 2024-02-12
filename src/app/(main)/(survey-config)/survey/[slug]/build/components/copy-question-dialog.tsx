@@ -90,7 +90,7 @@ const CopyQuestionDialog = ({
 
   const onSubmit = async (values: CopyQuestionData) => {
     console.log(values);
-    // copyQuestionMutation({ surveyId, questionId, data: values });
+    copyQuestionMutation({ surveyId, questionId, data: values });
   };
   //dasdasd
   return (

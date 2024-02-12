@@ -7,6 +7,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
+import { BuildQuestionsProvider } from "@/lib/context";
 
 const BuildSurveyQuestionsPage = async ({
   params,
@@ -26,11 +27,19 @@ const BuildSurveyQuestionsPage = async ({
     queryFn: () => getSurveyQuestions(surveyId, 1),
   });
 
-  await Promise.all([prefetchSurveyPages, prefetchSurveyPageQuestions]);
+  const [pages, questions] = await Promise.all([
+    prefetchSurveyPages,
+    prefetchSurveyPageQuestions,
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <BuildSurveyQuestions surveyId={surveyId} />
+      <BuildQuestionsProvider
+        questions={questions.questions}
+        currentPage={pages.find((page) => page.number === 1)!}
+      >
+        <BuildSurveyQuestions surveyId={surveyId} />
+      </BuildQuestionsProvider>
     </HydrationBoundary>
   );
 };

@@ -18,18 +18,17 @@ import { useToast } from "@/components/ui/use-toast";
 import useDeleteSurveyPage from "@/lib/hooks/useDeleteSurveyPage";
 import CopySurveyPageDialog from "./copy-survey-page-dialog";
 import MoveSurvePageDialog from "./move-survey-page-dialog";
+import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useSurveyPages from "@/lib/hooks/useSurveyPages";
 
 type QuestionActionsProps = {
   surveyId: string;
-  currentPage: SurveyPage;
-  setCurrentPageNumber: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const PageActions = ({
-  surveyId,
-  currentPage,
-  setCurrentPageNumber,
-}: QuestionActionsProps) => {
+const PageActions = ({ surveyId }: QuestionActionsProps) => {
+  const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
+  const { surveyPages } = useSurveyPages(surveyId);
   const { toast } = useToast();
   const [isCopyOpen, setIsCopyOpen] = useState(false);
   const [isMoveOpen, setIsMoveOpen] = useState(false);
@@ -42,10 +41,11 @@ const PageActions = ({
     });
 
     deletePageMutation(
-      { surveyId, pageId: currentPage.id },
+      { surveyId, pageId: currentPage!.id },
       {
         onSuccess() {
-          setCurrentPageNumber(1);
+          const firstPage = surveyPages?.find((page) => page.number === 1);
+          setCurrentPage(firstPage!);
           deletePageToast.dismiss();
         },
       }
@@ -58,15 +58,11 @@ const PageActions = ({
         isOpen={isCopyOpen}
         onOpenChange={setIsCopyOpen}
         surveyId={surveyId}
-        currentPage={currentPage}
-        setCurrentPageNumber={setCurrentPageNumber}
       />
       <MoveSurvePageDialog
         isOpen={isMoveOpen}
         onOpenChange={setIsMoveOpen}
         surveyId={surveyId}
-        currentPage={currentPage}
-        setCurrentPageNumber={setCurrentPageNumber}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

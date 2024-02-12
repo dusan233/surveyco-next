@@ -43,9 +43,12 @@ export default function useSaveQuestion() {
                 question.id === data.id ? data : question
               );
 
-              return { questions: newQuestions };
+              return { questions: newQuestions, page: questionsData.page };
             } else {
-              return { questions: [...questions, data] };
+              return {
+                questions: [...questions, data],
+                page: questionsData.page,
+              };
             }
           } else {
             return questionsData;
