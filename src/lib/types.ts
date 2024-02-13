@@ -73,7 +73,7 @@ export type QuestionResponse = {
 };
 
 export type CopyQuestionData = z.infer<typeof placeQuestionSchema>;
-export type CopyPageData = z.infer<typeof placePageSchema>;
+export type PlacePageData = z.infer<typeof placePageSchema>;
 export type QuestionsResponsesData = z.infer<typeof questionsResponsesSchema>;
 export type QuestionResponseData = {
   questionId: string;

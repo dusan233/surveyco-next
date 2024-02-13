@@ -29,7 +29,7 @@ import { Editor, JSONContent } from "@tiptap/react";
 import { uploadMedia } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import QuestionSettings from "./question-settings";
-import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
 export type MultiChoiceData = z.infer<typeof multiChoiceQuestionSchema>;
 type MultiChoiceQuestionProps = {

@@ -9,7 +9,7 @@ import DropdownQuestionResponse from "./dropdown-question-response";
 import TextboxQuestionResponse from "./textbox-question-response";
 import CheckboxesQuestionResponse from "./checkboxes-question-response";
 import QuestionDescription from "@/components/questions/question-description";
-import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
 type QuestionPreviewProps = {
   question: Question;

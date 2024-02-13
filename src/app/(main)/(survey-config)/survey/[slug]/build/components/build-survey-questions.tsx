@@ -6,7 +6,7 @@ import BuildQuestionsList from "./build-questions-list";
 
 import PageControlBar from "./page-control-bar";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
-import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 import AddQuestionDialog from "./add-question-dialog";
 import { useDisclosure } from "@/lib/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";

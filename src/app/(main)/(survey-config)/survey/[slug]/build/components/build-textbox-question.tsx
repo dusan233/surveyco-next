@@ -24,7 +24,7 @@ import { Editor } from "@tiptap/react";
 import { textboxQuestionSchema } from "@/lib/validationSchemas";
 import { uploadMedia } from "@/app/actions";
 import QuestionSettings from "./question-settings";
-import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;

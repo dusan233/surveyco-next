@@ -1,6 +1,6 @@
 import { createSurveyPage } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SurveyPage } from "../types";
+import { SurveyPage } from "@/lib/types";
 
 export default function useCreateSurveyPage() {
   const queryClient = useQueryClient();
@@ -13,7 +13,7 @@ export default function useCreateSurveyPage() {
   } = useMutation({
     mutationFn: (payload: { surveyId: string }) =>
       createSurveyPage(payload.surveyId),
-    onSuccess(data, variables, context) {
+    onSuccess(data, variables) {
       queryClient.setQueryData<SurveyPage[]>(
         ["survey", variables.surveyId, "pages"],
         (surveyPages) => {

@@ -17,7 +17,7 @@ import useDeleteQuestion from "@/lib/hooks/useDeleteQuestion";
 import { useToast } from "@/components/ui/use-toast";
 import CopyQuestionDialog from "./copy-question-dialog";
 import MoveQuestionDialog from "./move-question-dialog";
-import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
 type QuestionActionsProps = {
   surveyId: string;

@@ -1,5 +1,6 @@
 import { getSurveyQuestions } from "@/app/actions";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import useToastError from "./useToastError";
 
 export default function useSurveyQuestions(
   surveyId: string,
@@ -18,6 +19,8 @@ export default function useSurveyQuestions(
     refetchOnWindowFocus: true,
     ...options,
   });
+
+  useToastError(isError);
 
   return {
     questions: data?.questions,

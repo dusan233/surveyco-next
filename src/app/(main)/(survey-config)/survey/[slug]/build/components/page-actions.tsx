@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,13 +13,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, ChevronDown, Copy, Trash2 } from "lucide-react";
-import { SurveyPage } from "@/lib/types";
 import { useToast } from "@/components/ui/use-toast";
-import useDeleteSurveyPage from "@/lib/hooks/useDeleteSurveyPage";
+import useDeleteSurveyPage from "../hooks/useDeleteSurveyPage";
 import CopySurveyPageDialog from "./copy-survey-page-dialog";
 import MoveSurvePageDialog from "./move-survey-page-dialog";
-import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import { useDisclosure } from "@/lib/hooks/useDisclosure";
 
 type QuestionActionsProps = {
   surveyId: string;
@@ -30,9 +30,18 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { surveyPages } = useSurveyPages(surveyId);
   const { toast } = useToast();
-  const [isCopyOpen, setIsCopyOpen] = useState(false);
-  const [isMoveOpen, setIsMoveOpen] = useState(false);
   const { deletePageMutation } = useDeleteSurveyPage();
+
+  const {
+    isOpen: isCopyPageOpen,
+    onToggle: onToggleCopyPage,
+    onOpen: onOpenCopyPage,
+  } = useDisclosure();
+  const {
+    isOpen: isMovePageOpen,
+    onToggle: onToggleMovePage,
+    onOpen: onOpenMovePage,
+  } = useDisclosure();
 
   const handleDeletePage = () => {
     const deletePageToast = toast({
@@ -48,6 +57,12 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
           setCurrentPage(firstPage!);
           deletePageToast.dismiss();
         },
+        onError() {
+          toast({
+            variant: "destructive",
+            title: "Something went wrong!",
+          });
+        },
       }
     );
   };
@@ -55,13 +70,13 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
   return (
     <>
       <CopySurveyPageDialog
-        isOpen={isCopyOpen}
-        onOpenChange={setIsCopyOpen}
+        isOpen={isCopyPageOpen}
+        onOpenChange={onToggleCopyPage}
         surveyId={surveyId}
       />
       <MoveSurvePageDialog
-        isOpen={isMoveOpen}
-        onOpenChange={setIsMoveOpen}
+        isOpen={isMovePageOpen}
+        onOpenChange={onToggleMovePage}
         surveyId={surveyId}
       />
       <DropdownMenu>
@@ -75,13 +90,13 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
           <DropdownMenuLabel>Page actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setIsCopyOpen(true)}>
+            <DropdownMenuItem onClick={() => onOpenCopyPage()}>
               Copy page
               <DropdownMenuShortcut>
                 <Copy className="h-4 w-4" />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setIsMoveOpen(true)}>
+            <DropdownMenuItem onClick={() => onOpenMovePage()}>
               Move page
               <DropdownMenuShortcut>
                 <ArrowUpDown className="h-4 w-4" />

@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/select";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import { Button } from "@/components/ui/button";
-import useCreateSurveyPage from "@/lib/hooks/useCreateSurveyPage";
+import useCreateSurveyPage from "../hooks/useCreateSurveyPage";
 import { useToast } from "@/components/ui/use-toast";
 import PageActions from "./page-actions";
-import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
 type PageControlBarProps = {
   surveyId: string;
@@ -28,8 +28,8 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
 
   const handleCreateSurveyPage = () => {
     const createPageToast = toast({
-      variant: "destructive",
-      title: "Saving question...",
+      variant: "default",
+      title: "Creating page...",
     });
 
     createPageMutation(
@@ -39,12 +39,18 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
           createPageToast.dismiss();
           setCurrentPage(data);
         },
+        onError() {
+          toast({
+            variant: "destructive",
+            title: "Something went wrong!",
+          });
+        },
       }
     );
   };
 
   return (
-    <div className="mb-4 py-2 flex items-end bg-slate-100 justify-between gap-2 sticky top-12 z-10">
+    <div className="mb-4 py-2 flex items-end bg-slate-100 justify-between gap-2 sticky top-11 z-10">
       <div className="flex flex-1 items-center gap-5">
         <div className="max-w-xs flex-1 flex items-center">
           <Select
@@ -56,13 +62,13 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
             }}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select option" />
+              <SelectValue placeholder="Select page" />
             </SelectTrigger>
 
             <SelectContent>
-              {surveyPages!.map((page) => (
+              {surveyPages!.map((page, index) => (
                 <SelectItem key={page.id} value={page.number.toString()}>
-                  {"Page " + page.number}
+                  {"Page " + (index + 1)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -72,6 +78,7 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
         <Button
           onClick={handleCreateSurveyPage}
           disabled={isPending}
+          loading={isPending}
           variant="default"
           size="default"
         >

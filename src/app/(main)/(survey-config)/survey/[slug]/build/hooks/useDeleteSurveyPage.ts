@@ -1,6 +1,6 @@
 import { deleteSurveyPage } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { SurveyPage } from "../types";
+import { SurveyPage } from "@/lib/types";
 
 export default function useDeleteSurveyPage() {
   const queryClient = useQueryClient();
@@ -13,7 +13,7 @@ export default function useDeleteSurveyPage() {
   } = useMutation({
     mutationFn: (payload: { surveyId: string; pageId: string }) =>
       deleteSurveyPage(payload.surveyId, payload.pageId),
-    onSuccess(data, variables, context) {
+    onSuccess(_, variables) {
       queryClient.setQueryData<SurveyPage[]>(
         ["survey", variables.surveyId, "pages"],
         (surveyPages) => {

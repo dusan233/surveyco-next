@@ -25,7 +25,7 @@ import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useSmoothScrollToQuestion } from "@/lib/hooks/useSmoothScroll";
-import useBuildQuestionsContext from "../useBuildQuestionsContext";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
 type BuildQuestionsListProps = {
   surveyId: string;
