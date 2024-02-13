@@ -14,7 +14,7 @@ interface BuildQuestionsStoreProps {
 }
 
 type QuestionData = Question | UnsavedQuestion;
-type CallbackFunc = (data: QuestionData[]) => QuestionData[];
+export type CallbackFunc = (data: QuestionData[]) => QuestionData[];
 
 export interface BuildQuestionsStoreState extends BuildQuestionsStoreProps {
   updateQuestions: (

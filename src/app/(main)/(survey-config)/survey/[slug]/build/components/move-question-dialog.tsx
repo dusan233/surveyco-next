@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { OperationPosition } from "@/lib/types";
 import useDownsizedQuestions from "@/lib/hooks/useDownsizedQuestions";
 import { Skeleton } from "@/components/ui/skeleton";
-import useMoveQuestion from "@/lib/hooks/useMoveQuestion";
+import useMoveQuestion from "../hooks/useMoveQuestion";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 

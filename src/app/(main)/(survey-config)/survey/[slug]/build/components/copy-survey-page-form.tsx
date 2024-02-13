@@ -7,7 +7,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import useCopySurveyPage from "@/lib/hooks/useCopySurveyPage";
+import useCopySurveyPage from "../hooks/useCopySurveyPage";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import { PlacePageData, OperationPosition } from "@/lib/types";
 import React from "react";

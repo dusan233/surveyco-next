@@ -18,14 +18,9 @@ export default function useMoveQuestion() {
       data: CopyQuestionData;
     }) => moveQuestion(payload.surveyId, payload.questionId, payload.data),
     onMutate(moveQuestion) {
-      const previousQuestions = queryClient.getQueryData<{
-        questions: Question[];
-      }>([
-        "survey",
-        moveQuestion.surveyId,
-        "questions",
-        moveQuestion.pageNumber,
-      ]);
+      const previousQuestions = queryClient.getQueryData<QuestionsResponseData>(
+        ["survey", moveQuestion.surveyId, "questions", moveQuestion.pageNumber]
+      );
       const sourceQuestion = previousQuestions?.questions.find(
         (q) => q.id === moveQuestion.questionId
       );
@@ -65,12 +60,12 @@ export default function useMoveQuestion() {
 
       queryClient.setQueryData<QuestionsResponseData>(
         ["survey", moveQuestion.surveyId, "questions", moveQuestion.pageNumber],
-        { questions: updatedNumbersQuestions }
+        { questions: updatedNumbersQuestions, page: previousQuestions!.page }
       );
 
       return { previousQuestions };
     },
-    onError(error, variables, context) {
+    onError(_, variables, context) {
       queryClient.setQueryData<QuestionsResponseData>(
         ["survey", variables.surveyId, "questions", variables.pageNumber],
         context?.previousQuestions

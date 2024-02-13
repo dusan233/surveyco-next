@@ -1,25 +1,17 @@
-"use client";
+import { VirtualItem, Virtualizer } from "@tanstack/react-virtual";
+import React, { MutableRefObject, ReactNode } from "react";
 
-import { useSmoothScrollToQuestion } from "@/lib/hooks/useSmoothScroll";
-import { VirtualItem, useWindowVirtualizer } from "@tanstack/react-virtual";
-import React, { ReactNode, useEffect, useRef } from "react";
-
-type WindowVirtualListProps<T> = {
-  items: T[];
+type WindowedVirtualListProps = {
+  virtualizer: Virtualizer<Window, Element>;
+  listRef: MutableRefObject<HTMLDivElement | null>;
   renderItem: (item: VirtualItem) => ReactNode;
 };
 
-const WindowVirtualList = <T,>({
+const WindowedVirtualList = ({
+  virtualizer,
+  listRef,
   renderItem,
-  items,
-}: WindowVirtualListProps<T>) => {
-  const listRef = useRef<HTMLDivElement | null>(null);
-  const virtualizer = useWindowVirtualizer({
-    count: items.length,
-    estimateSize: () => 50,
-    overscan: 5,
-    scrollMargin: listRef.current?.offsetTop ?? 0,
-  });
+}: WindowedVirtualListProps) => {
   const virtualItems = virtualizer.getVirtualItems();
 
   return (
@@ -61,4 +53,4 @@ const WindowVirtualList = <T,>({
   );
 };
 
-export default WindowVirtualList;
+export default WindowedVirtualList;

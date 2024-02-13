@@ -11,6 +11,7 @@ import {
   textboxQuestionSchema,
   verifyEmailAddressSchema,
 } from "./validationSchemas";
+import { Active, Collision, Translate, Over } from "@dnd-kit/core";
 
 export enum QuestionType {
   multiple_choice = "multiple_choice",
@@ -255,3 +256,17 @@ export interface MediaUploadResData {
   success: boolean;
   fileUrl: string;
 }
+
+interface DragEvent {
+  activatorEvent: Event;
+  active: Active;
+  collisions: Collision[] | null;
+  delta: Translate;
+  over: Over;
+}
+
+export interface DragStartEvent extends Pick<DragEvent, "active"> {}
+export interface DragMoveEvent extends DragEvent {}
+export interface DragOverEvent extends DragMoveEvent {}
+export interface DragEndEvent extends DragEvent {}
+export interface DragCancelEvent extends DragEndEvent {}

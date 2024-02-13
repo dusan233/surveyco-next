@@ -1,4 +1,4 @@
-import { useVirtualizer, useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useCallback, useRef } from "react";
 
 function easeInOutQuint(t: number) {

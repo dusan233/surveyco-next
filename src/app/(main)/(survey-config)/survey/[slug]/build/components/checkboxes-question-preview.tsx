@@ -3,17 +3,13 @@ import React from "react";
 import { FormItem } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 
-type CheckboxesQuestionResponseProps = {
+type CheckboxesQuestionPreviewProps = {
   question: MultipleChoiceQuestion;
-  isPreview?: boolean;
-  name?: string;
 };
-const CheckboxesQuestionResponse = ({
+const CheckboxesQuestionPreview = ({
   question,
-  name,
-  isPreview = false,
-}: CheckboxesQuestionResponseProps) => {
-  return isPreview ? (
+}: CheckboxesQuestionPreviewProps) => {
+  return (
     <div className="flex flex-col space-y-5">
       {question.options.map((option) => (
         <FormItem
@@ -32,7 +28,7 @@ const CheckboxesQuestionResponse = ({
         </FormItem>
       ))}
     </div>
-  ) : null;
+  );
 };
 
-export default CheckboxesQuestionResponse;
+export default CheckboxesQuestionPreview;

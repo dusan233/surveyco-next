@@ -1,13 +1,15 @@
+"use client";
+
 import { MultipleChoiceQuestion, Question, QuestionType } from "@/lib/types";
 import React, { useEffect, useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 
-import MultiChoiceQuestionResponse from "./multichoice-question-response";
-import DropdownQuestionResponse from "./dropdown-question-response";
-import TextboxQuestionResponse from "./textbox-question-response";
-import CheckboxesQuestionResponse from "./checkboxes-question-response";
+import MultiChoiceQuestionPreview from "./multichoice-question-preview";
+import DropdownQuestionPreview from "./dropdown-question-preview";
+import TextboxQuestionPreview from "./textbox-question-preview";
+import CheckboxesQuestionPreview from "./checkboxes-question-preview";
 import QuestionDescription from "@/components/questions/question-description";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
@@ -26,7 +28,7 @@ const QuestionPreview = ({
   const setAddingQuestion = useBuildQuestionsContext(
     (s) => s.setAddingQuestion
   );
-  const [showDraggableState, setShowDraggableState] = useState(() => isOverlay);
+  const [showDraggable, setShowDraggable] = useState(() => isOverlay);
 
   const {
     attributes,
@@ -46,33 +48,26 @@ const QuestionPreview = ({
 
   useEffect(() => {
     if (!activeId) {
-      setShowDraggableState(false);
+      setShowDraggable(false);
     }
   }, [activeId]);
 
-  const renderQuestionPreviewResponseInput = (question: Question) => {
+  const renderQuestionPreviewContent = (question: Question) => {
     switch (question.type) {
       case QuestionType.multiple_choice:
         return (
-          <MultiChoiceQuestionResponse
+          <MultiChoiceQuestionPreview
             question={question as MultipleChoiceQuestion}
-            isPreview
           />
         );
       case QuestionType.dropdown:
-        return (
-          <DropdownQuestionResponse
-            question={question as MultipleChoiceQuestion}
-            isPreview
-          />
-        );
+        return <DropdownQuestionPreview />;
       case QuestionType.textbox:
-        return <TextboxQuestionResponse question={question} isPreview />;
+        return <TextboxQuestionPreview />;
       case QuestionType.checkboxes:
         return (
-          <CheckboxesQuestionResponse
+          <CheckboxesQuestionPreview
             question={question as MultipleChoiceQuestion}
-            isPreview
           />
         );
       default:
@@ -84,16 +79,15 @@ const QuestionPreview = ({
     <div
       data-question="true"
       onClick={() => {
-        console.log("seting" + question.id);
         setQueueQuestion(question.id);
         setAddingQuestion(false);
       }}
       onMouseOver={() => {
-        setShowDraggableState(true);
+        setShowDraggable(true);
       }}
       onMouseLeave={() => {
         if (!isOverlay) {
-          setShowDraggableState(false);
+          setShowDraggable(false);
         }
       }}
       ref={setNodeRef}
@@ -104,12 +98,9 @@ const QuestionPreview = ({
       } shadow-sm !cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:z-[100] after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full`}
     >
       <QuestionDescription question={question} />
+      <div className="mt-7 ml-7">{renderQuestionPreviewContent(question)}</div>
 
-      <div className="mt-7 ml-7">
-        {renderQuestionPreviewResponseInput(question)}
-      </div>
-
-      {showDraggableState && (
+      {showDraggable && (
         <button
           {...attributes}
           {...listeners}

@@ -1,6 +1,6 @@
 import { copySurveyPage } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { OperationPosition, SurveyPage } from "../types";
+import { OperationPosition, SurveyPage } from "@/lib/types";
 
 export default function useCopySurveyPage() {
   const queryClient = useQueryClient();

@@ -64,7 +64,7 @@ const BuildSurveyQuestions = ({ surveyId }: { surveyId: string }) => {
       <div className="flex justify-center">
         <Button onClick={() => onOpen()}>
           <span className="mr-2">
-            <PlusIcon />
+            <PlusIcon className="h-5 w-5" />
           </span>
           New Question
         </Button>

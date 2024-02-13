@@ -3,18 +3,14 @@ import { FormItem } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { MultipleChoiceQuestion } from "@/lib/types";
 
-type MultiChoiceQuestionResponseProps = {
+type MultiChoiceQuestionPreviewProps = {
   question: MultipleChoiceQuestion;
-  isPreview?: boolean;
-  name?: string;
 };
 
-const MultiChoiceQuestionResponse = ({
+const MultiChoiceQuestionPreview = ({
   question,
-  name,
-  isPreview = false,
-}: MultiChoiceQuestionResponseProps) => {
-  return isPreview ? (
+}: MultiChoiceQuestionPreviewProps) => {
+  return (
     <RadioGroup
       aria-readonly
       tabIndex={-1}
@@ -36,7 +32,7 @@ const MultiChoiceQuestionResponse = ({
         </FormItem>
       ))}
     </RadioGroup>
-  ) : null;
+  );
 };
 
-export default MultiChoiceQuestionResponse;
+export default MultiChoiceQuestionPreview;
