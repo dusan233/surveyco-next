@@ -1,6 +1,10 @@
 import { createQuestion, updateQuestion } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { QuestionsResponseData, SaveQuestionData, SurveyPage } from "../types";
+import {
+  QuestionsResponseData,
+  SaveQuestionData,
+  SurveyPage,
+} from "@/lib/types";
 
 export default function useSaveQuestion() {
   const queryClient = useQueryClient();

@@ -2,61 +2,48 @@
 
 import {
   MultiChoiceQuestionData,
+  MultiChoiceQuestionFormData,
   MultipleChoiceQuestion,
   UnsavedMultiChoiceQuestion,
 } from "@/lib/types";
-import React, { useContext } from "react";
-import { RichTextEditor } from "@/components/text-editor/rich-text";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import React from "react";
+import { FormProvider, SubmitHandler } from "react-hook-form";
+import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
-import QuestionOptionList from "./question-option-list";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import QuestionFooter from "./question-footer";
-import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
-import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
+import EditQuestionChoiceList from "./edit-question-choice-list";
+import EditQuestionFooter from "./edit-question-footer";
+import useSaveQuestion from "../hooks/useSaveQuestion";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
 import { useToast } from "@/components/ui/use-toast";
-import AutoAnimate from "@/components/auto-animate";
-import { Editor, JSONContent } from "@tiptap/react";
-import { uploadMedia } from "@/app/actions";
-import { Button } from "@/components/ui/button";
-import QuestionSettings from "./question-settings";
+import EditQuestionSettings from "./edit-question-settings";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useMultiChoiceQuestionForm from "../hooks/useMultiChoiceQuestionForm";
+import EditQuestionDescription from "./edit-question-description";
 
-export type MultiChoiceData = z.infer<typeof multiChoiceQuestionSchema>;
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
   surveyId: string;
-  index: number;
+  scrollToQuestion: (qIndex: number) => void;
+  qIndex: number;
 };
 
 const BuildMultiChoiceQuestion = ({
   question,
-  index,
   surveyId,
+  scrollToQuestion,
+  qIndex,
 }: MultiChoiceQuestionProps) => {
   const { toast } = useToast();
-  const form = useForm<MultiChoiceData>({
-    resolver: zodResolver(multiChoiceQuestionSchema),
-    defaultValues: {
-      description: question.description,
-      options: question.options.map((qChoice) => ({
-        description: qChoice.description,
-        descriptionImage: qChoice.description_image,
-        ...(qChoice.id && { id: qChoice.id }),
-      })),
-      required: question.required,
-      randomize: question.randomize,
-      descriptionImage: question.description_image,
-    },
+  const form = useMultiChoiceQuestionForm({
+    description: question.description,
+    options: question.options.map((qChoice) => ({
+      description: qChoice.description,
+      descriptionImage: qChoice.description_image,
+      ...(qChoice.id && { id: qChoice.id }),
+    })),
+    required: question.required,
+    randomize: question.randomize,
+    descriptionImage: question.description_image,
   });
 
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
@@ -70,9 +57,9 @@ const BuildMultiChoiceQuestion = ({
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
-  const onSubmit: SubmitHandler<MultiChoiceData> = (data) => {
-    console.log(data);
-
+  const handleSaveQuestion: SubmitHandler<MultiChoiceQuestionFormData> = (
+    data
+  ) => {
     const questionData: MultiChoiceQuestionData = {
       description: data.description,
       type: question.type,
@@ -99,18 +86,21 @@ const BuildMultiChoiceQuestion = ({
           }
           addingQuestionToast.dismiss();
         },
+        onError() {
+          toast({
+            variant: "destructive",
+            title: "Something went wrong!",
+          });
+        },
       }
     );
   };
-  const handleSubmit = async () => {
-    await form.handleSubmit(onSubmit)();
-  };
 
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
-    const fn = form.handleSubmit(onSubmit);
+    const fn = form.handleSubmit(handleSaveQuestion);
     await fn();
     if (form.formState.errors.description || form.formState.errors.options) {
-      console.log("before prop stop");
+      scrollToQuestion(qIndex);
       e.stopPropagation();
     }
   });
@@ -119,78 +109,19 @@ const BuildMultiChoiceQuestion = ({
     <div ref={ref}>
       <FormProvider {...form}>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormControl>
-                    <RichTextEditor
-                      content={field.value}
-                      placeholder="Enter your question"
-                      onChange={(editor: Editor) => {
-                        const htmlContent = editor.getHTML();
-
-                        let imageExists = false;
-                        editor.state.doc.content.descendants((node) => {
-                          if (node.type.name === "image") {
-                            imageExists = true;
-                          }
-                        });
-
-                        if (!imageExists && form.getValues().descriptionImage) {
-                          console.log("unregistrujem");
-                          form.setValue("descriptionImage", null);
-                        }
-
-                        field.onChange(editor.isEmpty ? "" : htmlContent);
-                      }}
-                      onAddImage={async (editor: Editor, file: File) => {
-                        console.log(editor, file);
-                        try {
-                          const formData = new FormData();
-
-                          formData.append("file", file);
-                          const uploadedImageRes = await uploadMedia(
-                            surveyId,
-                            formData
-                          );
-                          form.setValue(
-                            "descriptionImage",
-                            uploadedImageRes.fileUrl
-                          );
-                          editor!
-                            .chain()
-                            .focus()
-                            .setImage({
-                              src: uploadedImageRes.fileUrl,
-                            })
-                            .run();
-
-                          await form.handleSubmit(onSubmit)();
-                        } catch (err) {
-                          console.log(err);
-                        }
-                      }}
-                      onBlur={field.onBlur}
-                      error={fieldState.error}
-                    />
-                  </FormControl>
-                  <AutoAnimate>
-                    <FormMessage />
-                  </AutoAnimate>
-                </FormItem>
-              )}
+          <form onSubmit={form.handleSubmit(handleSaveQuestion)}>
+            <EditQuestionDescription
+              handleSaveQuestion={handleSaveQuestion}
+              surveyId={surveyId}
             />
             <Separator className="my-5" />
-            <QuestionOptionList
-              onQuestionSubmit={handleSubmit}
+            <EditQuestionChoiceList
+              handleSaveQuestion={handleSaveQuestion}
               surveyId={surveyId}
               control={form.control}
             />
-            <QuestionSettings question={question} />
-            <QuestionFooter questionIndex={index} isDisabled={isPending} />
+            <EditQuestionSettings question={question} />
+            <EditQuestionFooter question={question} isDisabled={isPending} />
           </form>
         </Form>
       </FormProvider>

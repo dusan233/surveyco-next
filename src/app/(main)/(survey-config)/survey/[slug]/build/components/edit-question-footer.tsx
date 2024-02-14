@@ -3,16 +3,15 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import { Question, UnsavedQuestion } from "@/lib/types";
 
 const QuestionFooter = ({
-  questionIndex,
   isDisabled,
+  question,
 }: {
-  questionIndex: number;
   isDisabled: boolean;
+  question: Question | UnsavedQuestion;
 }) => {
-  const questions = useBuildQuestionsContext((s) => s.questions);
-  const lastQuestionIndex = questions.length - 1;
   const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
   const setAddingQuestion = useBuildQuestionsContext(
     (s) => s.setAddingQuestion
@@ -23,7 +22,7 @@ const QuestionFooter = ({
     <div className="flex justify-end gap-2 mt-5">
       <Button
         onClick={() => {
-          if (addingQuestion && lastQuestionIndex === questionIndex) {
+          if (addingQuestion && !question.id) {
             setAddingQuestion(false);
           } else {
             setQueueQuestion(null);
@@ -36,7 +35,12 @@ const QuestionFooter = ({
       >
         Cancel
       </Button>
-      <Button disabled={isDisabled} size="sm" type="submit">
+      <Button
+        disabled={isDisabled}
+        loading={isDisabled}
+        size="sm"
+        type="submit"
+      >
         Save
       </Button>
     </div>

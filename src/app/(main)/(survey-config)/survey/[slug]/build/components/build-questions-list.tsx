@@ -40,6 +40,9 @@ const BuildQuestionsList = ({ surveyId }: BuildQuestionsListProps) => {
   useLoadingToast(isPending, "Moving question...");
   const scrollToQuestionIndex = useSmoothScrollToQuestion(virtualizer);
 
+  const scrollToQuestion = (qIndex: number) => {
+    scrollToQuestionIndex(qIndex, { aling: "start" });
+  };
   //scroll to selected question
   useEffect(() => {
     const questionIndex = questions.findIndex((q) => q.id === selectedQuestion);
@@ -54,11 +57,11 @@ const BuildQuestionsList = ({ surveyId }: BuildQuestionsListProps) => {
   const renderItem = (question: Question | UnsavedQuestion, index: number) => {
     return question.id === selectedQuestion || !question.id ? (
       <EditQuestion
+        scrollToQuestion={scrollToQuestion}
         key={question.id}
         question={question}
-        questionIndex={index}
-        lastQuestionIndex={lastQuestionIndex}
         surveyId={surveyId}
+        qIndex={index}
       />
     ) : (
       <QuestionPreview

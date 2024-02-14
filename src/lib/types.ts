@@ -83,6 +83,10 @@ export type QuestionResponseData = {
   questionType: QuestionType;
   id?: string | undefined;
 };
+export type TextboxQuestionFormData = z.infer<typeof textboxQuestionSchema>;
+export type MultiChoiceQuestionFormData = z.infer<
+  typeof multiChoiceQuestionSchema
+>;
 
 export type MultiChoiceQuestionData = z.infer<
   typeof multiChoiceQuestionSchema

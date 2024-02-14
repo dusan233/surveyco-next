@@ -1,50 +1,39 @@
-import React, { useContext } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { RichTextEditor } from "@/components/text-editor/rich-text";
+import React from "react";
+import { SubmitHandler } from "react-hook-form";
+import { Form } from "@/components/ui/form";
 import {
   TextQuestionData,
   TextboxQuestion,
+  TextboxQuestionFormData,
   UnsavedTextQuestion,
 } from "@/lib/types";
-import QuestionFooter from "./question-footer";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import EditQuestionFooter from "./edit-question-footer";
 import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
-import useSaveQuestion from "@/lib/hooks/useSaveQuestion";
+import useSaveQuestion from "../hooks/useSaveQuestion";
 import { useToast } from "@/components/ui/use-toast";
-import AutoAnimate from "@/components/auto-animate";
-import { Editor } from "@tiptap/react";
-import { textboxQuestionSchema } from "@/lib/validationSchemas";
-import { uploadMedia } from "@/app/actions";
-import QuestionSettings from "./question-settings";
+import EditQuestionSettings from "./edit-question-settings";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useTextboxQuestionForm from "../hooks/useTextboxQuestionForm";
+import EditQuestionDescription from "./edit-question-description";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextQuestion;
   surveyId: string;
-  index: number;
+  scrollToQuestion: (qIndex: number) => void;
+  qIndex: number;
 };
 
 const BuildTextboxQuestion = ({
   question,
-  index,
   surveyId,
+  scrollToQuestion,
+  qIndex,
 }: TextboxQuestionProps) => {
   const { toast } = useToast();
-  const form = useForm<z.infer<typeof textboxQuestionSchema>>({
-    resolver: zodResolver(textboxQuestionSchema),
-    defaultValues: {
-      required: question.required,
-      description: question.description,
-      descriptionImage: question.description_image,
-    },
+  const form = useTextboxQuestionForm({
+    required: question.required,
+    description: question.description,
+    descriptionImage: question.description_image,
   });
 
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
@@ -58,9 +47,7 @@ const BuildTextboxQuestion = ({
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
-  const onSubmit: SubmitHandler<z.infer<typeof textboxQuestionSchema>> = (
-    data
-  ) => {
+  const handleSaveQuestion: SubmitHandler<TextboxQuestionFormData> = (data) => {
     const questionData: TextQuestionData = {
       description: data.description,
       required: data.required,
@@ -84,16 +71,22 @@ const BuildTextboxQuestion = ({
           }
           addingQuestionToast.dismiss();
         },
+        onError() {
+          toast({
+            variant: "destructive",
+            title: "Something went wrong!",
+          });
+        },
       }
     );
   };
 
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
-    const fn = form.handleSubmit(onSubmit);
+    const fn = form.handleSubmit(handleSaveQuestion);
     await fn();
 
     if (form.formState.errors.description) {
-      console.log("before prop stop");
+      scrollToQuestion(qIndex);
       e.stopPropagation();
     }
   });
@@ -101,72 +94,13 @@ const BuildTextboxQuestion = ({
   return (
     <div ref={ref}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field, fieldState }) => (
-              <FormItem>
-                <FormControl>
-                  <RichTextEditor
-                    content={field.value}
-                    placeholder="Enter your question"
-                    onChange={(editor: Editor) => {
-                      const htmlContent = editor.getHTML();
-
-                      let imageExists = false;
-                      editor.state.doc.content.descendants((node) => {
-                        if (node.type.name === "image") {
-                          imageExists = true;
-                        }
-                      });
-
-                      if (!imageExists && form.getValues().descriptionImage) {
-                        console.log("unregistrujem");
-                        form.setValue("descriptionImage", null);
-                      }
-
-                      field.onChange(editor.isEmpty ? "" : htmlContent);
-                    }}
-                    onAddImage={async (editor: Editor, file: File) => {
-                      console.log(editor, file);
-                      try {
-                        const formData = new FormData();
-
-                        formData.append("file", file);
-                        const uploadedImageRes = await uploadMedia(
-                          surveyId,
-                          formData
-                        );
-                        form.setValue(
-                          "descriptionImage",
-                          uploadedImageRes.fileUrl
-                        );
-                        editor!
-                          .chain()
-                          .focus()
-                          .setImage({
-                            src: uploadedImageRes.fileUrl,
-                          })
-                          .run();
-
-                        await form.handleSubmit(onSubmit)();
-                      } catch (err) {
-                        console.log(err);
-                      }
-                    }}
-                    onBlur={field.onBlur}
-                    error={fieldState.error}
-                  />
-                </FormControl>
-                <AutoAnimate>
-                  <FormMessage />
-                </AutoAnimate>
-              </FormItem>
-            )}
+        <form onSubmit={form.handleSubmit(handleSaveQuestion)}>
+          <EditQuestionDescription
+            handleSaveQuestion={handleSaveQuestion}
+            surveyId={surveyId}
           />
-          <QuestionSettings question={question} />
-          <QuestionFooter questionIndex={index} isDisabled={isPending} />
+          <EditQuestionSettings question={question} />
+          <EditQuestionFooter question={question} isDisabled={isPending} />
         </form>
       </Form>
     </div>

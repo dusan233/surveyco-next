@@ -11,7 +11,6 @@ type AddQuestionProps = {
 };
 
 const AddQuestion = ({ onAddQuestion }: AddQuestionProps) => {
-  const questions = useBuildQuestionsContext((s) => s.questions);
   const updateQuestions = useBuildQuestionsContext((s) => s.updateQuestions);
   const setAddingQuestion = useBuildQuestionsContext(
     (s) => s.setAddingQuestion
@@ -19,13 +18,13 @@ const AddQuestion = ({ onAddQuestion }: AddQuestionProps) => {
   const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
 
   const addNewQuestion = (type: QuestionType) => {
-    const lastQuestionNumber = questions.length
-      ? questions[questions.length - 1].number
-      : 0;
-    const newQuestionNumber = lastQuestionNumber + 1;
     updateQuestions((questions) => {
-      const newQuestion = createNewQuestion(type, newQuestionNumber);
       const filteredQuestions = questions.filter((question) => question.id);
+      const lastQuestionNumber = filteredQuestions.length
+        ? filteredQuestions[filteredQuestions.length - 1].number
+        : 0;
+      const newQuestionNumber = lastQuestionNumber + 1;
+      const newQuestion = createNewQuestion(type, newQuestionNumber);
       const updatedQuestions = [...filteredQuestions, newQuestion];
 
       return updatedQuestions;

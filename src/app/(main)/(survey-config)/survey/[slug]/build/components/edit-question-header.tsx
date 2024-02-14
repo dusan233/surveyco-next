@@ -3,15 +3,16 @@ import { getQuestionTypeLable } from "@/lib/utils";
 import React from "react";
 
 import QuestionActions from "./question-actions";
-import { Button } from "@/components/ui/button";
-import { Lightbulb, Settings } from "lucide-react";
 
-type QuestionHeaderProps = {
+type EditQuestionHeaderProps = {
   question: Question | UnsavedQuestion;
   surveyId: string;
 };
 
-const QuestionHeader = ({ question, surveyId }: QuestionHeaderProps) => {
+const EditQuestionHeader = ({
+  question,
+  surveyId,
+}: EditQuestionHeaderProps) => {
   return (
     <div className="flex gap-2 justify-between text-lg mb-5">
       <div className="flex-1 flex gap-2 items-end">
@@ -20,17 +21,11 @@ const QuestionHeader = ({ question, surveyId }: QuestionHeaderProps) => {
       </div>
       {question.id && (
         <div className="flex gap-2">
-          <Button variant="outline" size="icon">
-            <Settings className="h-6 w-6" />
-          </Button>
-          <Button variant="outline" size="icon">
-            <Lightbulb className="h-6 w-6" />
-          </Button>
-          <QuestionActions surveyId={surveyId} questionId={question.id!} />
+          <QuestionActions surveyId={surveyId} questionId={question.id} />
         </div>
       )}
     </div>
   );
 };
 
-export default QuestionHeader;
+export default EditQuestionHeader;

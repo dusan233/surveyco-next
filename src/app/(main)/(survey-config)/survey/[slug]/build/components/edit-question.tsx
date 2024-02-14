@@ -4,74 +4,70 @@ import {
   QuestionType,
   TextboxQuestion,
   UnsavedQuestion,
+  UnsavedTextQuestion,
 } from "@/lib/types";
 import React from "react";
 import MultiChoiceQuestion from "./build-multichoice-question";
 import TextboxQuestionn from "./build-textbox-question";
 import QuestionCard from "@/components/questions/question-card";
-import QuestionHeader from "./question-header";
+import EditQuestionHeader from "./edit-question-header";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
 type EditQuestionProps = {
   question: Question | UnsavedQuestion;
-  questionIndex: number;
   surveyId: string;
-  lastQuestionIndex: number;
+  scrollToQuestion: (qIndex: number) => void;
+  qIndex: number;
 };
 
 const EditQuestion = ({
   question,
-  questionIndex,
   surveyId,
-  lastQuestionIndex,
+  scrollToQuestion,
+  qIndex,
 }: EditQuestionProps) => {
   const { setNodeRef, isDragging, transform, transition } = useSortable({
     id: question.id || "unsavedQuestion",
   });
-  const addingQuestion = useBuildQuestionsContext((s) => s.addingQuestion);
-  const style = {
+  const dragStyle = {
     opacity: isDragging ? "0.4" : undefined,
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
-  const renderQuestionEditor = (
-    question: Question | UnsavedQuestion,
-    index: number
-  ) => {
+  const renderQuestionEditor = (question: Question | UnsavedQuestion) => {
     return [
       QuestionType.dropdown,
       QuestionType.checkboxes,
       QuestionType.multiple_choice,
     ].includes(question.type) ? (
       <MultiChoiceQuestion
+        scrollToQuestion={scrollToQuestion}
         surveyId={surveyId}
-        index={index}
+        qIndex={qIndex}
         question={question as MultipleChoiceQuestion}
       />
     ) : (
       <TextboxQuestionn
         surveyId={surveyId}
-        index={index}
-        question={question as TextboxQuestion}
+        qIndex={qIndex}
+        scrollToQuestion={scrollToQuestion}
+        question={question as TextboxQuestion | UnsavedTextQuestion}
       />
     );
   };
 
-  const isAddQuestionEdit =
-    lastQuestionIndex === questionIndex && addingQuestion;
+  const isUnsavedQuestion = !question.id;
 
   return (
     <div
-      ref={!isAddQuestionEdit ? setNodeRef : undefined}
-      style={!isAddQuestionEdit ? style : undefined}
-      className="mb-4"
+      ref={!isUnsavedQuestion ? setNodeRef : undefined}
+      style={!isUnsavedQuestion ? dragStyle : undefined}
     >
       <QuestionCard>
-        <QuestionHeader surveyId={surveyId} question={question} />
-        {renderQuestionEditor(question, questionIndex)}
+        <EditQuestionHeader surveyId={surveyId} question={question} />
+        {renderQuestionEditor(question)}
       </QuestionCard>
     </div>
   );

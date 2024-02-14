@@ -92,7 +92,7 @@ const QuestionPreview = ({
       }}
       ref={setNodeRef}
       style={style}
-      className={`px-3 py-5 mb-4 ${
+      className={`px-3 py-5 ${
         isDragging &&
         "outline-dashed outline-2 outline-blue-500 outline-offset-4"
       } shadow-sm !cursor-pointer relative bg-white rounded-sm hover:bg-slate-200 after:absolute after:z-[100] after:top-0 after:left-0 after:bg-transparent after:w-full after:h-full`}

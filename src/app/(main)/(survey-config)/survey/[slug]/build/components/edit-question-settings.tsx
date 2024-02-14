@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId } from "react";
+import React from "react";
 import {
   FormControl,
   FormField,
@@ -11,11 +11,11 @@ import { useFormContext } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Question, QuestionType, UnsavedQuestion } from "@/lib/types";
 
-type QuestionSettingsProps = {
+type EditQuestionSettingsProps = {
   question: Question | UnsavedQuestion;
 };
 
-const QuestionSettings = ({ question }: QuestionSettingsProps) => {
+const EditQuestionSettings = ({ question }: EditQuestionSettingsProps) => {
   const { control } = useFormContext();
 
   const qType = question.type;
@@ -50,7 +50,7 @@ const QuestionSettings = ({ question }: QuestionSettingsProps) => {
         />
       </div>
       {qType !== QuestionType.textbox && (
-        <div>
+        <div className=" border-b border-gray-300">
           <FormField
             control={control}
             name={"randomize"}
@@ -82,4 +82,4 @@ const QuestionSettings = ({ question }: QuestionSettingsProps) => {
   );
 };
 
-export default QuestionSettings;
+export default EditQuestionSettings;
