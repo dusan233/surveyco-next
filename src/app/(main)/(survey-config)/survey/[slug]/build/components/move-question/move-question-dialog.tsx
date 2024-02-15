@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import CopyQuestionForm from "./copy-question-form";
+import PlaceQuestionForm from "../place-question-form";
 
 type CopyQuestionDialogProps = {
   isOpen: boolean;
@@ -18,7 +18,7 @@ type CopyQuestionDialogProps = {
   questionId: string;
 };
 
-const CopyQuestionDialog = ({
+const MoveQuestionDialog = ({
   isOpen,
   onOpenChange,
   surveyId,
@@ -28,19 +28,17 @@ const CopyQuestionDialog = ({
     <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
-          <DialogTitle>Copy Question</DialogTitle>
-          <DialogDescription>
-            Copy this question and put it on ...
-          </DialogDescription>
+          <DialogTitle>Move Question</DialogTitle>
+          <DialogDescription>Move this question to...</DialogDescription>
         </DialogHeader>
-        <CopyQuestionForm
+        <PlaceQuestionForm
           surveyId={surveyId}
-          copyQuestionId={questionId}
           onCloseDialog={onOpenChange}
+          questionId={questionId}
         />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default CopyQuestionDialog;
+export default MoveQuestionDialog;

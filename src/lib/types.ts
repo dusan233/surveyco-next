@@ -1,4 +1,3 @@
-import { Content } from "@tiptap/react";
 import { z } from "zod";
 import {
   createSurveySchema,
@@ -74,6 +73,7 @@ export type QuestionResponse = {
 };
 
 export type CopyQuestionData = z.infer<typeof placeQuestionSchema>;
+export type PlaceQuestionData = z.infer<typeof placeQuestionSchema>;
 export type PlacePageData = z.infer<typeof placePageSchema>;
 export type QuestionsResponsesData = z.infer<typeof questionsResponsesSchema>;
 export type QuestionResponseData = {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,8 +16,9 @@ import { ArrowUpDown, Copy, MoreVertical, Trash2 } from "lucide-react";
 import useDeleteQuestion from "@/lib/hooks/useDeleteQuestion";
 import { useToast } from "@/components/ui/use-toast";
 import CopyQuestionDialog from "./copy-question-dialog";
-import MoveQuestionDialog from "./move-question-dialog";
+import MoveQuestionDialog from "./move-question/move-question-dialog";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import { useDisclosure } from "@/lib/hooks/useDisclosure";
 
 type QuestionActionsProps = {
   surveyId: string;
@@ -28,8 +29,16 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { toast } = useToast();
   const { deleteQuestionMutation } = useDeleteQuestion(currentPage!);
-  const [isCopyOpen, setIsCopyOpen] = useState(false);
-  const [isMoveOpen, setIsMoveOpen] = useState(false);
+  const {
+    isOpen: isCopyQuestionOpen,
+    onOpen: onOpenCopyQuestion,
+    onToggle: onToggleCopyQuestion,
+  } = useDisclosure();
+  const {
+    isOpen: isMoveQuestionOpen,
+    onOpen: onOpenMoveQuestion,
+    onToggle: onToggleMoveQuestion,
+  } = useDisclosure();
 
   const handleDeleteQuestion = () => {
     const deleteQuestionToast = toast({
@@ -43,6 +52,12 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
         onSuccess() {
           deleteQuestionToast.dismiss();
         },
+        onError() {
+          toast({
+            variant: "destructive",
+            title: "Something went wrong!",
+          });
+        },
       }
     );
   };
@@ -52,15 +67,15 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
       <CopyQuestionDialog
         questionId={questionId}
         surveyId={surveyId}
-        isOpen={isCopyOpen}
-        onOpenChange={setIsCopyOpen}
+        isOpen={isCopyQuestionOpen}
+        onOpenChange={onToggleCopyQuestion}
       />
 
       <MoveQuestionDialog
         questionId={questionId}
         surveyId={surveyId}
-        isOpen={isMoveOpen}
-        onOpenChange={setIsMoveOpen}
+        isOpen={isMoveQuestionOpen}
+        onOpenChange={onToggleMoveQuestion}
       />
 
       <DropdownMenu>
@@ -73,13 +88,13 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
           <DropdownMenuLabel>Question actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => setIsCopyOpen(true)}>
+            <DropdownMenuItem onClick={() => onOpenCopyQuestion()}>
               Copy
               <DropdownMenuShortcut>
                 <Copy className="h-4 w-4" />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setIsMoveOpen(true)}>
+            <DropdownMenuItem onClick={() => onOpenMoveQuestion()}>
               Move
               <DropdownMenuShortcut>
                 <ArrowUpDown className="h-4 w-4" />
