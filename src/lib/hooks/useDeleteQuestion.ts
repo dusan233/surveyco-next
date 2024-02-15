@@ -13,7 +13,7 @@ export default function useDeleteQuestion(currentPage: SurveyPage) {
   } = useMutation({
     mutationFn: (questionPayload: { surveyId: string; questionId: string }) =>
       deleteQuestion(questionPayload.surveyId, questionPayload.questionId),
-    onSuccess(data, variables, context) {
+    onSuccess(_, variables) {
       queryClient.setQueryData<QuestionsResponseData>(
         ["survey", variables.surveyId, "questions", currentPage.number],
         (questionsData) => {
