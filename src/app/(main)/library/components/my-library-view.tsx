@@ -4,8 +4,6 @@ import useUserSurveys from "@/lib/hooks/useUserSurveys";
 import React from "react";
 import { columns } from "./surveys-table-columns";
 import { DataTable as UserSurveysTable } from "@/components/data-table/data-table";
-import Spinner from "@/components/ui/spinner";
-import ServerError from "@/components/server-error";
 
 const MyLibraryView = () => {
   const {
