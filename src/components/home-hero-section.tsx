@@ -7,7 +7,7 @@ import Link from "next/link";
 const HomeHeroSection = () => {
   const { userId } = auth();
   return (
-    <div className="p-4 sm:p-10 min-h-[600px] bg-secondary text-center bg-grid-black/[0.07] relative flex flex-col gap-4 items-center justify-center">
+    <div className="p-4 sm:p-10 min-h-[650px] bg-secondary text-center bg-grid-black/[0.07] relative flex flex-col gap-4 items-center justify-center">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       <TypeEffectHeading
         sentences={[
@@ -22,13 +22,13 @@ const HomeHeroSection = () => {
       </p>
       {!userId ? (
         <Link href="/sign-up">
-          <Button size="lg" className="mt-8 w-36" variant="default">
+          <Button size="lg" className="mt-8 w-36  text-white" variant="default">
             Get started
           </Button>
         </Link>
       ) : (
         <Link href="/library">
-          <Button size="lg" className="mt-8 w-36" variant="default">
+          <Button size="lg" className="mt-8 w-36  text-white" variant="default">
             My surveys
           </Button>
         </Link>
