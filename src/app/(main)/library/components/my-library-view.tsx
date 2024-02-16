@@ -4,8 +4,12 @@ import useUserSurveys from "@/lib/hooks/useUserSurveys";
 import React from "react";
 import { columns } from "./surveys-table-columns";
 import { DataTable as UserSurveysTable } from "@/components/data-table/data-table";
+import CreateSurveyDialog from "@/components/survey/create-survey-dialog";
+import { useDisclosure } from "@/lib/hooks/useDisclosure";
+import { Button } from "@/components/ui/button";
 
 const MyLibraryView = () => {
+  const { isOpen, onToggle, onOpen } = useDisclosure();
   const {
     surveys,
     pageCount,
@@ -19,6 +23,7 @@ const MyLibraryView = () => {
 
   return (
     <>
+      <CreateSurveyDialog isOpen={isOpen} onOpenChange={onToggle} />
       <h1 className="text-2xl mb-5">My Surveys</h1>
       <UserSurveysTable
         columns={columns}
@@ -31,6 +36,9 @@ const MyLibraryView = () => {
         onSortingChange={setSorting}
         noDataMsg="No surveys."
       />
+      <div className="mt-5">
+        <Button onClick={() => onOpen()}>Create survey</Button>
+      </div>
     </>
   );
 };

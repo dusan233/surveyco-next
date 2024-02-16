@@ -54,7 +54,11 @@ const NavDrawer = ({ open, onClose }: NavDrawerProps) => {
           <div className="flex flex-col gap-2">
             {isSignedIn ? (
               <>
-                <Button variant="secondary">Create survey</Button>
+                <Link onClick={() => onClose()} href="/library">
+                  <Button variant="secondary" className="w-full">
+                    Create survey
+                  </Button>
+                </Link>
                 <Button
                   onClick={async () => {
                     await signOut();
