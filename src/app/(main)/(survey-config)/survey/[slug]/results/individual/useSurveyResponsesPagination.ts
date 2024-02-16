@@ -1,5 +1,5 @@
-import { useIndividualResponseStore } from "@/lib/hooks/store/useIndividualResponseStore";
 import { SurveyResponse } from "@/lib/types";
+import { useIndividualResponseStore } from "./useIndividualResponseStore";
 
 export default function useSurveyResponsesPagination(
   responses: SurveyResponse[],

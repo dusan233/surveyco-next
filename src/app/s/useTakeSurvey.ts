@@ -1,4 +1,4 @@
-import useQuestionsAndResponses from "@/lib/hooks/useQuestionsAndResponses";
+import useQuestionsAndResponses from "./useQuestionsAndResponses";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
 import { Question, QuestionType, QuestionsResponsesData } from "@/lib/types";
 import { useQueryClient } from "@tanstack/react-query";

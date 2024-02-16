@@ -1,6 +1,6 @@
 "use client";
 
-import useUserSurveys from "@/lib/hooks/useUserSurveys";
+import useUserSurveys from "../useUserSurveys";
 import React from "react";
 import { columns } from "./surveys-table-columns";
 import { DataTable as UserSurveysTable } from "@/components/data-table/data-table";

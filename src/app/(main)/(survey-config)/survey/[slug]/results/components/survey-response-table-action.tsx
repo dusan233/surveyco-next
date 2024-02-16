@@ -1,5 +1,5 @@
-import { useIndividualResponseStore } from "@/lib/hooks/store/useIndividualResponseStore";
 import React from "react";
+import { useIndividualResponseStore } from "../individual/useIndividualResponseStore";
 
 type SurveyResponseTableActionProps = {
   responseId: string;

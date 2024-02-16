@@ -56,7 +56,7 @@ export default function useSurveyCollectors(surveyId: string) {
         type: sorting[0].desc ? "desc" : "asc",
       });
     }
-  }, [sorting, data?.data]);
+  }, [sorting, data]);
 
   return {
     collectors: data?.data,

@@ -9,10 +9,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Spinner from "@/components/ui/spinner";
-import { useIndividualResponseStore } from "@/lib/hooks/store/useIndividualResponseStore";
+
 import { SurveyPage, SurveyResponse } from "@/lib/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
+import { useIndividualResponseStore } from "../../individual/useIndividualResponseStore";
 
 interface IndividualResponsePaginationProps {
   surveyPages: SurveyPage[];

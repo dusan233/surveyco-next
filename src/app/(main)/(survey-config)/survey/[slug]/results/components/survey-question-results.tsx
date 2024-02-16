@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuestionResults } from "@/lib/hooks/useSurveyResults";
+import { useQuestionResults } from "../useSurveyResults";
 import {
   MultipleChoiceQuestionResult,
   QuestionType,

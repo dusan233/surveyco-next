@@ -1,6 +1,5 @@
-import { createSurveyPage } from "@/app/actions";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { QuestionsResponsesData, SurveyPage } from "../types";
+import { useMutation } from "@tanstack/react-query";
+import { QuestionsResponsesData } from "../types";
 import { saveSurveyResponse } from "@/app/api";
 
 export default function useSaveSurveyResponse() {

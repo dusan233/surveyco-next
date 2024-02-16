@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
-import useCopyQuestion from "@/lib/hooks/useCopyQuestion";
+import useCopyQuestion from "../hooks/useCopyQuestion";
 import useDownsizedQuestions from "@/lib/hooks/useDownsizedQuestions";
 import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
 import useSurveyPages from "@/lib/hooks/useSurveyPages";
