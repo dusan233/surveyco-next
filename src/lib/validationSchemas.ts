@@ -21,7 +21,7 @@ export const uploadQuestionImageSchema = z
   );
 
 export const multiChoiceQuestionSchema = z.object({
-  description: z.string().min(1, "You must enter question text."),
+  description: z.string().trim().min(1, "You must enter question text."),
   descriptionImage: z.string().or(z.null()),
   required: z.boolean(),
   randomize: z.boolean(),
@@ -29,7 +29,7 @@ export const multiChoiceQuestionSchema = z.object({
     .array(
       z.object({
         id: z.string().optional(),
-        description: z.string().min(1, "You must enter option text."),
+        description: z.string().trim().min(1, "You must enter option text."),
         descriptionImage: z.string().or(z.null()),
       })
     )
@@ -37,19 +37,20 @@ export const multiChoiceQuestionSchema = z.object({
 });
 
 export const textboxQuestionSchema = z.object({
-  description: z.string().min(1, "You must enter question text."),
+  description: z.string().trim().min(1, "You must enter question text."),
   descriptionImage: z.string().or(z.null()),
   required: z.boolean(),
 });
 
 export const createSurveySchema = z.object({
-  title: z.string().min(1, "You must enter survey title."),
+  title: z.string().trim().min(1, "You must enter survey title."),
   category: z.nativeEnum(SurveyCategory).optional(),
 });
 
 export const verifyEmailAddressSchema = z.object({
   code: z
     .string()
+    .trim()
     .length(
       6,
       "Please enter the 6-digit number that was sent to your email address."
@@ -57,14 +58,17 @@ export const verifyEmailAddressSchema = z.object({
 });
 
 export const loginSchema = z.object({
-  email: z.string().email("Please provide a valid email address."),
-  password: z.string().min(1, "Please provide password."),
+  email: z.string().trim().email("Please provide a valid email address."),
+  password: z.string().trim().min(1, "Please provide password."),
 });
 
 export const signUpSchema = z.object({
-  email: z.string().email("Please provide a valid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters long."),
-  fullName: z.string().min(1, "Please provide your full name."),
+  email: z.string().trim().email("Please provide a valid email address"),
+  password: z
+    .string()
+    .trim()
+    .min(8, "Password must be at least 8 characters long."),
+  fullName: z.string().trim().min(1, "Please provide your full name."),
 });
 
 export const placeQuestionSchema = z.object({
@@ -80,6 +84,7 @@ export const placePageSchema = z.object({
 export const updateCollectorNameSchema = z.object({
   name: z
     .string()
+    .trim()
     .min(1, "You must enter at least one character for your collector name."),
 });
 

@@ -1,6 +1,6 @@
 import { copyQuestion } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CopyQuestionData } from "../types";
+import { CopyQuestionData } from "@/lib/types";
 
 export default function useCopyQuestion() {
   const queryClient = useQueryClient();
