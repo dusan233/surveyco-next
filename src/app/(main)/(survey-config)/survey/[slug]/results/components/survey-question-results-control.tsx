@@ -11,8 +11,8 @@ import React from "react";
 type SurveyQuestionResultsControlProps = {
   surveyResponseCount: number;
   surveyPages: SurveyPage[];
-  page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  page: string;
+  setPage: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const SurveyQuestionResultsControl = ({
@@ -28,9 +28,9 @@ const SurveyQuestionResultsControl = ({
       </h2>
       <div className="max-w-xs">
         <Select
-          value={page.toString()}
+          value={page}
           onValueChange={(value) => {
-            setPage(Number(value));
+            setPage(value);
           }}
         >
           <SelectTrigger>
@@ -39,7 +39,7 @@ const SurveyQuestionResultsControl = ({
 
           <SelectContent>
             {surveyPages!.map((page) => (
-              <SelectItem key={page.id} value={page.number.toString()}>
+              <SelectItem key={page.id} value={page.id}>
                 Page {page.number}
               </SelectItem>
             ))}

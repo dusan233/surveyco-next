@@ -22,12 +22,16 @@ type SurveyResultsProps = {
 };
 
 const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
-  const [selectedPage, setSelectedPage] = useState(1);
+  const { surveyPages } = useSurveyPages(surveyId);
+  const [selectedPage, setSelectedPage] = useState(() => {
+    const firstPage = surveyPages!.find((page) => page.number === 1);
+
+    return firstPage!.id;
+  });
   const { questionResults, isFetching, lastSuccessData } = useQuestionResults(
     surveyId,
     selectedPage
   );
-  const { surveyPages } = useSurveyPages(surveyId);
 
   const questionResultsData = questionResults || lastSuccessData.current;
 

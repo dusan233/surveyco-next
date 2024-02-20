@@ -714,7 +714,9 @@ export const getSurveyCollectors = async (
   const sortType = sort.type;
 
   const res = await fetch(
-    `http://localhost:8080/quiz/${surveyId}/collectors?page=${page}&sort=${sortColumn}:${sortType}&take=${take}`,
+    `http://localhost:8080/quiz/${surveyId}/collectors?page=${page}&sort=${sortColumn}:${sortType}&take=${
+      take ?? 10
+    }`,
     {
       cache: "no-cache",
       method: "GET",
@@ -791,15 +793,15 @@ export const getSurveyResponses = async (
   return await res.json();
 };
 
-export const getQuestionResults = async (
+export const getPageQuestionResults = async (
   surveyId: string,
-  page: number
+  pageId: string
 ): Promise<QuestionResult[]> => {
   const { getToken } = auth();
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/questions/result?page=${page}`,
+    `${process.env.BACKEND_API}/quiz/${surveyId}/questions/result?pageId=${pageId}`,
     {
       cache: "no-store",
       headers: {

@@ -1,14 +1,14 @@
-import { getQuestionResults } from "@/app/actions";
+import { getPageQuestionResults } from "@/app/actions";
 import { useToast } from "@/components/ui/use-toast";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
-export const useQuestionResults = (surveyId: string, page: number) => {
+export const useQuestionResults = (surveyId: string, pageId: string) => {
   const { toast } = useToast();
   const { data, error, isFetching, status, isError } = useQuery({
     staleTime: 0,
-    queryKey: ["survey", surveyId, "questions", "results", page],
-    queryFn: () => getQuestionResults(surveyId, page),
+    queryKey: ["survey", surveyId, "questions", "results", pageId],
+    queryFn: () => getPageQuestionResults(surveyId, pageId),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });

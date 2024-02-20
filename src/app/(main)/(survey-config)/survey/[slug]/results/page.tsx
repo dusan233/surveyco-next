@@ -1,4 +1,8 @@
-import { getQuestionResults, getSurvey, getSurveyPages } from "@/app/actions";
+import {
+  getPageQuestionResults,
+  getSurvey,
+  getSurveyPages,
+} from "@/app/actions";
 
 import {
   HydrationBoundary,
@@ -13,15 +17,18 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;
   const queryClient = new QueryClient();
 
+  const surveyPages = await queryClient.fetchQuery({
+    queryKey: ["survey", surveyId, "pages"],
+    queryFn: () => getSurveyPages(surveyId),
+  });
+
+  const firstPage = surveyPages.find((page) => page.number === 1);
+
   const [survey] = await Promise.all([
     getSurvey(surveyId),
     queryClient.fetchQuery({
-      queryKey: ["survey", surveyId, "pages"],
-      queryFn: () => getSurveyPages(surveyId),
-    }),
-    queryClient.fetchQuery({
-      queryKey: ["survey", surveyId, "questions", "results", 1],
-      queryFn: () => getQuestionResults(surveyId, 1),
+      queryKey: ["survey", surveyId, "questions", "results", firstPage!.id],
+      queryFn: () => getPageQuestionResults(surveyId, firstPage!.id),
     }),
   ]);
 
