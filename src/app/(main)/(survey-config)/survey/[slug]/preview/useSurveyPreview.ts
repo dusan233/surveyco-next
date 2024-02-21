@@ -20,14 +20,18 @@ export default function useSurveyPreview(surveyId: string) {
     isLoading: loadingPages,
     isError: isPagesError,
   } = useSurveyPages(surveyId);
+  const fristPageId = surveyPages?.find(
+    (page) => page.number === selectedPageNum
+  )!.id!;
   const {
     questions,
     page,
     isLoading: loadingQuestions,
     isFetching,
     isError: isQuestionsError,
-  } = useSurveyQuestions(surveyId, selectedPageNum, {
+  } = useSurveyQuestions(surveyId, fristPageId, {
     refetchOnWindowFocus: false,
+    enabled: !!surveyPages,
   });
   const [questionsResponses, setQuestionsResponses] = useState<
     {
@@ -65,7 +69,7 @@ export default function useSurveyPreview(surveyId: string) {
 
   const clearPagesCachedData = useCallback(
     (discludeCurrentPage: boolean = false) => {
-      queryClient.removeQueries({
+      queryClient.resetQueries({
         predicate(query) {
           const queryKey = query.queryKey;
           const condition =
@@ -86,9 +90,9 @@ export default function useSurveyPreview(surveyId: string) {
   );
 
   const restartPreview = () => {
-    clearPagesCachedData();
     setIsPreviewFinished(false);
     setSelectedPageNum(1);
+    clearPagesCachedData();
     setQuestionsResponses([]);
     setSurveyResponseStartTime(new Date());
   };
@@ -154,7 +158,7 @@ export default function useSurveyPreview(surveyId: string) {
     surveyResposneStartTime,
     selectedPageNum,
     fetchingPageQuestions: isFetching,
-    page,
+    pageId: page,
     isError,
   };
 }

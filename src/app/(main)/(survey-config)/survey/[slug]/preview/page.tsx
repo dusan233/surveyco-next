@@ -19,9 +19,10 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
     getInitialQuestionResponses,
     surveyPages,
     questions,
-    page,
+    pageId,
     fetchingPageQuestions,
     isError,
+    selectedPageNum,
   } = useSurveyPreview(surveyId);
 
   if (isError)
@@ -58,8 +59,8 @@ const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
           surveyResposneStartTime={surveyResposneStartTime}
           surveyId={surveyId}
           collectorId="preview"
-          key={page!}
-          displayPageNum={page!}
+          key={pageId!}
+          displayPageId={pageId!}
           onPreviousPage={handlePreviousPage}
           surveyPages={surveyPages!}
           questions={questions!}

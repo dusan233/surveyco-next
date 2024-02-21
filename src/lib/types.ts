@@ -191,7 +191,7 @@ export interface VolumeByDay {
 
 export interface QuestionsResponseData {
   questions: Question[];
-  page: number;
+  page: string;
 }
 
 export interface SurveyResponse {

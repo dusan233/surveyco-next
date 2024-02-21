@@ -4,16 +4,17 @@ import useToastError from "./useToastError";
 
 export default function useSurveyQuestions(
   surveyId: string,
-  page: number,
+  pageId: string,
   options?: {
     refetchOnMount?: boolean;
     refetchOnWindowFocus?: boolean;
+    enabled?: boolean;
   }
 ) {
   const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
     staleTime: 0,
-    queryKey: ["survey", surveyId, "questions", page],
-    queryFn: () => getSurveyQuestions(surveyId, page),
+    queryKey: ["survey", surveyId, "questions", pageId],
+    queryFn: () => getSurveyQuestions(surveyId, pageId),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
     refetchOnWindowFocus: true,

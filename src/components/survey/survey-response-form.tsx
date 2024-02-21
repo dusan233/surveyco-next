@@ -22,7 +22,7 @@ type SurveyResponseFormProps = {
   surveyPages: SurveyPage[];
   surveyId: string;
   collectorId: string;
-  displayPageNum: number;
+  displayPageId: string;
   isFetchingPage: boolean;
   surveyResposneStartTime: Date;
   onSurveyChange: () => void;
@@ -39,7 +39,7 @@ const SurveyResponseForm = ({
   surveyPages,
   onPreviousPage,
   isFetchingPage,
-  displayPageNum,
+  displayPageId,
   surveyId,
   collectorId,
   surveyResposneStartTime,
@@ -55,10 +55,13 @@ const SurveyResponseForm = ({
       questionResponses: initialResponses,
     },
   });
+  const currentPageNum = surveyPages!.find(
+    (page) => page.id === displayPageId
+  )!.number;
 
   const handleSubmit = async (values: QuestionsResponsesData) => {
     const submit =
-      surveyPages[surveyPages.length - 1].number === displayPageNum;
+      surveyPages[surveyPages.length - 1].number === currentPageNum;
     saveResponseMutation(
       {
         surveyId,
@@ -83,10 +86,12 @@ const SurveyResponseForm = ({
   };
 
   const showNextBtn =
-    surveyPages.findIndex((page) => page.number > displayPageNum) !== -1;
+    surveyPages.findIndex((page) => page.number > currentPageNum) !== -1;
   const showPrevBtn =
-    surveyPages.findIndex((page) => page.number < displayPageNum) !== -1;
-  const showSendBtn = displayPageNum === surveyPages.length;
+    surveyPages.findIndex((page) => page.number < currentPageNum) !== -1;
+  const showSendBtn =
+    surveyPages!.find((page) => page.id === displayPageId)!.number ===
+    surveyPages.length;
 
   const controlsInactive = isFetchingPage || isPending;
 

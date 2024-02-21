@@ -99,21 +99,14 @@ export const getSurvey = async (
 
 export const getSurveyQuestions = async (
   surveyId: string,
-  surveyPage?: number
+  surveyPage: string
 ): Promise<QuestionsResponseData> => {
-  const { getToken } = auth();
-  const token = await getToken();
-
+  console.log("hua", surveyId, surveyPage);
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/questions?page=${
-      surveyPage || 1
-    }`,
+    `${process.env.BACKEND_API}/quiz/${surveyId}/questions?pageId=${surveyPage}`,
     {
       credentials: "include",
       cache: "no-cache",
-      headers: {
-        Authorization: "Bearer " + token,
-      },
     }
   );
 
