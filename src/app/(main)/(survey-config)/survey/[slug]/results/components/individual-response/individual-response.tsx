@@ -25,7 +25,11 @@ const IndividualResponse = ({
     useSurveyResponses(surveyId);
   const { surveyPages, isLoading: loadingSurveyPages } =
     useSurveyPages(surveyId);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(() => {
+    const firstPage = surveyPages!.find((page) => page.number === 1);
+
+    return firstPage!.id;
+  });
   const {
     surveyResponse,
     questions,
@@ -92,7 +96,8 @@ const IndividualResponse = ({
       <IndividualResponseInfo surveyResponse={responseData!} />
       <div className="mt-6">
         <p className="mb-2 text-lg font-medium">
-          Respondent {responseData?.display_number} (Page {page})
+          Respondent {responseData?.display_number} (Page{" "}
+          {surveyPages?.find((sPage) => sPage.id === page)?.number})
         </p>
 
         {questionsData?.length === 0 ? (

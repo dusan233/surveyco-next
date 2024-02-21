@@ -24,8 +24,8 @@ interface IndividualResponsePaginationProps {
   getCanNextResponse: () => boolean;
   handleNextResponse: () => void;
   isLoading: boolean;
-  responsePage: number;
-  setResponsePage: React.Dispatch<React.SetStateAction<number>>;
+  responsePage: string;
+  setResponsePage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const IndividualResponsePagination = ({
@@ -91,9 +91,9 @@ const IndividualResponsePagination = ({
       <div>
         <div className="max-w-20">
           <Select
-            value={responsePage.toString()}
+            value={responsePage}
             onValueChange={(value) => {
-              setResponsePage(Number(value));
+              setResponsePage(value);
             }}
           >
             <SelectTrigger>
@@ -102,7 +102,7 @@ const IndividualResponsePagination = ({
 
             <SelectContent>
               {surveyPages!.map((page) => (
-                <SelectItem key={page.id} value={page.number.toString()}>
+                <SelectItem key={page.id} value={page.id}>
                   Page {page.number}
                 </SelectItem>
               ))}

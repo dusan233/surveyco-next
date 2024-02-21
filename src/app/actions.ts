@@ -673,7 +673,7 @@ export const getSurveyResponseAnswers = async (
 export const getSurveyResponse = async (
   surveyId: string,
   responseId: string,
-  page: number
+  pageId: string
 ): Promise<{
   surveyResponse: SurveyResponse;
   questions: Question[];
@@ -684,7 +684,7 @@ export const getSurveyResponse = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/response/${responseId}?page=${page}`,
+    `${process.env.BACKEND_API}/quiz/${surveyId}/response/${responseId}?pageId=${pageId}`,
     {
       credentials: "include",
       cache: "no-store",

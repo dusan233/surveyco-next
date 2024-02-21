@@ -6,13 +6,13 @@ import { useEffect, useRef } from "react";
 export default function useSurveyResponse(
   surveyId: string,
   responseId: string,
-  page: number
+  pageId: string
 ) {
   const { toast } = useToast();
   const { data, isLoading, isFetching, isError } = useQuery({
     staleTime: 0,
-    queryKey: ["survey", surveyId, "response", responseId, page],
-    queryFn: () => getSurveyResponse(surveyId, responseId, page),
+    queryKey: ["survey", surveyId, "response", responseId, pageId],
+    queryFn: () => getSurveyResponse(surveyId, responseId, pageId),
     placeholderData: keepPreviousData,
   });
 
