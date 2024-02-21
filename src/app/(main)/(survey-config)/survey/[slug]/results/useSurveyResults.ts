@@ -16,10 +16,10 @@ export const useQuestionResults = (surveyId: string, pageId: string) => {
   const lastSuccessData = useRef(data);
 
   useEffect(() => {
-    if (isError) {
+    if (isError && !isFetching) {
       toast({ variant: "destructive", title: "Something went wrong!" });
     }
-  }, [isError, toast]);
+  }, [isError, toast, isFetching]);
 
   useEffect(() => {
     if (data) lastSuccessData.current = data;
