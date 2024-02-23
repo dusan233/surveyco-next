@@ -32,17 +32,18 @@ const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
 
   const surveyResposneStartTime = new Date();
 
-  const prefetchSurveyPages = queryClient.fetchQuery({
+  const prefetchSurveyPages = await queryClient.fetchQuery({
     queryKey: ["survey", collector.surveyId, "pages"],
     queryFn: () => getSurveyPages(surveyId),
   });
 
-  const prefetchQuestionsAndResponses = queryClient.fetchQuery({
-    queryKey: ["survey", surveyId, "questions-responses", 1],
-    queryFn: () => getSurveyQuestionsAndResponses(surveyId, collector.id, 1),
-  });
+  const firstPageId = prefetchSurveyPages.find((page) => page.number === 1)!.id;
 
-  await Promise.all([prefetchSurveyPages, prefetchQuestionsAndResponses]);
+  await queryClient.fetchQuery({
+    queryKey: ["survey", surveyId, "questions-responses", firstPageId],
+    queryFn: () =>
+      getSurveyQuestionsAndResponses(surveyId, collector.id, firstPageId),
+  });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

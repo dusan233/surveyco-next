@@ -4,12 +4,13 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 export default function useQuestionsAndResponses(
   surveyId: string,
   collectorId: string,
-  page: number
+  pageId: string
 ) {
   const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
     staleTime: 0,
-    queryKey: ["survey", surveyId, "questions-responses", page],
-    queryFn: () => getSurveyQuestionsAndResponses(surveyId, collectorId, page),
+    queryKey: ["survey", surveyId, "questions-responses", pageId],
+    queryFn: () =>
+      getSurveyQuestionsAndResponses(surveyId, collectorId, pageId),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

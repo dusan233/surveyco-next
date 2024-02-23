@@ -18,8 +18,12 @@ export default function useTakeSurvey(
     useState(false);
 
   const { surveyPages } = useSurveyPages(surveyId);
+  const selectedPageId = surveyPages!.find(
+    (page) => page.number === selectedPageNum
+  )!.id;
+
   const { questions, questionResponses, page, isFetching, isError } =
-    useQuestionsAndResponses(surveyId, collectorId, selectedPageNum);
+    useQuestionsAndResponses(surveyId, collectorId, selectedPageId);
 
   const resetSurveyStartTime = () => {
     setStartTime(new Date());

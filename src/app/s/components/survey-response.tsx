@@ -57,13 +57,13 @@ const SurveyResponse = ({
         surveyResposneStartTime={startTime}
         onSurveyChange={handleSurveyDataChanged}
         onSuccessfulSubmit={handleSuccessfullPageSubmission}
-        key={page}
+        key={page!}
         initialResponses={getInitialQuestionResponses()}
         isFetchingPage={isFetching}
         questions={questions!}
         surveyPages={surveyPages!}
         onPreviousPage={handlePreviousPage}
-        displayPageNum={page!}
+        displayPageId={page!}
       />
     </>
   );

@@ -841,16 +841,16 @@ export const getQuestionsResult = async (
 export const getSurveyQuestionsAndResponses = async (
   surveyId: string,
   collectorId: string,
-  pageNumber: number
+  pageId: string
 ): Promise<{
   questions: Question[];
   questionResponses: QuestionResponse[];
-  page: number;
+  page: string;
 }> => {
   const surveyResponsesCookieVal = cookies().get("surveyResponses");
 
   const res = await fetch(
-    `http://localhost:8080/quiz/${surveyId}/responseData?collectorId=${collectorId}&page=${pageNumber}`,
+    `http://localhost:8080/quiz/${surveyId}/responseData?collectorId=${collectorId}&pageId=${pageId}`,
     {
       method: "GET",
       credentials: "include",
