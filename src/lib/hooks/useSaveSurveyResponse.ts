@@ -13,9 +13,9 @@ export default function useSaveSurveyResponse() {
     mutationFn: (payload: {
       surveyId: string;
       data: QuestionsResponsesData;
-      collectorId: string;
+      collectorId: string | null;
       pageId: string;
-      submit: boolean;
+      isPreview: boolean;
       surveyResposneStartTime: Date;
     }) =>
       saveSurveyResponse(
@@ -23,8 +23,8 @@ export default function useSaveSurveyResponse() {
         payload.data,
         payload.collectorId,
         payload.pageId,
-        payload.submit,
-        payload.surveyResposneStartTime
+        payload.surveyResposneStartTime,
+        payload.isPreview
       ),
   });
 

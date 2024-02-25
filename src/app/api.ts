@@ -31,11 +31,12 @@ export const getSurveyQuestionsAndResponses = async (
 export const saveSurveyResponse = async (
   surveyId: string,
   data: QuestionsResponsesData,
-  collectorId: string,
+  collectorId: string | null,
   pageId: string,
-  submit: boolean,
-  surveyResposneStartTime: Date
+  surveyResposneStartTime: Date,
+  isPreview: boolean
 ): Promise<{ submitted: boolean }> => {
+  console.log(collectorId, pageId, surveyResposneStartTime, isPreview);
   const res = await fetch(`http://localhost:8080/quiz/${surveyId}/response`, {
     method: "PUT",
     credentials: "include",
@@ -46,8 +47,8 @@ export const saveSurveyResponse = async (
       questionResponses: data.questionResponses,
       collectorId,
       pageId,
+      isPreview,
       surveyResposneStartTime,
-      ...(submit && { submit: true }),
     }),
   });
 

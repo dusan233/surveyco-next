@@ -21,11 +21,12 @@ type SurveyResponseFormProps = {
   questions: Question[];
   surveyPages: SurveyPage[];
   surveyId: string;
-  collectorId: string;
+  collectorId: string | null;
   displayPageId: string;
   isFetchingPage: boolean;
   surveyResposneStartTime: Date;
   onSurveyChange: () => void;
+  isPreview: boolean;
   onSuccessfulSubmit: (
     data: QuestionsResponsesData,
     submitted: boolean
@@ -46,6 +47,7 @@ const SurveyResponseForm = ({
   onSurveyChange,
   initialResponses,
   onSuccessfulSubmit,
+  isPreview = false,
 }: SurveyResponseFormProps) => {
   const { toast } = useToast();
   const { saveResponseMutation, isPending } = useSaveSurveyResponse();
@@ -60,16 +62,14 @@ const SurveyResponseForm = ({
   )!.number;
 
   const handleSubmit = async (values: QuestionsResponsesData) => {
-    const submit =
-      surveyPages[surveyPages.length - 1].number === currentPageNum;
     saveResponseMutation(
       {
         surveyId,
         data: values,
         collectorId,
         pageId: displayPageId,
-        submit,
         surveyResposneStartTime,
+        isPreview,
       },
       {
         onSuccess(data) {

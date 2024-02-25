@@ -58,6 +58,7 @@ const SurveyResponse = ({
         onSurveyChange={handleSurveyDataChanged}
         onSuccessfulSubmit={handleSuccessfullPageSubmission}
         key={page!}
+        isPreview={false}
         initialResponses={getInitialQuestionResponses()}
         isFetchingPage={isFetching}
         questions={questions!}
