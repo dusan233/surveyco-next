@@ -32,6 +32,7 @@ export const saveSurveyResponse = async (
   surveyId: string,
   data: QuestionsResponsesData,
   collectorId: string,
+  pageId: string,
   submit: boolean,
   surveyResposneStartTime: Date
 ): Promise<{ submitted: boolean }> => {
@@ -44,6 +45,7 @@ export const saveSurveyResponse = async (
     body: JSON.stringify({
       questionResponses: data.questionResponses,
       collectorId,
+      pageId,
       surveyResposneStartTime,
       ...(submit && { submit: true }),
     }),

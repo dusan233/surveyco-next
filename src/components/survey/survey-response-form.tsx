@@ -67,6 +67,7 @@ const SurveyResponseForm = ({
         surveyId,
         data: values,
         collectorId,
+        pageId: displayPageId,
         submit,
         surveyResposneStartTime,
       },

@@ -14,6 +14,7 @@ export default function useSaveSurveyResponse() {
       surveyId: string;
       data: QuestionsResponsesData;
       collectorId: string;
+      pageId: string;
       submit: boolean;
       surveyResposneStartTime: Date;
     }) =>
@@ -21,6 +22,7 @@ export default function useSaveSurveyResponse() {
         payload.surveyId,
         payload.data,
         payload.collectorId,
+        payload.pageId,
         payload.submit,
         payload.surveyResposneStartTime
       ),
