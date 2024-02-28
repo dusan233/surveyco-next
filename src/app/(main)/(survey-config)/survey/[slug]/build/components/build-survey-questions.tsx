@@ -18,7 +18,7 @@ const BuildSurveyQuestions = ({ surveyId }: { surveyId: string }) => {
 
   const { questions: questionsData, isFetching } = useSurveyQuestions(
     surveyId,
-    currentPage!.number
+    currentPage!.id
   );
 
   const updateQuestions = useBuildQuestionsContext((s) => s.updateQuestions);

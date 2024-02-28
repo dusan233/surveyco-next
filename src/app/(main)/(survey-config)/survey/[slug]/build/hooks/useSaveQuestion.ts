@@ -27,14 +27,9 @@ export default function useSaveQuestion() {
             payload.currentPage.id,
             payload.data
           ),
-    onSuccess(data, variables, context) {
+    onSuccess(data, variables) {
       queryClient.setQueryData<QuestionsResponseData>(
-        [
-          "survey",
-          variables.surveyId,
-          "questions",
-          variables.currentPage.number,
-        ],
+        ["survey", variables.surveyId, "questions", variables.currentPage.id],
         (questionsData) => {
           if (questionsData) {
             const questions = questionsData.questions;

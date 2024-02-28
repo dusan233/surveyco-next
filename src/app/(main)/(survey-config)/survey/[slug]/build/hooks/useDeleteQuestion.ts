@@ -15,7 +15,7 @@ export default function useDeleteQuestion(currentPage: SurveyPage) {
       deleteQuestion(questionPayload.surveyId, questionPayload.questionId),
     onSuccess(_, variables) {
       queryClient.setQueryData<QuestionsResponseData>(
-        ["survey", variables.surveyId, "questions", currentPage.number],
+        ["survey", variables.surveyId, "questions", currentPage.id],
         (questionsData) => {
           if (questionsData) {
             const questions = questionsData.questions;
