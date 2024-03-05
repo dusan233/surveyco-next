@@ -137,6 +137,8 @@ const MoveSurveyPageForm = ({
           Cancel
         </Button>
         <Button
+          disabled={isPending}
+          loading={isPending}
           variant="secondary"
           onClick={form.handleSubmit(handleSubmit)}
           size="sm"

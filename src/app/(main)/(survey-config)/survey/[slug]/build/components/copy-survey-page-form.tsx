@@ -134,6 +134,8 @@ const CopySurveyPageForm = ({
           Cancel
         </Button>
         <Button
+          loading={isPending}
+          disabled={isPending}
           variant="secondary"
           onClick={form.handleSubmit(handleSubmit)}
           size="sm"
