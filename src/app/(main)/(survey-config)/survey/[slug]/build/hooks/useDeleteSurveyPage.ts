@@ -18,14 +18,15 @@ export default function useDeleteSurveyPage() {
         ["survey", variables.surveyId, "pages"],
         (surveyPages) => {
           if (surveyPages) {
-            const deletedPageNumber = surveyPages.find(
-              (page) => page.id === variables.pageId
-            )!.number;
             return surveyPages
               .filter((page) => page.id !== variables.pageId)
               .map((page) => {
-                if (page.number > deletedPageNumber)
+                const deletedPage = surveyPages.find(
+                  (page) => page.id === variables.pageId
+                )!;
+                if (page.number > deletedPage.number) {
                   return { ...page, number: page.number - 1 };
+                }
                 return page;
               });
           } else {

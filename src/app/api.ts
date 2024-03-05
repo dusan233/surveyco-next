@@ -1,7 +1,10 @@
+"use client";
+
 import {
   Question,
   QuestionResponse,
   QuestionsResponsesData,
+  SurveyPage,
 } from "@/lib/types";
 
 export const getSurveyQuestionsAndResponses = async (

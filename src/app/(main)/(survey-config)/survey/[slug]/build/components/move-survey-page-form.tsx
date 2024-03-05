@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
 import usePlacePageForm from "../hooks/usePlacePageForm";
+import { useQueryClient } from "@tanstack/react-query";
 
 type MoveSurveyPageFormProps = {
   surveyId: string;
@@ -34,9 +35,9 @@ const MoveSurveyPageForm = ({
   surveyId,
   onMovePage,
 }: MoveSurveyPageFormProps) => {
+  const queryClient = useQueryClient();
   const { toast } = useToast();
   const { surveyPages } = useSurveyPages(surveyId);
-  const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { movePageMutation, isPending } = useMoveSurveyPage();
   const form = usePlacePageForm({
@@ -55,7 +56,9 @@ const MoveSurveyPageForm = ({
       },
       {
         onSuccess(data) {
-          setCurrentPage(data);
+          queryClient.invalidateQueries({
+            queryKey: ["survey", surveyId, "questions", data.id],
+          });
           onMovePage();
         },
         onError() {

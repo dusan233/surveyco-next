@@ -106,6 +106,7 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
+            disabled={surveyPages!.length === 1}
             onClick={handleDeletePage}
             className="bg-red-500 text-white focus:bg-red-600 focus:text-white"
           >

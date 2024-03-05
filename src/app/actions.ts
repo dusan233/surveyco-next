@@ -426,12 +426,17 @@ export const createSurveyPage = async (
       Authorization: "Bearer " + token,
     },
   });
+  const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(`Failed to create page for survey with id: ${surveyId}`);
+    const errorMsg =
+      data.error.code === "MaxPagesExceeded"
+        ? "You can have up to 20 pages per survey."
+        : "Something went wrong!";
+    throw new Error(errorMsg);
   }
 
-  return await res.json();
+  return data;
 };
 
 export const createSurvey = async (

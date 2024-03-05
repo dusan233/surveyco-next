@@ -16,6 +16,8 @@ import { z } from "zod";
 import CopyQuestionFormContent from "./copy-question/copy-question-form-content";
 import { v4 as uuid4 } from "uuid";
 import { useToast } from "@/components/ui/use-toast";
+import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
+import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 
 type CopyQuestionFormProps = {
   surveyId: string;
@@ -32,6 +34,9 @@ const CopyQuestionForm = ({
   const { toast } = useToast();
   const [formId, setFormId] = useState(uuid4());
   const { copyQuestionMutation, isPending } = useCopyQuestion();
+  const currentlyDisplayingPage = useBuildQuestionsContext(
+    (s) => s.currentPage
+  );
   const form = useForm<z.infer<typeof placeQuestionSchema>>({
     resolver: zodResolver(placeQuestionSchema),
     defaultValues: {
@@ -45,10 +50,14 @@ const CopyQuestionForm = ({
   const selectedPageNumber = surveyPages!.find(
     (page) => page.id === selectedPageId
   )!.number;
-  const { questions, isLoading, isFetching } = useDownsizedQuestions(
+  const { questions, isLoading, isFetching } = useSurveyQuestions(
     surveyId,
-    selectedPageNumber
+    selectedPageId
   );
+  // const { questions, isLoading, isFetching } = useDownsizedQuestions(
+  //   surveyId,
+  //   selectedPageNumber
+  // );
 
   useEffect(() => {
     const currentPageId = selectedPageId;

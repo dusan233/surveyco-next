@@ -1,9 +1,8 @@
 import { copyQuestion } from "@/app/actions";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { CopyQuestionData } from "@/lib/types";
 
 export default function useCopyQuestion() {
-  const queryClient = useQueryClient();
   const {
     isPending,
     mutate: copyQuestionMutation,
@@ -16,7 +15,6 @@ export default function useCopyQuestion() {
       questionId: string;
       data: CopyQuestionData;
     }) => copyQuestion(payload.surveyId, payload.questionId, payload.data),
-    onSuccess(data, variables, context) {},
   });
 
   return {

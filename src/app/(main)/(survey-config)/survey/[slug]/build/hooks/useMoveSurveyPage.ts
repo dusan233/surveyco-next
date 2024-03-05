@@ -21,47 +21,57 @@ export default function useMoveSurveyPage() {
         ["survey", variables.surveyId, "pages"],
         (surveyPages) => {
           if (surveyPages) {
-            const sourcePageNumber = surveyPages.find(
+            const sourcePage = surveyPages.find(
               (page) => page.id === variables.sourcePageId
-            )!.number;
-            const targetPageNumber = surveyPages.find(
+            )!;
+            const targetPage = surveyPages.find(
               (page) => page.id === variables.data.pageId
-            )!.number;
-
-            if (sourcePageNumber > targetPageNumber) {
+            )!;
+            if (sourcePage.number > targetPage.number) {
+              const newPageNumber =
+                variables.data.position === OperationPosition.after
+                  ? targetPage.number + 1
+                  : targetPage.number;
               return surveyPages
                 .map((page) => {
                   if (
-                    page.number >= data.number &&
-                    page.number < sourcePageNumber
+                    page.number >= newPageNumber &&
+                    page.number < sourcePage.number
                   ) {
                     return { ...page, number: page.number + 1 };
                   }
-
                   return page;
                 })
                 .map((page) =>
-                  page.id === data.id ? { ...page, number: data.number } : page
+                  page.id === data.id
+                    ? { ...page, number: newPageNumber }
+                    : page
                 )
                 .toSorted((p1, p2) => p1.number - p2.number);
-            } else {
-              const changedSurveyPages = surveyPages
+            } else if (targetPage.number > sourcePage.number) {
+              const newPageNumber =
+                variables.data.position === OperationPosition.after
+                  ? targetPage.number
+                  : targetPage.number - 1;
+              const updatedSurveyPages = surveyPages
                 .map((page) => {
                   if (
-                    page.number <= data.number &&
-                    sourcePageNumber < page.number
+                    page.number > sourcePage.number &&
+                    page.number <= newPageNumber
                   ) {
                     return { ...page, number: page.number - 1 };
                   }
-
                   return page;
                 })
                 .map((page) =>
-                  page.id === data.id ? { ...page, number: data.number } : page
+                  page.id === data.id
+                    ? { ...page, number: newPageNumber }
+                    : page
                 )
                 .toSorted((p1, p2) => p1.number - p2.number);
-
-              return changedSurveyPages;
+              return updatedSurveyPages;
+            } else if (sourcePage.number === targetPage.number) {
+              return surveyPages;
             }
           } else {
             return surveyPages;

@@ -14,6 +14,7 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import CopyQuestionFormContent from "./copy-question/copy-question-form-content";
 import { useToast } from "@/components/ui/use-toast";
+import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
 
 type PlaceQuestionFormProps = {
   surveyId: string;
@@ -43,9 +44,9 @@ const PlaceQuestionForm = ({
   const selectedPageNumber = surveyPages!.find(
     (page) => page.id === selectedPageId
   )!.number;
-  const { questions, isLoading, isFetching } = useDownsizedQuestions(
+  const { questions, isLoading, isFetching } = useSurveyQuestions(
     surveyId,
-    selectedPageNumber
+    selectedPageId
   );
 
   useEffect(() => {

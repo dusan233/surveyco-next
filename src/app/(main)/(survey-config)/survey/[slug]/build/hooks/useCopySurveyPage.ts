@@ -21,14 +21,22 @@ export default function useCopySurveyPage() {
         ["survey", variables.surveyId, "pages"],
         (surveyPages) => {
           if (surveyPages) {
-            const createdPage = data;
-            const pagesWithNewNumbers = surveyPages.map((page) => {
-              if (page.number >= createdPage.number)
+            const targetPage = surveyPages!.find(
+              (page) => page.id === variables.data.pageId
+            )!;
+            const newPage = {
+              ...data,
+              number:
+                variables.data.position === OperationPosition.after
+                  ? targetPage.number + 1
+                  : targetPage.number,
+            };
+            const updatedPagesNumbers = surveyPages.map((page) => {
+              if (page.number >= newPage.number)
                 return { ...page, number: page.number + 1 };
               return page;
             });
-
-            return [...pagesWithNewNumbers, createdPage].toSorted(
+            return [...updatedPagesNumbers, newPage].toSorted(
               (a, b) => a.number - b.number
             );
           } else {

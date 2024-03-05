@@ -39,10 +39,10 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
           createPageToast.dismiss();
           setCurrentPage(data);
         },
-        onError() {
+        onError(error) {
           toast({
             variant: "destructive",
-            title: "Something went wrong!",
+            title: error.message,
           });
         },
       }
@@ -54,11 +54,9 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
       <div className="flex flex-1 items-center gap-5">
         <div className="max-w-xs flex-1 flex items-center">
           <Select
-            value={currentPage!.number.toString()}
+            value={currentPage!.id}
             onValueChange={(value) => {
-              setCurrentPage(
-                surveyPages?.find((page) => page.number === Number(value))!
-              );
+              setCurrentPage(surveyPages!.find((page) => page.id === value)!);
             }}
           >
             <SelectTrigger>
@@ -67,7 +65,7 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
 
             <SelectContent>
               {surveyPages!.map((page, index) => (
-                <SelectItem key={page.id} value={page.number.toString()}>
+                <SelectItem key={page.id} value={page.id}>
                   {"Page " + (index + 1)}
                 </SelectItem>
               ))}
