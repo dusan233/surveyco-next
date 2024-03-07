@@ -89,6 +89,7 @@
     "cypress": "^13.6.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "tailwind-scrollbar": "^3.1.0",
     "ts-node": "^10.9.2"
   }
 }

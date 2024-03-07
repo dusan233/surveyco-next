@@ -11,6 +11,7 @@ import { SubmitHandler, useFormContext } from "react-hook-form";
 import { uploadMedia } from "@/app/actions";
 import AutoAnimate from "@/components/auto-animate";
 import { useToast } from "@/components/ui/use-toast";
+import { editorHasImage } from "@/lib/utils";
 
 type EditQuestionDescriptionProps = {
   surveyId: string;
@@ -37,12 +38,7 @@ const EditQuestionDescription = ({
               onChange={(editor: Editor) => {
                 const htmlContent = editor.getHTML();
 
-                let imageExists = false;
-                editor.state.doc.content.descendants((node) => {
-                  if (node.type.name === "image") {
-                    imageExists = true;
-                  }
-                });
+                let imageExists = editorHasImage(editor);
 
                 if (!imageExists && form.getValues().descriptionImage) {
                   form.setValue("descriptionImage", null);
@@ -55,6 +51,9 @@ const EditQuestionDescription = ({
                   const formData = new FormData();
 
                   formData.append("file", file);
+                  let imageExists = editorHasImage(editor);
+                  if (imageExists) return;
+
                   const uploadedImageRes = await uploadMedia(
                     surveyId,
                     formData

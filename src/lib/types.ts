@@ -35,6 +35,7 @@ export interface QuestionBase {
   number: number;
   surveyPageId: string;
   required: boolean;
+  hasResponses: boolean;
 }
 export interface QuestionResultBase extends QuestionBase {
   answeredCount: number;
@@ -112,6 +113,7 @@ export type SortObject = {
 export interface Option {
   description: string;
   description_image: string | null;
+  number: number;
   id: string;
 }
 

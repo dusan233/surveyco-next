@@ -1,8 +1,9 @@
 "use client";
 
+import { editorHasImage } from "@/lib/utils";
 import { Editor } from "@tiptap/react";
 import { ImageIcon } from "lucide-react";
-import React, { ChangeEvent, useState } from "react";
+import React from "react";
 import {
   FaBold,
   FaItalic,
@@ -21,23 +22,14 @@ const TextEditorMenu = ({
   openInsertImageDialog,
 }: TextEditorMenuProps) => {
   const regularBtnClassNames =
-    "bg-slate-500 text-white p-1 hover:bg-primary hover:text-secondary";
+    "bg-slate-500 text-white p-1 hover:bg-primary disabled:cursor-default hover:text-secondary disabled:pointer-events-none disabled:bg-slate-400";
   const highlightedBtnClassNames =
-    "bg-primary text-secondary p-1 hover:bg-primary hover:text-secondary";
-
-  const addCustomImage = () => {
-    editor!
-      .chain()
-      .focus()
-      .setImage({
-        src: "https://images.pexels.com/photos/19284514/pexels-photo-19284514/free-photo-of-a-black-and-white-photo-of-a-pine-tree.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      })
-      .run();
-  };
+    "bg-primary text-secondary p-1 hover:bg-primary disabled:cursor-default hover:text-secondary disabled:pointer-events-none disabled:bg-slate-400";
 
   if (!editor) {
     return null;
   }
+  const insertImageDisabled = editorHasImage(editor!);
 
   return (
     <div
@@ -113,6 +105,21 @@ const TextEditorMenu = ({
       </button>
       <button
         type="button"
+        disabled={insertImageDisabled}
+        onClick={() => {
+          openInsertImageDialog();
+        }}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          editor.chain().focus().run();
+        }}
+        // disabled={!editor.can().chain().focus().redo().run()}
+        className={regularBtnClassNames}
+      >
+        <ImageIcon className="h-4 w-4" />
+      </button>
+      <button
+        type="button"
         onClick={() => editor.chain().focus().undo().run()}
         onMouseDown={(e) => {
           e.preventDefault();
@@ -134,20 +141,6 @@ const TextEditorMenu = ({
         className={regularBtnClassNames}
       >
         <ImRedo2 />
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          openInsertImageDialog();
-        }}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          editor.chain().focus().run();
-        }}
-        // disabled={!editor.can().chain().focus().redo().run()}
-        className={regularBtnClassNames}
-      >
-        <ImageIcon className="h-4 w-4" />
       </button>
     </div>
   );

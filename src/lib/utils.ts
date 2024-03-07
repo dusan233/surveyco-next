@@ -6,6 +6,7 @@ import { IoMdCheckboxOutline } from "react-icons/io";
 import { PiTextboxBold } from "react-icons/pi";
 import { QuestionType, SurveyCategory } from "./types";
 import { isClerkAPIResponseError } from "@clerk/nextjs";
+import { Editor } from "@tiptap/react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,6 +19,17 @@ export const createTextboxQuestion = (number: number) => ({
   required: false,
   number,
 });
+
+export const editorHasImage = (editor: Editor) => {
+  let imageExists = false;
+  editor.state.doc.content.descendants((node) => {
+    if (node.type.name === "image") {
+      imageExists = true;
+    }
+  });
+
+  return imageExists;
+};
 
 export const createMultichoiceQuestion = (
   number: number,
@@ -33,10 +45,12 @@ export const createMultichoiceQuestion = (
     {
       description: "",
       description_image: null,
+      number: 1,
     },
     {
       description: "",
       description_image: null,
+      number: 2,
     },
   ],
 });

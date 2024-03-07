@@ -10,6 +10,7 @@ export default function useMultiChoiceQuestionForm(
     options: {
       description: string;
       descriptionImage: string | null;
+      number: number;
       id?: string | undefined;
     }[];
     required: boolean;

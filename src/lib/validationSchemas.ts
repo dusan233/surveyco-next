@@ -21,7 +21,11 @@ export const uploadQuestionImageSchema = z
   );
 
 export const multiChoiceQuestionSchema = z.object({
-  description: z.string().trim().min(1, "You must enter question text."),
+  description: z
+    .string()
+    .trim()
+    .min(1, "You must enter question text.")
+    .max(2500, "Description can have max of 2500 characters."),
   descriptionImage: z.string().or(z.null()),
   required: z.boolean(),
   randomize: z.boolean(),
@@ -29,15 +33,25 @@ export const multiChoiceQuestionSchema = z.object({
     .array(
       z.object({
         id: z.string().optional(),
-        description: z.string().trim().min(1, "You must enter option text."),
+        description: z
+          .string()
+          .trim()
+          .min(1, "You must enter option text.")
+          .max(2500, "Description can have max of 2500 characters."),
         descriptionImage: z.string().or(z.null()),
+        number: z.number().positive(),
       })
     )
-    .nonempty("You must add at least one option."),
+    .nonempty("You must add at least one option.")
+    .max(30, "Max. number of options is 30."),
 });
 
 export const textboxQuestionSchema = z.object({
-  description: z.string().trim().min(1, "You must enter question text."),
+  description: z
+    .string()
+    .trim()
+    .min(1, "You must enter question text.")
+    .max(2500, "Description can have max of 2500 characters."),
   descriptionImage: z.string().or(z.null()),
   required: z.boolean(),
 });

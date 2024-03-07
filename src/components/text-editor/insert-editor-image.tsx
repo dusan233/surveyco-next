@@ -5,7 +5,6 @@ import { DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { uploadQuestionImageSchema } from "@/lib/validationSchemas";
 import { ZodError, ZodIssue } from "zod";
-import { Editor } from "@tiptap/react";
 
 type InsertEditorImageProps = {
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;

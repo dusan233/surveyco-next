@@ -2,6 +2,7 @@ import React from "react";
 import { FormItem } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { MultipleChoiceQuestion } from "@/lib/types";
+import DOMPurify from "isomorphic-dompurify";
 
 type MultiChoiceQuestionPreviewProps = {
   question: MultipleChoiceQuestion;
@@ -25,9 +26,11 @@ const MultiChoiceQuestionPreview = ({
           <RadioGroupItem value={option.id} />
 
           <label
-            className="text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
+            className="w-full min-w-[1%] text-lg break-words peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
             htmlFor={option.id}
-            dangerouslySetInnerHTML={{ __html: option.description }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(option.description),
+            }}
           ></label>
         </FormItem>
       ))}

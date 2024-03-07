@@ -101,7 +101,6 @@ export const getSurveyQuestions = async (
   surveyId: string,
   surveyPage: string
 ): Promise<QuestionsResponseData> => {
-  console.log("hua", surveyId, surveyPage);
   const res = await fetch(
     `${process.env.BACKEND_API}/quiz/${surveyId}/questions?pageId=${surveyPage}`,
     {

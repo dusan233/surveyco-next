@@ -6,7 +6,7 @@ import {
   MultipleChoiceQuestion,
   UnsavedMultiChoiceQuestion,
 } from "@/lib/types";
-import React from "react";
+import React, { useMemo } from "react";
 import { FormProvider, SubmitHandler } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
@@ -39,6 +39,7 @@ const BuildMultiChoiceQuestion = ({
     options: question.options.map((qChoice) => ({
       description: qChoice.description,
       descriptionImage: qChoice.description_image,
+      number: qChoice.number,
       ...(qChoice.id && { id: qChoice.id }),
     })),
     required: question.required,
@@ -54,6 +55,12 @@ const BuildMultiChoiceQuestion = ({
   const setAddingQuestion = useBuildQuestionsContext(
     (s) => s.setAddingQuestion
   );
+
+  const canRemoveQuestionOptions = useMemo(() => {
+    return question.id
+      ? !(question as MultipleChoiceQuestion).hasResponses
+      : true;
+  }, [question]);
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
@@ -81,6 +88,20 @@ const BuildMultiChoiceQuestion = ({
         onSuccess(data) {
           setCanSelectQuestion(true);
           setAddingQuestion(false);
+
+          //@ts-ignore
+          form.setValue(
+            "options",
+            //@ts-ignore
+            (data as MultipleChoiceQuestion).options.map((option) => {
+              return {
+                id: option.id,
+                description: option.description,
+                number: option.number,
+                descriptionImage: option.description_image,
+              };
+            })
+          );
           if (!questionData.id) {
             setQueueQuestion(data.id);
           }
@@ -119,6 +140,7 @@ const BuildMultiChoiceQuestion = ({
               handleSaveQuestion={handleSaveQuestion}
               surveyId={surveyId}
               control={form.control}
+              canRemoveOptions={canRemoveQuestionOptions}
             />
             <EditQuestionSettings question={question} />
             <EditQuestionFooter question={question} isDisabled={isPending} />

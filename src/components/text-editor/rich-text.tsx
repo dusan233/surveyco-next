@@ -46,7 +46,7 @@ export const RichTextEditor = ({
     () =>
       `relative ${
         error ? "border-red-500" : "border-slate-300"
-      } cursor-text bg-white border-[1.5px] focus:outline outline-[1.5px] outline-primary rounded-sm px-2 py-1 focus:border-primary text-sm`,
+      } cursor-text max-h-32 scrollbar-thumb-neutral-300 scrollbar-track-slate-100 scrollbar-thin overflow-auto bg-white border-[1.5px] focus:outline outline-[1.5px] outline-primary rounded-sm px-2 py-1 focus:border-primary text-sm`,
     [error]
   );
 

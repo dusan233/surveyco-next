@@ -83,6 +83,7 @@ module.exports = {
   },
   plugins: [
     require("tailwindcss-animate"),
+    require("tailwind-scrollbar"),
     addVariablesForColors,
     function ({ matchUtilities, theme }) {
       matchUtilities(
