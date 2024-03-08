@@ -8,6 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
+import { editorHasImage } from "@/lib/utils";
 import { Editor } from "@tiptap/react";
 import React from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
@@ -41,6 +42,9 @@ const EditQuestionChoiceDescription = ({
                   const formData = new FormData();
 
                   formData.append("file", file);
+                  let imageExists = editorHasImage(editor);
+                  if (imageExists) return;
+
                   const uploadedImageRes = await uploadMedia(
                     surveyId,
                     formData
@@ -68,12 +72,7 @@ const EditQuestionChoiceDescription = ({
               onChange={(editor: Editor) => {
                 const htmlContent = editor.getHTML();
 
-                let imageExists = false;
-                editor.state.doc.content.descendants((node) => {
-                  if (node.type.name === "image") {
-                    imageExists = true;
-                  }
-                });
+                let imageExists = editorHasImage(editor);
 
                 if (!imageExists && getValues().descriptionImage) {
                   setValue(`options.${index}.descriptionImage`, null);

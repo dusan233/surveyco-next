@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useFormContext } from "react-hook-form";
 import { Input } from "../ui/input";
 import { DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
@@ -17,7 +16,6 @@ const InsertEditorImage = ({
 }: InsertEditorImageProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [error, setError] = useState<ZodIssue | null>(null);
-  const { setValue } = useFormContext();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   return (

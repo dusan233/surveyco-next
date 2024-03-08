@@ -1,9 +1,19 @@
 import { moveQuestion } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CopyQuestionData, Question, QuestionsResponseData } from "@/lib/types";
+import {
+  CopyQuestionData,
+  OperationPosition,
+  Question,
+  QuestionsResponseData,
+  SurveyPage,
+} from "@/lib/types";
+import useBuildQuestionsContext from "./useBuildQuestionsContext";
 
 export default function useMoveQuestion() {
   const queryClient = useQueryClient();
+  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
+  const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
+
   const {
     isPending,
     mutate: moveQuestionMutation,
@@ -17,60 +27,96 @@ export default function useMoveQuestion() {
       pageNumber: number;
       data: CopyQuestionData;
     }) => moveQuestion(payload.surveyId, payload.questionId, payload.data),
-    // onMutate(moveQuestion) {
-    //   const previousQuestions = queryClient.getQueryData<QuestionsResponseData>(
-    //     ["survey", moveQuestion.surveyId, "questions", moveQuestion.pageNumber]
-    //   );
-    //   const sourceQuestion = previousQuestions?.questions.find(
-    //     (q) => q.id === moveQuestion.questionId
-    //   );
-    //   const targetQuestion = previousQuestions?.questions.find(
-    //     (q) => q.id === moveQuestion.data.questionId
-    //   ) as Question;
+    onMutate(moveQuestion) {
+      const previousQuestions = queryClient.getQueryData<QuestionsResponseData>(
+        ["survey", moveQuestion.surveyId, "questions", currentPage!.id]
+      );
+      const sourceQuestion = previousQuestions?.questions.find(
+        (q) => q.id === moveQuestion.questionId
+      );
+      const targetQuestion = previousQuestions?.questions.find(
+        (q) => q.id === moveQuestion.data.questionId
+      ) as Question;
+      console.log(sourceQuestion, targetQuestion);
+      if (sourceQuestion!.surveyPageId === moveQuestion.data.pageId) {
+        let updatedQuestions;
 
-    //   let updatedNumbersQuestions;
-    //   if (sourceQuestion!.number > targetQuestion.number) {
-    //     updatedNumbersQuestions = previousQuestions!.questions.map((q) => {
-    //       if (
-    //         q.number >= targetQuestion.number &&
-    //         q.number < sourceQuestion!.number
-    //       ) {
-    //         return { ...q, number: q.number + 1 };
-    //       }
-    //       if (q.number === sourceQuestion!.number)
-    //         return { ...q, number: targetQuestion.number };
-    //       return q;
-    //     });
+        if (sourceQuestion!.number > targetQuestion!.number) {
+          const sourceQuestionNewNumber =
+            moveQuestion.data.position === OperationPosition.after
+              ? targetQuestion!.number + 1
+              : targetQuestion!.number;
 
-    //     updatedNumbersQuestions.sort((a, b) => a.number - b.number);
-    //   } else {
-    //     updatedNumbersQuestions = previousQuestions!.questions.map((q) => {
-    //       if (
-    //         q.number > sourceQuestion!.number &&
-    //         q.number <= targetQuestion.number
-    //       ) {
-    //         return { ...q, number: q.number - 1 };
-    //       }
-    //       if (q.number === sourceQuestion!.number)
-    //         return { ...q, number: targetQuestion.number };
-    //       return q;
-    //     });
-    //     updatedNumbersQuestions.sort((a, b) => a.number - b.number);
-    //   }
+          updatedQuestions = previousQuestions!.questions.map((q) => {
+            if (
+              q.number < sourceQuestion!.number &&
+              q.number >= sourceQuestionNewNumber
+            ) {
+              return { ...q, number: q.number + 1 };
+            } else if (q.number === sourceQuestion!.number)
+              return { ...q, number: sourceQuestionNewNumber };
 
-    //   queryClient.setQueryData<QuestionsResponseData>(
-    //     ["survey", moveQuestion.surveyId, "questions", moveQuestion.pageNumber],
-    //     { questions: updatedNumbersQuestions, page: previousQuestions!.page }
-    //   );
+            return q;
+          });
+        } else if (sourceQuestion!.number < targetQuestion!.number) {
+          const sourceQuestionNewNumber =
+            moveQuestion.data.position === OperationPosition.after
+              ? targetQuestion!.number
+              : targetQuestion!.number - 1;
 
-    //   return { previousQuestions };
-    // },
-    // onError(_, variables, context) {
-    //   queryClient.setQueryData<QuestionsResponseData>(
-    //     ["survey", variables.surveyId, "questions", variables.pageNumber],
-    //     context?.previousQuestions
-    //   );
-    // },
+          updatedQuestions = previousQuestions!.questions.map((q) => {
+            if (
+              q.number > sourceQuestion!.number &&
+              q.number <= sourceQuestionNewNumber
+            ) {
+              return { ...q, number: q.number - 1 };
+            } else if (q.number === sourceQuestion!.number)
+              return { ...q, number: sourceQuestionNewNumber };
+            return q;
+          });
+        }
+
+        queryClient.setQueryData<QuestionsResponseData>(
+          ["survey", moveQuestion.surveyId, "questions", currentPage!.id],
+          {
+            questions: updatedQuestions!.toSorted(
+              (a, b) => a.number - b.number
+            ),
+            page: previousQuestions!.page,
+          }
+        );
+      }
+
+      return { previousQuestions };
+    },
+    onSuccess(data, variables) {
+      const previousQuestions = queryClient.getQueryData<QuestionsResponseData>(
+        ["survey", variables.surveyId, "questions", currentPage!.id]
+      );
+      const sourceQuestion = previousQuestions?.questions.find(
+        (q) => q.id === variables.questionId
+      );
+
+      if (sourceQuestion!.surveyPageId === data.surveyPageId) return;
+
+      const surveyPages = queryClient.getQueryData<SurveyPage[]>([
+        "survey",
+        variables.surveyId,
+        "pages",
+      ]);
+      const targetPage = surveyPages?.find(
+        (page) => page.id === data.surveyPageId
+      );
+      if (targetPage) {
+        setCurrentPage(targetPage);
+      }
+    },
+    onError(_, variables, context) {
+      queryClient.setQueryData<QuestionsResponseData>(
+        ["survey", variables.surveyId, "questions", currentPage!.id],
+        context?.previousQuestions
+      );
+    },
   });
 
   return {
