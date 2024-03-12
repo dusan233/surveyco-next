@@ -11,13 +11,19 @@ import SurveyResponse from "../components/survey-response";
 import { getSurveyQuestionsAndResponses } from "@/app/actions";
 import { cookies } from "next/headers";
 import { RedirectType, permanentRedirect } from "next/navigation";
+import { CollectorStatus } from "@/lib/types";
 
 const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
   const queryClient = new QueryClient();
 
   const collector = await getCollector(params.slug);
 
+  if (collector.status === CollectorStatus.closed) {
+    permanentRedirect("/survey-closed", RedirectType.replace);
+  }
+
   const blockedCollectorsCookie = cookies().get("blocked_col")?.value;
+
   if (blockedCollectorsCookie) {
     const blockedCollectors: string[] = JSON.parse(blockedCollectorsCookie);
     const surveyCollectorAlreadySubmitted = !!blockedCollectors.find(
