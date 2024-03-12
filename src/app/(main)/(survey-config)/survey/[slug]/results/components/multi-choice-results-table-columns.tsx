@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
+import DOMPurify from "isomorphic-dompurify";
 
 export const columns: ColumnDef<{
   description: string;
@@ -12,7 +13,12 @@ export const columns: ColumnDef<{
     cell: ({ row }) => {
       const choiceDescription: string = row.getValue("description");
       return (
-        <div className="font-medium flex items-center">{choiceDescription}</div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(choiceDescription),
+          }}
+          className="font-medium"
+        />
       );
     },
   },

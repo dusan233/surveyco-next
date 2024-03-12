@@ -1,5 +1,6 @@
 "use client";
 
+import { convert } from "html-to-text";
 import React, { useRef } from "react";
 import {
   Bar,
@@ -91,7 +92,7 @@ const CustomTooltipContent = ({
     return (
       <div className="p-2 rounded-sm bg-slate-800 text-white text-xs">
         <p className="text-xs max-w-[150px] break-all ...">
-          {dataItem.description}
+          {convert(dataItem.description.replace(/<img[^>]*>/g, ""))}
         </p>
         <p className="text-[#B4FF00]">{` ${dataItem.answeredCount} (${
           dataItem.percenteges + "%"
@@ -107,13 +108,13 @@ const CustomXAxisTick = (s: any) => {
     <g transform={`translate(${s.x - (s.width - 10) / 2},${s.y})`}>
       <foreignObject textAnchor="middle" width="100%" height="100%">
         <div
-          title={s.payload.value}
+          title={convert(s.payload.value.replace(/<img[^>]*>/g, ""))}
           style={{
             width: s.width - 10,
           }}
           className="text-xs p-0.5  text-center border-r leading-[12px] border-red-50 break-words line-clamp-2"
         >
-          <div>{s.payload.value}</div>
+          <div>{convert(s.payload.value.replace(/<img[^>]*>/g, ""))}</div>
         </div>
       </foreignObject>
     </g>

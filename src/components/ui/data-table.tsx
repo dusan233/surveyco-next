@@ -58,7 +58,7 @@ export function DataTable<TData, TValue>({
   return (
     <div
       ref={parentRef}
-      className="max-h-96 overflow-auto"
+      className="max-h-96 w-full overflow-auto"
       style={{ overflowAnchor: "none" }}
     >
       <Table className="bg-white">

@@ -5,6 +5,7 @@ import {
   QuestionType,
 } from "@/lib/types";
 import { convert } from "html-to-text";
+import DOMPurify from "isomorphic-dompurify";
 import React from "react";
 
 type IndividualResponseAnswersProps = {
@@ -35,9 +36,14 @@ const IndividualResponseAnswers = ({
                   (choice) => choice.id === qAnswer.questionOptionId
                 );
                 return (
-                  <div className="break-all" key={qAnswer.id}>
-                    - {convert(choiceContent!.description)}
-                  </div>
+                  <div
+                    className="break-all"
+                    key={qAnswer.id}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        "-" + DOMPurify.sanitize(choiceContent!.description),
+                    }}
+                  />
                 );
               });
 
@@ -46,7 +52,7 @@ const IndividualResponseAnswers = ({
             <div className="flex gap-2 items-start">
               <span className="font-bold">Q{question.number}</span>
               <h4 className="break-all w-full min-w-[1%]">
-                {convert(question.description)}
+                {convert(question.description.replace(/<img[^>]*>/g, ""))}
               </h4>
             </div>
             {questionSkipped ? (

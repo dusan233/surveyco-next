@@ -36,7 +36,6 @@ const MultiChoiceQuestionResults = ({
           );
     return {
       ...choice,
-      description: convert(choice.description),
       percenteges,
     };
   });
@@ -57,7 +56,7 @@ const MultiChoiceQuestionResults = ({
           />
 
           {(showChartResults || showTableResults) && (
-            <div className="flex mt-10 gap-10 justify-center flex-wrap items-start">
+            <div className="mt-10">
               {showChartResults && (
                 <div className="max-w-2xl overflow-auto w-full">
                   {chartType === "pie" ? (
@@ -69,7 +68,7 @@ const MultiChoiceQuestionResults = ({
               )}
 
               {showTableResults && (
-                <div className="flex-1">
+                <div className="flex-1 mt-5">
                   <MultiChoiceResultsTable data={resultsFormatedData} />
                 </div>
               )}
