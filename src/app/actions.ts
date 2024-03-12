@@ -35,12 +35,15 @@ export const doIt = async (): Promise<any> => {
   const secfORM = new FormData();
   secfORM.append;
 
-  const res = await fetch(`${process.env.BACKEND_API}/tuku/dasdl12321l`, {
-    cache: "no-cache",
-    credentials: "include",
-    method: "PUT",
-    body: formData,
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/tuku/dasdl12321l`,
+    {
+      cache: "no-cache",
+      credentials: "include",
+      method: "PUT",
+      body: formData,
+    }
+  );
 
   if (!res.ok) {
     throw new Error(`Failed to fetch data for survey with id: `);
@@ -57,7 +60,7 @@ export const uploadMedia = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/media/create?surveyId=${surveyId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/media/create?surveyId=${surveyId}`,
     {
       cache: "no-cache",
       credentials: "include",
@@ -82,13 +85,16 @@ export const getSurvey = async (
   const { getToken } = auth();
   const token = await getToken();
 
-  const res = await fetch(`${process.env.BACKEND_API}/quiz/${surveyId}`, {
-    cache: "no-cache",
-    credentials: "include",
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}`,
+    {
+      cache: "no-cache",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
 
   if (!res.ok) {
     throw new Error(`Failed to fetch data for survey with id: ${surveyId}`);
@@ -102,7 +108,7 @@ export const getSurveyQuestions = async (
   surveyPage: string
 ): Promise<QuestionsResponseData> => {
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/questions?pageId=${surveyPage}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/questions?pageId=${surveyPage}`,
     {
       credentials: "include",
       cache: "no-cache",
@@ -121,10 +127,13 @@ export const getSurveyQuestions = async (
 export const getSurveyPages = async (
   surveyId: string
 ): Promise<SurveyPage[]> => {
-  const res = await fetch(`${process.env.BACKEND_API}/quiz/${surveyId}/pages`, {
-    cache: "no-cache",
-    credentials: "include",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/pages`,
+    {
+      cache: "no-cache",
+      credentials: "include",
+    }
+  );
 
   if (!res.ok) {
     throw new Error(`Failed to fetch pages  for survey with id: ${surveyId}`);
@@ -138,7 +147,7 @@ export const getSurveyCollector = async (
   surveyId: string
 ): Promise<Collector> => {
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/collector/${collectorId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/collector/${collectorId}`,
     {
       cache: "no-cache",
       credentials: "include",
@@ -156,7 +165,7 @@ export const getSurveyCollector = async (
 
 export const getCollector = async (collectorId: string): Promise<Collector> => {
   const res = await fetch(
-    `${process.env.BACKEND_API}/collector/${collectorId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/collector/${collectorId}`,
     {
       cache: "no-cache",
       credentials: "include",
@@ -179,7 +188,7 @@ export const saveQuestion = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/save-question`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/save-question`,
     {
       method: "PUT",
       credentials: "include",
@@ -207,7 +216,7 @@ export const createQuestion = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/question`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/question`,
     {
       method: "POST",
       credentials: "include",
@@ -236,7 +245,7 @@ export const updateQuestion = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/question`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/question`,
     {
       method: "PUT",
       credentials: "include",
@@ -265,7 +274,7 @@ export const deleteQuestion = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/question/${questionId}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -285,7 +294,7 @@ export const deleteSurveyPage = async (surveyId: string, pageId: string) => {
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/page/${pageId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/page/${pageId}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -309,7 +318,7 @@ export const copySurveyPage = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/page/${sourcePageId}/copy`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/page/${sourcePageId}/copy`,
     {
       method: "POST",
       credentials: "include",
@@ -337,7 +346,7 @@ export const moveSurveyPage = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/page/${sourcePageId}/move`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/page/${sourcePageId}/move`,
     {
       method: "PUT",
       credentials: "include",
@@ -365,7 +374,7 @@ export const copyQuestion = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}/copy`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/question/${questionId}/copy`,
     {
       method: "POST",
       credentials: "include",
@@ -393,7 +402,7 @@ export const moveQuestion = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/question/${questionId}/move`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/question/${questionId}/move`,
     {
       method: "PUT",
       credentials: "include",
@@ -418,13 +427,16 @@ export const createSurveyPage = async (
   const { getToken } = auth();
   const token = await getToken();
 
-  const res = await fetch(`${process.env.BACKEND_API}/quiz/${surveyId}/page`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/page`,
+    {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
   const data = await res.json();
 
   if (!res.ok) {
@@ -444,15 +456,18 @@ export const createSurvey = async (
   const { getToken } = auth();
   const token = await getToken();
 
-  const res = await fetch(`http://localhost:8080/quiz/create-quiz`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      Authorization: "Bearer " + token,
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/create-quiz`,
+    {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
 
   if (!res.ok) {
     throw new Error(`Failed to create new survey`);
@@ -469,7 +484,7 @@ export const createSurveyCollector = async (
   const { getToken } = auth();
   const token = await getToken();
 
-  const res = await fetch(`http://localhost:8080/collector`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/collector`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -520,7 +535,7 @@ export const updateSurveyCollector = async (
   }
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/collector/${prevState.collector.id}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/collector/${prevState.collector.id}`,
     {
       method: "PUT",
       credentials: "include",
@@ -564,7 +579,7 @@ export const updateSurveyCollectorStatus = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/collector/${collectorId}/status`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/collector/${collectorId}/status`,
     {
       method: "PUT",
       credentials: "include",
@@ -595,7 +610,7 @@ export const deleteSurveyCollector = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/collector/${collectorId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/collector/${collectorId}`,
     {
       method: "DELETE",
       credentials: "include",
@@ -619,7 +634,7 @@ export const getSurveyResponsesVolume = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/responses/volume`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responses/volume`,
     {
       cache: "no-cache",
       credentials: "include",
@@ -648,7 +663,7 @@ export const getSurveyResponseAnswers = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/response/${responseId}/answers?page=${page}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/response/${responseId}/answers?page=${page}`,
     {
       credentials: "include",
       cache: "no-store",
@@ -681,7 +696,7 @@ export const getSurveyResponse = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/response/${responseId}?pageId=${pageId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/response/${responseId}?pageId=${pageId}`,
     {
       credentials: "include",
       cache: "no-store",
@@ -711,7 +726,9 @@ export const getSurveyCollectors = async (
   const sortType = sort.type;
 
   const res = await fetch(
-    `http://localhost:8080/quiz/${surveyId}/collectors?page=${page}&sort=${sortColumn}:${sortType}&take=${
+    `${
+      process.env.NEXT_PUBLIC_BACKEND_API
+    }/quiz/${surveyId}/collectors?page=${page}&sort=${sortColumn}:${sortType}&take=${
       take ?? 10
     }`,
     {
@@ -744,7 +761,7 @@ export const getUserSurveys = async (
   const sortType = sort.type;
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/user/${userId}/surveys?page=${page}&sort=${sortColumn}:${sortType}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/user/${userId}/surveys?page=${page}&sort=${sortColumn}:${sortType}`,
     {
       credentials: "include",
       cache: "no-store",
@@ -773,7 +790,7 @@ export const getSurveyResponses = async (
   const sortType = sort.type;
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/responses?page=${page}&sort=${sortName}:${sortType}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responses?page=${page}&sort=${sortName}:${sortType}`,
     {
       credentials: "include",
       cache: "no-store",
@@ -798,7 +815,7 @@ export const getPageQuestionResults = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/questions/result?pageId=${pageId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/questions/result?pageId=${pageId}`,
     {
       cache: "no-store",
       headers: {
@@ -822,7 +839,7 @@ export const getQuestionsResult = async (
   const token = await getToken();
 
   const res = await fetch(
-    `${process.env.BACKEND_API}/quiz/${surveyId}/questions/result`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/questions/result`,
     {
       method: "POST",
       cache: "no-store",
@@ -854,7 +871,7 @@ export const getSurveyQuestionsAndResponses = async (
   const surveyResponsesCookieVal = cookies().get("surveyResponses");
 
   const res = await fetch(
-    `http://localhost:8080/quiz/${surveyId}/responseData?collectorId=${collectorId}&pageId=${pageId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responseData?collectorId=${collectorId}&pageId=${pageId}`,
     {
       method: "GET",
       credentials: "include",
@@ -872,46 +889,3 @@ export const getSurveyQuestionsAndResponses = async (
 
   return await res.json();
 };
-
-// export const saveSurveyResponse = async (
-//   surveyId: string
-// ): Promise<{ message: string }> => {
-//   "use client";
-//   // const surveyResponsesCookieObj = cookies().get("surveyResponses");
-//   // const serializedCookie = surveyResponsesCookieObj
-//   //   ? cookie.serialize(
-//   //       surveyResponsesCookieObj.name,
-//   //       surveyResponsesCookieObj?.value
-//   //     )
-//   //   : "";
-//   const res = await fetch(
-//     `${process.env.BACKEND_API}/quiz/${surveyId}/response`,
-//     {
-//       method: "PUT",
-//       credentials: "include",
-//       // headers: {
-//       //   Cookie: serializedCookie,
-//       // },
-//     }
-//   );
-
-//   if (!res.ok) {
-//     // throw new Error(`Failed to create page for survey with id: ${surveyId}`);
-//     console.log("error cookie thing");
-//   }
-//   // console.log(cookies().get("surveyResponses"), "dd");
-//   // res.headers.getSetCookie().forEach((cookieString) => {
-//   //   const parsedCookie = cookie.parse(cookieString);
-//   //   const cookieName = Object.keys(parsedCookie)[0];
-//   //   const cookieValue = parsedCookie[cookieName];
-
-//   //   console.log(parsedCookie, "parsed");
-//   //   cookies().set({
-//   //     name: cookieName,
-//   //     value: cookieValue,
-//   //     httpOnly: true,
-//   //   });
-//   // });
-
-//   return await res.json();
-// };

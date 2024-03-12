@@ -4,7 +4,6 @@ import {
   Question,
   QuestionResponse,
   QuestionsResponsesData,
-  SurveyPage,
 } from "@/lib/types";
 
 export const getSurveyQuestionsAndResponses = async (
@@ -16,7 +15,7 @@ export const getSurveyQuestionsAndResponses = async (
   questionResponses: QuestionResponse[];
 }> => {
   const res = await fetch(
-    `http://localhost:8080/quiz/${surveyId}/responseData?collectorId=${collectorId}&page=${pageNumber}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responseData?collectorId=${collectorId}&page=${pageNumber}`,
     {
       method: "GET",
       credentials: "include",
@@ -40,20 +39,23 @@ export const saveSurveyResponse = async (
   isPreview: boolean
 ): Promise<{ submitted: boolean }> => {
   console.log(collectorId, pageId, surveyResposneStartTime, isPreview);
-  const res = await fetch(`http://localhost:8080/quiz/${surveyId}/response`, {
-    method: "PUT",
-    credentials: "include",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify({
-      questionResponses: data.questionResponses,
-      collectorId,
-      pageId,
-      isPreview,
-      surveyResposneStartTime,
-    }),
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/response`,
+    {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        questionResponses: data.questionResponses,
+        collectorId,
+        pageId,
+        isPreview,
+        surveyResposneStartTime,
+      }),
+    }
+  );
 
   if (!res.ok) {
     if (res.status === 409) {
