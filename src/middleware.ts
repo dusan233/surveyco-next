@@ -9,6 +9,7 @@ export default authMiddleware({
     "/s/:path",
     "/survey-thanks",
     "/survey-taken",
+    "/survey-closed",
   ],
   async afterAuth(auth, req, eve) {
     const isAuthenticated = auth.userId;
