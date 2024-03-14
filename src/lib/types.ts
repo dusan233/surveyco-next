@@ -110,6 +110,13 @@ export type SortObject = {
   type: "asc" | "desc";
 };
 
+export type ApiError = {
+  error: {
+    message: string;
+    code: string;
+  };
+};
+
 export interface Option {
   description: string;
   description_image: string | null;

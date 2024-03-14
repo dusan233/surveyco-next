@@ -1,4 +1,4 @@
-import { getSurveyResponse } from "@/app/actions";
+import { getSurveyResponse } from "@/app/_actions/survey-actions";
 import { useToast } from "@/components/ui/use-toast";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";

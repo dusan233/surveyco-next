@@ -1,8 +1,8 @@
 "use client";
 
-import { createSurveyPage } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SurveyPage } from "@/lib/types";
+import { createSurveyPage } from "@/app/_actions/survey-actions";
 
 export default function useCreateSurveyPage() {
   const queryClient = useQueryClient();

@@ -1,4 +1,3 @@
-import { moveQuestion } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   CopyQuestionData,
@@ -8,6 +7,7 @@ import {
   SurveyPage,
 } from "@/lib/types";
 import useBuildQuestionsContext from "./useBuildQuestionsContext";
+import { moveQuestion } from "@/app/_actions/survey-actions";
 
 export default function useMoveQuestion() {
   const queryClient = useQueryClient();

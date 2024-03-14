@@ -5,7 +5,7 @@ import { FaListUl } from "react-icons/fa6";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { PiTextboxBold } from "react-icons/pi";
 import { QuestionType, SurveyCategory } from "./types";
-import { isClerkAPIResponseError } from "@clerk/nextjs";
+import { auth, isClerkAPIResponseError } from "@clerk/nextjs";
 import { Editor } from "@tiptap/react";
 
 export function cn(...inputs: ClassValue[]) {
@@ -19,6 +19,14 @@ export const createTextboxQuestion = (number: number) => ({
   required: false,
   number,
 });
+
+export const getResponseData = async <T>(res: Response): Promise<T> => {
+  try {
+    return await res.json();
+  } catch (err) {
+    throw new Error("Something went wrong!");
+  }
+};
 
 export const editorHasImage = (editor: Editor) => {
   let imageExists = false;

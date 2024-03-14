@@ -1,4 +1,4 @@
-import { getSurvey } from "@/app/actions";
+import { getSurvey } from "@/app/_actions/survey-actions";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SurveyStatus } from "@/lib/types";

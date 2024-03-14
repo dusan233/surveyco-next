@@ -1,13 +1,16 @@
 import React from "react";
 
 import BuildSurveyQuestions from "./components/build-survey-questions";
-import { getSurveyPages, getSurveyQuestions } from "@/app/actions";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
 import { BuildQuestionsProvider } from "@/lib/context";
+import {
+  getSurveyPages,
+  getSurveyQuestions,
+} from "@/app/_actions/survey-actions";
 
 const BuildSurveyQuestionsPage = async ({
   params,

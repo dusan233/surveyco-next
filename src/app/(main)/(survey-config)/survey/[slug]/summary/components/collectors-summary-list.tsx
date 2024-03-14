@@ -1,9 +1,9 @@
-import { getSurveyCollectors } from "@/app/actions";
 import { SortObject } from "@/lib/types";
 import React from "react";
 import CollectorsSummaryItem from "./collectors-summary-item";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { getSurveyCollectors } from "@/app/_actions/survey-actions";
 
 type CollectorsSummaryListProps = {
   surveyId: string;

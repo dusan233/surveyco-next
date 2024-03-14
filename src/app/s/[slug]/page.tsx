@@ -1,4 +1,3 @@
-import { getCollector, getSurveyPages } from "@/app/actions";
 import React from "react";
 
 import {
@@ -8,10 +7,14 @@ import {
 } from "@tanstack/react-query";
 import SurveyResponse from "../components/survey-response";
 
-import { getSurveyQuestionsAndResponses } from "@/app/actions";
 import { cookies } from "next/headers";
 import { RedirectType, permanentRedirect } from "next/navigation";
 import { CollectorStatus } from "@/lib/types";
+import { getCollector } from "@/app/_actions/collector-actions";
+import {
+  getSurveyPages,
+  getSurveyQuestionsAndResponses,
+} from "@/app/_actions/survey-actions";
 
 const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
   const queryClient = new QueryClient();

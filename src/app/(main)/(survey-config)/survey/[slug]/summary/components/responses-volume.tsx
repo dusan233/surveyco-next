@@ -1,8 +1,8 @@
-import { getSurveyResponsesVolume } from "@/app/actions";
 import React from "react";
 
 import dynamic from "next/dynamic";
 import Spinner from "@/components/ui/spinner";
+import { getSurveyResponsesVolume } from "@/app/_actions/survey-actions";
 
 type ResponsesVolumeProps = {
   surveyId: string;

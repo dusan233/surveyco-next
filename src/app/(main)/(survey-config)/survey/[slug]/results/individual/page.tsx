@@ -1,4 +1,3 @@
-import { getSurvey, getSurveyPages, getSurveyResponses } from "@/app/actions";
 import {
   HydrationBoundary,
   QueryClient,
@@ -8,6 +7,11 @@ import React from "react";
 import NoResponses from "../components/no-responses";
 import IndividualResponses from "../components/individual-response/individual-responses";
 import { SortObject } from "@/lib/types";
+import {
+  getSurvey,
+  getSurveyPages,
+  getSurveyResponses,
+} from "@/app/_actions/survey-actions";
 
 const IndividualResponsesPage = async ({
   params,

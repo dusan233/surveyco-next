@@ -1,6 +1,6 @@
-import { getSurveyQuestions } from "@/app/actions";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import useToastError from "./useToastError";
+import { getSurveyQuestions } from "@/app/_actions/survey-actions";
 
 export default function useSurveyQuestions(
   surveyId: string,

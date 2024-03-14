@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateSurveyData, SurveyCategory } from "@/lib/types";
+import { CreateSurveyData } from "@/lib/types";
 import { createSurveySchema } from "@/lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
@@ -21,11 +21,11 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Label } from "../ui/label";
-import { createSurvey } from "@/app/actions";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { surveyCategoriesList } from "@/lib/utils";
 import { useToast } from "../ui/use-toast";
+import { createSurvey } from "@/app/_actions/survey-actions";
 
 type CreateSurveyFormProps = {
   onCreate: React.Dispatch<React.SetStateAction<boolean>>;

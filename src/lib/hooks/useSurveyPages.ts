@@ -1,4 +1,4 @@
-import { getSurveyPages } from "@/app/actions";
+import { getSurveyPages } from "@/app/_actions/survey-actions";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useSurveyPages(

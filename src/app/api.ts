@@ -1,34 +1,7 @@
 "use client";
 
-import {
-  Question,
-  QuestionResponse,
-  QuestionsResponsesData,
-} from "@/lib/types";
-
-export const getSurveyQuestionsAndResponses = async (
-  surveyId: string,
-  collectorId: string,
-  pageNumber: number
-): Promise<{
-  questions: Question[];
-  questionResponses: QuestionResponse[];
-}> => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responseData?collectorId=${collectorId}&page=${pageNumber}`,
-    {
-      method: "GET",
-      credentials: "include",
-    }
-  );
-
-  if (!res.ok) {
-    // throw new Error(`Failed to create page for survey with id: ${surveyId}`);
-    console.log("error questions-responses thing");
-  }
-
-  return await res.json();
-};
+import { QuestionsResponsesData } from "@/lib/types";
+import { getResponseData } from "@/lib/utils";
 
 export const saveSurveyResponse = async (
   surveyId: string,
@@ -38,7 +11,6 @@ export const saveSurveyResponse = async (
   surveyResposneStartTime: Date,
   isPreview: boolean
 ): Promise<{ submitted: boolean }> => {
-  console.log(collectorId, pageId, surveyResposneStartTime, isPreview);
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/response`,
     {
@@ -69,5 +41,5 @@ export const saveSurveyResponse = async (
     );
   }
 
-  return await res.json();
+  return await getResponseData(res);
 };

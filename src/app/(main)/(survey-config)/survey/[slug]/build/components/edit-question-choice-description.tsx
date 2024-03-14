@@ -1,4 +1,4 @@
-import { uploadMedia } from "@/app/actions";
+import { uploadMedia } from "@/app/_actions/media-actions";
 import AutoAnimate from "@/components/auto-animate";
 import { RichTextEditor } from "@/components/text-editor/rich-text";
 import {

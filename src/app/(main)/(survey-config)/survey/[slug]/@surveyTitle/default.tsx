@@ -1,4 +1,4 @@
-import { getSurvey } from "@/app/actions";
+import { getSurvey } from "@/app/_actions/survey-actions";
 import React from "react";
 
 const SurveyTitleDefault = async ({ params }: { params: { slug: string } }) => {

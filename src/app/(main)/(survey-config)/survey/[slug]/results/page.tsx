@@ -1,10 +1,4 @@
 import {
-  getPageQuestionResults,
-  getSurvey,
-  getSurveyPages,
-} from "@/app/actions";
-
-import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
@@ -12,6 +6,11 @@ import {
 import React from "react";
 import SurveyQuestionResults from "./components/survey-question-results";
 import NoResponses from "./components/no-responses";
+import {
+  getPageQuestionResults,
+  getSurvey,
+  getSurveyPages,
+} from "@/app/_actions/survey-actions";
 
 const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;

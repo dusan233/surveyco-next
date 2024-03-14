@@ -1,10 +1,9 @@
-import { getUserSurveys } from "@/app/actions";
-
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useRef, useState } from "react";
 import { SortObject } from "@/lib/types";
 import { useToast } from "@/components/ui/use-toast";
+import { getUserSurveys } from "@/app/_actions/user-actions";
 
 export default function useUserSurveys() {
   const { toast } = useToast();

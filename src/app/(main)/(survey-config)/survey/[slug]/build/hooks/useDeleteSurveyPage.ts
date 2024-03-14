@@ -1,6 +1,6 @@
-import { deleteSurveyPage } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { SurveyPage } from "@/lib/types";
+import { deleteSurveyPage } from "@/app/_actions/survey-actions";
 
 export default function useDeleteSurveyPage() {
   const queryClient = useQueryClient();

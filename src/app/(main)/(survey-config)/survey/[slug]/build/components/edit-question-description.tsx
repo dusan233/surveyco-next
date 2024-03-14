@@ -8,10 +8,11 @@ import {
 import { Editor } from "@tiptap/react";
 import React from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
-import { uploadMedia } from "@/app/actions";
+
 import AutoAnimate from "@/components/auto-animate";
 import { useToast } from "@/components/ui/use-toast";
 import { editorHasImage } from "@/lib/utils";
+import { uploadMedia } from "@/app/_actions/media-actions";
 
 type EditQuestionDescriptionProps = {
   surveyId: string;

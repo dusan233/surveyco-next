@@ -1,6 +1,6 @@
-import { moveSurveyPage } from "@/app/actions";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { OperationPosition, SurveyPage } from "@/lib/types";
+import { moveSurveyPage } from "@/app/_actions/survey-actions";
 
 export default function useMoveSurveyPage() {
   const queryClient = useQueryClient();

@@ -1,5 +1,5 @@
-import { getSurveyQuestionsAndResponses } from "@/app/actions";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { getSurveyQuestionsAndResponses } from "../_actions/survey-actions";
 
 export default function useQuestionsAndResponses(
   surveyId: string,

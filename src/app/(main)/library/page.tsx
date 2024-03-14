@@ -1,5 +1,3 @@
-import { getUserSurveys } from "@/app/actions";
-
 import {
   HydrationBoundary,
   QueryClient,
@@ -8,6 +6,7 @@ import {
 import React from "react";
 import MyLibraryView from "./components/my-library-view";
 import { SortObject } from "@/lib/types";
+import { getUserSurveys } from "@/app/_actions/user-actions";
 
 const MyLibraryPage = async () => {
   const queryClient = new QueryClient();

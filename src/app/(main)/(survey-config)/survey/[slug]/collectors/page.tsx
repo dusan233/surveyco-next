@@ -1,4 +1,3 @@
-import { getSurveyCollectors } from "@/app/actions";
 import React from "react";
 import {
   HydrationBoundary,
@@ -7,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import { SortObject } from "@/lib/types";
 import SurveyCollectors from "./components/survey-collectors";
+import { getSurveyCollectors } from "@/app/_actions/survey-actions";
 
 const CollectResponsesPage = async ({
   params,
