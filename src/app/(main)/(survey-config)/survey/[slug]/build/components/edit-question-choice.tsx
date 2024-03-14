@@ -9,7 +9,6 @@ type EditQuestionChoiceProps = {
   surveyId: string;
   index: number;
   removeOption: (optionIndex: number) => void;
-  removeDisabled: boolean;
   addAnotherOption: (currentIndex: number) => void;
   handleSaveQuestion: SubmitHandler<any>;
   addOptionDisabled: boolean;
@@ -20,7 +19,6 @@ const EditQuestionChoice = ({
   index,
   addAnotherOption,
   removeOption,
-  removeDisabled,
   surveyId,
   handleSaveQuestion,
   addOptionDisabled,
@@ -45,17 +43,16 @@ const EditQuestionChoice = ({
         >
           <FaPlus />
         </button>
-        {!removeDisabled && (
-          <button
-            type="button"
-            disabled={!canRemoveOption}
-            onClick={() => removeOption(index)}
-            title="Delete this option"
-            className="rounded-full text-neutral-500 inline-flex justify-center disabled:pointer-events-none disabled:opacity-50 hover:border-neutral-400 items-center w-7 h-7 border-2 border-gray-300"
-          >
-            <FaMinus />
-          </button>
-        )}
+
+        <button
+          type="button"
+          disabled={!canRemoveOption}
+          onClick={() => removeOption(index)}
+          title="Delete this option"
+          className="rounded-full text-neutral-500 inline-flex justify-center disabled:pointer-events-none disabled:opacity-50 hover:border-neutral-400 items-center w-7 h-7 border-2 border-gray-300"
+        >
+          <FaMinus />
+        </button>
       </div>
     </div>
   );

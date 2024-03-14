@@ -52,18 +52,20 @@ const EditQuestionChoiceList = ({
   const removeOption = (optionIndex: number) => {
     const deleteOptionNumber = optionIndex + 1;
 
-    const updatedOptions = options.map((option) => {
-      let optionNumber = option.number;
-      if (option.number >= deleteOptionNumber) {
-        optionNumber = optionNumber - 1;
-      }
-      return {
-        number: optionNumber,
-        description: option.description,
-        descriptionImage: option.descriptionImage,
-        ...(option.id && { id: option.id }),
-      };
-    });
+    const updatedOptions = options
+      .filter((option) => option.number !== deleteOptionNumber)
+      .map((option) => {
+        let optionNumber = option.number;
+        if (option.number > deleteOptionNumber) {
+          optionNumber = optionNumber - 1;
+        }
+        return {
+          number: optionNumber,
+          description: option.description,
+          descriptionImage: option.descriptionImage,
+          ...(option.id && { id: option.id }),
+        };
+      });
 
     replace(updatedOptions);
   };
@@ -71,17 +73,20 @@ const EditQuestionChoiceList = ({
   return (
     <div className="flex flex-col relative p-0.5 pt-7 gap-2 ml-3 max-h-80 scrollbar-thumb-neutral-300 scrollbar-track-slate-100 scrollbar-thin overflow-auto">
       {options.map((option, index) => {
+        const canRemoveQuestionOption = option.id
+          ? canRemoveOptions && options.length > 1
+          : options.length > 1;
+        console.log(options.length);
         return (
           <EditQuestionChoice
             addOptionDisabled={options.length === 30}
             addAnotherOption={addAnotherOption}
             removeOption={removeOption}
-            removeDisabled={options.length === 1}
             key={option.optionId}
             handleSaveQuestion={handleSaveQuestion}
             index={index}
             surveyId={surveyId}
-            canRemoveOption={canRemoveOptions}
+            canRemoveOption={canRemoveQuestionOption}
           />
         );
       })}

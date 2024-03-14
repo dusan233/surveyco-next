@@ -39,7 +39,9 @@ export default function useSaveQuestion() {
 
             if (isExistingQuestion) {
               const newQuestions = questions.map((question) =>
-                question.id === data.id ? data : question
+                question.id === data.id
+                  ? { ...data, hasResponses: question.hasResponses }
+                  : question
               );
 
               return { questions: newQuestions, page: questionsData.page };

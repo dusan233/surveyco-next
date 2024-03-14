@@ -77,18 +77,6 @@ export const getSurveyPages = async (
   return await getResponseData(res);
 };
 
-export const getCollector = async (collectorId: string): Promise<Collector> => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/collector/${collectorId}`
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch collector ${collectorId} for survey`);
-  }
-
-  return await getResponseData(res);
-};
-
 export const createQuestion = async (
   surveyId: string,
   pageId: string,
