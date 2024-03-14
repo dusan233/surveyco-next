@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteSurveyCollector } from "@/app/actions";
+import { deleteSurveyCollector } from "@/app/_actions/collector-actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

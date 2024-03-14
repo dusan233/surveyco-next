@@ -1,6 +1,6 @@
 import { useToast } from "@/components/ui/use-toast";
 import { useCopyToClipboard } from "@/lib/hooks/useCopyToClipboard";
-import { Link, Settings } from "lucide-react";
+import { Link } from "lucide-react";
 import React from "react";
 
 type CopyCollectorWebLinkProps = {

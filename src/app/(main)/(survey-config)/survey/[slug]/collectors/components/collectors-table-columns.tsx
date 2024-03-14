@@ -3,7 +3,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Collector, CollectorType } from "@/lib/types";
 import { format } from "date-fns";
-import { useState } from "react";
 import { LinkIcon } from "lucide-react";
 import Link from "next/link";
 import CollectorActions from "./collector-actions";

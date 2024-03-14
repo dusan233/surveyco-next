@@ -1,4 +1,4 @@
-import { updateSurveyCollectorStatus } from "@/app/actions";
+import { updateSurveyCollectorStatus } from "@/app/_actions/collector-actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
