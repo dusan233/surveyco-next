@@ -2,6 +2,13 @@ import { Button } from "@/components/ui/button";
 import "../../styles/global.css";
 import Link from "next/link";
 import AppLogo from "@/components/layout/logo";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Survey closed",
+  description:
+    "Page where users get redirect after trying to access survey collector that has been closed.",
+};
 
 const SurveyClosedPage = () => {
   return (

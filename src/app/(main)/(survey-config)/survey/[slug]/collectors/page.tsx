@@ -7,6 +7,12 @@ import {
 import { SortObject } from "@/lib/types";
 import SurveyCollectors from "./components/survey-collectors";
 import { getSurveyCollectors } from "@/app/_actions/survey-actions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Collector List",
+  description: "Page dedicated for displaying list of all survey collectors.",
+};
 
 const CollectResponsesPage = async ({
   params,

@@ -1,4 +1,10 @@
 import SignUp from "@/app/(auth)/sign-up/components/sign-up";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Create an account",
+  description: "Page where users can create an account.",
+};
 
 export default function SignUpPage() {
   return (

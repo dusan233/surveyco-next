@@ -11,6 +11,12 @@ import {
   getSurveyPages,
   getSurveyQuestions,
 } from "@/app/_actions/survey-actions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Build Survey Questions",
+  description: "Page dedicated for building survey pages and questions.",
+};
 
 const BuildSurveyQuestionsPage = async ({
   params,

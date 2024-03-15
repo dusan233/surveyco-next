@@ -7,6 +7,13 @@ import React from "react";
 import MyLibraryView from "./components/my-library-view";
 import { SortObject } from "@/lib/types";
 import { getUserSurveys } from "@/app/_actions/user-actions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Welcome to Surveyco!",
+  description:
+    "My survey page, where all currently logged user created surveys will be displayed.",
+};
 
 const MyLibraryPage = async () => {
   const queryClient = new QueryClient();

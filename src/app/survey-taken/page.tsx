@@ -1,7 +1,14 @@
 import AppLogo from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Survey taken",
+  description:
+    "Survey taken page where users get redirect after trying to take survey that he already finished.",
+};
 
 const SurveyTakenPage = () => {
   return (

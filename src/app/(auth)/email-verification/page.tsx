@@ -1,6 +1,10 @@
+import { Metadata } from "next";
 import VerifyEmailForm from "./components/verify-email-form";
 
-import React from "react";
+export const metadata: Metadata = {
+  title: "Surveyco - Email verification",
+  description: "Page dedicated for account email verification.",
+};
 
 const EmailVerificationPage = async () => {
   return (

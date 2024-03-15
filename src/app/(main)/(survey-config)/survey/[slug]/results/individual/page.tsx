@@ -12,6 +12,12 @@ import {
   getSurveyPages,
   getSurveyResponses,
 } from "@/app/_actions/survey-actions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Survey results",
+  description: "Survey individual response results.",
+};
 
 const IndividualResponsesPage = async ({
   params,

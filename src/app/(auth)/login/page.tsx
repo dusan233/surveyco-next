@@ -1,4 +1,10 @@
+import { Metadata } from "next";
 import Login from "./components/login";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Log in",
+  description: "Page where users can log in to their accounts.",
+};
 
 const LogInPage = () => {
   return (

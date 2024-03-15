@@ -15,8 +15,23 @@ import {
   getSurveyPages,
   getSurveyQuestionsAndResponses,
 } from "@/app/_actions/survey-actions";
+import { Metadata } from "next";
 
-const TakeSurveyPage = async ({ params }: { params: { slug: string } }) => {
+type PageProps = { params: { slug: string } };
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const collectorId = params.slug;
+  const collector = await getCollector(collectorId);
+
+  return {
+    title: `${collector.survey.title} Survey`,
+    description: "Page dedicated for takeing survey.",
+  };
+}
+
+const TakeSurveyPage = async ({ params }: PageProps) => {
   const queryClient = new QueryClient();
 
   const collector = await getCollector(params.slug);

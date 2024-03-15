@@ -6,6 +6,13 @@ import ResponsesVolume from "./components/responses-volume";
 import SurveySummarySkeleton from "./components/survey-summary-skeleton";
 import CollectorsSummarySkeleton from "./components/collectors-summary-skeleton";
 import CollectorsSummaryList from "./components/collectors-summary-list";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Survey Summary",
+  description:
+    "Page dedicated for displaying information and base stats about survey.",
+};
 
 const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;

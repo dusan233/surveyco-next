@@ -253,6 +253,13 @@ export interface Collector {
   surveyId: string;
   name: string;
   total_responses: number;
+  survey: {
+    id: string;
+    title: string;
+    category: string;
+    created_at: Date;
+    updated_at: Date;
+  };
 }
 export enum CollectorStatus {
   open = "open",

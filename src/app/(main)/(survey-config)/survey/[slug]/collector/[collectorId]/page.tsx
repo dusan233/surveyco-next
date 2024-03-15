@@ -4,6 +4,12 @@ import Link from "next/link";
 import { ChevronsLeftIcon } from "lucide-react";
 import CopyWebLink from "../components/web-link-collector";
 import { getCollector } from "@/app/_actions/collector-actions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Surveyco - Collector Details",
+  description: "Page dedicated for displaying details about collector.",
+};
 
 const SurveyCollectorPage = async ({
   params,
