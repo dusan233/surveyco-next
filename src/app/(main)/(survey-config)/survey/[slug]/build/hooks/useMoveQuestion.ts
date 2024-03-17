@@ -75,13 +75,11 @@ export default function useMoveQuestion() {
             return q;
           });
         }
-
+        updatedQuestions!.sort((a, b) => a.number - b.number);
         queryClient.setQueryData<QuestionsResponseData>(
           ["survey", moveQuestion.surveyId, "questions", currentPage!.id],
           {
-            questions: updatedQuestions!.toSorted(
-              (a, b) => a.number - b.number
-            ),
+            questions: updatedQuestions!,
             page: previousQuestions!.page,
           }
         );

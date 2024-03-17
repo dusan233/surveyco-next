@@ -31,7 +31,7 @@ const EditQuestionChoiceList = ({
       descriptionImage: null,
       number: newOptionNumber,
     };
-    const updatedOptions = options.map((option) => {
+    const updatedOldOptions = options.map((option) => {
       let optionNumber = option.number;
       if (option.number >= newOptionNumber) {
         optionNumber = optionNumber + 1;
@@ -43,10 +43,9 @@ const EditQuestionChoiceList = ({
         ...(option.id && { id: option.id }),
       };
     });
-
-    replace(
-      [...updatedOptions, newOption].toSorted((a, b) => a.number - b.number)
-    );
+    const newOptions = [...updatedOldOptions, newOption];
+    newOptions.sort((a, b) => a.number - b.number);
+    replace(newOptions);
   };
 
   const removeOption = (optionIndex: number) => {

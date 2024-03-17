@@ -36,9 +36,9 @@ export default function useCopySurveyPage() {
                 return { ...page, number: page.number + 1 };
               return page;
             });
-            return [...updatedPagesNumbers, newPage].toSorted(
-              (a, b) => a.number - b.number
-            );
+            const newPages = [...updatedPagesNumbers, newPage];
+            newPages.sort((a, b) => a.number - b.number);
+            return newPages;
           } else {
             return surveyPages;
           }

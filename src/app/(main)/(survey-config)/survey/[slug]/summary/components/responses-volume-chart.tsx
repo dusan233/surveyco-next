@@ -2,7 +2,7 @@
 
 import { VolumeByDay } from "@/lib/types";
 import { format } from "date-fns";
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -52,9 +52,12 @@ const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
     }
   });
 
-  const maxNumber = data.toSorted(
-    (a, b) => b.response_count - a.response_count
-  )[0].response_count;
+  const maxNumber = useMemo(() => {
+    const dataCopy = [...data];
+    dataCopy.sort((a, b) => b.response_count - a.response_count);
+
+    return dataCopy[0].response_count;
+  }, [data]);
 
   useEffect(() => {
     const onWindowResize = (e: Event) => {

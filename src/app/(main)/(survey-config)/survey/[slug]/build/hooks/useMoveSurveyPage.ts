@@ -32,7 +32,8 @@ export default function useMoveSurveyPage() {
                 variables.data.position === OperationPosition.after
                   ? targetPage.number + 1
                   : targetPage.number;
-              return surveyPages
+
+              const updatedSurveyPages = surveyPages
                 .map((page) => {
                   if (
                     page.number >= newPageNumber &&
@@ -46,8 +47,11 @@ export default function useMoveSurveyPage() {
                   page.id === data.id
                     ? { ...page, number: newPageNumber }
                     : page
-                )
-                .toSorted((p1, p2) => p1.number - p2.number);
+                );
+
+              updatedSurveyPages.sort((p1, p2) => p1.number - p2.number);
+
+              return updatedSurveyPages;
             } else if (targetPage.number > sourcePage.number) {
               const newPageNumber =
                 variables.data.position === OperationPosition.after
@@ -67,8 +71,9 @@ export default function useMoveSurveyPage() {
                   page.id === data.id
                     ? { ...page, number: newPageNumber }
                     : page
-                )
-                .toSorted((p1, p2) => p1.number - p2.number);
+                );
+
+              updatedSurveyPages.sort((p1, p2) => p1.number - p2.number);
               return updatedSurveyPages;
             } else if (sourcePage.number === targetPage.number) {
               return surveyPages;

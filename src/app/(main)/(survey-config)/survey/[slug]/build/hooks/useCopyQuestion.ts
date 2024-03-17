@@ -48,10 +48,10 @@ export default function useCopyQuestion() {
                   return { ...q, number: q.number + 1 };
                 return q;
               });
+              const newQuestions = [...updatedQuestions, newQuestion];
+              newQuestions.sort((a, b) => a.number - b.number);
               return {
-                questions: [...updatedQuestions, newQuestion].toSorted(
-                  (a, b) => a.number - b.number
-                ),
+                questions: newQuestions,
                 page: questionsData.page,
               };
             } else {
