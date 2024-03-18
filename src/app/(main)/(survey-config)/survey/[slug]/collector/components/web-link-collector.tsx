@@ -14,7 +14,7 @@ type CopyWebLinkProps = {
 const CopyWebLink = ({ collector }: CopyWebLinkProps) => {
   const [_, copyToClipboard] = useCopyToClipboard();
   const { toast } = useToast();
-  const collectorWebLink = `http://localhost:3000/s/${collector.id}`;
+  const collectorWebLink = `${process.env.NEXT_PUBLIC_CLIENT_URL}/s/${collector.id}`;
 
   const handleCopyCollectorWebLink = () => {
     copyToClipboard(collectorWebLink);

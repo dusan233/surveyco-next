@@ -11,7 +11,7 @@ const CopyCollectorWebLink = ({ collectorId }: CopyCollectorWebLinkProps) => {
   const [_, copyToClipboard] = useCopyToClipboard();
   const { toast } = useToast();
 
-  const collectorWebLink = `http://localhost:3000/s/${collectorId}`;
+  const collectorWebLink = `${process.env.NEXT_PUBLIC_CLIENT_URL}/s/${collectorId}`;
 
   const handleCopyCollectorWebLink = () => {
     copyToClipboard(collectorWebLink);
