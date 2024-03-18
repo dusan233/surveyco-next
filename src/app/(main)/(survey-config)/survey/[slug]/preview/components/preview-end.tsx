@@ -15,7 +15,7 @@ const PreviewEnd = ({ surveyId, restartPreview }: PreviewEndProps) => {
         <Button onClick={() => restartPreview()} size="sm">
           Preview again
         </Button>
-        <Link href={`/survey/${surveyId}/collect-responses`}>
+        <Link href={`/survey/${surveyId}/collectors`}>
           <Button size="sm">Collect responses</Button>
         </Link>
       </div>
