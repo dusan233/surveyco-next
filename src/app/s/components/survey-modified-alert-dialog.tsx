@@ -33,7 +33,9 @@ const SurveyModifiedAlertDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction>OK</AlertDialogAction>
+          <AlertDialogAction onClick={() => window.location.reload()}>
+            OK
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

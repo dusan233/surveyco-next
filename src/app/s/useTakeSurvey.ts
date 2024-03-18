@@ -84,10 +84,10 @@ export default function useTakeSurvey(
   );
 
   const handleSurveyDataChanged = () => {
-    clearPagesCachedData();
+    // clearPagesCachedData();
     setShowSurveyModifiedDialog(true);
-    setSelectedPageNum(1);
-    resetSurveyStartTime();
+    // setSelectedPageNum(1);
+    // resetSurveyStartTime();
   };
   const handleSuccessfullPageSubmission = (
     _: QuestionsResponsesData,
