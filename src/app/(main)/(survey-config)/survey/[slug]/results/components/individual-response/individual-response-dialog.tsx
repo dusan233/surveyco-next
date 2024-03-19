@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import IndividualResponse from "./individual-response";
+import useSurveyPages from "@/lib/hooks/useSurveyPages";
 
 type IndividualResponseDialogProps = {
   isOpen: boolean;
@@ -23,6 +24,7 @@ const IndividualResponseDialog = ({
   surveyId,
   responseId,
 }: IndividualResponseDialogProps) => {
+  useSurveyPages(surveyId);
   return (
     <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-2xl">

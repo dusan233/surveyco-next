@@ -10,11 +10,11 @@ export default function useSurveyPages(
 ) {
   const { data, isLoading, isError } = useQuery({
     staleTime: Infinity,
-    gcTime: 1000 * 60 * 5 * 10,
+    gcTime: Infinity,
     queryKey: ["survey", surveyId, "pages"],
     queryFn: () => getSurveyPages(surveyId),
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     ...options,
   });
 
