@@ -67,7 +67,8 @@ export const getSurveyPages = async (
   surveyId: string
 ): Promise<SurveyPage[]> => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/pages`
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/pages`,
+    { cache: "no-store" }
   );
 
   if (!res.ok) {

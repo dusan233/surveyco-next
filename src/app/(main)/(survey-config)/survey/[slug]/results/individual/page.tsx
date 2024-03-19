@@ -39,6 +39,8 @@ const IndividualResponsesPage = async ({
       queryFn: () => getSurveyResponses(surveyId, 1, initialSort),
     }),
     queryClient.fetchQuery({
+      staleTime: Infinity,
+      gcTime: 1000 * 60 * 5 * 10,
       queryKey: ["survey", surveyId, "pages"],
       queryFn: () => getSurveyPages(surveyId),
     }),
