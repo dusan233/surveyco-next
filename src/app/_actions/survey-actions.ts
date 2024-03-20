@@ -494,6 +494,7 @@ export const getSurveyQuestionsAndResponses = async (
   };
   const queryParamsStr = qs.stringify(queryParamsObj);
 
+  console.log(surveyResponsesCookieVal, "cookie val");
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responseData?${queryParamsStr}`,
     {
