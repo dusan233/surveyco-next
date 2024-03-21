@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { getAccessToken } from "./helper";
 import qs from "qs";
 import { getResponseData } from "@/lib/utils";
+import { cookies } from "next/headers";
 
 export const getUserSurveys = async (
   page: number,
@@ -29,7 +30,7 @@ export const getUserSurveys = async (
       },
     }
   );
-
+  cookies().get("ducky");
   if (!res.ok) {
     throw new Error(`Failed to get surveys for user with id: ${userId}`);
   }
