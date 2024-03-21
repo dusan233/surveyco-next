@@ -326,7 +326,7 @@ export const createSurvey = async (
   if (!res.ok) {
     throw new Error(`Failed to create new survey`);
   }
-
+  cookies().set("ducky", "duckyVal", { maxAge: 1000 * 60 * 60 });
   revalidatePath(`/library`);
 
   return await getResponseData(res);
