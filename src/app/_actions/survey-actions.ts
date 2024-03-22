@@ -9,6 +9,7 @@ import {
   QuestionResponse,
   QuestionResult,
   QuestionsResponseData,
+  QuestionsResponsesData,
   QuizResponseData,
   SaveQuestionData,
   SortObject,
@@ -20,6 +21,7 @@ import {
 } from "@/lib/types";
 import qs from "qs";
 import { cookies } from "next/headers";
+import cookie from "cookie";
 
 import { revalidatePath } from "next/cache";
 import { getResponseData } from "@/lib/utils";
@@ -511,5 +513,91 @@ export const getSurveyQuestionsAndResponses = async (
     throw new Error(`Failed to get questions and question responses.`);
   }
 
+  return await getResponseData(res);
+};
+
+export const saveSurveyResponse = async (
+  surveyId: string,
+  data: QuestionsResponsesData,
+  collectorId: string | null,
+  pageId: string,
+  surveyResposneStartTime: Date,
+  isPreview: boolean
+): Promise<{ submitted: boolean }> => {
+  const surveyResponsesCookie = cookies().get("surveyResponses");
+  const blockedCollectorsCookie = cookies().get("blocked_col");
+  let cookiesStr = "";
+  if (surveyResponsesCookie) {
+    const surveyResponsesCookieStr = cookie.serialize(
+      surveyResponsesCookie.name,
+      surveyResponsesCookie?.value
+    );
+    cookiesStr = surveyResponsesCookieStr;
+  }
+  if (blockedCollectorsCookie) {
+    const blockedCollectorsCookieStr = cookie.serialize(
+      blockedCollectorsCookie.name,
+      blockedCollectorsCookie.value
+    );
+    cookiesStr = cookiesStr + "; " + blockedCollectorsCookieStr;
+  }
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/response`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+        Cookie: cookiesStr,
+      },
+      body: JSON.stringify({
+        questionResponses: data.questionResponses,
+        collectorId,
+        pageId,
+        isPreview,
+        surveyResposneStartTime,
+      }),
+    }
+  );
+
+  const cookiesFromHeader = res.headers
+    .getSetCookie()
+    .map((cookieStr) => cookie.parse(cookieStr));
+
+  cookiesFromHeader.forEach((cookie) => {
+    const mAge = +cookie["Max-Age"];
+    if ("surveyResponses" in cookie) {
+      cookies().set({
+        name: "surveyResponses",
+        value: cookie.surveyResponses,
+        maxAge: mAge,
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+      });
+    } else if ("blocked_col" in cookie) {
+      cookies().set({
+        name: "blocked_col",
+        value: cookie.blocked_col,
+        maxAge: mAge,
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+      });
+    }
+  });
+
+  if (!res.ok) {
+    if (res.status === 409) {
+      const error = new Error(`Survey data has been updated.`);
+      error.name = "CONFLICT";
+      throw error;
+    }
+
+    throw new Error(
+      `Failed to save survey response for survey with id: ${surveyId}`
+    );
+  }
+  console.log("gets here brah");
   return await getResponseData(res);
 };
