@@ -563,8 +563,7 @@ export const saveSurveyResponse = async (
   const cookiesFromHeader = res.headers
     // @ts-ignore
     .getSetCookie()
-    // @ts-ignore
-    .map((cookieStr) => cookie.parse(cookieStr));
+    .map((cookieStr) => cookie.parse(cookieStr as string));
 
   cookiesFromHeader.forEach((cookie) => {
     const mAge = +cookie["Max-Age"];
