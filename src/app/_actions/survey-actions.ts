@@ -561,6 +561,7 @@ export const saveSurveyResponse = async (
   );
 
   const cookiesFromHeader = res.headers
+    // @ts-ignore: Unreachable code error
     .getSetCookie()
     .map((cookieStr) => cookie.parse(cookieStr));
 
