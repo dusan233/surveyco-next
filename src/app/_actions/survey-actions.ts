@@ -106,6 +106,11 @@ export const createQuestion = async (
     );
   }
 
+  revalidatePath(`/survey/${surveyId}/summary`);
+  revalidatePath(`/survey/${surveyId}/results`);
+  revalidatePath(`/survey/${surveyId}/results/individual`);
+  revalidatePath(`/library`);
+
   return await getResponseData(res);
 };
 
@@ -133,6 +138,10 @@ export const updateQuestion = async (
     );
   }
 
+  revalidatePath(`/survey/${surveyId}/summary`);
+  revalidatePath(`/survey/${surveyId}/results`);
+  revalidatePath(`/survey/${surveyId}/results/individual`);
+
   return await getResponseData(res);
 };
 
@@ -155,6 +164,11 @@ export const deleteQuestion = async (
   if (!res.ok) {
     throw new Error(`Failed to delete question with id: ${questionId}`);
   }
+
+  revalidatePath(`/survey/${surveyId}/summary`);
+  revalidatePath(`/survey/${surveyId}/results`);
+  revalidatePath(`/survey/${surveyId}/results/individual`);
+  revalidatePath(`/library`);
 };
 
 export const deleteSurveyPage = async (
@@ -176,6 +190,10 @@ export const deleteSurveyPage = async (
   if (!res.ok) {
     throw new Error(`Failed to delete page with id: ${pageId}`);
   }
+
+  revalidatePath(`/survey/${surveyId}/summary`);
+  revalidatePath(`/survey/${surveyId}/results`);
+  revalidatePath(`/survey/${surveyId}/results/individual`);
 };
 
 export const copySurveyPage = async (
@@ -200,6 +218,10 @@ export const copySurveyPage = async (
   if (!res.ok) {
     throw new Error(`Failed to copy page with id: ${sourcePageId}`);
   }
+
+  revalidatePath(`/survey/${surveyId}/summary`);
+  revalidatePath(`/survey/${surveyId}/results`);
+  revalidatePath(`/survey/${surveyId}/results/individual`);
 
   return await getResponseData(res);
 };
@@ -306,6 +328,10 @@ export const createSurveyPage = async (
     throw new Error(errorMsg);
   }
 
+  revalidatePath(`/survey/${surveyId}/summary`);
+  revalidatePath(`/survey/${surveyId}/results`);
+  revalidatePath(`/survey/${surveyId}/results/individual`);
+
   return data as SurveyPage;
 };
 
@@ -329,7 +355,7 @@ export const createSurvey = async (
   if (!res.ok) {
     throw new Error(`Failed to create new survey`);
   }
-  cookies().set("ducky", "duckyVal", { maxAge: 1000 * 60 * 60 });
+
   revalidatePath(`/library`);
 
   return await getResponseData(res);

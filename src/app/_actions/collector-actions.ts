@@ -39,6 +39,7 @@ export const createSurveyCollector = async (
   }
 
   revalidatePath(`/survey/${surveyId}/collectors`);
+  revalidatePath(`/survey/${surveyId}/summary`);
 
   return await getResponseData(res);
 };
@@ -98,6 +99,7 @@ export const updateSurveyCollector = async (
   revalidatePath(
     `/survey/${collector.surveyId}/collectors/${prevState.collector.id}`
   );
+  revalidatePath(`/survey/${collector.surveyId}/summary`);
 
   return {
     collector,
@@ -132,6 +134,7 @@ export const updateSurveyCollectorStatus = async (
   const collector = await getResponseData<Collector>(res);
 
   revalidatePath(`/survey/${collector.surveyId}/collectors`);
+  revalidatePath(`/survey/${collector.surveyId}/summary`);
 
   return collector;
 };
@@ -157,4 +160,5 @@ export const deleteSurveyCollector = async (
   }
 
   revalidatePath(`/survey/${surveyId}/collectors`);
+  revalidatePath(`/survey/${surveyId}/summary`);
 };
