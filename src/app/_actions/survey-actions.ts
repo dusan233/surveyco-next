@@ -22,6 +22,7 @@ import {
 import qs from "qs";
 import { cookies } from "next/headers";
 import cookie from "cookie";
+import setCookie from "set-cookie-parser";
 
 import { revalidatePath } from "next/cache";
 import { getResponseData } from "@/lib/utils";
@@ -559,32 +560,49 @@ export const saveSurveyResponse = async (
       }),
     }
   );
+  // console.log(res.headers.get("set-cookie")?.split(","), "tulipi");
+  const combinedCookieHeader = res.headers.get("set-cookie");
+  const splitCookieHeaders = setCookie.splitCookiesString(
+    combinedCookieHeader || ""
+  );
+  const formatedCookies = setCookie.parse(splitCookieHeaders, {
+    decodeValues: true,
+  });
+  // console.log(donestuff, "huhiiii");
+  // console.log(cookie.parse(res.headers.get("set-cookie")!));
+  // console.log(cookie.parse(res.headers.get("set-cookie")!), "set-cookie");
+  // res.headers.forEach((val, key, parent) => {
+  //   console.log(val, key);
+  // });
 
-  const cookiesFromHeader = res.headers
-    // @ts-ignore
-    .getSetCookie()
-    // @ts-ignore
-    .map((cookieStr) => cookie.parse(cookieStr as string));
+  // const setCookie = res.headers.get("set-cookie")
 
-  cookiesFromHeader.forEach((cookie) => {
-    const mAge = +cookie["Max-Age"];
-    if ("surveyResponses" in cookie) {
+  // if(setCookie !== null) {
+  //   const extractedCookie =  cookie.parse(setCookie);
+  // }
+
+  // const cookiesFromHeader = res.headers
+  //   .getSetCookie()
+  //   .map((cookieStr) => cookie.parse(cookieStr as string));
+
+  formatedCookies.forEach((cookie) => {
+    if (cookie.name === "surveyResponses") {
       cookies().set({
-        name: "surveyResponses",
-        value: cookie.surveyResponses,
-        maxAge: mAge,
+        name: cookie.name,
+        value: cookie.value,
+        maxAge: cookie.maxAge,
         sameSite: "none",
-        secure: true,
-        httpOnly: true,
+        secure: cookie.secure,
+        httpOnly: cookie.httpOnly,
       });
-    } else if ("blocked_col" in cookie) {
+    } else if (cookie.name === "blocked_col") {
       cookies().set({
-        name: "blocked_col",
-        value: cookie.blocked_col,
-        maxAge: mAge,
+        name: cookie.name,
+        value: cookie.value,
+        maxAge: cookie.maxAge,
         sameSite: "none",
-        secure: true,
-        httpOnly: true,
+        secure: cookie.secure,
+        httpOnly: cookie.httpOnly,
       });
     }
   });
