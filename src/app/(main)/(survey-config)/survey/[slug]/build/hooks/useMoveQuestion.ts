@@ -37,7 +37,7 @@ export default function useMoveQuestion() {
       const targetQuestion = previousQuestions?.questions.find(
         (q) => q.id === moveQuestion.data.questionId
       ) as Question;
-      console.log(sourceQuestion, targetQuestion);
+
       if (sourceQuestion!.surveyPageId === moveQuestion.data.pageId) {
         let updatedQuestions;
 

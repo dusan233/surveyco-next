@@ -523,7 +523,6 @@ export const getSurveyQuestionsAndResponses = async (
   };
   const queryParamsStr = qs.stringify(queryParamsObj);
 
-  console.log(surveyResponsesCookieVal, "cookie val");
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responseData?${queryParamsStr}`,
     {
@@ -586,7 +585,7 @@ export const saveSurveyResponse = async (
       }),
     }
   );
-  // console.log(res.headers.get("set-cookie")?.split(","), "tulipi");
+
   const combinedCookieHeader = res.headers.get("set-cookie");
   const splitCookieHeaders = setCookie.splitCookiesString(
     combinedCookieHeader || ""
@@ -594,22 +593,6 @@ export const saveSurveyResponse = async (
   const formatedCookies = setCookie.parse(splitCookieHeaders, {
     decodeValues: true,
   });
-  // console.log(donestuff, "huhiiii");
-  // console.log(cookie.parse(res.headers.get("set-cookie")!));
-  // console.log(cookie.parse(res.headers.get("set-cookie")!), "set-cookie");
-  // res.headers.forEach((val, key, parent) => {
-  //   console.log(val, key);
-  // });
-
-  // const setCookie = res.headers.get("set-cookie")
-
-  // if(setCookie !== null) {
-  //   const extractedCookie =  cookie.parse(setCookie);
-  // }
-
-  // const cookiesFromHeader = res.headers
-  //   .getSetCookie()
-  //   .map((cookieStr) => cookie.parse(cookieStr as string));
 
   formatedCookies.forEach((cookie) => {
     if (cookie.name === "surveyResponses") {
@@ -644,6 +627,5 @@ export const saveSurveyResponse = async (
       `Failed to save survey response for survey with id: ${surveyId}`
     );
   }
-  console.log("gets here brah");
   return await getResponseData(res);
 };

@@ -70,7 +70,6 @@ const PlaceQuestionForm = ({
       },
       {
         onError(error) {
-          console.log(error);
           toast({ title: "Something went wrong!", variant: "destructive" });
         },
       }

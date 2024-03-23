@@ -20,7 +20,6 @@ const IndividualResponseAnswers = ({
   return (
     <div className="flex flex-col gap-5 ">
       {questions.map((question) => {
-        console.log(questionResponses);
         const questionResponse = questionResponses.find(
           (response) => response.questionId === question.id
         );

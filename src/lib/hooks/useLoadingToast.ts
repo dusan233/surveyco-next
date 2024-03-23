@@ -7,7 +7,6 @@ export function useLoadingToast(isLoading: boolean, title?: string) {
 
   useEffect(() => {
     if (isLoading) {
-      console.log("toasterororo");
       const loadingToast = toast({
         variant: "default",
         title: title ?? "Loading...",

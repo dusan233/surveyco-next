@@ -105,7 +105,6 @@ export const getQuestionChartTypes = (qType: QuestionType) => {
 
 export const getAuthErrorMessage = (err: any) => {
   if (isClerkAPIResponseError(err)) {
-    console.log(err.errors);
     let errorMsg = "";
     if (err.status === 500) {
       errorMsg = "Something went wrong! Please try again.";

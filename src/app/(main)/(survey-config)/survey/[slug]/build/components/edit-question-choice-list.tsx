@@ -75,7 +75,7 @@ const EditQuestionChoiceList = ({
         const canRemoveQuestionOption = option.id
           ? canRemoveOptions && options.length > 1
           : options.length > 1;
-        console.log(options.length);
+
         return (
           <EditQuestionChoice
             addOptionDisabled={options.length === 30}

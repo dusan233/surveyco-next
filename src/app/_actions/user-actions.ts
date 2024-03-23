@@ -30,8 +30,7 @@ export const getUserSurveys = async (
       },
     }
   );
-  const wwqwq = cookies().get("ducky");
-  console.log(wwqwq);
+
   if (!res.ok) {
     throw new Error(`Failed to get surveys for user with id: ${userId}`);
   }

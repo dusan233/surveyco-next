@@ -71,7 +71,6 @@ const CopyQuestionForm = ({
   useLoadingToast(isPending, "Copying question...");
 
   const onSubmit = async (values: CopyQuestionData) => {
-    console.log(values);
     copyQuestionMutation(
       {
         surveyId,

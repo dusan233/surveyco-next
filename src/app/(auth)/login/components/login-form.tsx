@@ -34,7 +34,6 @@ const LoginForm = () => {
       });
 
       if (result.status === "complete") {
-        console.log("signin successfully done!");
         await setActive({ session: result.createdSessionId });
       }
     } catch (err) {

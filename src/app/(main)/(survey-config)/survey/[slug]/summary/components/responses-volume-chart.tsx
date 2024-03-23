@@ -38,7 +38,6 @@ function generateTicks(maxValue: number) {
 
   return ticks;
 }
-console.log(generateTicks(33));
 
 const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
   const chartId = useId();
@@ -61,7 +60,6 @@ const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
 
   useEffect(() => {
     const onWindowResize = (e: Event) => {
-      console.log(window.innerWidth < 400 && !hideXAxis);
       if (window.innerWidth < 400 && !hideXAxis) {
         setHideXAxis(true);
       } else if (window.innerWidth >= 400 && hideXAxis) {

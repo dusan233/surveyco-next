@@ -23,7 +23,7 @@ export default authMiddleware({
       //this could be a problem latter with more accounst linked... not sure.
       const isAccountVerified =
         user?.emailAddresses[0].verification?.status === "verified";
-      console.log("authenticated", isAccountVerified, user?.firstName);
+
       if (!isAccountVerified && pathName !== "/email-verification") {
         const emailVerificationPage = new URL(
           "/email-verification",
