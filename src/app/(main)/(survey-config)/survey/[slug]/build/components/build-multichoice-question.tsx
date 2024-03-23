@@ -19,6 +19,7 @@ import EditQuestionSettings from "./edit-question-settings";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 import useMultiChoiceQuestionForm from "../hooks/useMultiChoiceQuestionForm";
 import EditQuestionDescription from "./edit-question-description";
+import { Settings } from "lucide-react";
 
 type MultiChoiceQuestionProps = {
   question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
@@ -81,6 +82,7 @@ const BuildMultiChoiceQuestion = ({
     const addingQuestionToast = toast({
       variant: "default",
       title: "Saving question...",
+      icon: <Settings className="animate-spin text-secondary" />,
     });
     saveQuestionMutation(
       { surveyId, currentPage: currentPage!, data: questionData },

@@ -18,7 +18,7 @@ const CopyCollectorWebLink = ({ collectorId }: CopyCollectorWebLinkProps) => {
     toast({
       variant: "default",
       title: "Link copied to clipboard.",
-      icon: <Link />,
+      icon: <Link className="text-secondary" />,
       duration: 2000,
     });
   };

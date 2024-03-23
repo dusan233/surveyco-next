@@ -14,6 +14,7 @@ import useCreateSurveyPage from "../hooks/useCreateSurveyPage";
 import { useToast } from "@/components/ui/use-toast";
 import PageActions from "./page-actions";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import { Settings } from "lucide-react";
 
 type PageControlBarProps = {
   surveyId: string;
@@ -30,6 +31,7 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
     const createPageToast = toast({
       variant: "default",
       title: "Creating page...",
+      icon: <Settings className="animate-spin text-secondary" />,
     });
 
     createPageMutation(
