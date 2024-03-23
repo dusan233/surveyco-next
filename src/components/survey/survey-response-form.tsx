@@ -76,7 +76,7 @@ const SurveyResponseForm = ({
           onSuccessfulSubmit(values, data.submitted);
         },
         onError(error) {
-          if (error.name === "CONFLICT") {
+          if (error.message === "CONFLICT") {
             onSurveyChange();
           } else {
             toast({ variant: "destructive", title: "Something went wrong!" });

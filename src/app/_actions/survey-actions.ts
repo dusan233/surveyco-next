@@ -618,8 +618,8 @@ export const saveSurveyResponse = async (
 
   if (!res.ok) {
     if (res.status === 409) {
-      const error = new Error(`Survey data has been updated.`);
-      error.name = "CONFLICT";
+      const error = new Error(`CONFLICT`);
+
       throw error;
     }
 
