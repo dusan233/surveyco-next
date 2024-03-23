@@ -50,7 +50,7 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
   };
 
   return (
-    <div className="mb-4 py-2 flex items-end bg-slate-100 justify-between gap-2 sticky top-11 z-10">
+    <div className="mb-4 py-2 flex flex-col xs:flex-row xs:items-end bg-slate-100 xs:justify-between gap-2 sticky top-11 z-10">
       <div className="flex flex-1 items-center gap-5">
         <div className="max-w-xs flex-1 flex items-center">
           <Select
