@@ -1,8 +1,14 @@
 import React from "react";
-import { Control, SubmitHandler, useFieldArray } from "react-hook-form";
+import {
+  Control,
+  SubmitHandler,
+  useFieldArray,
+  useFormContext,
+} from "react-hook-form";
 import EditQuestionChoice from "./edit-question-choice";
 import { z } from "zod";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
+import { MultiChoiceQuestionFormData } from "@/lib/types";
 
 type EditQuestionChoiceListProps = {
   control: Control<z.infer<typeof multiChoiceQuestionSchema>, any>;
@@ -17,11 +23,14 @@ const EditQuestionChoiceList = ({
   handleSaveQuestion,
   canRemoveOptions,
 }: EditQuestionChoiceListProps) => {
+  const { watch } = useFormContext<MultiChoiceQuestionFormData>();
   const { fields: options, replace } = useFieldArray({
     control: control,
     name: "options",
     keyName: "optionId",
   });
+
+  const choices = watch("options");
 
   const addAnotherOption = (currentIndex: number) => {
     const newOptionIndex = currentIndex + 1;
@@ -31,7 +40,7 @@ const EditQuestionChoiceList = ({
       descriptionImage: null,
       number: newOptionNumber,
     };
-    const updatedOldOptions = options.map((option) => {
+    const updatedOldOptions = choices.map((option) => {
       let optionNumber = option.number;
       if (option.number >= newOptionNumber) {
         optionNumber = optionNumber + 1;
@@ -51,7 +60,7 @@ const EditQuestionChoiceList = ({
   const removeOption = (optionIndex: number) => {
     const deleteOptionNumber = optionIndex + 1;
 
-    const updatedOptions = options
+    const updatedOptions = choices
       .filter((option) => option.number !== deleteOptionNumber)
       .map((option) => {
         let optionNumber = option.number;
