@@ -549,7 +549,13 @@ export const saveSurveyResponse = async (
   pageId: string,
   surveyResposneStartTime: Date,
   isPreview: boolean
-): Promise<{ submitted: boolean }> => {
+): Promise<{
+  data: { submitted: boolean } | null;
+  error: {
+    errorCode: string;
+    message: string;
+  } | null;
+}> => {
   const surveyResponsesCookie = cookies().get("surveyResponses");
   const blockedCollectorsCookie = cookies().get("blocked_col");
   let cookiesStr = "";
@@ -618,14 +624,23 @@ export const saveSurveyResponse = async (
 
   if (!res.ok) {
     if (res.status === 409) {
-      const error = new Error(`CONFLICT`);
-
-      throw error;
+      return {
+        data: null,
+        error: {
+          errorCode: "SURVEY_UPDATED",
+          message: "Survey data got updated by creator.",
+        },
+      };
     }
 
-    throw new Error(
-      `Failed to save survey response for survey with id: ${surveyId}`
-    );
+    return {
+      data: null,
+      error: {
+        errorCode: "ERROR",
+        message: "Something went wrong!",
+      },
+    };
   }
-  return await getResponseData(res);
+  const resData = await getResponseData<{ submitted: boolean }>(res);
+  return { error: null, data: resData };
 };

@@ -73,13 +73,14 @@ const SurveyResponseForm = ({
       },
       {
         onSuccess(data) {
-          onSuccessfulSubmit(values, data.submitted);
-        },
-        onError(error) {
-          if (error.message === "CONFLICT") {
-            onSurveyChange();
-          } else {
-            toast({ variant: "destructive", title: "Something went wrong!" });
+          if (data.error) {
+            if (data.error.errorCode === "SURVEY_UPDATED") {
+              onSurveyChange();
+            } else {
+              toast({ variant: "destructive", title: "Something went wrong!" });
+            }
+          } else if (data.data) {
+            onSuccessfulSubmit(values, data.data.submitted);
           }
         },
       }
