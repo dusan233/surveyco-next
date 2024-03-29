@@ -5,6 +5,7 @@ import {
   CreateSurveyData,
   OperationPosition,
   Question,
+  QuestionResponse,
   QuestionsResponsesData,
   QuizResponseData,
   SaveQuestionData,
@@ -17,6 +18,7 @@ import setCookie from "set-cookie-parser";
 import { revalidatePath } from "next/cache";
 import { getResponseData } from "@/lib/utils";
 import { getAccessToken } from "./helper";
+import qs from "qs";
 
 export const createQuestion = async (
   surveyId: string,
@@ -294,6 +296,41 @@ export const createSurvey = async (
   }
 
   revalidatePath(`/library`);
+
+  return await getResponseData(res);
+};
+
+export const getSurveyQuestionsAndResponses = async (
+  surveyId: string,
+  collectorId: string,
+  pageId: string
+): Promise<{
+  questions: Question[];
+  questionResponses: QuestionResponse[];
+  page: string;
+}> => {
+  const surveyResponsesCookieVal = cookies().get("surveyResponses");
+  const queryParamsObj = {
+    collectorId,
+    pageId,
+  };
+  const queryParamsStr = qs.stringify(queryParamsObj);
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responseData?${queryParamsStr}`,
+    {
+      method: "GET",
+      headers: {
+        Cookie: surveyResponsesCookieVal
+          ? surveyResponsesCookieVal.name + "=" + surveyResponsesCookieVal.value
+          : "",
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Failed to get questions and question responses.`);
+  }
 
   return await getResponseData(res);
 };

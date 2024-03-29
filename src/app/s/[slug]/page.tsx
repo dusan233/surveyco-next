@@ -12,10 +12,8 @@ import { RedirectType, permanentRedirect } from "next/navigation";
 import { CollectorStatus } from "@/lib/types";
 import { Metadata } from "next";
 import { getCollector } from "@/app/_api/collector";
-import {
-  getSurveyPages,
-  getSurveyQuestionsAndResponses,
-} from "@/app/_api/survey";
+import { getSurveyPages } from "@/app/_api/survey";
+import { getSurveyQuestionsAndResponses } from "@/app/_actions/survey-actions";
 
 type PageProps = { params: { slug: string } };
 
