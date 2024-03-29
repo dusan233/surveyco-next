@@ -1,4 +1,4 @@
-import { getSurveyQuestions } from "@/app/_actions/survey-actions";
+import { getSurveyQuestions } from "@/app/_api/survey";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export default function useDownsizedQuestions(
@@ -8,7 +8,7 @@ export default function useDownsizedQuestions(
   const { data, isLoading, isFetching, isRefetching } = useQuery({
     staleTime: 0,
     queryKey: ["survey", surveyId, "questions-downsized", pageId],
-    queryFn: () => getSurveyQuestions(surveyId, pageId),
+    queryFn: () => getSurveyQuestions({ surveyId, surveyPage: pageId }),
     placeholderData: keepPreviousData,
     select(data) {
       return data.questions;

@@ -1,25 +1,15 @@
 "use server";
 import {
   ApiError,
-  Collector,
   CopyQuestionData,
   CreateSurveyData,
   OperationPosition,
   Question,
-  QuestionResponse,
-  QuestionResult,
-  QuestionsResponseData,
   QuestionsResponsesData,
   QuizResponseData,
   SaveQuestionData,
-  SortObject,
-  SurveyCollectorsResData,
   SurveyPage,
-  SurveyResponse,
-  SurveyResponsesResData,
-  VolumeByDay,
 } from "@/lib/types";
-import qs from "qs";
 import { cookies } from "next/headers";
 import cookie from "cookie";
 import setCookie from "set-cookie-parser";
@@ -27,59 +17,6 @@ import setCookie from "set-cookie-parser";
 import { revalidatePath } from "next/cache";
 import { getResponseData } from "@/lib/utils";
 import { getAccessToken } from "./helper";
-
-export const getSurvey = async (
-  surveyId: string
-): Promise<QuizResponseData> => {
-  const token = await getAccessToken();
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch data for survey with id: ${surveyId}`);
-  }
-
-  return await getResponseData(res);
-};
-
-export const getSurveyQuestions = async (
-  surveyId: string,
-  surveyPage: string
-): Promise<QuestionsResponseData> => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/questions?pageId=${surveyPage}`
-  );
-
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch questions for survey with id: ${surveyId} and pageId: ${surveyPage}`
-    );
-  }
-
-  return await getResponseData(res);
-};
-
-export const getSurveyPages = async (
-  surveyId: string
-): Promise<SurveyPage[]> => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/pages`,
-    { cache: "no-store" }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch pages  for survey with id: ${surveyId}`);
-  }
-
-  return await getResponseData(res);
-};
 
 export const createQuestion = async (
   surveyId: string,
@@ -357,187 +294,6 @@ export const createSurvey = async (
   }
 
   revalidatePath(`/library`);
-
-  return await getResponseData(res);
-};
-
-export const getSurveyResponsesVolume = async (
-  surveyId: string
-): Promise<VolumeByDay[]> => {
-  const token = await getAccessToken();
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responses/volume`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Something went wrong!`);
-  }
-
-  return await getResponseData(res);
-};
-
-export const getSurveyResponse = async (
-  surveyId: string,
-  responseId: string,
-  pageId: string
-): Promise<{
-  surveyResponse: SurveyResponse;
-  questions: Question[];
-  questionResponses: QuestionResponse[];
-  page: number;
-}> => {
-  const token = await getAccessToken();
-
-  const queryParamsObj = {
-    pageId,
-  };
-  const queryParamsStr = qs.stringify(queryParamsObj);
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/response/${responseId}?${queryParamsStr}`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to get response with id: ${responseId}`);
-  }
-
-  return await getResponseData(res);
-};
-
-export const getSurveyCollectors = async (
-  surveyId: string,
-  page: number,
-  sort: SortObject,
-  take?: number
-): Promise<SurveyCollectorsResData> => {
-  const token = await getAccessToken();
-
-  const sortColumn = sort.column;
-  const sortType = sort.type;
-  const queryParamsObj = {
-    page: page,
-    sort: `${sortColumn}:${sortType}`,
-    take: take ?? 10,
-  };
-  const queryParamsStr = qs.stringify(queryParamsObj, { encode: false });
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/collectors?${queryParamsStr}`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch collectors for survey with id: ${surveyId}`
-    );
-  }
-
-  return await getResponseData(res);
-};
-
-export const getSurveyResponses = async (
-  surveyId: string,
-  page: number,
-  sort: SortObject
-): Promise<SurveyResponsesResData> => {
-  const token = await getAccessToken();
-
-  const sortName = sort.column;
-  const sortType = sort.type;
-  const queryParamsObj = {
-    page: page,
-    sort: `${sortName}:${sortType}`,
-  };
-  const queryParamsStr = qs.stringify(queryParamsObj, { encode: false });
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responses?${queryParamsStr}`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to get responses for survey with id: ${surveyId}`);
-  }
-
-  return await getResponseData(res);
-};
-
-export const getPageQuestionResults = async (
-  surveyId: string,
-  pageId: string
-): Promise<QuestionResult[]> => {
-  const token = await getAccessToken();
-  const queryParamsObj = {
-    pageId,
-  };
-  const queryParamsStr = qs.stringify(queryParamsObj);
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/questions/result?${queryParamsStr}`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to get results for survey with id: ${surveyId}`);
-  }
-
-  return await getResponseData(res);
-};
-
-export const getSurveyQuestionsAndResponses = async (
-  surveyId: string,
-  collectorId: string,
-  pageId: string
-): Promise<{
-  questions: Question[];
-  questionResponses: QuestionResponse[];
-  page: string;
-}> => {
-  const surveyResponsesCookieVal = cookies().get("surveyResponses");
-  const queryParamsObj = {
-    collectorId,
-    pageId,
-  };
-  const queryParamsStr = qs.stringify(queryParamsObj);
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}/responseData?${queryParamsStr}`,
-    {
-      method: "GET",
-      headers: {
-        Cookie: surveyResponsesCookieVal
-          ? surveyResponsesCookieVal.name + "=" + surveyResponsesCookieVal.value
-          : "",
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to get questions and question responses.`);
-  }
 
   return await getResponseData(res);
 };

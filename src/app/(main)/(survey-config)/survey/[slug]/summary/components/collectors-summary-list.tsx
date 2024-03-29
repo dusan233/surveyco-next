@@ -3,7 +3,8 @@ import React from "react";
 import CollectorsSummaryItem from "./collectors-summary-item";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { getSurveyCollectors } from "@/app/_actions/survey-actions";
+import { getSurveyCollectors } from "@/app/_api/survey";
+import { auth } from "@clerk/nextjs/server";
 
 type CollectorsSummaryListProps = {
   surveyId: string;
@@ -12,8 +13,16 @@ type CollectorsSummaryListProps = {
 const CollectorsSummaryList = async ({
   surveyId,
 }: CollectorsSummaryListProps) => {
+  const { getToken } = auth();
+  const token = await getToken();
   const sort: SortObject = { column: "total_responses", type: "desc" };
-  const collectorsData = await getSurveyCollectors(surveyId, 1, sort, 5);
+  const collectorsData = await getSurveyCollectors({
+    surveyId,
+    sort,
+    page: 1,
+    token,
+    take: 5,
+  });
   const collectors = collectorsData.data;
 
   return (

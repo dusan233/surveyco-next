@@ -1,10 +1,13 @@
-import { getSurvey } from "@/app/_actions/survey-actions";
+import { getSurvey } from "@/app/_api/survey";
+import { auth } from "@clerk/nextjs/server";
 import React from "react";
 
 const SurveyTitleDefault = async ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;
+  const { getToken } = auth();
+  const token = await getToken();
 
-  const survey = await getSurvey(surveyId);
+  const survey = await getSurvey({ surveyId, token });
 
   return (
     <div className="bg-slate-800 flex items-center min-h-[100px] px-4 sm:px-10">

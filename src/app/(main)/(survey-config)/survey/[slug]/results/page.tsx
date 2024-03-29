@@ -6,12 +6,13 @@ import {
 import React from "react";
 import SurveyQuestionResults from "./components/survey-question-results";
 import NoResponses from "./components/no-responses";
+import { Metadata } from "next";
 import {
   getPageQuestionResults,
   getSurvey,
   getSurveyPages,
-} from "@/app/_actions/survey-actions";
-import { Metadata } from "next";
+} from "@/app/_api/survey";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "Surveyco - Survey results",
@@ -21,6 +22,8 @@ export const metadata: Metadata = {
 const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
   const surveyId = params.slug;
   const queryClient = new QueryClient();
+  const { getToken } = auth();
+  const token = await getToken();
 
   const surveyPages = await queryClient.fetchQuery({
     queryKey: ["survey", surveyId, "pages"],
@@ -30,10 +33,11 @@ const SurveyResultsPage = async ({ params }: { params: { slug: string } }) => {
   const firstPage = surveyPages.find((page) => page.number === 1);
 
   const [survey] = await Promise.all([
-    getSurvey(surveyId),
+    getSurvey({ surveyId, token }),
     queryClient.fetchQuery({
       queryKey: ["survey", surveyId, "questions", "results", firstPage!.id],
-      queryFn: () => getPageQuestionResults(surveyId, firstPage!.id),
+      queryFn: () =>
+        getPageQuestionResults({ surveyId, pageId: firstPage!.id, token }),
     }),
   ]);
 

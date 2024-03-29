@@ -1,14 +1,19 @@
-import { getPageQuestionResults } from "@/app/_actions/survey-actions";
+import { getPageQuestionResults } from "@/app/_api/survey";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@clerk/nextjs";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
 export const useQuestionResults = (surveyId: string, pageId: string) => {
   const { toast } = useToast();
+  const { getToken } = useAuth();
   const { data, error, isFetching, status, isError } = useQuery({
     staleTime: 0,
     queryKey: ["survey", surveyId, "questions", "results", pageId],
-    queryFn: () => getPageQuestionResults(surveyId, pageId),
+    queryFn: async () => {
+      const token = await getToken();
+      return getPageQuestionResults({ surveyId, pageId, token });
+    },
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });

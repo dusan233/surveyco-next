@@ -10,12 +10,12 @@ import SurveyResponse from "../components/survey-response";
 import { cookies } from "next/headers";
 import { RedirectType, permanentRedirect } from "next/navigation";
 import { CollectorStatus } from "@/lib/types";
-import { getCollector } from "@/app/_actions/collector-actions";
+import { Metadata } from "next";
+import { getCollector } from "@/app/_api/collector";
 import {
   getSurveyPages,
   getSurveyQuestionsAndResponses,
-} from "@/app/_actions/survey-actions";
-import { Metadata } from "next";
+} from "@/app/_api/survey";
 
 type PageProps = { params: { slug: string } };
 

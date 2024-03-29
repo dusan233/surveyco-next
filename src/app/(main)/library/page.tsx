@@ -6,8 +6,9 @@ import {
 import React from "react";
 import MyLibraryView from "./components/my-library-view";
 import { SortObject } from "@/lib/types";
-import { getUserSurveys } from "@/app/_actions/user-actions";
 import { Metadata } from "next";
+import { getUserSurveys } from "@/app/_api/user";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "Welcome to Surveyco!",
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
 };
 
 const MyLibraryPage = async () => {
+  const { userId, getToken } = auth();
+  const accessToken = await getToken();
   const queryClient = new QueryClient();
 
   const initialSort: SortObject = {
@@ -25,7 +28,13 @@ const MyLibraryPage = async () => {
 
   await queryClient.fetchQuery({
     queryKey: ["user", "surveys", 1, initialSort],
-    queryFn: () => getUserSurveys(1, initialSort),
+    queryFn: () =>
+      getUserSurveys({
+        page: 1,
+        sort: initialSort,
+        token: accessToken,
+        userId,
+      }),
   });
 
   return (

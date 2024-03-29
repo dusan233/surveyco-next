@@ -6,8 +6,9 @@ import {
 } from "@tanstack/react-query";
 import { SortObject } from "@/lib/types";
 import SurveyCollectors from "./components/survey-collectors";
-import { getSurveyCollectors } from "@/app/_actions/survey-actions";
 import { Metadata } from "next";
+import { getSurveyCollectors } from "@/app/_api/survey";
+import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {
   title: "Surveyco - Collector List",
@@ -20,7 +21,8 @@ const CollectResponsesPage = async ({
   params: { slug: string };
 }) => {
   const surveyId = params.slug;
-
+  const { getToken } = auth();
+  const token = await getToken();
   const queryClient = new QueryClient();
 
   const initialSort: SortObject = {
@@ -30,7 +32,8 @@ const CollectResponsesPage = async ({
 
   await queryClient.fetchQuery({
     queryKey: ["survey", surveyId, "collectors", 1, initialSort],
-    queryFn: () => getSurveyCollectors(surveyId, 1, initialSort),
+    queryFn: () =>
+      getSurveyCollectors({ surveyId, sort: initialSort, page: 1, token }),
   });
 
   return (

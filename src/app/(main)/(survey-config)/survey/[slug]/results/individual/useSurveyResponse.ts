@@ -1,5 +1,6 @@
-import { getSurveyResponse } from "@/app/_actions/survey-actions";
+import { getSurveyResponse } from "@/app/_api/survey";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@clerk/nextjs";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
@@ -9,10 +10,14 @@ export default function useSurveyResponse(
   pageId: string
 ) {
   const { toast } = useToast();
+  const { getToken } = useAuth();
   const { data, isLoading, isFetching, isError } = useQuery({
     staleTime: 0,
     queryKey: ["survey", surveyId, "response", responseId, pageId],
-    queryFn: () => getSurveyResponse(surveyId, responseId, pageId),
+    queryFn: async () => {
+      const accessToken = await getToken();
+      return getSurveyResponse({ surveyId, responseId, pageId, accessToken });
+    },
     placeholderData: keepPreviousData,
   });
 

@@ -3,10 +3,12 @@ import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useRef, useState } from "react";
 import { SortObject } from "../types";
 import { useToast } from "@/components/ui/use-toast";
-import { getSurveyCollectors } from "@/app/_actions/survey-actions";
+import { getSurveyCollectors } from "@/app/_api/survey";
+import { useAuth } from "@clerk/nextjs";
 
 export default function useSurveyCollectors(surveyId: string) {
   const { toast } = useToast();
+  const { getToken } = useAuth();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 15,
@@ -28,8 +30,15 @@ export default function useSurveyCollectors(surveyId: string) {
       pagination.pageIndex + 1,
       sort,
     ],
-    queryFn: () =>
-      getSurveyCollectors(surveyId, pagination.pageIndex + 1, sort),
+    queryFn: async () => {
+      const token = await getToken();
+      return getSurveyCollectors({
+        surveyId,
+        page: pagination.pageIndex + 1,
+        sort,
+        token,
+      });
+    },
     placeholderData: keepPreviousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

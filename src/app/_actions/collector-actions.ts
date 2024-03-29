@@ -6,18 +6,6 @@ import { revalidatePath } from "next/cache";
 import { Collector, CollectorStatus, CollectorType } from "@/lib/types";
 import { updateCollectorNameSchema } from "@/lib/validationSchemas";
 
-export const getCollector = async (collectorId: string): Promise<Collector> => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/collector/${collectorId}`
-  );
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch collector ${collectorId} for survey`);
-  }
-
-  return await getResponseData(res);
-};
-
 export const createSurveyCollector = async (
   surveyId: string
 ): Promise<Collector> => {

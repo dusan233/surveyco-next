@@ -7,11 +7,8 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { BuildQuestionsProvider } from "@/lib/context";
-import {
-  getSurveyPages,
-  getSurveyQuestions,
-} from "@/app/_actions/survey-actions";
 import { Metadata } from "next";
+import { getSurveyPages, getSurveyQuestions } from "@/app/_api/survey";
 
 export const metadata: Metadata = {
   title: "Surveyco - Build Survey Questions",
@@ -35,7 +32,7 @@ const BuildSurveyQuestionsPage = async ({
 
   const questions = await queryClient.fetchQuery({
     queryKey: ["survey", surveyId, "questions", firstPage!.id],
-    queryFn: () => getSurveyQuestions(surveyId, firstPage!.id),
+    queryFn: () => getSurveyQuestions({ surveyId, surveyPage: firstPage!.id }),
   });
 
   return (

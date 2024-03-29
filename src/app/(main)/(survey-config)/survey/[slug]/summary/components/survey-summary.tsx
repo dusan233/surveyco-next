@@ -1,7 +1,8 @@
-import { getSurvey } from "@/app/_actions/survey-actions";
+import { getSurvey } from "@/app/_api/survey";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SurveyStatus } from "@/lib/types";
+import { auth } from "@clerk/nextjs/server";
 import { format } from "date-fns";
 import Link from "next/link";
 import React from "react";
@@ -11,7 +12,9 @@ type SurveySummaryProps = {
 };
 
 const SurveySummary = async ({ surveyId }: SurveySummaryProps) => {
-  const survey = await getSurvey(surveyId);
+  const { getToken } = auth();
+  const token = await getToken();
+  const survey = await getSurvey({ surveyId, token });
 
   const links = [
     { text: "Edit design", href: `/survey/${surveyId}/build` },

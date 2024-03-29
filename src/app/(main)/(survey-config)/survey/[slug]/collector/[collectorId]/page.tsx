@@ -3,8 +3,8 @@ import UpdateCollectorNameForm from "../components/update-collector-name-form";
 import Link from "next/link";
 import { ChevronsLeftIcon } from "lucide-react";
 import CopyWebLink from "../components/web-link-collector";
-import { getCollector } from "@/app/_actions/collector-actions";
 import { Metadata } from "next";
+import { getCollector } from "@/app/_api/collector";
 
 export const metadata: Metadata = {
   title: "Surveyco - Collector Details",
