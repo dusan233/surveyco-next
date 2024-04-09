@@ -3,7 +3,7 @@
 import React from "react";
 import CollectorsHeader from "./collectors-header";
 import { DataTable as CollectorsTable } from "@/components/data-table/data-table";
-import useSurveyCollectors from "@/lib/hooks/useSurveyCollectors";
+import useSurveyCollectors from "@/hooks/useSurveyCollectors";
 import { columns } from "./collectors-table-columns";
 
 type SurveyCollectorsProps = {

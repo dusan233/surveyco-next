@@ -10,7 +10,7 @@ import NavbarLink from "../navbar-link";
 import UserMenu from "../user-menu";
 import NotificationButton from "../notification-button";
 import SidenavButton from "../sidenav-button";
-import { useDisclosure } from "@/lib/hooks/useDisclosure";
+import { useDisclosure } from "@/hooks/useDisclosure";
 import NavDrawer from "./nav-drawer";
 
 const Navbar = () => {

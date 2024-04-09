@@ -8,7 +8,7 @@ import {
   UnsavedTextQuestion,
 } from "@/lib/types";
 import EditQuestionFooter from "./edit-question-footer";
-import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
+import { useClickAwayQuestionEdit } from "@/hooks/useClickAwayQuestionEdit";
 import useSaveQuestion from "../hooks/useSaveQuestion";
 import { useToast } from "@/components/ui/use-toast";
 import EditQuestionSettings from "./edit-question-settings";

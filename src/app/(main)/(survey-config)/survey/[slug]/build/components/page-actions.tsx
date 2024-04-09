@@ -18,8 +18,8 @@ import useDeleteSurveyPage from "../hooks/useDeleteSurveyPage";
 import CopySurveyPageDialog from "./copy-survey-page-dialog";
 import MoveSurvePageDialog from "./move-survey-page-dialog";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import { useDisclosure } from "@/lib/hooks/useDisclosure";
+import useSurveyPages from "@/hooks/useSurveyPages";
+import { useDisclosure } from "@/hooks/useDisclosure";
 
 type QuestionActionsProps = {
   surveyId: string;

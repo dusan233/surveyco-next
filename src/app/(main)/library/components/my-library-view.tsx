@@ -5,7 +5,7 @@ import React from "react";
 import { columns } from "./surveys-table-columns";
 import { DataTable as UserSurveysTable } from "@/components/data-table/data-table";
 import CreateSurveyDialog from "@/components/survey/create-survey-dialog";
-import { useDisclosure } from "@/lib/hooks/useDisclosure";
+import { useDisclosure } from "@/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";
 
 const MyLibraryView = () => {

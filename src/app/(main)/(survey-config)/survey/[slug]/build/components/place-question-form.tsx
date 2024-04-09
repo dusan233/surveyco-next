@@ -1,4 +1,4 @@
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import useSurveyPages from "@/hooks/useSurveyPages";
 import React, { useEffect, useState } from "react";
 import { v4 as uuid4 } from "uuid";
 import useMoveQuestion from "../hooks/useMoveQuestion";
@@ -6,15 +6,15 @@ import { placeQuestionSchema } from "@/lib/validationSchemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OperationPosition, PlaceQuestionData } from "@/lib/types";
-import useDownsizedQuestions from "@/lib/hooks/useDownsizedQuestions";
-import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import useDownsizedQuestions from "@/hooks/useDownsizedQuestions";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import CopyQuestionFormContent from "./copy-question/copy-question-form-content";
 import { useToast } from "@/components/ui/use-toast";
-import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
+import useSurveyQuestions from "@/hooks/useSurveyQuestions";
 
 type PlaceQuestionFormProps = {
   surveyId: string;

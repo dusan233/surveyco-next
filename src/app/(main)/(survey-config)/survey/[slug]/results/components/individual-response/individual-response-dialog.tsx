@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import IndividualResponse from "./individual-response";
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import useSurveyPages from "@/hooks/useSurveyPages";
 
 type IndividualResponseDialogProps = {
   isOpen: boolean;

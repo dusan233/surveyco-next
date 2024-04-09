@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import useSurveyPages from "@/hooks/useSurveyPages";
 import { Button } from "@/components/ui/button";
 import useCreateSurveyPage from "../hooks/useCreateSurveyPage";
 import { useToast } from "@/components/ui/use-toast";

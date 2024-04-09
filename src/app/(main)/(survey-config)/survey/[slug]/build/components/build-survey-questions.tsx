@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useEffect } from "react";
-import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
+import useSurveyQuestions from "@/hooks/useSurveyQuestions";
 import BuildQuestionsList from "./build-questions-list";
 
 import PageControlBar from "./page-control-bar";
-import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 import AddQuestionDialog from "./add-question-dialog";
-import { useDisclosure } from "@/lib/hooks/useDisclosure";
+import { useDisclosure } from "@/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 

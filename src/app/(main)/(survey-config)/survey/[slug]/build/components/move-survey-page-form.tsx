@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import useSurveyPages from "@/hooks/useSurveyPages";
 import React from "react";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 import useMoveSurveyPage from "../hooks/useMoveSurveyPage";
 import { PlacePageData, OperationPosition } from "@/lib/types";
-import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
 import {
   Form,
   FormControl,

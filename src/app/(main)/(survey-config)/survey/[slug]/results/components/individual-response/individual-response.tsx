@@ -5,7 +5,7 @@ import useSurveyResponse from "../../individual/useSurveyResponse";
 import useSurveyResponses from "@/app/(main)/(survey-config)/survey/[slug]/results/individual/useSurveIndividualResponses";
 import React, { useState } from "react";
 import IndividualResponseAnswers from "./individual-response-answers";
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import useSurveyPages from "@/hooks/useSurveyPages";
 import IndividualResponsePagination from "./individual-response-pagination";
 import IndividualResponseInfo from "./individual-response-info";
 import useSurveyResponsesPagination from "../../individual/useSurveyResponsesPagination";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSmoothScrollToQuestion } from "@/lib/hooks/useSmoothScroll";
+import { useSmoothScrollToQuestion } from "@/hooks/useSmoothScroll";
 import { VirtualItem, useWindowVirtualizer } from "@tanstack/react-virtual";
 import React, { ReactNode, useEffect, useRef } from "react";
 

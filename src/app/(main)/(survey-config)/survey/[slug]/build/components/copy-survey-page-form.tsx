@@ -8,7 +8,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import useCopySurveyPage from "../hooks/useCopySurveyPage";
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import useSurveyPages from "@/hooks/useSurveyPages";
 import { PlacePageData, OperationPosition } from "@/lib/types";
 import React from "react";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";

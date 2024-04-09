@@ -1,5 +1,5 @@
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import useSurveyQuestions from "@/lib/hooks/useSurveyQuestions";
+import useSurveyPages from "@/hooks/useSurveyPages";
+import useSurveyQuestions from "@/hooks/useSurveyQuestions";
 import {
   QuestionResponseData,
   QuestionType,

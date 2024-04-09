@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import useSaveSurveyResponse from "@/lib/hooks/useSaveSurveyResponse";
+import useSaveSurveyResponse from "@/hooks/useSaveSurveyResponse";
 import {
   Question,
   QuestionResponseData,

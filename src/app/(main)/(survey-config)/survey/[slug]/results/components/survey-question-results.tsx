@@ -11,8 +11,8 @@ import React, { useState } from "react";
 import MultiChoiceQuestionResults from "./multi-choice-results";
 import TextboxQuestionResults from "./textbox-question-results";
 
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
-import { useLoadingToast } from "@/lib/hooks/useLoadingToast";
+import useSurveyPages from "@/hooks/useSurveyPages";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
 import WindowVirtualList from "@/components/layout/window-virtual-list";
 import SurveyQuestionResultsControl from "./survey-question-results-control";
 

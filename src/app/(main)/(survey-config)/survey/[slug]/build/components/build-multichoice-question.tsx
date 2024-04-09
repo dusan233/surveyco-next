@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import EditQuestionChoiceList from "./edit-question-choice-list";
 import EditQuestionFooter from "./edit-question-footer";
 import useSaveQuestion from "../hooks/useSaveQuestion";
-import { useClickAwayQuestionEdit } from "@/lib/hooks/useClickAwayQuestionEdit";
+import { useClickAwayQuestionEdit } from "@/hooks/useClickAwayQuestionEdit";
 import { useToast } from "@/components/ui/use-toast";
 import EditQuestionSettings from "./edit-question-settings";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";

@@ -10,7 +10,7 @@ import {
 
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 import CopySurveyPageForm from "./copy-survey-page-form";
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import useSurveyPages from "@/hooks/useSurveyPages";
 
 type CopyPageDialogProps = {
   isOpen: boolean;

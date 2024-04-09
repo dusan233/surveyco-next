@@ -18,7 +18,7 @@ import { useToast } from "@/components/ui/use-toast";
 import CopyQuestionDialog from "./copy-question-dialog";
 import MoveQuestionDialog from "./move-question/move-question-dialog";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
-import { useDisclosure } from "@/lib/hooks/useDisclosure";
+import { useDisclosure } from "@/hooks/useDisclosure";
 
 type QuestionActionsProps = {
   surveyId: string;

@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import useSurveyPages from "@/lib/hooks/useSurveyPages";
+import useSurveyPages from "@/hooks/useSurveyPages";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
 import MoveSurveyPageForm from "./move-survey-page-form";
 

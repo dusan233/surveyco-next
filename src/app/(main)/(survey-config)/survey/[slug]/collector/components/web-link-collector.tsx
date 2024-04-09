@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { useCopyToClipboard } from "@/lib/hooks/useCopyToClipboard";
+import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import { Collector } from "@/lib/types";
 import { Link, LinkIcon } from "lucide-react";
 import React from "react";

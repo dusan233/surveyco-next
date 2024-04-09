@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useRef, useState } from "react";
-import { SortObject } from "../types";
+import { SortObject } from "../lib/types";
 import { useToast } from "@/components/ui/use-toast";
 import { getSurveyCollectors } from "@/app/_api/survey";
 import { useAuth } from "@clerk/nextjs";
