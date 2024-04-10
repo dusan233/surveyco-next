@@ -4,8 +4,8 @@ import { Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 
-describe.only("editorHasImage", () => {
-  it.only("should return correct boolean value", () => {
+describe("editorHasImage", () => {
+  it("should return correct boolean value", () => {
     const extensions = [
       StarterKit,
       Image.configure({
