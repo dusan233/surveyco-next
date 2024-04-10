@@ -4,7 +4,7 @@
  */
 
 import type { Config } from "jest";
-import nextJest from "next/jest.js";
+const nextJest = require("next/jest.js");
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
@@ -110,7 +110,7 @@ const config: Config = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: "ts-jest",
 
   // Run tests from one or more projects
   // projects: undefined,

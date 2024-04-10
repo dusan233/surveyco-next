@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { QuestionResult } from "@/lib/types";
-import { getQuestionChartTypes } from "@/lib/util/questionUtil";
+import { getQuestionChartTypes } from "@/lib/util/questionUtils";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import React from "react";
 

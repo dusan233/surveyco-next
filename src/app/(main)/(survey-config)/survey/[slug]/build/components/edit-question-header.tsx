@@ -3,7 +3,7 @@ import React from "react";
 
 import QuestionActions from "./question-actions";
 import { Edit } from "lucide-react";
-import { getQuestionTypeLable } from "@/lib/util/questionUtil";
+import { getQuestionTypeLable } from "@/lib/util/questionUtils";
 
 type EditQuestionHeaderProps = {
   question: Question | UnsavedQuestion;
