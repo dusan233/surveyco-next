@@ -15,10 +15,10 @@ import {
   useFormContext,
 } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { AlertTriangleIcon } from "lucide-react";
 import AutoAnimate from "../auto-animate";
+import { cn } from "@/lib/util/cn";
 
 const Form = FormProvider;
 

@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
-import { editorHasImage } from "@/lib/utils";
+import { editorHasImage } from "@/lib/util/editorHasImage";
 import { Editor } from "@tiptap/react";
 import React from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";

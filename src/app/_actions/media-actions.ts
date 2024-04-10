@@ -1,8 +1,8 @@
 "use server";
 
 import { MediaUploadResData } from "@/lib/types";
-import { getResponseData } from "@/lib/utils";
 import { getAccessToken } from "./helper";
+import { getResponseData } from "@/lib/util/getResponseData";
 
 export const uploadMedia = async (
   surveyId: string,

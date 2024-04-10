@@ -1,9 +1,9 @@
 import { Question, UnsavedQuestion } from "@/lib/types";
-import { getQuestionTypeLable } from "@/lib/utils";
 import React from "react";
 
 import QuestionActions from "./question-actions";
 import { Edit } from "lucide-react";
+import { getQuestionTypeLable } from "@/lib/util/questionUtil";
 
 type EditQuestionHeaderProps = {
   question: Question | UnsavedQuestion;

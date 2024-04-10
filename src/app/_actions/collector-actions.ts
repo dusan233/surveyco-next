@@ -1,10 +1,10 @@
 "use server";
 
-import { getResponseData } from "@/lib/utils";
 import { getAccessToken } from "./helper";
 import { revalidatePath } from "next/cache";
 import { Collector, CollectorStatus, CollectorType } from "@/lib/types";
 import { updateCollectorNameSchema } from "@/lib/validationSchemas";
+import { getResponseData } from "@/lib/util/getResponseData";
 
 export const createSurveyCollector = async (
   surveyId: string

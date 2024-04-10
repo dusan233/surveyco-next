@@ -11,8 +11,8 @@ import { SubmitHandler, useFormContext } from "react-hook-form";
 
 import AutoAnimate from "@/components/auto-animate";
 import { useToast } from "@/components/ui/use-toast";
-import { editorHasImage } from "@/lib/utils";
 import { uploadMedia } from "@/app/_actions/media-actions";
+import { editorHasImage } from "@/lib/util/editorHasImage";
 
 type EditQuestionDescriptionProps = {
   surveyId: string;

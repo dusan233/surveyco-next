@@ -2,9 +2,9 @@
 
 import React from "react";
 
-import { createNewQuestion, getQuestionTypes } from "@/lib/utils";
 import { QuestionType } from "@/lib/types";
 import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import { createNewQuestion, getQuestionTypes } from "@/lib/util/questionUtil";
 
 type AddQuestionProps = {
   onAddQuestion?: () => void;

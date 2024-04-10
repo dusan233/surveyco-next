@@ -18,7 +18,7 @@ import { SignUpData } from "@/lib/types";
 import useSignUpForm from "./useSignUpForm";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
-import { getAuthErrorMessage } from "@/lib/utils";
+import { getAuthErrorMessage } from "@/lib/util/getAuthErrorMessage";
 
 const SignUpForm = () => {
   const router = useRouter();

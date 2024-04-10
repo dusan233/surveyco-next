@@ -1,5 +1,5 @@
 import { SortObject, UserSurveysResData } from "@/lib/types";
-import { getResponseData } from "@/lib/utils";
+import { getResponseData } from "@/lib/util/getResponseData";
 import qs from "qs";
 
 export const getUserSurveys = async (params: {

@@ -11,8 +11,7 @@ import {
   SurveyResponsesResData,
   VolumeByDay,
 } from "@/lib/types";
-import { getResponseData } from "@/lib/utils";
-import { getAccessToken } from "../_actions/helper";
+import { getResponseData } from "@/lib/util/getResponseData";
 import qs from "qs";
 
 export const getSurvey = async (params: {

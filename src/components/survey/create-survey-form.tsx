@@ -23,9 +23,9 @@ import {
 import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { surveyCategoriesList } from "@/lib/utils";
 import { useToast } from "../ui/use-toast";
 import { createSurvey } from "@/app/_actions/survey-actions";
+import { SURVEY_CATEGORIES } from "@/lib/constants";
 
 type CreateSurveyFormProps = {
   onCreate: React.Dispatch<React.SetStateAction<boolean>>;
@@ -97,7 +97,7 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {surveyCategoriesList.map((category) => (
+                    {SURVEY_CATEGORIES.map((category) => (
                       <SelectItem key={category.value} value={category.value}>
                         {category.label}
                       </SelectItem>

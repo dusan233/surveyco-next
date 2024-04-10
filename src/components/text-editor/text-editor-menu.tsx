@@ -1,6 +1,6 @@
 "use client";
 
-import { editorHasImage } from "@/lib/utils";
+import { editorHasImage } from "@/lib/util/editorHasImage";
 import { Editor } from "@tiptap/react";
 import { ImageIcon } from "lucide-react";
 import React from "react";

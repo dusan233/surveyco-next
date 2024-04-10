@@ -16,7 +16,7 @@ import useLoginForm from "./useLoginForm";
 import { LoginData } from "@/lib/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
-import { getAuthErrorMessage } from "@/lib/utils";
+import { getAuthErrorMessage } from "@/lib/util/getAuthErrorMessage";
 
 const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();

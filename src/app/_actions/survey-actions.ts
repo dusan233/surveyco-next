@@ -16,9 +16,9 @@ import cookie from "cookie";
 import setCookie from "set-cookie-parser";
 
 import { revalidatePath } from "next/cache";
-import { getResponseData } from "@/lib/utils";
 import { getAccessToken } from "./helper";
 import qs from "qs";
+import { getResponseData } from "@/lib/util/getResponseData";
 
 export const createQuestion = async (
   surveyId: string,
