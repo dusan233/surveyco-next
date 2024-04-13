@@ -1,7 +1,7 @@
 "use client";
 
 import React, { ReactNode, createContext, useRef } from "react";
-import { Question, SurveyPage, UnsavedQuestion } from "./types";
+import { Question, SurveyPage, UnsavedQuestion } from "../types";
 import { createStore } from "zustand";
 
 interface BuildQuestionsStoreProps {

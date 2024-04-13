@@ -6,7 +6,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import { BuildQuestionsProvider } from "@/lib/context";
+import { BuildQuestionsProvider } from "@/lib/providers/build-questions-provider";
 import { Metadata } from "next";
 import { getSurveyPages, getSurveyQuestions } from "@/app/_api/survey";
 

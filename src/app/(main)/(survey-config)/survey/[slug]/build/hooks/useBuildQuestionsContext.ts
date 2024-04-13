@@ -1,4 +1,7 @@
-import { BuildQuestionsContext, BuildQuestionsStoreState } from "@/lib/context";
+import {
+  BuildQuestionsContext,
+  BuildQuestionsStoreState,
+} from "@/lib/providers/build-questions-provider";
 import { useContext } from "react";
 import { useStore } from "zustand";
 
