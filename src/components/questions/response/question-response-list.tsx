@@ -1,10 +1,11 @@
 "use client";
 
 import { Question, QuestionsResponsesData } from "@/lib/types";
-import React from "react";
+import React, { useRef } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import QuestionResponse from "@/components/questions/response/question-response";
-import WindowVirtualList from "@/components/layout/window-virtual-list";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import WindowedVirtualList from "@/components/layout/windowed-virtual-list";
 
 type QuestionResponseListProps = {
   questions: Question[];
@@ -17,10 +18,18 @@ const QuestionResponseList = ({ questions }: QuestionResponseListProps) => {
     name: "questionResponses",
     keyName: "qId",
   });
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const virtualizer = useWindowVirtualizer({
+    count: questions.length,
+    estimateSize: () => 50,
+    overscan: 5,
+    scrollMargin: listRef.current?.offsetTop ?? 0,
+  });
 
   return (
-    <WindowVirtualList
-      items={questions}
+    <WindowedVirtualList
+      virtualizer={virtualizer}
+      listRef={listRef}
       renderItem={(virtualRow) => {
         const questionData = questions[virtualRow.index];
         const questionResponseField = fields[virtualRow.index];

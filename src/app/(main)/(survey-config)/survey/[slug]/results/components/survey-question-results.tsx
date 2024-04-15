@@ -7,14 +7,15 @@ import {
   QuizResponseData,
   TextboxQuestionResult,
 } from "@/lib/types";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import MultiChoiceQuestionResults from "./multi-choice-results";
 import TextboxQuestionResults from "./textbox-question-results";
 
 import useSurveyPages from "@/hooks/useSurveyPages";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
-import WindowVirtualList from "@/components/layout/window-virtual-list";
 import SurveyQuestionResultsControl from "./survey-question-results-control";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import WindowedVirtualList from "@/components/layout/windowed-virtual-list";
 
 type SurveyResultsProps = {
   survey: QuizResponseData;
@@ -23,6 +24,7 @@ type SurveyResultsProps = {
 
 const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
   const { surveyPages } = useSurveyPages(surveyId);
+
   const [selectedPage, setSelectedPage] = useState(() => {
     const firstPage = surveyPages!.find((page) => page.number === 1);
 
@@ -34,6 +36,13 @@ const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
   );
 
   const questionResultsData = questionResults || lastSuccessData.current;
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const virtualizer = useWindowVirtualizer({
+    count: questionResultsData!.length,
+    estimateSize: () => 50,
+    overscan: 5,
+    scrollMargin: listRef.current?.offsetTop ?? 0,
+  });
 
   useLoadingToast(isFetching, "Loading results...");
 
@@ -46,8 +55,9 @@ const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
         surveyResponseCount={survey.responses_count}
       />
 
-      <WindowVirtualList
-        items={questionResultsData!}
+      <WindowedVirtualList
+        virtualizer={virtualizer}
+        listRef={listRef}
         renderItem={(virtualRow) => {
           const qResult = questionResultsData![virtualRow.index];
           return qResult.type !== QuestionType.textbox ? (
