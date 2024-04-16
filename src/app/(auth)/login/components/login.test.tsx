@@ -13,9 +13,9 @@ jest.mock("../../../../components/auto-animate", () => {
 
 describe("Log in component", () => {
   it("should render loading spinner before clerk useLogin hook is ready", async () => {
-    const cs = await import("@clerk/nextjs");
+    const clerk = await import("@clerk/nextjs");
     //@ts-ignore
-    cs.useSignIn.mockImplementation(() => {
+    clerk.useSignIn.mockImplementation(() => {
       return {
         isLoaded: false,
       };
@@ -31,9 +31,9 @@ describe("Log in component", () => {
   });
 
   it("should render login form and oauth providers after clerk useLogin hook is ready", async () => {
-    const cs = await import("@clerk/nextjs");
+    const clerk = await import("@clerk/nextjs");
     //@ts-ignore
-    cs.useSignIn.mockImplementation(() => {
+    clerk.useSignIn.mockImplementation(() => {
       return {
         isLoaded: true,
       };
