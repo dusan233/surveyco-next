@@ -3,6 +3,16 @@ import { render, screen } from "@testing-library/react";
 
 jest.mock("@clerk/nextjs");
 
+jest.mock("next/navigation", () => {
+  return {
+    useRouter: () => {
+      return {
+        push: (path: string) => {},
+      };
+    },
+  };
+});
+
 jest.mock("../../../../components/auto-animate", () => {
   const AutoAnimate = ({ children, duration = 100, ...props }: any) => {
     return <>{children}</>;
@@ -49,7 +59,7 @@ describe("VerifyEmailForm component", () => {
       name: "Enter confirmation code",
     });
     const verifyBtn = screen.getByRole("button", { name: "Verify" });
-    const resendCodeBtn = screen.getAllByRole("button", {
+    const resendCodeBtn = screen.getByRole("button", {
       name: "Resend verification code",
     });
 
