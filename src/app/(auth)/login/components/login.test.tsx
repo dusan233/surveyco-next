@@ -1,15 +1,16 @@
+import { mockAutoAnimateComp } from "@/lib/util/test-util";
 import { describe, it, expect, jest } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
 
 jest.mock("@clerk/nextjs");
 
-jest.mock("../../../../components/auto-animate", () => {
-  const AutoAnimate = ({ children, duration = 100, ...props }: any) => {
-    return <>{children}</>;
-  };
+mockAutoAnimateComp();
 
-  return AutoAnimate;
-});
+const renderLogin = async () => {
+  const Login = (await import("./login")).default;
+
+  render(<Login />);
+};
 
 describe("Log in component", () => {
   it("should render loading spinner before clerk useLogin hook is ready", async () => {
@@ -20,10 +21,8 @@ describe("Log in component", () => {
         isLoaded: false,
       };
     });
-    const Login = (await import("./login")).default;
 
-    render(<Login />);
-
+    await renderLogin();
     const spinnerEl = screen.getByTitle("Spinner");
 
     //@ts-ignore
@@ -38,9 +37,7 @@ describe("Log in component", () => {
         isLoaded: true,
       };
     });
-    const Login = (await import("./login")).default;
-
-    render(<Login />);
+    await renderLogin();
 
     const heading = screen.getByRole("heading", { name: "Log in" });
     const signInBtn = screen.getByRole("button", { name: "Log in" });

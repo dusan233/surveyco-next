@@ -1,25 +1,11 @@
+import { mockAutoAnimateComp, mockUseRouter } from "@/lib/util/test-util";
 import { describe, it, expect, jest } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
 
 jest.mock("@clerk/nextjs");
 
-jest.mock("next/navigation", () => {
-  return {
-    useRouter: () => {
-      return {
-        push: (path: string) => {},
-      };
-    },
-  };
-});
-
-jest.mock("../../../../components/auto-animate", () => {
-  const AutoAnimate = ({ children, duration = 100, ...props }: any) => {
-    return <>{children}</>;
-  };
-
-  return AutoAnimate;
-});
+mockUseRouter();
+mockAutoAnimateComp();
 
 const renderVerifyEmailForm = async () => {
   const VerifyEmailForm = (await import("./verify-email-form")).default;
