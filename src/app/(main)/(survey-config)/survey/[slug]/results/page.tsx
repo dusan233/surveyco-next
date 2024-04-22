@@ -4,8 +4,8 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import React from "react";
-import SurveyQuestionResults from "./components/survey-question-results";
-import NoResponses from "./components/no-responses";
+import SurveyQuestionResults from "./_components/survey-question-results";
+import NoResponses from "./_components/no-responses";
 import { Metadata } from "next";
 import {
   getPageQuestionResults,

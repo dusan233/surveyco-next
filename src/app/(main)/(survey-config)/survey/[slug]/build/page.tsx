@@ -1,6 +1,6 @@
 import React from "react";
 
-import BuildSurveyQuestions from "./components/build-survey-questions";
+import BuildSurveyQuestions from "./_components/build-survey-questions";
 import {
   HydrationBoundary,
   QueryClient,
