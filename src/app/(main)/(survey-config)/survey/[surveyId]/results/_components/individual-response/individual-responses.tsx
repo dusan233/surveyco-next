@@ -1,6 +1,6 @@
 "use client";
 
-import useSurveyIndividualResponses from "@/app/(main)/(survey-config)/survey/[slug]/results/individual/useSurveIndividualResponses";
+import useSurveyIndividualResponses from "../../individual/useSurveIndividualResponses";
 import { QuizResponseData } from "@/lib/types";
 import React from "react";
 import { DataTable as IndividualResponsesTable } from "@/components/data-table/data-table";

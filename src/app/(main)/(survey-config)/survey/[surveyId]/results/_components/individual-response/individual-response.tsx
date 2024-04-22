@@ -2,7 +2,7 @@
 
 import Spinner from "@/components/ui/spinner";
 import useSurveyResponse from "../../individual/useSurveyResponse";
-import useSurveyResponses from "@/app/(main)/(survey-config)/survey/[slug]/results/individual/useSurveIndividualResponses";
+import useSurveyResponses from "../../individual/useSurveIndividualResponses";
 import React, { useState } from "react";
 import IndividualResponseAnswers from "./individual-response-answers";
 import useSurveyPages from "@/hooks/useSurveyPages";

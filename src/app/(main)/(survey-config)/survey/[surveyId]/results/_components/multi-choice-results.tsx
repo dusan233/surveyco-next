@@ -2,7 +2,6 @@
 
 import { MultipleChoiceQuestionResult } from "@/lib/types";
 import React, { useState } from "react";
-import { convert } from "html-to-text";
 
 import BarChartResults from "./bar-chart-results";
 import MultiChoiceResultsTable from "./multi-choice-results-table";
