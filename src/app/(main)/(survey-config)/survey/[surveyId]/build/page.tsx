@@ -18,10 +18,10 @@ export const metadata: Metadata = {
 const BuildSurveyQuestionsPage = async ({
   params,
 }: {
-  params: { slug: string };
+  params: { surveyId: string };
 }) => {
   const queryClient = new QueryClient();
-  const surveyId = params.slug;
+  const surveyId = params.surveyId;
 
   const pages = await queryClient.fetchQuery({
     queryKey: ["survey", surveyId, "pages"],

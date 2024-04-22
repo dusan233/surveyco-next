@@ -2,8 +2,12 @@ import { getSurvey } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
 
-const SurveyTitleDefault = async ({ params }: { params: { slug: string } }) => {
-  const surveyId = params.slug;
+const SurveyTitleDefault = async ({
+  params,
+}: {
+  params: { surveyId: string };
+}) => {
+  const surveyId = params.surveyId;
   const { getToken } = auth();
   const token = await getToken();
 

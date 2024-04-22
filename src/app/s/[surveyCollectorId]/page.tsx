@@ -15,12 +15,12 @@ import { getCollector } from "@/api/collector";
 import { getSurveyPages } from "@/api/survey";
 import { getSurveyQuestionsAndResponses } from "@/actions/survey-actions";
 
-type PageProps = { params: { slug: string } };
+type PageProps = { params: { surveyCollectorId: string } };
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const collectorId = params.slug;
+  const collectorId = params.surveyCollectorId;
   const collector = await getCollector(collectorId);
 
   return {
@@ -32,7 +32,7 @@ export async function generateMetadata({
 const TakeSurveyPage = async ({ params }: PageProps) => {
   const queryClient = new QueryClient();
 
-  const collector = await getCollector(params.slug);
+  const collector = await getCollector(params.surveyCollectorId);
 
   if (collector.status === CollectorStatus.closed) {
     permanentRedirect("/survey-closed", RedirectType.replace);

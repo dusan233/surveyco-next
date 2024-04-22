@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 const SurveyCollectorPage = async ({
   params,
 }: {
-  params: { collectorId: string; slug: string };
+  params: { collectorId: string; surveyId: string };
 }) => {
   const collectorId = params.collectorId;
-  const surveyId = params.slug;
+  const surveyId = params.surveyId;
 
   const collector = await getCollector(collectorId);
 

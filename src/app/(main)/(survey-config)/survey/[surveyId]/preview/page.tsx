@@ -6,8 +6,8 @@ import React from "react";
 import PreviewEnd from "./_components/preview-end";
 import useSurveyPreview from "./useSurveyPreview";
 
-const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {
-  const surveyId = params.slug;
+const SurveyPreviewPage = ({ params }: { params: { surveyId: string } }) => {
+  const surveyId = params.surveyId;
   const {
     isLoading,
     isPreviewFinished,

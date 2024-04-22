@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     "Page dedicated for displaying information and base stats about survey.",
 };
 
-const SurveySummaryPage = ({ params }: { params: { slug: string } }) => {
-  const surveyId = params.slug;
+const SurveySummaryPage = ({ params }: { params: { surveyId: string } }) => {
+  const surveyId = params.surveyId;
 
   return (
     <div className="p-5 sm:p-10 bg-slate-100 max-w-screen-xl mx-auto">

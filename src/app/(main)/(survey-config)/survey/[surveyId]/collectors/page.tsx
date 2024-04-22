@@ -18,9 +18,9 @@ export const metadata: Metadata = {
 const CollectResponsesPage = async ({
   params,
 }: {
-  params: { slug: string };
+  params: { surveyId: string };
 }) => {
-  const surveyId = params.slug;
+  const surveyId = params.surveyId;
   const { getToken } = auth();
   const token = await getToken();
   const queryClient = new QueryClient();
