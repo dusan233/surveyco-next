@@ -12,45 +12,50 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Copy, MoreVertical, Trash2 } from "lucide-react";
-import useDeleteQuestion from "../hooks/useDeleteQuestion";
+import { ArrowUpDown, ChevronDown, Copy, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import CopyQuestionDialog from "./copy-question-dialog";
-import MoveQuestionDialog from "./move-question/move-question-dialog";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useDeleteSurveyPage from "../_hooks/useDeleteSurveyPage";
+import CopySurveyPageDialog from "./copy-survey-page-dialog";
+import MoveSurvePageDialog from "./move-survey-page-dialog";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
+import useSurveyPages from "@/hooks/useSurveyPages";
 import { useDisclosure } from "@/hooks/useDisclosure";
 
 type QuestionActionsProps = {
   surveyId: string;
-  questionId: string;
 };
 
-const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
+const PageActions = ({ surveyId }: QuestionActionsProps) => {
+  const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
+  const { surveyPages } = useSurveyPages(surveyId);
   const { toast } = useToast();
-  const { deleteQuestionMutation } = useDeleteQuestion(currentPage!);
+  const { deletePageMutation } = useDeleteSurveyPage();
+
   const {
-    isOpen: isCopyQuestionOpen,
-    onOpen: onOpenCopyQuestion,
-    onToggle: onToggleCopyQuestion,
+    isOpen: isCopyPageOpen,
+    onToggle: onToggleCopyPage,
+    onOpen: onOpenCopyPage,
   } = useDisclosure();
   const {
-    isOpen: isMoveQuestionOpen,
-    onOpen: onOpenMoveQuestion,
-    onToggle: onToggleMoveQuestion,
+    isOpen: isMovePageOpen,
+    onToggle: onToggleMovePage,
+    onOpen: onOpenMovePage,
   } = useDisclosure();
 
-  const handleDeleteQuestion = () => {
-    const deleteQuestionToast = toast({
+  const handleDeletePage = () => {
+    const deletePageToast = toast({
       variant: "destructive",
-      title: "Deleting question...",
+      title: "Deleting page...",
     });
 
-    deleteQuestionMutation(
-      { surveyId, questionId },
+    deletePageMutation(
+      { surveyId, pageId: currentPage!.id },
       {
         onSuccess() {
-          deleteQuestionToast.dismiss();
+          const firstPage = surveyPages?.find((page) => page.number === 1);
+          setCurrentPage(firstPage!);
+          deletePageToast.dismiss();
         },
         onError() {
           toast({
@@ -64,38 +69,35 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
 
   return (
     <>
-      <CopyQuestionDialog
-        questionId={questionId}
+      <CopySurveyPageDialog
+        isOpen={isCopyPageOpen}
+        onOpenChange={onToggleCopyPage}
         surveyId={surveyId}
-        isOpen={isCopyQuestionOpen}
-        onOpenChange={onToggleCopyQuestion}
       />
-
-      <MoveQuestionDialog
-        questionId={questionId}
+      <MoveSurvePageDialog
+        isOpen={isMovePageOpen}
+        onOpenChange={onToggleMovePage}
         surveyId={surveyId}
-        isOpen={isMoveQuestionOpen}
-        onOpenChange={onToggleMoveQuestion}
       />
-
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
-            <MoreVertical className="h-6 w-6" />
+          <Button variant="outline" className="gap-1" size="default">
+            Page actions
+            <ChevronDown className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Question actions</DropdownMenuLabel>
+          <DropdownMenuLabel>Page actions</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => onOpenCopyQuestion()}>
-              Copy
+            <DropdownMenuItem onClick={() => onOpenCopyPage()}>
+              Copy page
               <DropdownMenuShortcut>
                 <Copy className="h-4 w-4" />
               </DropdownMenuShortcut>
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onOpenMoveQuestion()}>
-              Move
+            <DropdownMenuItem onClick={() => onOpenMovePage()}>
+              Move page
               <DropdownMenuShortcut>
                 <ArrowUpDown className="h-4 w-4" />
               </DropdownMenuShortcut>
@@ -104,7 +106,8 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
-            onClick={handleDeleteQuestion}
+            disabled={surveyPages!.length === 1}
+            onClick={handleDeletePage}
             className="bg-red-500 text-white focus:bg-red-600 focus:text-white"
           >
             Delete
@@ -118,4 +121,4 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
   );
 };
 
-export default QuestionActions;
+export default PageActions;

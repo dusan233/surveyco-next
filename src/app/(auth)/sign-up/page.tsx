@@ -1,4 +1,4 @@
-import SignUp from "@/app/(auth)/sign-up/components/sign-up";
+import SignUp from "@/app/(auth)/sign-up/_components/sign-up";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

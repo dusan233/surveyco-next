@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import Login from "./components/login";
+import Login from "./_components/login";
 
 export const metadata: Metadata = {
   title: "Surveyco - Log in",

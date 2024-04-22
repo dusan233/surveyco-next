@@ -3,7 +3,7 @@
 import SurveyResponseForm from "@/components/survey/survey-response-form";
 import Spinner from "@/components/ui/spinner";
 import React from "react";
-import PreviewEnd from "./components/preview-end";
+import PreviewEnd from "./_components/preview-end";
 import useSurveyPreview from "./useSurveyPreview";
 
 const SurveyPreviewPage = ({ params }: { params: { slug: string } }) => {

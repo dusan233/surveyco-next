@@ -7,10 +7,10 @@ import QuestionPreview from "./question-preview";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { useSmoothScrollToQuestion } from "@/hooks/useSmoothScroll";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import SortableList from "@/components/layout/sortable-list";
 import WindowedVirtualList from "@/components/layout/windowed-virtual-list";
-import useSortQuestions from "../hooks/useSortQuestions";
+import useSortQuestions from "../_hooks/useSortQuestions";
 
 type BuildQuestionsListProps = {
   surveyId: string;

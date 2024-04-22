@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import useSurveyPages from "@/hooks/useSurveyPages";
 import React from "react";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
-import useMoveSurveyPage from "../hooks/useMoveSurveyPage";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
+import useMoveSurveyPage from "../_hooks/useMoveSurveyPage";
 import { PlacePageData, OperationPosition } from "@/lib/types";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import {
@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import usePlacePageForm from "../hooks/usePlacePageForm";
+import usePlacePageForm from "../_hooks/usePlacePageForm";
 import { useQueryClient } from "@tanstack/react-query";
 
 type MoveSurveyPageFormProps = {

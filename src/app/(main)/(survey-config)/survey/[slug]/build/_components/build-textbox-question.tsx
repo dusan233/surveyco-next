@@ -9,11 +9,11 @@ import {
 } from "@/lib/types";
 import EditQuestionFooter from "./edit-question-footer";
 import { useClickAwayQuestionEdit } from "@/hooks/useClickAwayQuestionEdit";
-import useSaveQuestion from "../hooks/useSaveQuestion";
+import useSaveQuestion from "../_hooks/useSaveQuestion";
 import { useToast } from "@/components/ui/use-toast";
 import EditQuestionSettings from "./edit-question-settings";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
-import useTextboxQuestionForm from "../hooks/useTextboxQuestionForm";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
+import useTextboxQuestionForm from "../_hooks/useTextboxQuestionForm";
 import EditQuestionDescription from "./edit-question-description";
 
 type TextboxQuestionProps = {

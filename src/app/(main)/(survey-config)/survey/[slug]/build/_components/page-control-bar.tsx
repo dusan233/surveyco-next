@@ -10,10 +10,10 @@ import {
 } from "@/components/ui/select";
 import useSurveyPages from "@/hooks/useSurveyPages";
 import { Button } from "@/components/ui/button";
-import useCreateSurveyPage from "../hooks/useCreateSurveyPage";
+import useCreateSurveyPage from "../_hooks/useCreateSurveyPage";
 import { useToast } from "@/components/ui/use-toast";
 import PageActions from "./page-actions";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { Settings } from "lucide-react";
 
 type PageControlBarProps = {

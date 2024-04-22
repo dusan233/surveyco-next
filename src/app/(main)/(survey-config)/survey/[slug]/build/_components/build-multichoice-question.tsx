@@ -12,12 +12,12 @@ import { Form } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import EditQuestionChoiceList from "./edit-question-choice-list";
 import EditQuestionFooter from "./edit-question-footer";
-import useSaveQuestion from "../hooks/useSaveQuestion";
+import useSaveQuestion from "../_hooks/useSaveQuestion";
 import { useClickAwayQuestionEdit } from "@/hooks/useClickAwayQuestionEdit";
 import { useToast } from "@/components/ui/use-toast";
 import EditQuestionSettings from "./edit-question-settings";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
-import useMultiChoiceQuestionForm from "../hooks/useMultiChoiceQuestionForm";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
+import useMultiChoiceQuestionForm from "../_hooks/useMultiChoiceQuestionForm";
 import EditQuestionDescription from "./edit-question-description";
 import { Settings } from "lucide-react";
 

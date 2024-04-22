@@ -1,7 +1,7 @@
 import useSurveyPages from "@/hooks/useSurveyPages";
 import React, { useEffect, useState } from "react";
 import { v4 as uuid4 } from "uuid";
-import useMoveQuestion from "../hooks/useMoveQuestion";
+import useMoveQuestion from "../_hooks/useMoveQuestion";
 import { placeQuestionSchema } from "@/lib/validationSchemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

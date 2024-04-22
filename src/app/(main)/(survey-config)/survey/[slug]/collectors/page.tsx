@@ -5,7 +5,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import { SortObject } from "@/lib/types";
-import SurveyCollectors from "./components/survey-collectors";
+import SurveyCollectors from "./_components/survey-collectors";
 import { Metadata } from "next";
 import { getSurveyCollectors } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";

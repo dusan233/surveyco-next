@@ -1,11 +1,11 @@
 import React, { Suspense } from "react";
-import SurveySummary from "./components/survey-summary";
-import MarketResearch from "./components/market-research";
-import SummarySectionHeading from "./components/summary-section-heading";
-import ResponsesVolume from "./components/responses-volume";
-import SurveySummarySkeleton from "./components/survey-summary-skeleton";
-import CollectorsSummarySkeleton from "./components/collectors-summary-skeleton";
-import CollectorsSummaryList from "./components/collectors-summary-list";
+import SurveySummary from "./_components/survey-summary";
+import MarketResearch from "./_components/market-research";
+import SummarySectionHeading from "./_components/summary-section-heading";
+import ResponsesVolume from "./_components/responses-volume";
+import SurveySummarySkeleton from "./_components/survey-summary-skeleton";
+import CollectorsSummarySkeleton from "./_components/collectors-summary-skeleton";
+import CollectorsSummaryList from "./_components/collectors-summary-list";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

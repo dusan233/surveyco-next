@@ -5,7 +5,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import SurveyResponse from "../components/survey-response";
+import SurveyResponse from "../_components/survey-response";
 
 import { cookies } from "next/headers";
 import { RedirectType, permanentRedirect } from "next/navigation";

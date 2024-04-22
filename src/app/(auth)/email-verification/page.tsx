@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import VerifyEmailForm from "./components/verify-email-form";
+import VerifyEmailForm from "./_components/verify-email-form";
 
 export const metadata: Metadata = {
   title: "Surveyco - Email verification",

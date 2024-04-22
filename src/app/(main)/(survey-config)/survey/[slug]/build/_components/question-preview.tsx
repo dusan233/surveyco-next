@@ -11,7 +11,7 @@ import DropdownQuestionPreview from "./dropdown-question-preview";
 import TextboxQuestionPreview from "./textbox-question-preview";
 import CheckboxesQuestionPreview from "./checkboxes-question-preview";
 import QuestionDescription from "@/components/questions/question-description";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 
 type QuestionPreviewProps = {
   question: Question;

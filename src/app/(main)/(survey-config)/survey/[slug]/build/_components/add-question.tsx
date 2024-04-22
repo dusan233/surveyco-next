@@ -3,7 +3,7 @@
 import React from "react";
 
 import { QuestionType } from "@/lib/types";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { createNewQuestion, getQuestionTypes } from "@/lib/util/questionUtils";
 
 type AddQuestionProps = {

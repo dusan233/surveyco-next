@@ -3,8 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
-import useCopyQuestion from "../hooks/useCopyQuestion";
-import useDownsizedQuestions from "@/hooks/useDownsizedQuestions";
+import useCopyQuestion from "../_hooks/useCopyQuestion";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import useSurveyPages from "@/hooks/useSurveyPages";
 import { CopyQuestionData, OperationPosition } from "@/lib/types";
@@ -17,7 +16,7 @@ import CopyQuestionFormContent from "./copy-question/copy-question-form-content"
 import { v4 as uuid4 } from "uuid";
 import { useToast } from "@/components/ui/use-toast";
 import useSurveyQuestions from "@/hooks/useSurveyQuestions";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 
 type CopyQuestionFormProps = {
   surveyId: string;

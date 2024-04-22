@@ -7,11 +7,11 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import useCopySurveyPage from "../hooks/useCopySurveyPage";
+import useCopySurveyPage from "../_hooks/useCopySurveyPage";
 import useSurveyPages from "@/hooks/useSurveyPages";
 import { PlacePageData, OperationPosition } from "@/lib/types";
 import React from "react";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import {
   Select,
   SelectContent,
@@ -23,7 +23,7 @@ import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import usePlacePageForm from "../hooks/usePlacePageForm";
+import usePlacePageForm from "../_hooks/usePlacePageForm";
 
 type CopySurveyPageFormProps = {
   surveyId: string;

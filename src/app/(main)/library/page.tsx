@@ -4,7 +4,7 @@ import {
   dehydrate,
 } from "@tanstack/react-query";
 import React from "react";
-import MyLibraryView from "./components/my-library-view";
+import MyLibraryView from "./_components/my-library-view";
 import { SortObject } from "@/lib/types";
 import { Metadata } from "next";
 import { getUserSurveys } from "@/api/user";

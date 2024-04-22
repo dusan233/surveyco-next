@@ -7,21 +7,22 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import useSurveyPages from "@/hooks/useSurveyPages";
-import useBuildQuestionsContext from "../hooks/useBuildQuestionsContext";
-import MoveSurveyPageForm from "./move-survey-page-form";
 
-type MovePageDialogProps = {
+import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
+import CopySurveyPageForm from "./copy-survey-page-form";
+import useSurveyPages from "@/hooks/useSurveyPages";
+
+type CopyPageDialogProps = {
   isOpen: boolean;
   onOpenChange: () => void;
   surveyId: string;
 };
 
-const MoveSurvePageDialog = ({
+const CopySurvePageDialog = ({
   isOpen,
   onOpenChange,
   surveyId,
-}: MovePageDialogProps) => {
+}: CopyPageDialogProps) => {
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { surveyPages } = useSurveyPages(surveyId);
   const pageNumber =
@@ -31,15 +32,15 @@ const MoveSurvePageDialog = ({
     <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
-          <DialogTitle>Move Page {pageNumber}</DialogTitle>
+          <DialogTitle>Copy Page {pageNumber}</DialogTitle>
         </DialogHeader>
-        <MoveSurveyPageForm
+        <CopySurveyPageForm
           surveyId={surveyId}
-          onMovePage={() => onOpenChange()}
+          onCopyPage={() => onOpenChange()}
         />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default MoveSurvePageDialog;
+export default CopySurvePageDialog;
