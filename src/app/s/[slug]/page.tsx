@@ -11,9 +11,9 @@ import { cookies } from "next/headers";
 import { RedirectType, permanentRedirect } from "next/navigation";
 import { CollectorStatus } from "@/lib/types";
 import { Metadata } from "next";
-import { getCollector } from "@/app/_api/collector";
-import { getSurveyPages } from "@/app/_api/survey";
-import { getSurveyQuestionsAndResponses } from "@/app/_actions/survey-actions";
+import { getCollector } from "@/api/collector";
+import { getSurveyPages } from "@/api/survey";
+import { getSurveyQuestionsAndResponses } from "@/actions/survey-actions";
 
 type PageProps = { params: { slug: string } };
 

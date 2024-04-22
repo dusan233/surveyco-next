@@ -3,7 +3,7 @@ import React from "react";
 import CollectorsSummaryItem from "./collectors-summary-item";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { getSurveyCollectors } from "@/app/_api/survey";
+import { getSurveyCollectors } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
 
 type CollectorsSummaryListProps = {

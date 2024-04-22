@@ -7,7 +7,7 @@ import {
 import { SortObject } from "@/lib/types";
 import SurveyCollectors from "./components/survey-collectors";
 import { Metadata } from "next";
-import { getSurveyCollectors } from "@/app/_api/survey";
+import { getSurveyCollectors } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {

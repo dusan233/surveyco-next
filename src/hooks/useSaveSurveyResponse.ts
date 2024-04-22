@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { QuestionsResponsesData } from "../lib/types";
-import { saveSurveyResponse } from "@/app/_actions/survey-actions";
+import { saveSurveyResponse } from "@/actions/survey-actions";
 
 export default function useSaveSurveyResponse() {
   const {

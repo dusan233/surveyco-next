@@ -1,4 +1,4 @@
-import { getSurveyQuestions } from "@/app/_api/survey";
+import { getSurveyQuestions } from "@/api/survey";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export default function useDownsizedQuestions(

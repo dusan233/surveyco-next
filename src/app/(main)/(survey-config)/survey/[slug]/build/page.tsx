@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-query";
 import { BuildQuestionsProvider } from "@/lib/providers/build-questions-provider";
 import { Metadata } from "next";
-import { getSurveyPages, getSurveyQuestions } from "@/app/_api/survey";
+import { getSurveyPages, getSurveyQuestions } from "@/api/survey";
 
 export const metadata: Metadata = {
   title: "Surveyco - Build Survey Questions",

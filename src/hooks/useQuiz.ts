@@ -1,4 +1,4 @@
-import { getSurvey } from "@/app/_api/survey";
+import { getSurvey } from "@/api/survey";
 import { useAuth } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 

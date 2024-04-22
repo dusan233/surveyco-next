@@ -1,6 +1,6 @@
 "use client";
 
-import { createSurveyCollector } from "@/app/_actions/collector-actions";
+import { createSurveyCollector } from "@/actions/collector-actions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { PlusIcon } from "lucide-react";

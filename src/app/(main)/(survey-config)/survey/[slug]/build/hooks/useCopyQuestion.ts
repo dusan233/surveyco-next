@@ -6,7 +6,7 @@ import {
   SurveyPage,
 } from "@/lib/types";
 import useBuildQuestionsContext from "./useBuildQuestionsContext";
-import { copyQuestion } from "@/app/_actions/survey-actions";
+import { copyQuestion } from "@/actions/survey-actions";
 
 export default function useCopyQuestion() {
   const queryClient = useQueryClient();

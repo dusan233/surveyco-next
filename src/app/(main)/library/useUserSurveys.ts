@@ -3,7 +3,7 @@ import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useRef, useState } from "react";
 import { SortObject } from "@/lib/types";
 import { useToast } from "@/components/ui/use-toast";
-import { getUserSurveys } from "@/app/_api/user";
+import { getUserSurveys } from "@/api/user";
 import { useAuth } from "@clerk/nextjs";
 
 export default function useUserSurveys() {

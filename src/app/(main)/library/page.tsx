@@ -7,7 +7,7 @@ import React from "react";
 import MyLibraryView from "./components/my-library-view";
 import { SortObject } from "@/lib/types";
 import { Metadata } from "next";
-import { getUserSurveys } from "@/app/_api/user";
+import { getUserSurveys } from "@/api/user";
 import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {

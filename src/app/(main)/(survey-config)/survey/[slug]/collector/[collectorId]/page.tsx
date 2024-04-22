@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ChevronsLeftIcon } from "lucide-react";
 import CopyWebLink from "../components/web-link-collector";
 import { Metadata } from "next";
-import { getCollector } from "@/app/_api/collector";
+import { getCollector } from "@/api/collector";
 
 export const metadata: Metadata = {
   title: "Surveyco - Collector Details",

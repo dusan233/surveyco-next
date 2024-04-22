@@ -1,4 +1,4 @@
-import { getSurvey } from "@/app/_api/survey";
+import { getSurvey } from "@/api/survey";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SurveyStatus } from "@/lib/types";

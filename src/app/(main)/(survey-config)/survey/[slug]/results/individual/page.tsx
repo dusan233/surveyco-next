@@ -8,11 +8,7 @@ import NoResponses from "../components/no-responses";
 import IndividualResponses from "../components/individual-response/individual-responses";
 import { SortObject } from "@/lib/types";
 import { Metadata } from "next";
-import {
-  getSurvey,
-  getSurveyPages,
-  getSurveyResponses,
-} from "@/app/_api/survey";
+import { getSurvey, getSurveyPages, getSurveyResponses } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {

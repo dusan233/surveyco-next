@@ -4,7 +4,7 @@ import {
   SaveQuestionData,
   SurveyPage,
 } from "@/lib/types";
-import { createQuestion, updateQuestion } from "@/app/_actions/survey-actions";
+import { createQuestion, updateQuestion } from "@/actions/survey-actions";
 
 export default function useSaveQuestion() {
   const queryClient = useQueryClient();

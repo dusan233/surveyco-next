@@ -11,7 +11,7 @@ import {
   getPageQuestionResults,
   getSurvey,
   getSurveyPages,
-} from "@/app/_api/survey";
+} from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
 
 export const metadata: Metadata = {

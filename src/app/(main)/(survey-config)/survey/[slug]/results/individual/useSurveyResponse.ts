@@ -1,4 +1,4 @@
-import { getSurveyResponse } from "@/app/_api/survey";
+import { getSurveyResponse } from "@/api/survey";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@clerk/nextjs";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";

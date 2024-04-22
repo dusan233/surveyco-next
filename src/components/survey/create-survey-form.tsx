@@ -24,7 +24,7 @@ import { Label } from "../ui/label";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
-import { createSurvey } from "@/app/_actions/survey-actions";
+import { createSurvey } from "@/actions/survey-actions";
 import { SURVEY_CATEGORIES } from "@/lib/constants";
 
 type CreateSurveyFormProps = {

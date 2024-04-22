@@ -1,6 +1,6 @@
 "use client";
 
-import { updateSurveyCollectorStatus } from "@/app/_actions/collector-actions";
+import { updateSurveyCollectorStatus } from "@/actions/collector-actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

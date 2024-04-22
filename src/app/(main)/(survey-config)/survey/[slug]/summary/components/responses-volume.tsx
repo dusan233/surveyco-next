@@ -2,7 +2,7 @@ import React from "react";
 
 import dynamic from "next/dynamic";
 import Spinner from "@/components/ui/spinner";
-import { getSurveyResponsesVolume } from "@/app/_api/survey";
+import { getSurveyResponsesVolume } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
 
 type ResponsesVolumeProps = {

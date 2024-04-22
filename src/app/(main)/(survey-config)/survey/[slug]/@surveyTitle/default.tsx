@@ -1,4 +1,4 @@
-import { getSurvey } from "@/app/_api/survey";
+import { getSurvey } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
 import React from "react";
 
