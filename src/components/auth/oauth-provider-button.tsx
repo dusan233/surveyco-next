@@ -2,11 +2,9 @@ import React from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 
-type OauthProviderButtonProps = {
-  onClick: () => any;
-  children: React.ReactNode;
+type OauthProviderButtonProps = React.ComponentPropsWithoutRef<"button"> & {
   provider: "google" | "facebook" | "microsoft";
-  direction?: "row" | "col";
+  direction: "row" | "col";
 };
 
 const OauthProviderButton = ({

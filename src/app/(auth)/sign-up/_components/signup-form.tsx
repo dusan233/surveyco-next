@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Form,
@@ -14,16 +14,15 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSignUp } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { SignUpData } from "@/lib/types";
 import useSignUpForm from "./useSignUpForm";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 import { getAuthErrorMessage } from "@/lib/util/getAuthErrorMessage";
+import { SignUpData } from "@/types/auth";
 
 const SignUpForm = () => {
   const router = useRouter();
   const { isLoaded, signUp, setActive } = useSignUp();
-  const [isLoading, setIsLoading] = useState(false);
   const form = useSignUpForm();
 
   async function handleSubmit(values: SignUpData) {
@@ -32,7 +31,6 @@ const SignUpForm = () => {
     try {
       const firstName = values.fullName.split(" ")[0];
       const lastName = values.fullName.split(" ")[1];
-      setIsLoading(true);
       const result = await signUp.create({
         emailAddress: values.email,
         password: values.password,
@@ -55,8 +53,6 @@ const SignUpForm = () => {
     } catch (err) {
       const errorMsg = getAuthErrorMessage(err);
       form.setError("root", { message: errorMsg });
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -126,8 +122,8 @@ const SignUpForm = () => {
           )}
         />
         <Button
-          loading={isLoading}
-          disabled={isLoading}
+          loading={form.formState.isLoading}
+          disabled={form.formState.isLoading}
           className="w-full"
           type="submit"
         >

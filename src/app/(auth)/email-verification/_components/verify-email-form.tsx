@@ -1,7 +1,7 @@
 "use client";
 
 import { isClerkAPIResponseError, useUser } from "@clerk/nextjs";
-import React, { useState } from "react";
+import React from "react";
 import { Card } from "@/components/ui/card";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,12 +17,12 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/spinner";
 import { verifyEmailAddressSchema } from "@/lib/validationSchemas";
-import { VerifyEmailAddressData } from "@/lib/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { VerifyEmailAddressData } from "@/types/auth";
 
-const getVerifyEmailErrorMsg = (err: any) => {
+const getVerifyEmailErrorMsg = (err: unknown) => {
   let errorMsg = "";
   if (isClerkAPIResponseError(err)) {
     if (err.status === 422 && err.errors[0].code === "form_code_incorrect") {
@@ -48,11 +48,10 @@ const getVerifyEmailErrorMsg = (err: any) => {
 const VerifyEmailForm = () => {
   const { user, isLoaded } = useUser();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const userEmail = user?.emailAddresses[0].emailAddress;
 
-  const form = useForm<VerifyEmailAddressData>({
+  const form = useForm({
     resolver: zodResolver(verifyEmailAddressSchema),
     defaultValues: {
       code: "",
@@ -63,7 +62,6 @@ const VerifyEmailForm = () => {
     values: VerifyEmailAddressData
   ) => {
     try {
-      setIsLoading(true);
       await user?.emailAddresses[0].attemptVerification({
         code: values.code,
       });
@@ -72,8 +70,6 @@ const VerifyEmailForm = () => {
     } catch (err) {
       const errorMsg = getVerifyEmailErrorMsg(err);
       form.setError("root", { message: errorMsg });
-    } finally {
-      setIsLoading(false);
     }
   };
   const handleResendVerificationCode = async () => {
@@ -144,8 +140,8 @@ const VerifyEmailForm = () => {
               Resend verification code
             </button>
             <Button
-              loading={isLoading}
-              disabled={isLoading}
+              loading={form.formState.isLoading}
+              disabled={form.formState.isLoading}
               className="w-full"
               type="submit"
             >

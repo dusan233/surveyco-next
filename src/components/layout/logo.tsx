@@ -19,7 +19,11 @@ const AppLogo = ({ theme = "light" }: AppLogoProps) => {
       >
         <span
           className={`${
-            theme === "light" ? "text-primary" : theme=== "dark"? "text-slate-100" : "text-white"
+            theme === "light"
+              ? "text-primary"
+              : theme === "dark"
+              ? "text-slate-100"
+              : "text-white"
           } font-bold text-4xl`}
         >
           Surv

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Form,
   FormControl,
@@ -13,21 +13,19 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSignIn } from "@clerk/nextjs";
 import useLoginForm from "./useLoginForm";
-import { LoginData } from "@/lib/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 import { getAuthErrorMessage } from "@/lib/util/getAuthErrorMessage";
+import { LoginData } from "@/types/auth";
 
 const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
-  const [isLoading, setIsLoading] = useState(false);
   const form = useLoginForm();
 
   async function handleSubmit(values: LoginData) {
     if (!isLoaded) return;
 
     try {
-      setIsLoading(true);
       const result = await signIn.create({
         identifier: values.email,
         password: values.password,
@@ -39,8 +37,6 @@ const LoginForm = () => {
     } catch (err) {
       const errorMsg = getAuthErrorMessage(err);
       form.setError("root", { message: errorMsg });
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -94,8 +90,8 @@ const LoginForm = () => {
         />
 
         <Button
-          loading={isLoading}
-          disabled={isLoading}
+          loading={form.formState.isLoading}
+          disabled={form.formState.isLoading}
           className="w-full"
           type="submit"
         >
