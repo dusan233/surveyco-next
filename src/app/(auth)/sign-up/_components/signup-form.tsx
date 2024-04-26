@@ -122,8 +122,8 @@ const SignUpForm = () => {
           )}
         />
         <Button
-          loading={form.formState.isLoading}
-          disabled={form.formState.isLoading}
+          loading={form.formState.isSubmitting}
+          disabled={form.formState.isSubmitting}
           className="w-full"
           type="submit"
         >
