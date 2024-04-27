@@ -25,43 +25,41 @@ type CollectorActionsProps = {
 
 const SurveyActions = ({ survey }: CollectorActionsProps) => {
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="icon" size="icon">
-            <MoreHorizontal className="h-6 w-6" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuGroup>
-            <Link href={`/survey/${survey.id}/build`}>
-              <DropdownMenuItem>
-                Build survey
-                <DropdownMenuShortcut>
-                  <PencilIcon className="h-4 w-4" />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </Link>
-            <Link href={`/survey/${survey.id}/collectors`}>
-              <DropdownMenuItem>
-                Survey collectors
-                <DropdownMenuShortcut>
-                  <SendIcon className="h-4 w-4" />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </Link>
-            <Link href={`/survey/${survey.id}/results`}>
-              <DropdownMenuItem>
-                Survey results
-                <DropdownMenuShortcut>
-                  <BarChart3Icon className="h-4 w-4" />
-                </DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="icon" size="icon">
+          <MoreHorizontal className="h-6 w-6" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuGroup>
+          <Link href={`/survey/${survey.id}/build`}>
+            <DropdownMenuItem>
+              Build survey
+              <DropdownMenuShortcut>
+                <PencilIcon className="h-4 w-4" />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
+          <Link href={`/survey/${survey.id}/collectors`}>
+            <DropdownMenuItem>
+              Survey collectors
+              <DropdownMenuShortcut>
+                <SendIcon className="h-4 w-4" />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
+          <Link href={`/survey/${survey.id}/results`}>
+            <DropdownMenuItem>
+              Survey results
+              <DropdownMenuShortcut>
+                <BarChart3Icon className="h-4 w-4" />
+              </DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

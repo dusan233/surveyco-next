@@ -1,7 +1,6 @@
 import { QuizResponseData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { ArrowDown, ArrowUp } from "lucide-react";
 import SurveyActions from "./survey-actions";
 import Link from "next/link";
 import SortableHeader from "@/components/data-table/sortable-header";
