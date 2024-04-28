@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@clerk/nextjs";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import CreateSurveyDialog from "../survey/create-survey-dialog";
@@ -15,27 +15,35 @@ import NavDrawer from "./nav-drawer";
 
 const Navbar = () => {
   const { isSignedIn } = useAuth();
-  const [createSurveyOpen, setCreateSurveyOpen] = useState(false);
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: drawerIsOpen,
+    onClose: onCloseDrawer,
+    onOpen: onOpenDrawer,
+  } = useDisclosure();
+  const {
+    isOpen: dialogIsOpen,
+    onToggle: onToggleDialog,
+    onOpen: onOpenDialog,
+  } = useDisclosure();
 
   //close drawer if not mobile screen
   useEffect(() => {
     const onWindowResize = (_: Event) => {
-      if (window.innerWidth >= 640) onClose();
+      if (window.innerWidth >= 640) onCloseDrawer();
     };
 
     window.addEventListener("resize", onWindowResize);
 
     return () => window.removeEventListener("resize", onWindowResize);
-  }, [onClose]);
+  }, [onCloseDrawer]);
 
   return (
     <header className="bg-slate-800">
       <div className="flex py-2.5 p-4 sm:px-7 gap-7 items-center">
-        <NavDrawer open={isOpen} onClose={onClose} />
+        <NavDrawer open={drawerIsOpen} onClose={onCloseDrawer} />
         <CreateSurveyDialog
-          isOpen={createSurveyOpen}
-          onOpenChange={setCreateSurveyOpen}
+          isOpen={dialogIsOpen}
+          onOpenChange={onToggleDialog}
         />
         <div className="max-w-xs font-bold">
           <AppLogo theme="dark" />
@@ -49,7 +57,7 @@ const Navbar = () => {
           {isSignedIn && (
             <>
               <Button
-                onClick={() => setCreateSurveyOpen(true)}
+                onClick={onOpenDialog}
                 size="sm"
                 variant="secondary"
                 className="hidden sm:inline-flex"
@@ -64,7 +72,7 @@ const Navbar = () => {
               <>
                 <NotificationButton />
                 <div className="sm:hidden">
-                  <SidenavButton onClick={() => onOpen()} />
+                  <SidenavButton onClick={() => onOpenDrawer()} />
                 </div>
                 <div className="hidden sm:block">
                   <UserMenu />
