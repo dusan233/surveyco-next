@@ -28,3 +28,8 @@ export type ApiError = {
     code: string;
   };
 };
+
+export type DialogProps = {
+  isOpen: boolean;
+  onOpenChange: () => void;
+};

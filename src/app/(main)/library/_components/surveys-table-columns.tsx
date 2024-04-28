@@ -1,11 +1,11 @@
-import { QuizResponseData } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import SurveyActions from "./survey-actions";
 import Link from "next/link";
 import SortableHeader from "@/components/data-table/sortable-header";
+import { Survey } from "@/types/survey";
 
-export const columns: ColumnDef<QuizResponseData>[] = [
+export const columns: ColumnDef<Survey>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {

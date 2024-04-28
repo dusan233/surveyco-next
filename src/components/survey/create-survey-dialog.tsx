@@ -3,11 +3,9 @@
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import CreateSurveyForm from "./create-survey-form";
+import { DialogProps } from "@/types/common";
 
-type CreateSurveyDialogProps = {
-  isOpen: boolean;
-  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-};
+type CreateSurveyDialogProps = DialogProps;
 
 const CreateSurveyDialog = ({
   isOpen,
@@ -20,7 +18,7 @@ const CreateSurveyDialog = ({
           <DialogTitle>New survey</DialogTitle>
         </DialogHeader>
         <div className="mt-5">
-          <CreateSurveyForm onCreate={onOpenChange} />
+          <CreateSurveyForm onCreate={() => onOpenChange()} />
         </div>
       </DialogContent>
     </Dialog>

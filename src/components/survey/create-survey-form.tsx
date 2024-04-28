@@ -1,9 +1,8 @@
 "use client";
 
-import { CreateSurveyData } from "@/lib/types";
 import { createSurveySchema } from "@/lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -26,14 +25,14 @@ import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 import { createSurvey } from "@/actions/survey-actions";
 import { SURVEY_CATEGORIES } from "@/lib/constants";
+import { CreateSurveyData } from "@/types/survey";
 
 type CreateSurveyFormProps = {
-  onCreate: React.Dispatch<React.SetStateAction<boolean>>;
+  onCreate: () => void;
 };
 
 const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
   const { push } = useRouter();
-  const [pending, setPending] = useState(false);
   const { toast } = useToast();
   const form = useForm<CreateSurveyData>({
     resolver: zodResolver(createSurveySchema),
@@ -44,18 +43,15 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
 
   const handleSubmit = async (values: CreateSurveyData) => {
     try {
-      setPending(true);
       const newSurvey = await createSurvey(values);
       push(`/survey/${newSurvey.id}/build`);
 
-      onCreate(false);
+      onCreate();
     } catch (err) {
       toast({
         variant: "destructive",
         title: "Something went wrong!",
       });
-    } finally {
-      setPending(false);
     }
   };
 
@@ -83,7 +79,7 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
 
           <FormField
             control={form.control}
-            name={"category"}
+            name="category"
             render={({ field }) => (
               <FormItem>
                 <Label>Survey category</Label>
@@ -110,7 +106,11 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
           />
         </div>
         <div className="flex justify-end">
-          <Button loading={pending} disabled={pending} type="submit">
+          <Button
+            loading={form.formState.isSubmitting}
+            disabled={form.formState.isSubmitting}
+            type="submit"
+          >
             Create survey
           </Button>
         </div>

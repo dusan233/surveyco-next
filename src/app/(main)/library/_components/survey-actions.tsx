@@ -16,11 +16,11 @@ import {
   SendIcon,
 } from "lucide-react";
 import React from "react";
-import { QuizResponseData } from "@/lib/types";
 import Link from "next/link";
+import { Survey } from "@/types/survey";
 
 type CollectorActionsProps = {
-  survey: QuizResponseData;
+  survey: Survey;
 };
 
 const SurveyActions = ({ survey }: CollectorActionsProps) => {
