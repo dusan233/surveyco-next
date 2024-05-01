@@ -1,13 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Collector, CollectorType } from "@/lib/types";
 import { format } from "date-fns";
 import { LinkIcon } from "lucide-react";
 import Link from "next/link";
 import CollectorActions from "./collector-actions";
 import CopyCollectorWebLink from "./copy-collector-web-link";
 import SortableHeader from "@/components/data-table/sortable-header";
+import { Collector, CollectorType } from "@/types/collector";
 
 export const getCollectorTypeIcon = (type: CollectorType) => {
   switch (type) {

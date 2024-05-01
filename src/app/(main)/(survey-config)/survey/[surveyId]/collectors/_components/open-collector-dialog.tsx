@@ -8,12 +8,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Collector, CollectorStatus } from "@/lib/types";
+import { Collector, CollectorStatus } from "@/types/collector";
+import { DialogProps } from "@/types/common";
 import React, { useTransition } from "react";
 
-type OpenCollectorDialogProps = {
-  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpen: boolean;
+type OpenCollectorDialogProps = DialogProps & {
   collector: Collector;
 };
 
@@ -26,7 +25,7 @@ const OpenCollectorDialog = ({
   const { toast } = useToast();
 
   const handleUpdateCollectorStatus = () => {
-    onOpenChange(false);
+    onOpenChange();
     startTransition(async () => {
       try {
         await updateSurveyCollectorStatus(collector.id, CollectorStatus.open);
@@ -62,7 +61,7 @@ const OpenCollectorDialog = ({
         <DialogFooter className="mt-5">
           <Button
             variant="outline"
-            onClick={() => onOpenChange(false)}
+            onClick={onOpenChange}
             size="sm"
             disabled={isPending}
           >

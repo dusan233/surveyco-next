@@ -10,14 +10,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Collector } from "@/lib/types";
+import { Collector } from "@/types/collector";
+import { DialogProps } from "@/types/common";
 import { format } from "date-fns";
 import { AlertTriangle } from "lucide-react";
 import React, { useTransition } from "react";
 
-type DeleteCollectorDialogProps = {
-  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpen: boolean;
+type DeleteCollectorDialogProps = DialogProps & {
   collector: Collector;
 };
 
@@ -30,7 +29,7 @@ const DeleteCollectorDialog = ({
   const { toast } = useToast();
 
   const handleDeleteCollector = () => {
-    onOpenChange(false);
+    onOpenChange();
     startTransition(async () => {
       try {
         await deleteSurveyCollector(collector.id, collector.surveyId);
@@ -78,7 +77,7 @@ const DeleteCollectorDialog = ({
         <DialogFooter className="mt-5">
           <Button
             variant="outline"
-            onClick={() => onOpenChange(false)}
+            onClick={onOpenChange}
             size="sm"
             disabled={isPending}
           >

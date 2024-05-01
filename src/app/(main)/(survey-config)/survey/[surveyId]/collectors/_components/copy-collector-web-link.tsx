@@ -13,8 +13,8 @@ const CopyCollectorWebLink = ({ collectorId }: CopyCollectorWebLinkProps) => {
 
   const collectorWebLink = `${process.env.NEXT_PUBLIC_CLIENT_URL}/s/${collectorId}`;
 
-  const handleCopyCollectorWebLink = () => {
-    copyToClipboard(collectorWebLink);
+  const handleCopyCollectorWebLink = async () => {
+    await copyToClipboard(collectorWebLink);
     toast({
       variant: "default",
       title: "Link copied to clipboard.",

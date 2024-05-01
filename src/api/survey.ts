@@ -5,13 +5,13 @@ import {
   QuestionsResponseData,
   QuizResponseData,
   SortObject,
-  SurveyCollectorsResData,
   SurveyPage,
   SurveyResponse,
   SurveyResponsesResData,
   VolumeByDay,
 } from "@/lib/types";
 import { getResponseData } from "@/lib/util/getResponseData";
+import { SurveyCollectorsResData } from "@/types/survey";
 import qs from "qs";
 
 export const getSurvey = async (params: {

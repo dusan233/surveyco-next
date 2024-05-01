@@ -10,13 +10,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { Collector, CollectorStatus } from "@/lib/types";
+import { Collector, CollectorStatus } from "@/types/collector";
+import { DialogProps } from "@/types/common";
 import { AlertTriangle } from "lucide-react";
 import React, { useTransition } from "react";
 
-type CloseCollectorDialogProps = {
-  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
-  isOpen: boolean;
+type CloseCollectorDialogProps = DialogProps & {
   collector: Collector;
 };
 
@@ -29,7 +28,7 @@ const CloseCollectorDialog = ({
   const { toast } = useToast();
 
   const handleUpdateCollectorStatus = () => {
-    onOpenChange(false);
+    onOpenChange();
     startTransition(async () => {
       try {
         await updateSurveyCollectorStatus(collector.id, CollectorStatus.closed);
@@ -68,7 +67,7 @@ const CloseCollectorDialog = ({
         <DialogFooter className="mt-5">
           <Button
             variant="outline"
-            onClick={() => onOpenChange(false)}
+            onClick={() => onOpenChange()}
             size="sm"
             disabled={isPending}
           >

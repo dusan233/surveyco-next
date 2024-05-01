@@ -4,22 +4,23 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import { SortObject } from "@/lib/types";
+
 import SurveyCollectors from "./_components/survey-collectors";
 import { Metadata } from "next";
 import { getSurveyCollectors } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
+import { PageParams, SortObject } from "@/types/common";
 
 export const metadata: Metadata = {
   title: "Surveyco - Collector List",
   description: "Page dedicated for displaying list of all survey collectors.",
 };
 
-const CollectResponsesPage = async ({
-  params,
-}: {
-  params: { surveyId: string };
-}) => {
+type CollectResponsesPageProps = {
+  params: PageParams<["surveyId"]>;
+};
+
+const CollectResponsesPage = async ({ params }: CollectResponsesPageProps) => {
   const surveyId = params.surveyId;
   const { getToken } = auth();
   const token = await getToken();
