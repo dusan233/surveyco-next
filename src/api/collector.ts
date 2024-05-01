@@ -1,5 +1,5 @@
-import { Collector } from "@/lib/types";
 import { getResponseData } from "@/lib/util/getResponseData";
+import { Collector } from "@/types/collector";
 
 export const getCollector = async (collectorId: string): Promise<Collector> => {
   const res = await fetch(

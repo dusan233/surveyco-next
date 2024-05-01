@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
-import { Collector } from "@/lib/types";
+import { Collector } from "@/types/collector";
 import { Link, LinkIcon } from "lucide-react";
 import React from "react";
 
@@ -16,8 +16,8 @@ const CopyWebLink = ({ collector }: CopyWebLinkProps) => {
   const { toast } = useToast();
   const collectorWebLink = `${process.env.NEXT_PUBLIC_CLIENT_URL}/s/${collector.id}`;
 
-  const handleCopyCollectorWebLink = () => {
-    copyToClipboard(collectorWebLink);
+  const handleCopyCollectorWebLink = async () => {
+    await copyToClipboard(collectorWebLink);
     toast({
       variant: "default",
       title: "Link copied to clipboard.",

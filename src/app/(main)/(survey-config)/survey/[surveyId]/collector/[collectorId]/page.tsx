@@ -5,17 +5,18 @@ import { ChevronsLeftIcon } from "lucide-react";
 import CopyWebLink from "../_components/web-link-collector";
 import { Metadata } from "next";
 import { getCollector } from "@/api/collector";
+import { PageParams } from "@/types/common";
 
 export const metadata: Metadata = {
   title: "Surveyco - Collector Details",
   description: "Page dedicated for displaying details about collector.",
 };
 
-const SurveyCollectorPage = async ({
-  params,
-}: {
-  params: { collectorId: string; surveyId: string };
-}) => {
+type SurveyCollectorPageProps = {
+  params: PageParams<["collectorId", "surveyId"]>;
+};
+
+const SurveyCollectorPage = async ({ params }: SurveyCollectorPageProps) => {
   const collectorId = params.collectorId;
   const surveyId = params.surveyId;
 

@@ -2,9 +2,9 @@
 
 import { getAccessToken } from "./helper";
 import { revalidatePath } from "next/cache";
-import { Collector, CollectorStatus, CollectorType } from "@/lib/types";
 import { updateCollectorNameSchema } from "@/lib/validationSchemas";
 import { getResponseData } from "@/lib/util/getResponseData";
+import { Collector, CollectorStatus, CollectorType } from "@/types/collector";
 
 export const createSurveyCollector = async (
   surveyId: string

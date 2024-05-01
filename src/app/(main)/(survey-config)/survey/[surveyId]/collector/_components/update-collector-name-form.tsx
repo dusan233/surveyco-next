@@ -3,10 +3,10 @@
 import { useFormState } from "react-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Collector } from "@/lib/types";
 import React from "react";
 import SubmitButton from "./submit-button";
 import { updateSurveyCollector } from "@/actions/collector-actions";
+import { Collector } from "@/types/collector";
 
 type UpdateCollectorNameFormProps = {
   collector: Collector;

@@ -33,3 +33,7 @@ export type DialogProps = {
   isOpen: boolean;
   onOpenChange: () => void;
 };
+
+export type PageParams<TList extends string[]> = {
+  [K in TList[number]]: string;
+};
