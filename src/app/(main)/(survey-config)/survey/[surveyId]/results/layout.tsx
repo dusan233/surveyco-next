@@ -1,4 +1,5 @@
 import BuildSurveyNavigation from "@/components/survey/build-survey-navigation";
+import { PropsWithChildren } from "react";
 
 const surveyResultLinks = [
   {
@@ -13,11 +14,7 @@ const surveyResultLinks = [
   },
 ];
 
-export default function SurveyResultsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function SurveyResultsLayout({ children }: PropsWithChildren) {
   return (
     <div className="bg-slate-100">
       <div className="max-w-screen-lg mx-auto p-5 sm:p-10">

@@ -1,12 +1,9 @@
 import Footer from "@/components/layout/footer";
 import "../../styles/global.css";
 import Navbar from "@/components/layout/navbar";
+import { PropsWithChildren } from "react";
 
-export default function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MainLayout({ children }: PropsWithChildren) {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />

@@ -3,13 +3,12 @@
 import AppLogo from "@/components/layout/logo";
 import { Button } from "@/components/ui/button";
 
-export default function Error({
-  error,
-  reset,
-}: {
+type ErrorPageProps = {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
+};
+
+export default function Error({ error, reset }: ErrorPageProps) {
   return (
     <div className="p-4 sm:p-10  bg-white sm:bg-accent min-h-screen">
       <div className="flex justify-center sm:justify-start mb-5 sm:mb-10">

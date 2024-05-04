@@ -1,4 +1,5 @@
 import BuildSurveyNavigation from "@/components/survey/build-survey-navigation";
+import { PropsWithChildren } from "react";
 
 const surveyBuildLinks = [
   { slug: "summary", regex: "^/survey/[^/]+/summary$", text: "summary" },
@@ -16,13 +17,14 @@ const surveyBuildLinks = [
   },
 ];
 
+type BuildSurveyLayoutProps = {
+  surveyTitle: React.ReactNode;
+};
+
 export default function BuildSurveyLayout({
   children,
   surveyTitle,
-}: {
-  children: React.ReactNode;
-  surveyTitle: React.ReactNode;
-}) {
+}: PropsWithChildren<BuildSurveyLayoutProps>) {
   return (
     <>
       {surveyTitle}

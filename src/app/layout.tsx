@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import Providers from "./providers";
 import { Toaster } from "@/components/ui/toaster";
+import { PropsWithChildren } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,11 +14,7 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <ClerkProvider>
       <html lang="en">
