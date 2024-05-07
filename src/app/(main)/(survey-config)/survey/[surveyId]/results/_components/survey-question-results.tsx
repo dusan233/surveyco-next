@@ -4,7 +4,6 @@ import { useQuestionResults } from "../useSurveyResults";
 import {
   MultipleChoiceQuestionResult,
   QuestionType,
-  QuizResponseData,
   TextboxQuestionResult,
 } from "@/lib/types";
 import React, { useRef, useState } from "react";
@@ -16,9 +15,10 @@ import { useLoadingToast } from "@/hooks/useLoadingToast";
 import SurveyQuestionResultsControl from "./survey-question-results-control";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import WindowedVirtualList from "@/components/layout/windowed-virtual-list";
+import { Survey } from "@/types/survey";
 
 type SurveyResultsProps = {
-  survey: QuizResponseData;
+  survey: Survey;
   surveyId: string;
 };
 
