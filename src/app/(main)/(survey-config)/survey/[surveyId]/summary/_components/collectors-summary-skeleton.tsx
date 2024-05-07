@@ -1,9 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 
-const CollectorsSummarySkeleton = () => {
-  const items = [1, 2, 3];
+const items = [1, 2, 3];
 
+const CollectorsSummarySkeleton = () => {
   return (
     <div className="p-5 space-y-4 shadow-sm rounded-lg bg-white">
       {items.map((_, index) => (

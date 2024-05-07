@@ -1,4 +1,4 @@
-import { Collector } from "@/lib/types";
+import { Collector } from "@/types/collector";
 import { format } from "date-fns";
 import Link from "next/link";
 import React from "react";

@@ -3,21 +3,19 @@ import {
   QuestionResponse,
   QuestionResult,
   QuestionsResponseData,
-  QuizResponseData,
   SortObject,
   SurveyPage,
   SurveyResponse,
   SurveyResponsesResData,
-  VolumeByDay,
 } from "@/lib/types";
 import { getResponseData } from "@/lib/util/getResponseData";
-import { SurveyCollectorsResData } from "@/types/survey";
+import { Survey, SurveyCollectorsResData, VolumeByDay } from "@/types/survey";
 import qs from "qs";
 
 export const getSurvey = async (params: {
   surveyId: string;
   token: string | null;
-}): Promise<QuizResponseData> => {
+}): Promise<Survey> => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${params.surveyId}`,
     {

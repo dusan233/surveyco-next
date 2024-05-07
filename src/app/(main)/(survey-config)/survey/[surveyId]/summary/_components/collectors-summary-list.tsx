@@ -1,10 +1,10 @@
-import { SortObject } from "@/lib/types";
 import React from "react";
 import CollectorsSummaryItem from "./collectors-summary-item";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getSurveyCollectors } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
+import { SortObject } from "@/types/common";
 
 type CollectorsSummaryListProps = {
   surveyId: string;
@@ -27,7 +27,7 @@ const CollectorsSummaryList = async ({
 
   return (
     <div className="bg-white p-5 rounded-lg shadow-sm">
-      <div className=" space-y-4   bg-white">
+      <div className=" space-y-4 bg-white">
         {collectors.map((collector) => {
           return (
             <CollectorsSummaryItem key={collector.id} collector={collector} />

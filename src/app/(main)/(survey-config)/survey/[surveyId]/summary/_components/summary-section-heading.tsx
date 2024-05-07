@@ -1,8 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { PropsWithChildren } from "react";
 
-type SummarySectionHeadingProps = {
-  children: ReactNode;
-};
+type SummarySectionHeadingProps = PropsWithChildren;
 
 const SummarySectionHeading = ({ children }: SummarySectionHeadingProps) => {
   return <h1 className="text-2xl">{children}</h1>;

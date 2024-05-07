@@ -1,6 +1,6 @@
 "use client";
 
-import { VolumeByDay } from "@/lib/types";
+import { VolumeByDay } from "@/types/survey";
 import { format } from "date-fns";
 import React, { useEffect, useId, useMemo, useRef, useState } from "react";
 import {

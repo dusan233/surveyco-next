@@ -1,7 +1,7 @@
 import { getSurvey } from "@/api/survey";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { SurveyStatus } from "@/lib/types";
+import { SurveyStatus } from "@/types/survey";
 import { auth } from "@clerk/nextjs/server";
 import { format } from "date-fns";
 import Link from "next/link";

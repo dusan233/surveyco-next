@@ -7,6 +7,7 @@ import SurveySummarySkeleton from "./_components/survey-summary-skeleton";
 import CollectorsSummarySkeleton from "./_components/collectors-summary-skeleton";
 import CollectorsSummaryList from "./_components/collectors-summary-list";
 import { Metadata } from "next";
+import { PageParams } from "@/types/common";
 
 export const metadata: Metadata = {
   title: "Surveyco - Survey Summary",
@@ -14,7 +15,11 @@ export const metadata: Metadata = {
     "Page dedicated for displaying information and base stats about survey.",
 };
 
-const SurveySummaryPage = ({ params }: { params: { surveyId: string } }) => {
+type SurveySummaryPageProps = {
+  params: PageParams<["surveyId"]>;
+};
+
+const SurveySummaryPage = ({ params }: SurveySummaryPageProps) => {
   const surveyId = params.surveyId;
 
   return (
