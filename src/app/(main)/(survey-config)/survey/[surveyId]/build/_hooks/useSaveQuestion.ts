@@ -1,17 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  QuestionsResponseData,
-  SaveQuestionData,
-  SurveyPage,
-} from "@/lib/types";
+
 import { createQuestion, updateQuestion } from "@/actions/survey-actions";
+import { QuestionsResponseData, SaveQuestionData } from "@/types/question";
+import { SurveyPage } from "@/types/survey";
 
 export default function useSaveQuestion() {
   const queryClient = useQueryClient();
   const {
     isPending,
     mutate: saveQuestionMutation,
-    mutateAsync: saveQuestionMutationAsync,
     isError,
     isSuccess,
   } = useMutation({

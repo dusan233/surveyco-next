@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Question, UnsavedQuestion } from "@/lib/types";
+
 import EditQuestion from "./edit-question";
 import QuestionPreview from "./question-preview";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
@@ -11,6 +11,8 @@ import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import SortableList from "@/components/layout/sortable-list";
 import WindowedVirtualList from "@/components/layout/windowed-virtual-list";
 import useSortQuestions from "../_hooks/useSortQuestions";
+import { isSavedQuestion } from "@/lib/util/questionUtils";
+import { Question, UnsavedQuestion } from "@/types/question";
 
 type BuildQuestionsListProps = {
   surveyId: string;
@@ -27,7 +29,9 @@ const BuildQuestionsList = ({ surveyId }: BuildQuestionsListProps) => {
 
   const lastQuestionIndex = questions.length - 1;
 
-  const savedQuestions = questions.filter((q) => q.id) as Question[];
+  const savedQuestions = questions.filter((q) =>
+    isSavedQuestion(q)
+  ) as Question[];
   const activeQuestion = savedQuestions.find((q) => q.id === activeId)!;
 
   const virtualizer = useWindowVirtualizer({
@@ -45,29 +49,45 @@ const BuildQuestionsList = ({ surveyId }: BuildQuestionsListProps) => {
   };
   //scroll to selected question
   useEffect(() => {
-    const questionIndex = questions.findIndex((q) => q.id === selectedQuestion);
+    const questionIndex = (
+      questions.filter((q) => isSavedQuestion(q)) as Question[]
+    ).findIndex((q) => q.id === selectedQuestion);
     const lastQuestion = questions[questions.length - 1];
     if (questionIndex !== -1)
       scrollToQuestionIndex(questionIndex, { aling: "start" });
-    else if (questions.length && !lastQuestion.id) {
+    else if (questions.length && !isSavedQuestion(lastQuestion)) {
       scrollToQuestionIndex(questions.length - 1, { aling: "start" });
     }
   }, [selectedQuestion, questions, scrollToQuestionIndex]);
 
   const renderItem = (question: Question | UnsavedQuestion, index: number) => {
-    return question.id === selectedQuestion || !question.id ? (
+    if (isSavedQuestion(question)) {
+      if (question.id === selectedQuestion)
+        return (
+          <EditQuestion
+            scrollToQuestion={scrollToQuestion}
+            key={question.id}
+            question={question}
+            surveyId={surveyId}
+            qIndex={index}
+          />
+        );
+
+      return (
+        <QuestionPreview
+          key={question.id}
+          activeId={activeId}
+          question={question}
+        />
+      );
+    }
+    return (
       <EditQuestion
         scrollToQuestion={scrollToQuestion}
-        key={question.id}
+        key={"new_question"}
         question={question}
         surveyId={surveyId}
         qIndex={index}
-      />
-    ) : (
-      <QuestionPreview
-        key={question.id}
-        activeId={activeId}
-        question={question as Question}
       />
     );
   };

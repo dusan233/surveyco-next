@@ -1,17 +1,16 @@
 "use client";
 
-import { MultipleChoiceQuestion, Question, QuestionType } from "@/lib/types";
 import React, { useEffect, useState } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
-
 import MultiChoiceQuestionPreview from "./multichoice-question-preview";
 import DropdownQuestionPreview from "./dropdown-question-preview";
 import TextboxQuestionPreview from "./textbox-question-preview";
 import CheckboxesQuestionPreview from "./checkboxes-question-preview";
 import QuestionDescription from "@/components/questions/question-description";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
+import { Question, QuestionType } from "@/types/question";
 
 type QuestionPreviewProps = {
   question: Question;
@@ -55,21 +54,13 @@ const QuestionPreview = ({
   const renderQuestionPreviewContent = (question: Question) => {
     switch (question.type) {
       case QuestionType.multiple_choice:
-        return (
-          <MultiChoiceQuestionPreview
-            question={question as MultipleChoiceQuestion}
-          />
-        );
+        return <MultiChoiceQuestionPreview question={question} />;
       case QuestionType.dropdown:
         return <DropdownQuestionPreview />;
       case QuestionType.textbox:
         return <TextboxQuestionPreview />;
       case QuestionType.checkboxes:
-        return (
-          <CheckboxesQuestionPreview
-            question={question as MultipleChoiceQuestion}
-          />
-        );
+        return <CheckboxesQuestionPreview question={question} />;
       default:
         return null;
     }

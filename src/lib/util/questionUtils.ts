@@ -1,7 +1,19 @@
+import {
+  Question,
+  QuestionOption,
+  QuestionType,
+  UnsavedCheckboxesQuestion,
+  UnsavedDropdownQuestion,
+  UnsavedMultichoiceQuestion,
+  UnsavedQuestion,
+  UnsavedQuestionOption,
+  UnsavedTextboxQuestion,
+} from "@/types/question";
 import { QUESTION_TYPES } from "../constants";
-import { QuestionType } from "../types";
 
-export const createTextboxQuestion = (number: number) => ({
+export const createTextboxQuestion = (
+  number: number
+): UnsavedTextboxQuestion => ({
   type: QuestionType.textbox,
   description: "",
   description_image: null,
@@ -11,8 +23,14 @@ export const createTextboxQuestion = (number: number) => ({
 
 export const createMultichoiceQuestion = (
   number: number,
-  type: QuestionType
-) => ({
+  type:
+    | QuestionType.checkboxes
+    | QuestionType.dropdown
+    | QuestionType.multiple_choice
+):
+  | UnsavedDropdownQuestion
+  | UnsavedMultichoiceQuestion
+  | UnsavedCheckboxesQuestion => ({
   type: type,
   description: "",
   description_image: null,
@@ -60,4 +78,16 @@ export const getQuestionChartTypes = (qType: QuestionType) => {
 
 export const getQuestionTypeLable = (type: QuestionType) => {
   return QUESTION_TYPES.find((qType) => qType.type === type)!.title;
+};
+
+export const isSavedQuestionChoice = (
+  choice: QuestionOption | UnsavedQuestionOption
+): choice is QuestionOption => {
+  return "id" in choice;
+};
+
+export const isSavedQuestion = (
+  question: Question | UnsavedQuestion
+): question is Question => {
+  return "id" in question;
 };

@@ -6,7 +6,6 @@ import useSurveyPages from "@/hooks/useSurveyPages";
 import React from "react";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import useMoveSurveyPage from "../_hooks/useMoveSurveyPage";
-import { PlacePageData, OperationPosition } from "@/lib/types";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import {
   Form,
@@ -25,6 +24,8 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import usePlacePageForm from "../_hooks/usePlacePageForm";
 import { useQueryClient } from "@tanstack/react-query";
+import { OperationPosition } from "@/types/common";
+import { PlacePageData } from "@/types/survey";
 
 type MoveSurveyPageFormProps = {
   surveyId: string;

@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/form";
 import useCopySurveyPage from "../_hooks/useCopySurveyPage";
 import useSurveyPages from "@/hooks/useSurveyPages";
-import { PlacePageData, OperationPosition } from "@/lib/types";
 import React from "react";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import {
@@ -24,6 +23,8 @@ import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import usePlacePageForm from "../_hooks/usePlacePageForm";
+import { OperationPosition } from "@/types/common";
+import { PlacePageData } from "@/types/survey";
 
 type CopySurveyPageFormProps = {
   surveyId: string;

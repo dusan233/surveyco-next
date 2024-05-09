@@ -8,7 +8,7 @@ import {
 import EditQuestionChoice from "./edit-question-choice";
 import { z } from "zod";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
-import { MultiChoiceQuestionFormData } from "@/lib/types";
+import { MultiChoiceQuestionFormData } from "@/types/question";
 
 type EditQuestionChoiceListProps = {
   control: Control<z.infer<typeof multiChoiceQuestionSchema>, any>;

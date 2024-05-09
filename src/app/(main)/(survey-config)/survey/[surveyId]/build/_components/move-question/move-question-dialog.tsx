@@ -10,10 +10,9 @@ import {
 } from "@/components/ui/dialog";
 
 import PlaceQuestionForm from "../place-question-form";
+import { DialogProps } from "@/types/common";
 
-type CopyQuestionDialogProps = {
-  isOpen: boolean;
-  onOpenChange: () => void;
+type CopyQuestionDialogProps = DialogProps & {
   surveyId: string;
   questionId: string;
 };

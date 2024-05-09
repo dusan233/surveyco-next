@@ -5,7 +5,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import React, { ReactNode, useId } from "react";
+import React, { PropsWithChildren, ReactNode, useId } from "react";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   closestCenter,
@@ -16,15 +16,14 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { DragEndEvent } from "@/lib/types";
+import { DragEndEvent } from "@/types/dnd";
 
-type SortableListProps<T> = {
+type SortableListProps<T> = PropsWithChildren<{
   onDragStart: (event: any) => void;
   onDragEnd: (event: DragEndEvent) => void;
   items: T[];
-  children: ReactNode;
   overlayItem: ReactNode;
-};
+}>;
 
 const SortableList = <T extends { id: string }>({
   onDragEnd,

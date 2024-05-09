@@ -1,11 +1,5 @@
 "use client";
 
-import {
-  MultiChoiceQuestionData,
-  MultiChoiceQuestionFormData,
-  MultipleChoiceQuestion,
-  UnsavedMultiChoiceQuestion,
-} from "@/lib/types";
 import React, { useMemo } from "react";
 import { FormProvider, SubmitHandler } from "react-hook-form";
 import { Form } from "@/components/ui/form";
@@ -20,9 +14,29 @@ import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import useMultiChoiceQuestionForm from "../_hooks/useMultiChoiceQuestionForm";
 import EditQuestionDescription from "./edit-question-description";
 import { Settings } from "lucide-react";
+import {
+  CheckboxesQuestion,
+  DropdownQuestion,
+  MultiChoiceQuestionFormData,
+  MultichoiceQuestion,
+  SaveMultiChoiceQuestionData,
+  UnsavedCheckboxesQuestion,
+  UnsavedDropdownQuestion,
+  UnsavedMultichoiceQuestion,
+} from "@/types/question";
+import {
+  isSavedQuestion,
+  isSavedQuestionChoice,
+} from "@/lib/util/questionUtils";
 
 type MultiChoiceQuestionProps = {
-  question: MultipleChoiceQuestion | UnsavedMultiChoiceQuestion;
+  question:
+    | MultichoiceQuestion
+    | UnsavedDropdownQuestion
+    | UnsavedCheckboxesQuestion
+    | CheckboxesQuestion
+    | DropdownQuestion
+    | UnsavedMultichoiceQuestion;
   surveyId: string;
   scrollToQuestion: (qIndex: number) => void;
   qIndex: number;
@@ -41,7 +55,7 @@ const BuildMultiChoiceQuestion = ({
       description: qChoice.description,
       descriptionImage: qChoice.description_image,
       number: qChoice.number,
-      ...(qChoice.id && { id: qChoice.id }),
+      ...(isSavedQuestionChoice(qChoice) && { id: qChoice.id }),
     })),
     required: question.required,
     randomize: question.randomize,
@@ -58,9 +72,7 @@ const BuildMultiChoiceQuestion = ({
   );
 
   const canRemoveQuestionOptions = useMemo(() => {
-    return question.id
-      ? !(question as MultipleChoiceQuestion).hasResponses
-      : true;
+    return isSavedQuestion(question) ? !question.hasResponses : true;
   }, [question]);
 
   const { isPending, saveQuestionMutation } = useSaveQuestion();
@@ -68,14 +80,14 @@ const BuildMultiChoiceQuestion = ({
   const handleSaveQuestion: SubmitHandler<MultiChoiceQuestionFormData> = (
     data
   ) => {
-    const questionData: MultiChoiceQuestionData = {
+    const questionData: SaveMultiChoiceQuestionData = {
       description: data.description,
       type: question.type,
       options: data.options,
       required: data.required,
       randomize: data.randomize,
       descriptionImage: data.descriptionImage,
-      ...(question.id && { id: question.id }),
+      ...(isSavedQuestion(question) && { id: question.id }),
     };
 
     setCanSelectQuestion(false);
@@ -91,11 +103,10 @@ const BuildMultiChoiceQuestion = ({
           setCanSelectQuestion(true);
           setAddingQuestion(false);
 
-          //@ts-ignore
           form.setValue(
             "options",
-            //@ts-ignore
-            (data as MultipleChoiceQuestion).options.map((option) => {
+            // @ts-ignore
+            data.options.map((option) => {
               return {
                 id: option.id,
                 description: option.description,

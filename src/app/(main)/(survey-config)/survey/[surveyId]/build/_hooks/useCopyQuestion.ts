@@ -1,12 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  CopyQuestionData,
-  OperationPosition,
-  QuestionsResponseData,
-  SurveyPage,
-} from "@/lib/types";
+
 import useBuildQuestionsContext from "./useBuildQuestionsContext";
 import { copyQuestion } from "@/actions/survey-actions";
+import { PlaceQuestionData, QuestionsResponseData } from "@/types/question";
+import { OperationPosition } from "@/types/common";
+import { SurveyPage } from "@/types/survey";
 
 export default function useCopyQuestion() {
   const queryClient = useQueryClient();
@@ -24,7 +22,7 @@ export default function useCopyQuestion() {
     mutationFn: (payload: {
       surveyId: string;
       questionId: string;
-      data: CopyQuestionData;
+      data: PlaceQuestionData;
     }) => copyQuestion(payload.surveyId, payload.questionId, payload.data),
     onSuccess(data, variables) {
       if (data.surveyPageId === currentPage!.id) {

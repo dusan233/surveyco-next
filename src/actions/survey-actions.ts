@@ -3,13 +3,9 @@ import {
   ApiError,
   CopyQuestionData,
   CreateSurveyData,
-  OperationPosition,
-  Question,
   QuestionResponse,
   QuestionsResponsesData,
   QuizResponseData,
-  SaveQuestionData,
-  SurveyPage,
 } from "@/lib/types";
 import { cookies } from "next/headers";
 import cookie from "cookie";
@@ -19,6 +15,13 @@ import { revalidatePath } from "next/cache";
 import { getAccessToken } from "./helper";
 import qs from "qs";
 import { getResponseData } from "@/lib/util/getResponseData";
+import { SurveyPage } from "@/types/survey";
+import { OperationPosition } from "@/types/common";
+import {
+  PlaceQuestionData,
+  Question,
+  SaveQuestionData,
+} from "@/types/question";
 
 export const createQuestion = async (
   surveyId: string,
@@ -194,7 +197,7 @@ export const moveSurveyPage = async (
 export const copyQuestion = async (
   surveyId: string,
   questionId: string,
-  data: CopyQuestionData
+  data: PlaceQuestionData
 ): Promise<Question> => {
   const token = await getAccessToken();
 
@@ -220,7 +223,7 @@ export const copyQuestion = async (
 export const moveQuestion = async (
   surveyId: string,
   questionId: string,
-  data: CopyQuestionData
+  data: PlaceQuestionData
 ): Promise<Question> => {
   const token = await getAccessToken();
 

@@ -5,8 +5,6 @@ import useMoveQuestion from "../_hooks/useMoveQuestion";
 import { placeQuestionSchema } from "@/lib/validationSchemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OperationPosition, PlaceQuestionData } from "@/lib/types";
-import useDownsizedQuestions from "@/hooks/useDownsizedQuestions";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
@@ -15,6 +13,8 @@ import { Button } from "@/components/ui/button";
 import CopyQuestionFormContent from "./copy-question/copy-question-form-content";
 import { useToast } from "@/components/ui/use-toast";
 import useSurveyQuestions from "@/hooks/useSurveyQuestions";
+import { OperationPosition } from "@/types/common";
+import { PlaceQuestionData } from "@/types/question";
 
 type PlaceQuestionFormProps = {
   surveyId: string;

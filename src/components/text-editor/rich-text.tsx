@@ -6,25 +6,15 @@ import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
 import Underline from "@tiptap/extension-underline";
-import {
-  EditorContent,
-  useEditor,
-  Content,
-  ReactNodeViewRenderer,
-  NodeViewWrapper,
-  mergeAttributes,
-  NodeViewContent,
-  Editor,
-} from "@tiptap/react";
+import { EditorContent, useEditor, Content, Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-import { Node } from "@tiptap/react";
-import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AutoAnimate from "../auto-animate";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import TextEditorMenu from "./text-editor-menu";
-import { ImageIcon } from "lucide-react";
 import InsertImageDialog from "./insert-image-dialog";
+import { useDisclosure } from "@/hooks/useDisclosure";
 
 type RichTextEditorProps = {
   onChange: (...event: any[]) => void;
@@ -85,7 +75,7 @@ export const RichTextEditor = ({
     },
     content: `${content}`,
   });
-  const [insertImageOpen, setInsertImageOpen] = useState(false);
+  const { onOpen, onToggle, isOpen } = useDisclosure();
 
   const addImageToEditor = (imageFile: File) => {
     onAddImage(editor!, imageFile);
@@ -104,15 +94,15 @@ export const RichTextEditor = ({
   return (
     <>
       <InsertImageDialog
-        onOpenChange={setInsertImageOpen}
-        isOpen={insertImageOpen}
+        onOpenChange={onToggle}
+        isOpen={isOpen}
         addImageToEditor={addImageToEditor}
       />
       <div className={`cursor-text relative`}>
         <AutoAnimate duration={200}>
           {editor?.isFocused && (
             <TextEditorMenu
-              openInsertImageDialog={() => setInsertImageOpen(true)}
+              openInsertImageDialog={() => onOpen()}
               editor={editor}
             />
           )}

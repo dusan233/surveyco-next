@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { useFormContext } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Question, QuestionType, UnsavedQuestion } from "@/lib/types";
+import { Question, QuestionType, UnsavedQuestion } from "@/types/question";
 
 type EditQuestionSettingsProps = {
   question: Question | UnsavedQuestion;

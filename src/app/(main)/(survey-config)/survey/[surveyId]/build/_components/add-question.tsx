@@ -2,9 +2,13 @@
 
 import React from "react";
 
-import { QuestionType } from "@/lib/types";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
-import { createNewQuestion, getQuestionTypes } from "@/lib/util/questionUtils";
+import {
+  createNewQuestion,
+  getQuestionTypes,
+  isSavedQuestion,
+} from "@/lib/util/questionUtils";
+import { QuestionType } from "@/types/question";
 
 type AddQuestionProps = {
   onAddQuestion?: () => void;
@@ -19,7 +23,9 @@ const AddQuestion = ({ onAddQuestion }: AddQuestionProps) => {
 
   const addNewQuestion = (type: QuestionType) => {
     updateQuestions((questions) => {
-      const filteredQuestions = questions.filter((question) => question.id);
+      const filteredQuestions = questions.filter((question) =>
+        isSavedQuestion(question)
+      );
       const lastQuestionNumber = filteredQuestions.length
         ? filteredQuestions[filteredQuestions.length - 1].number
         : 0;

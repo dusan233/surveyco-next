@@ -1,4 +1,4 @@
-import { Question } from "@/lib/types";
+import { Question } from "@/types/question";
 import DOMPurify from "isomorphic-dompurify";
 import React from "react";
 

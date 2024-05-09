@@ -1,13 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  CopyQuestionData,
-  OperationPosition,
-  Question,
-  QuestionsResponseData,
-  SurveyPage,
-} from "@/lib/types";
+
 import useBuildQuestionsContext from "./useBuildQuestionsContext";
 import { moveQuestion } from "@/actions/survey-actions";
+import {
+  PlaceQuestionData,
+  Question,
+  QuestionsResponseData,
+} from "@/types/question";
+import { OperationPosition } from "@/types/common";
+import { SurveyPage } from "@/types/survey";
 
 export default function useMoveQuestion() {
   const queryClient = useQueryClient();
@@ -25,7 +26,7 @@ export default function useMoveQuestion() {
       surveyId: string;
       questionId: string;
       pageNumber: number;
-      data: CopyQuestionData;
+      data: PlaceQuestionData;
     }) => moveQuestion(payload.surveyId, payload.questionId, payload.data),
     onMutate(moveQuestion) {
       const previousQuestions = queryClient.getQueryData<QuestionsResponseData>(

@@ -10,10 +10,9 @@ import {
 import useSurveyPages from "@/hooks/useSurveyPages";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import MoveSurveyPageForm from "./move-survey-page-form";
+import { DialogProps } from "@/types/common";
 
-type MovePageDialogProps = {
-  isOpen: boolean;
-  onOpenChange: () => void;
+type MovePageDialogProps = DialogProps & {
   surveyId: string;
 };
 

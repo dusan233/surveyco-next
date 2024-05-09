@@ -3,15 +3,15 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
-import { Question, UnsavedQuestion } from "@/lib/types";
+import { Question, UnsavedQuestion } from "@/types/question";
+import { isSavedQuestion } from "@/lib/util/questionUtils";
 
-const QuestionFooter = ({
-  isDisabled,
-  question,
-}: {
+type QuestionFooterProps = {
   isDisabled: boolean;
   question: Question | UnsavedQuestion;
-}) => {
+};
+
+const QuestionFooter = ({ isDisabled, question }: QuestionFooterProps) => {
   const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
   const setAddingQuestion = useBuildQuestionsContext(
     (s) => s.setAddingQuestion
@@ -22,7 +22,7 @@ const QuestionFooter = ({
     <div className="flex justify-end gap-2 mt-5">
       <Button
         onClick={() => {
-          if (addingQuestion && !question.id) {
+          if (addingQuestion && !isSavedQuestion(question)) {
             setAddingQuestion(false);
           } else {
             setQueueQuestion(null);

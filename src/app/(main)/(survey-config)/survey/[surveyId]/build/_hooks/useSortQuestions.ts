@@ -1,9 +1,11 @@
 import useMoveQuestion from "./useMoveQuestion";
-import { DragEndEvent, OperationPosition, SurveyPage } from "@/lib/types";
 import { useState } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import useBuildQuestionsContext from "./useBuildQuestionsContext";
 import { useToast } from "@/components/ui/use-toast";
+import { SurveyPage } from "@/types/survey";
+import { DragEndEvent } from "@/types/dnd";
+import { OperationPosition } from "@/types/common";
 
 export default function useSortQuestions(
   surveyId: string,

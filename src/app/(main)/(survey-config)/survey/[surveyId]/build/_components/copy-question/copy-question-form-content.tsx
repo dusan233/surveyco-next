@@ -11,7 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { OperationPosition, Question, SurveyPage } from "@/lib/types";
+import { OperationPosition } from "@/types/common";
+import { Question } from "@/types/question";
+import { SurveyPage } from "@/types/survey";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 

@@ -1,9 +1,12 @@
-import { Question, UnsavedQuestion } from "@/lib/types";
 import React from "react";
 
 import QuestionActions from "./question-actions";
 import { Edit } from "lucide-react";
-import { getQuestionTypeLable } from "@/lib/util/questionUtils";
+import {
+  getQuestionTypeLable,
+  isSavedQuestion,
+} from "@/lib/util/questionUtils";
+import { Question, UnsavedQuestion } from "@/types/question";
 
 type EditQuestionHeaderProps = {
   question: Question | UnsavedQuestion;
@@ -16,7 +19,7 @@ const EditQuestionHeader = ({
 }: EditQuestionHeaderProps) => {
   return (
     <>
-      {question.id && (question as Question).hasResponses && (
+      {isSavedQuestion(question) && question.hasResponses && (
         <div className="px-2 py-1.5 rounded-md mb-5 flex gap-5 items-center bg-primary">
           <Edit className="w-6 h-6 text-amber-300" />
           <p className="text-white text-xs">
@@ -29,7 +32,7 @@ const EditQuestionHeader = ({
           <div className="font-bold">Q{question.number}</div>
           <div className="text-base">{getQuestionTypeLable(question.type)}</div>
         </div>
-        {question.id && (
+        {isSavedQuestion(question) && (
           <div className="flex gap-2">
             <QuestionActions surveyId={surveyId} questionId={question.id} />
           </div>

@@ -11,8 +11,11 @@ import AddQuestionDialog from "./add-question-dialog";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { isSavedQuestion } from "@/lib/util/questionUtils";
 
-const BuildSurveyQuestions = ({ surveyId }: { surveyId: string }) => {
+type BuildSurveyQuestionsProps = { surveyId: string };
+
+const BuildSurveyQuestions = ({ surveyId }: BuildSurveyQuestionsProps) => {
   const { isOpen, onToggle, onOpen } = useDisclosure();
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
 
@@ -49,7 +52,7 @@ const BuildSurveyQuestions = ({ surveyId }: { surveyId: string }) => {
   useEffect(() => {
     if (!addingQuestion) {
       updateQuestions((questions) => {
-        return questions.filter((question) => question.id);
+        return questions.filter((question) => isSavedQuestion(question));
       });
     }
   }, [addingQuestion, updateQuestions]);
@@ -60,7 +63,7 @@ const BuildSurveyQuestions = ({ surveyId }: { surveyId: string }) => {
     <div className="p-5 sm:p-10 bg-accent max-w-screen-lg mx-auto">
       <PageControlBar surveyId={surveyId} />
       <BuildQuestionsList surveyId={surveyId} />
-      <AddQuestionDialog open={isOpen} onOpenChange={onToggle} />
+      <AddQuestionDialog isOpen={isOpen} onOpenChange={onToggle} />
       <div className="flex justify-center">
         <Button onClick={() => onOpen()}>
           <span className="mr-2">

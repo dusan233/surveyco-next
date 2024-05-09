@@ -20,7 +20,6 @@ export type QuestionResponse = {
   }[];
 };
 
-export type PlaceQuestionData = z.infer<typeof placeQuestionSchema>;
 export type QuestionsResponsesData = z.infer<typeof questionsResponsesSchema>;
 export type QuestionResponseData = {
   questionId: string;
@@ -29,23 +28,29 @@ export type QuestionResponseData = {
   questionType: QuestionType;
   id?: string | undefined;
 };
+
+export type PlaceQuestionData = z.infer<typeof placeQuestionSchema>;
 export type TextboxQuestionFormData = z.infer<typeof textboxQuestionSchema>;
 export type MultiChoiceQuestionFormData = z.infer<
   typeof multiChoiceQuestionSchema
 >;
 
-export type MultiChoiceQuestionData = z.infer<
-  typeof multiChoiceQuestionSchema
-> & {
+export type SaveQuestionBase<T extends QuestionType> = {
   id?: string;
-  type: QuestionType;
+  type: T;
 };
-export type TextQuestionData = z.infer<typeof textboxQuestionSchema> & {
-  id?: string;
-  type: QuestionType;
-};
+export type SaveMultiChoiceQuestionData = MultiChoiceQuestionFormData &
+  SaveQuestionBase<
+    | QuestionType.dropdown
+    | QuestionType.checkboxes
+    | QuestionType.multiple_choice
+  >;
+export type SaveTextboxQuestionData = TextboxQuestionFormData &
+  SaveQuestionBase<QuestionType.textbox>;
 
-export type SaveQuestionData = MultiChoiceQuestionData | TextQuestionData;
+export type SaveQuestionData =
+  | SaveMultiChoiceQuestionData
+  | SaveTextboxQuestionData;
 
 //results related
 //results related
@@ -102,6 +107,10 @@ export enum QuestionType {
   textbox = "textbox",
 }
 
+export interface IQuestionType<T extends QuestionType> {
+  type: T;
+}
+
 export interface QuestionsResData {
   questions: Question[];
   page: string;
@@ -113,18 +122,24 @@ export interface UnsavedQuestionBase {
   number: number;
   required: boolean;
 }
-export interface UnsavedTextboxQuestion extends UnsavedQuestionBase {
-  type: QuestionType.textbox;
-}
-export interface UnsavedMultichoiceQuestion extends UnsavedQuestionBase {
-  type: QuestionType.multiple_choice;
-}
-export interface UnsavedCheckboxesQuestion extends UnsavedQuestionBase {
-  type: QuestionType.checkboxes;
-}
-export interface UnsavedDropdownQuestion extends UnsavedQuestionBase {
-  type: QuestionType.dropdown;
-}
+export interface UnsavedTextboxQuestion
+  extends UnsavedQuestionBase,
+    IQuestionType<QuestionType.textbox> {}
+export interface UnsavedMultichoiceQuestion
+  extends UnsavedQuestionBase,
+    QuestionWithRandomize,
+    QuestionWithOptions<"unsaved">,
+    IQuestionType<QuestionType.multiple_choice> {}
+export interface UnsavedCheckboxesQuestion
+  extends UnsavedQuestionBase,
+    QuestionWithRandomize,
+    QuestionWithOptions<"unsaved">,
+    IQuestionType<QuestionType.checkboxes> {}
+export interface UnsavedDropdownQuestion
+  extends UnsavedQuestionBase,
+    QuestionWithRandomize,
+    QuestionWithOptions<"unsaved">,
+    IQuestionType<QuestionType.dropdown> {}
 
 export type UnsavedQuestion =
   | UnsavedTextboxQuestion
@@ -141,20 +156,24 @@ export interface SavedQuestionBase extends Timestamps {
 
 export interface TextboxQuestion
   extends SavedQuestionBase,
-    UnsavedTextboxQuestion {}
+    UnsavedQuestionBase,
+    IQuestionType<QuestionType.textbox> {}
 export interface CheckboxesQuestion
   extends SavedQuestionBase,
-    UnsavedCheckboxesQuestion,
+    UnsavedQuestionBase,
+    IQuestionType<QuestionType.checkboxes>,
     QuestionWithRandomize,
     QuestionWithOptions<"saved"> {}
 export interface DropdownQuestion
   extends SavedQuestionBase,
-    UnsavedDropdownQuestion,
+    UnsavedQuestionBase,
+    IQuestionType<QuestionType.dropdown>,
     QuestionWithRandomize,
     QuestionWithOptions<"saved"> {}
 export interface MultichoiceQuestion
   extends SavedQuestionBase,
-    UnsavedMultichoiceQuestion,
+    UnsavedQuestionBase,
+    IQuestionType<QuestionType.multiple_choice>,
     QuestionWithRandomize,
     QuestionWithOptions<"saved"> {}
 
@@ -179,4 +198,9 @@ export interface UnsavedQuestionOption {
 }
 export interface QuestionOption extends UnsavedQuestionOption, Timestamps {
   id: string;
+}
+
+export interface QuestionsResponseData {
+  questions: Question[];
+  page: string;
 }

@@ -1,12 +1,7 @@
 import React from "react";
 import { SubmitHandler } from "react-hook-form";
 import { Form } from "@/components/ui/form";
-import {
-  TextQuestionData,
-  TextboxQuestion,
-  TextboxQuestionFormData,
-  UnsavedTextQuestion,
-} from "@/lib/types";
+
 import EditQuestionFooter from "./edit-question-footer";
 import { useClickAwayQuestionEdit } from "@/hooks/useClickAwayQuestionEdit";
 import useSaveQuestion from "../_hooks/useSaveQuestion";
@@ -15,9 +10,16 @@ import EditQuestionSettings from "./edit-question-settings";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import useTextboxQuestionForm from "../_hooks/useTextboxQuestionForm";
 import EditQuestionDescription from "./edit-question-description";
+import {
+  SaveTextboxQuestionData,
+  TextboxQuestion,
+  TextboxQuestionFormData,
+  UnsavedTextboxQuestion,
+} from "@/types/question";
+import { isSavedQuestion } from "@/lib/util/questionUtils";
 
 type TextboxQuestionProps = {
-  question: TextboxQuestion | UnsavedTextQuestion;
+  question: TextboxQuestion | UnsavedTextboxQuestion;
   surveyId: string;
   scrollToQuestion: (qIndex: number) => void;
   qIndex: number;
@@ -48,12 +50,12 @@ const BuildTextboxQuestion = ({
   const { isPending, saveQuestionMutation } = useSaveQuestion();
 
   const handleSaveQuestion: SubmitHandler<TextboxQuestionFormData> = (data) => {
-    const questionData: TextQuestionData = {
+    const questionData: SaveTextboxQuestionData = {
       description: data.description,
       required: data.required,
       descriptionImage: data.descriptionImage,
       type: question.type,
-      ...(question.id && { id: question.id }),
+      ...(isSavedQuestion(question) && { id: question.id }),
     };
     setCanSelectQuestion(false);
     const addingQuestionToast = toast({

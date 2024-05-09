@@ -6,7 +6,6 @@ import { Form } from "@/components/ui/form";
 import useCopyQuestion from "../_hooks/useCopyQuestion";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import useSurveyPages from "@/hooks/useSurveyPages";
-import { CopyQuestionData, OperationPosition } from "@/lib/types";
 import { placeQuestionSchema } from "@/lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
@@ -17,6 +16,8 @@ import { v4 as uuid4 } from "uuid";
 import { useToast } from "@/components/ui/use-toast";
 import useSurveyQuestions from "@/hooks/useSurveyQuestions";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
+import { OperationPosition } from "@/types/common";
+import { PlaceQuestionData } from "@/types/question";
 
 type CopyQuestionFormProps = {
   surveyId: string;
@@ -69,7 +70,7 @@ const CopyQuestionForm = ({
 
   useLoadingToast(isPending, "Copying question...");
 
-  const onSubmit = async (values: CopyQuestionData) => {
+  const onSubmit = async (values: PlaceQuestionData) => {
     copyQuestionMutation(
       {
         surveyId,

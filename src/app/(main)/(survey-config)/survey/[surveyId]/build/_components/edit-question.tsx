@@ -1,11 +1,3 @@
-import {
-  MultipleChoiceQuestion,
-  Question,
-  QuestionType,
-  TextboxQuestion,
-  UnsavedQuestion,
-  UnsavedTextQuestion,
-} from "@/lib/types";
 import React from "react";
 import MultiChoiceQuestion from "./build-multichoice-question";
 import TextboxQuestionn from "./build-textbox-question";
@@ -13,6 +5,8 @@ import QuestionCard from "@/components/questions/question-card";
 import EditQuestionHeader from "./edit-question-header";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
+import { Question, QuestionType, UnsavedQuestion } from "@/types/question";
+import { isSavedQuestion } from "@/lib/util/questionUtils";
 
 type EditQuestionProps = {
   question: Question | UnsavedQuestion;
@@ -28,7 +22,7 @@ const EditQuestion = ({
   qIndex,
 }: EditQuestionProps) => {
   const { setNodeRef, isDragging, transform, transition } = useSortable({
-    id: question.id || "unsavedQuestion",
+    id: isSavedQuestion(question) ? question.id : "unsavedQuestion",
   });
   const dragStyle = {
     opacity: isDragging ? "0.4" : undefined,
@@ -37,28 +31,26 @@ const EditQuestion = ({
   };
 
   const renderQuestionEditor = (question: Question | UnsavedQuestion) => {
-    return [
-      QuestionType.dropdown,
-      QuestionType.checkboxes,
-      QuestionType.multiple_choice,
-    ].includes(question.type) ? (
+    if (question.type === QuestionType.textbox)
+      return (
+        <TextboxQuestionn
+          surveyId={surveyId}
+          qIndex={qIndex}
+          scrollToQuestion={scrollToQuestion}
+          question={question}
+        />
+      );
+    return (
       <MultiChoiceQuestion
         scrollToQuestion={scrollToQuestion}
         surveyId={surveyId}
         qIndex={qIndex}
-        question={question as MultipleChoiceQuestion}
-      />
-    ) : (
-      <TextboxQuestionn
-        surveyId={surveyId}
-        qIndex={qIndex}
-        scrollToQuestion={scrollToQuestion}
-        question={question as TextboxQuestion | UnsavedTextQuestion}
+        question={question}
       />
     );
   };
 
-  const isUnsavedQuestion = !question.id;
+  const isUnsavedQuestion = !isSavedQuestion(question);
 
   return (
     <div

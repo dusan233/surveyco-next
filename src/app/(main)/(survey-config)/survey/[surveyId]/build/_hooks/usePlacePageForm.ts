@@ -1,5 +1,5 @@
-import { PlacePageData } from "@/lib/types";
 import { placePageSchema } from "@/lib/validationSchemas";
+import { PlacePageData } from "@/types/survey";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

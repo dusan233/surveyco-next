@@ -11,10 +11,9 @@ import {
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import CopySurveyPageForm from "./copy-survey-page-form";
 import useSurveyPages from "@/hooks/useSurveyPages";
+import { DialogProps } from "@/types/common";
 
-type CopyPageDialogProps = {
-  isOpen: boolean;
-  onOpenChange: () => void;
+type CopyPageDialogProps = DialogProps & {
   surveyId: string;
 };
 

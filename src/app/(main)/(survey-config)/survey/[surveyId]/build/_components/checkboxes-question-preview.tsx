@@ -1,11 +1,11 @@
-import { MultipleChoiceQuestion } from "@/lib/types";
 import React from "react";
 import { FormItem } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 import DOMPurify from "isomorphic-dompurify";
+import { CheckboxesQuestion } from "@/types/question";
 
 type CheckboxesQuestionPreviewProps = {
-  question: MultipleChoiceQuestion;
+  question: CheckboxesQuestion;
 };
 const CheckboxesQuestionPreview = ({
   question,

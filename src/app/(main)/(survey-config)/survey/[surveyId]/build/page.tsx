@@ -9,17 +9,20 @@ import {
 import { BuildQuestionsProvider } from "@/lib/providers/build-questions-provider";
 import { Metadata } from "next";
 import { getSurveyPages, getSurveyQuestions } from "@/api/survey";
+import { PageParams } from "@/types/common";
 
 export const metadata: Metadata = {
   title: "Surveyco - Build Survey Questions",
   description: "Page dedicated for building survey pages and questions.",
 };
 
+type BuildSurveyQuestionsPageProps = {
+  params: PageParams<["surveyId"]>;
+};
+
 const BuildSurveyQuestionsPage = async ({
   params,
-}: {
-  params: { surveyId: string };
-}) => {
+}: BuildSurveyQuestionsPageProps) => {
   const queryClient = new QueryClient();
   const surveyId = params.surveyId;
 
@@ -30,7 +33,7 @@ const BuildSurveyQuestionsPage = async ({
 
   const firstPage = pages.find((page) => page.number === 1);
 
-  const questions = await queryClient.fetchQuery({
+  const questionsData = await queryClient.fetchQuery({
     queryKey: ["survey", surveyId, "questions", firstPage!.id],
     queryFn: () => getSurveyQuestions({ surveyId, surveyPage: firstPage!.id }),
   });
@@ -38,7 +41,7 @@ const BuildSurveyQuestionsPage = async ({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <BuildQuestionsProvider
-        questions={questions.questions}
+        questions={questionsData.questions}
         currentPage={pages.find((page) => page.number === 1)!}
       >
         <BuildSurveyQuestions surveyId={surveyId} />
