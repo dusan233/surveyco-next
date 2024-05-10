@@ -1,10 +1,8 @@
 "use server";
 import {
   ApiError,
-  CopyQuestionData,
   CreateSurveyData,
   QuestionResponse,
-  QuestionsResponsesData,
   QuizResponseData,
 } from "@/lib/types";
 import { cookies } from "next/headers";
@@ -20,6 +18,7 @@ import { OperationPosition } from "@/types/common";
 import {
   PlaceQuestionData,
   Question,
+  QuestionsResponsesData,
   SaveQuestionData,
 } from "@/types/question";
 

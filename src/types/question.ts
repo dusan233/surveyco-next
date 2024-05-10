@@ -21,13 +21,8 @@ export type QuestionResponse = {
 };
 
 export type QuestionsResponsesData = z.infer<typeof questionsResponsesSchema>;
-export type QuestionResponseData = {
-  questionId: string;
-  required: boolean;
-  answer: (string | string[]) & (string | string[] | undefined);
-  questionType: QuestionType;
-  id?: string | undefined;
-};
+export type QuestionResponseData =
+  QuestionsResponsesData["questionResponses"][number];
 
 export type PlaceQuestionData = z.infer<typeof placeQuestionSchema>;
 export type TextboxQuestionFormData = z.infer<typeof textboxQuestionSchema>;

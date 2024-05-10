@@ -1,14 +1,7 @@
 "use client";
 
 import React from "react";
-import QuestionCard from "../question-card";
 import QuestionDescription from "../question-description";
-import {
-  MultipleChoiceQuestion,
-  Question,
-  QuestionType,
-  QuestionsResponsesData,
-} from "@/lib/types";
 import TextboxQuestionResponse from "./textbox-question-response";
 import DropdownQuestionResponse from "./dropdown-question-response";
 import MultiChoiceQuestionResponse from "./multichoice-question-response";
@@ -16,6 +9,11 @@ import CheckboxesQuestionResponse from "./checkboxes-question-response";
 import { useFormContext } from "react-hook-form";
 import AutoAnimate from "@/components/auto-animate";
 import { AlertTriangleIcon } from "lucide-react";
+import {
+  Question,
+  QuestionType,
+  QuestionsResponsesData,
+} from "@/types/question";
 
 type QuestionResponseProps = {
   question: Question;
@@ -35,7 +33,7 @@ const renderQuestionResponseContent = (
   } else if (questionData.type === QuestionType.dropdown) {
     return (
       <DropdownQuestionResponse
-        question={questionData as MultipleChoiceQuestion}
+        question={questionData}
         name={`questionResponses.${index}.answer`}
         defaultValue={defaultValue as string}
       />
@@ -43,7 +41,7 @@ const renderQuestionResponseContent = (
   } else if (questionData.type === QuestionType.multiple_choice) {
     return (
       <MultiChoiceQuestionResponse
-        question={questionData as MultipleChoiceQuestion}
+        question={questionData}
         name={`questionResponses.${index}.answer`}
         defaultValue={defaultValue as string}
       />
@@ -51,7 +49,7 @@ const renderQuestionResponseContent = (
   } else if (questionData.type === QuestionType.checkboxes) {
     return (
       <CheckboxesQuestionResponse
-        question={questionData as MultipleChoiceQuestion}
+        question={questionData}
         name={`questionResponses.${index}.answer`}
         defaultValue={defaultValue as string[]}
       />

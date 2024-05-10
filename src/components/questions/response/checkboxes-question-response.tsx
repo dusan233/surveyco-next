@@ -8,14 +8,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { MultipleChoiceQuestion } from "@/lib/types";
+import { CheckboxesQuestion } from "@/types/question";
 import DOMPurify from "isomorphic-dompurify";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
 type CheckboxesQuestionResponseProps = {
   name: string;
-  question: MultipleChoiceQuestion;
+  question: CheckboxesQuestion;
   defaultValue: string[];
 };
 

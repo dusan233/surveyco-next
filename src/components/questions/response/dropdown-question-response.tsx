@@ -13,15 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MultipleChoiceQuestion } from "@/lib/types";
 import React from "react";
 import DOMPurify from "isomorphic-dompurify";
 import { convert } from "html-to-text";
 import { useFormContext } from "react-hook-form";
+import { DropdownQuestion } from "@/types/question";
 
 type DropdownQuestionResponseProps = {
   name: string;
-  question: MultipleChoiceQuestion;
+  question: DropdownQuestion;
   defaultValue: string;
 };
 

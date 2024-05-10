@@ -1,11 +1,11 @@
 "use client";
 
-import { Question, QuestionsResponsesData } from "@/lib/types";
 import React, { useRef } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import QuestionResponse from "@/components/questions/response/question-response";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import WindowedVirtualList from "@/components/layout/windowed-virtual-list";
+import { Question, QuestionsResponsesData } from "@/types/question";
 
 type QuestionResponseListProps = {
   questions: Question[];

@@ -8,14 +8,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { MultipleChoiceQuestion } from "@/lib/types";
+import { MultichoiceQuestion } from "@/types/question";
 import DOMPurify from "isomorphic-dompurify";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
 type MultichoiceQuestionResponseProps = {
   name: string;
-  question: MultipleChoiceQuestion;
+  question: MultichoiceQuestion;
   defaultValue: string;
 };
 

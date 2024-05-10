@@ -3,19 +3,18 @@
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import useSaveSurveyResponse from "@/hooks/useSaveSurveyResponse";
-import {
-  Question,
-  QuestionResponseData,
-  QuestionsResponsesData,
-  SurveyPage,
-} from "@/lib/types";
 import { questionsResponsesSchema } from "@/lib/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import QuestionResponseList from "../questions/response/question-response-list";
 import { useToast } from "../ui/use-toast";
+import {
+  Question,
+  QuestionResponseData,
+  QuestionsResponsesData,
+} from "@/types/question";
+import { SurveyPage } from "@/types/survey";
 
 type SurveyResponseFormProps = {
   questions: Question[];
