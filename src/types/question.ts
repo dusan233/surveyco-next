@@ -7,17 +7,19 @@ import {
 import { z } from "zod";
 import { Timestamps } from "./common";
 
+export type QuestionAnswer = {
+  id: string;
+  questionResponseId: string;
+  questionOptionId: string | null;
+  questionId: string;
+  textAnswer: string | null;
+};
+
 export type QuestionResponse = {
   id: string;
   surveyResponseId: string;
   questionId: string;
-  answer: {
-    id: string;
-    questionResponseId: string;
-    questionOptionId: string | null;
-    questionId: string;
-    textAnswer: string | null;
-  }[];
+  answer: QuestionAnswer[];
 };
 
 export type QuestionsResponsesData = z.infer<typeof questionsResponsesSchema>;

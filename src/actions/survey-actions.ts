@@ -1,10 +1,5 @@
 "use server";
-import {
-  ApiError,
-  CreateSurveyData,
-  QuestionResponse,
-  QuizResponseData,
-} from "@/lib/types";
+import { ApiError, CreateSurveyData, QuizResponseData } from "@/lib/types";
 import { cookies } from "next/headers";
 import cookie from "cookie";
 import setCookie from "set-cookie-parser";
@@ -18,6 +13,7 @@ import { OperationPosition } from "@/types/common";
 import {
   PlaceQuestionData,
   Question,
+  QuestionResponse,
   QuestionsResponsesData,
   SaveQuestionData,
 } from "@/types/question";

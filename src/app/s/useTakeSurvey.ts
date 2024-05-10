@@ -1,6 +1,10 @@
+import {
+  Question,
+  QuestionType,
+  QuestionsResponsesData,
+} from "@/types/question";
 import useQuestionsAndResponses from "./useQuestionsAndResponses";
 import useSurveyPages from "@/hooks/useSurveyPages";
-import { Question, QuestionType, QuestionsResponsesData } from "@/lib/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";

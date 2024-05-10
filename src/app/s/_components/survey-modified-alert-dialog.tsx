@@ -9,12 +9,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { DialogProps } from "@/types/common";
 import React from "react";
 
-type SurveyModifiedAlertDialogProps = {
-  isOpen: boolean;
-  onOpenChange: () => void;
-};
+type SurveyModifiedAlertDialogProps = DialogProps;
 
 const SurveyModifiedAlertDialog = ({
   isOpen,
