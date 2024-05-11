@@ -1,4 +1,5 @@
-import { CollectorType, SurveyResponse } from "@/lib/types";
+import { CollectorType } from "@/types/collector";
+import { SurveyResponse } from "@/types/survey";
 import { format } from "date-fns";
 import React from "react";
 

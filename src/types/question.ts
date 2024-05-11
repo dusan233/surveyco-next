@@ -49,14 +49,6 @@ export type SaveQuestionData =
   | SaveMultiChoiceQuestionData
   | SaveTextboxQuestionData;
 
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
 export interface QuestionResultBase
   extends SavedQuestionBase,
     UnsavedQuestionBase,
@@ -72,30 +64,34 @@ export interface ChoiceResult extends QuestionOption {
 }
 export interface MultipleChoiceQuestionResult
   extends QuestionResultBase,
+    IQuestionType<QuestionType.multiple_choice>,
     ChoicesResult {}
-export interface TextboxQuestionResult extends QuestionResultBase {
-  answers: {
-    id: string;
-    questionResponseId: string;
-    text: string | null;
-    updated_at: string;
-  }[];
+export interface CheckboxQuestionResult
+  extends QuestionResultBase,
+    IQuestionType<QuestionType.checkboxes>,
+    ChoicesResult {}
+export interface DropdownQuestionResult
+  extends QuestionResultBase,
+    IQuestionType<QuestionType.dropdown>,
+    ChoicesResult {}
+export interface TextboxQuestionResult
+  extends QuestionResultBase,
+    IQuestionType<QuestionType.textbox> {
+  answers: TextboxQuestionAnswer[];
 }
+
+export type TextboxQuestionAnswer = {
+  id: string;
+  questionResponseId: string;
+  text: string | null;
+  updated_at: string;
+};
 
 export type QuestionResult =
   | TextboxQuestionResult
-  | MultipleChoiceQuestionResult;
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
-//results related
+  | MultipleChoiceQuestionResult
+  | CheckboxQuestionResult
+  | DropdownQuestionResult;
 
 export enum QuestionType {
   multiple_choice = "multiple_choice",

@@ -1,7 +1,8 @@
-import { TextboxQuestionResult } from "@/lib/types";
+"@/lib/types";
 import React from "react";
 import { format } from "date-fns";
 import QuestionResultDescription from "./question-result-description";
+import { TextboxQuestionResult } from "@/types/question";
 
 type TextboxQuestionResultsProps = {
   questionResult: TextboxQuestionResult;

@@ -13,17 +13,18 @@ import {
   getSurveyPages,
 } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
+import { PageParams } from "@/types/common";
 
 export const metadata: Metadata = {
   title: "Surveyco - Survey results",
   description: "Survey page question results.",
 };
 
-const SurveyResultsPage = async ({
-  params,
-}: {
-  params: { surveyId: string };
-}) => {
+type SurveyResultsPageProps = {
+  params: PageParams<["surveyId"]>;
+};
+
+const SurveyResultsPage = async ({ params }: SurveyResultsPageProps) => {
   const surveyId = params.surveyId;
   const queryClient = new QueryClient();
   const { getToken } = auth();

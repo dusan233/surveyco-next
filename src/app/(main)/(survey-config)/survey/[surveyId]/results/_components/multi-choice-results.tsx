@@ -1,6 +1,5 @@
 "use client";
 
-import { MultipleChoiceQuestionResult } from "@/lib/types";
 import React, { useState } from "react";
 
 import BarChartResults from "./bar-chart-results";
@@ -11,9 +10,17 @@ import QuestionResultDescription from "./question-result-description";
 import { CheckedState } from "@radix-ui/react-checkbox";
 
 import DisplayResultsOptions from "./display-results-options";
+import {
+  CheckboxQuestionResult,
+  DropdownQuestionResult,
+  MultipleChoiceQuestionResult,
+} from "@/types/question";
 
 type MultiChoiceQuestionResultsProps = {
-  questionResult: MultipleChoiceQuestionResult;
+  questionResult:
+    | MultipleChoiceQuestionResult
+    | DropdownQuestionResult
+    | CheckboxQuestionResult;
 };
 
 const MultiChoiceQuestionResults = ({

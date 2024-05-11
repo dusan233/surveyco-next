@@ -1,5 +1,5 @@
-import { QuestionResult } from "@/lib/types";
 import { getQuestionTypeLable } from "@/lib/util/questionUtils";
+import { QuestionResult } from "@/types/question";
 import { convert } from "html-to-text";
 import React from "react";
 

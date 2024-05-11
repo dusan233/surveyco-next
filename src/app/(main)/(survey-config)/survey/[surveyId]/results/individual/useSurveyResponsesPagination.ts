@@ -1,4 +1,4 @@
-import { SurveyResponse } from "@/lib/types";
+import { SurveyResponse } from "@/types/survey";
 import { useIndividualResponseStore } from "./useIndividualResponseStore";
 
 export default function useSurveyResponsesPagination(

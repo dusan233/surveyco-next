@@ -1,9 +1,4 @@
-import {
-  MultipleChoiceQuestion,
-  Question,
-  QuestionResponse,
-  QuestionType,
-} from "@/lib/types";
+import { Question, QuestionResponse, QuestionType } from "@/types/question";
 import { convert } from "html-to-text";
 import DOMPurify from "isomorphic-dompurify";
 import React from "react";
@@ -29,9 +24,7 @@ const IndividualResponseAnswers = ({
           question.type === QuestionType.textbox
             ? questionResponse?.answer[0].textAnswer
             : questionResponse?.answer.map((qAnswer) => {
-                const choiceContent = (
-                  question as MultipleChoiceQuestion
-                ).options.find(
+                const choiceContent = question.options.find(
                   (choice) => choice.id === qAnswer.questionOptionId
                 );
                 return (

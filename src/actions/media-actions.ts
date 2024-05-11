@@ -1,6 +1,6 @@
 "use server";
 
-import { MediaUploadResData } from "@/lib/types";
+import { MediaUploadResData } from "@/types/upload";
 import { getAccessToken } from "./helper";
 import { getResponseData } from "@/lib/util/getResponseData";
 

@@ -6,21 +6,23 @@ import {
 import React from "react";
 import NoResponses from "../_components/no-responses";
 import IndividualResponses from "../_components/individual-response/individual-responses";
-import { SortObject } from "@/lib/types";
 import { Metadata } from "next";
 import { getSurvey, getSurveyPages, getSurveyResponses } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
+import { PageParams, SortObject } from "@/types/common";
 
 export const metadata: Metadata = {
   title: "Surveyco - Survey results",
   description: "Survey individual response results.",
 };
 
+type IndividualResponsesPageProps = {
+  params: PageParams<["surveyId"]>;
+};
+
 const IndividualResponsesPage = async ({
   params,
-}: {
-  params: { surveyId: string };
-}) => {
+}: IndividualResponsesPageProps) => {
   const surveyId = params.surveyId;
   const queryClient = new QueryClient();
   const { getToken } = auth();

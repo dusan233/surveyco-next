@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SurveyPage } from "@/lib/types";
+import { SurveyPage } from "@/types/survey";
 import React from "react";
 
 type SurveyQuestionResultsControlProps = {

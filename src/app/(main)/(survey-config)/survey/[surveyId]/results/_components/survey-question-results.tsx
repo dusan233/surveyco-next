@@ -1,11 +1,7 @@
 "use client";
 
 import { useQuestionResults } from "../useSurveyResults";
-import {
-  MultipleChoiceQuestionResult,
-  QuestionType,
-  TextboxQuestionResult,
-} from "@/lib/types";
+
 import React, { useRef, useState } from "react";
 import MultiChoiceQuestionResults from "./multi-choice-results";
 import TextboxQuestionResults from "./textbox-question-results";
@@ -16,6 +12,7 @@ import SurveyQuestionResultsControl from "./survey-question-results-control";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import WindowedVirtualList from "@/components/layout/windowed-virtual-list";
 import { Survey } from "@/types/survey";
+import { QuestionType } from "@/types/question";
 
 type SurveyResultsProps = {
   survey: Survey;
@@ -60,14 +57,11 @@ const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
         listRef={listRef}
         renderItem={(virtualRow) => {
           const qResult = questionResultsData![virtualRow.index];
+
           return qResult.type !== QuestionType.textbox ? (
-            <MultiChoiceQuestionResults
-              questionResult={qResult as MultipleChoiceQuestionResult}
-            />
+            <MultiChoiceQuestionResults questionResult={qResult} />
           ) : (
-            <TextboxQuestionResults
-              questionResult={qResult as TextboxQuestionResult}
-            />
+            <TextboxQuestionResults questionResult={qResult} />
           );
         }}
       />

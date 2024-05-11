@@ -1,17 +1,17 @@
+import { getResponseData } from "@/lib/util/getResponseData";
+import { SortObject } from "@/types/common";
 import {
   Question,
   QuestionResponse,
   QuestionResult,
-  SortObject,
-  SurveyResponse,
-  SurveyResponsesResData,
-} from "@/lib/types";
-import { getResponseData } from "@/lib/util/getResponseData";
-import { QuestionsResponseData } from "@/types/question";
+  QuestionsResponseData,
+} from "@/types/question";
 import {
   Survey,
   SurveyCollectorsResData,
   SurveyPage,
+  SurveyResponse,
+  SurveyResponsesResData,
   VolumeByDay,
 } from "@/types/survey";
 import qs from "qs";

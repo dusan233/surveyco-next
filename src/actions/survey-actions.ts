@@ -1,15 +1,14 @@
 "use server";
-import { ApiError, CreateSurveyData, QuizResponseData } from "@/lib/types";
+
 import { cookies } from "next/headers";
 import cookie from "cookie";
 import setCookie from "set-cookie-parser";
-
 import { revalidatePath } from "next/cache";
 import { getAccessToken } from "./helper";
 import qs from "qs";
 import { getResponseData } from "@/lib/util/getResponseData";
-import { SurveyPage } from "@/types/survey";
-import { OperationPosition } from "@/types/common";
+import { CreateSurveyData, Survey, SurveyPage } from "@/types/survey";
+import { ApiError, OperationPosition } from "@/types/common";
 import {
   PlaceQuestionData,
   Question,
@@ -272,9 +271,7 @@ export const createSurveyPage = async (
   return data as SurveyPage;
 };
 
-export const createSurvey = async (
-  data: CreateSurveyData
-): Promise<QuizResponseData> => {
+export const createSurvey = async (data: CreateSurveyData): Promise<Survey> => {
   const token = await getAccessToken();
 
   const res = await fetch(
