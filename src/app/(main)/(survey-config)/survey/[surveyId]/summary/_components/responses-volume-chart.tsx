@@ -125,6 +125,7 @@ const ResponsesVolumeChart = ({ data }: ResponsesVolumeChartProps) => {
 };
 
 const CustomXAxisTick = (s: any) => {
+  const date = new Date(s.payload.value);
   return !s.hideXAxis ? (
     <g transform={`translate(${s.x - (s.width - 10) / 2},${s.y})`}>
       <foreignObject textAnchor="middle" width="100%" height="100%">
@@ -135,7 +136,9 @@ const CustomXAxisTick = (s: any) => {
           }}
           className="text-xs p-0.5  text-center border-r leading-[12px] border-red-50 break-all line-clamp-2"
         >
-          <div> {format(new Date(s.payload.value), "MMMM d")}</div>
+          <div>
+            <time dateTime={date.toISOString()}>{format(date, "MMMM d")}</time>
+          </div>
         </div>
       </foreignObject>
     </g>

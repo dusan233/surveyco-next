@@ -27,6 +27,8 @@ const DeleteCollectorDialog = ({
 }: DeleteCollectorDialogProps) => {
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
+  const createdAt = new Date(collector.created_at);
+  const updatedAt = new Date(collector.updated_at);
 
   const handleDeleteCollector = () => {
     onOpenChange();
@@ -58,17 +60,15 @@ const DeleteCollectorDialog = ({
               <p>Name: {collector.name}</p>
               <p>
                 Date Created:{" "}
-                {format(
-                  new Date(collector.created_at),
-                  "EEEE, MMMM dd, yyyy H:mm"
-                )}
+                <time dateTime={createdAt.toISOString()}>
+                  {format(createdAt, "EEEE, MMMM dd, yyyy H:mm")}
+                </time>
               </p>
               <p>
                 Date Updated:{" "}
-                {format(
-                  new Date(collector.updated_at),
-                  "EEEE, MMMM dd, yyyy H:mm"
-                )}
+                <time dateTime={updatedAt.toISOString()}>
+                  {format(updatedAt, "EEEE, MMMM dd, yyyy H:mm")}
+                </time>
               </p>
             </div>
           </div>

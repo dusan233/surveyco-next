@@ -8,6 +8,8 @@ type CollectorsSummaryItemProps = {
 };
 
 const CollectorsSummaryItem = ({ collector }: CollectorsSummaryItemProps) => {
+  const createdAt = new Date(collector.created_at);
+
   return (
     <div
       key={collector.id}
@@ -29,7 +31,10 @@ const CollectorsSummaryItem = ({ collector }: CollectorsSummaryItemProps) => {
           {collector.name}
         </Link>
         <div className="text-xs  text-gray-500">
-          Created on {format(new Date(collector.created_at), "M/d/yyyy")}
+          Created on{" "}
+          <time dateTime={createdAt.toISOString()}>
+            {format(createdAt, "M/d/yyyy")}
+          </time>
         </div>
       </div>
       <div className="text-lg  font-medium text-center max-w-[100px]">

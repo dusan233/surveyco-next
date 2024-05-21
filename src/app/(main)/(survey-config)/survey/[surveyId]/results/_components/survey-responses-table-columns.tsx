@@ -61,12 +61,14 @@ export const columns: ColumnDef<SurveyResponse>[] = [
 
     cell: ({ row }) => {
       const lastModifiedVal: string = row.getValue("updated_at");
-      const formattedDate = format(
-        new Date(lastModifiedVal),
-        "yyyy-MM-dd HH:mm"
-      );
+      const lastModifiedDate = new Date(lastModifiedVal);
+      const formattedDate = format(lastModifiedDate, "yyyy-MM-dd HH:mm");
 
-      return <div>{formattedDate}</div>;
+      return (
+        <div>
+          <time dateTime={lastModifiedDate.toISOString()}>{formattedDate}</time>
+        </div>
+      );
     },
   },
   {

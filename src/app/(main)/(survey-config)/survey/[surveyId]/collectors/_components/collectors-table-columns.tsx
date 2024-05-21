@@ -46,8 +46,9 @@ export const columns: ColumnDef<Collector>[] = [
     },
     cell: ({ row }) => {
       const dateVal = row.original.created_at;
+      const createdDate = new Date(dateVal);
 
-      const formattedDate = format(dateVal, "dd/MM/yyyy");
+      const formattedDate = format(createdDate, "dd/MM/yyyy");
       return (
         <div className="font-medium text-sm space-y-1">
           <Link
@@ -58,7 +59,10 @@ export const columns: ColumnDef<Collector>[] = [
           </Link>
 
           <CopyCollectorWebLink collectorId={row.original.id} />
-          <div>Created {formattedDate}</div>
+          <div>
+            Created{" "}
+            <time dateTime={createdDate.toISOString()}>{formattedDate}</time>
+          </div>
         </div>
       );
     },
@@ -123,9 +127,14 @@ export const columns: ColumnDef<Collector>[] = [
     },
     cell: ({ row }) => {
       const dateVal: string = row.getValue("updated_at");
-      const formattedDate = format(dateVal, "dd/MM/yyyy");
+      const updatedAt = new Date(dateVal);
+      const formattedDate = format(updatedAt, "dd/MM/yyyy");
 
-      return <div className="font-medium text-sm">{formattedDate}</div>;
+      return (
+        <div className="font-medium text-sm">
+          <time dateTime={updatedAt.toISOString()}>{formattedDate}</time>
+        </div>
+      );
     },
   },
   {

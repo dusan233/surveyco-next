@@ -18,6 +18,7 @@ const TextboxQuestionResults = ({
       {questionResult.answeredCount !== 0 ? (
         <div className="mt-10 flex flex-col gap-2">
           {questionResult.answers.map((answer) => {
+            const submissionDate = new Date(answer.updated_at);
             return (
               <div
                 className="bg-slate-50 text-gray-500 border rounded-sm py-1 px-1.5"
@@ -25,7 +26,9 @@ const TextboxQuestionResults = ({
               >
                 <div className="font-medium text-black"> {answer.text}</div>
                 <div className="text-sm mt-2">
-                  {format(new Date(answer.updated_at), "MM/dd/yyyy hh:mm a")}
+                  <time dateTime={submissionDate.toISOString()}>
+                    {format(submissionDate, "MM/dd/yyyy hh:mm a")}
+                  </time>
                 </div>
               </div>
             );

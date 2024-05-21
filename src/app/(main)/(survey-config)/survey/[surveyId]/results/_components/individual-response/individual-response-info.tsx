@@ -10,6 +10,7 @@ interface IndividualResponseInfoProps {
 const IndividualResponseInfo = ({
   surveyResponse,
 }: IndividualResponseInfoProps) => {
+  const lastModified = new Date(surveyResponse.updated_at);
   return (
     <div className="space-y-2">
       <div className="flex gap-2 font-bold">
@@ -32,10 +33,9 @@ const IndividualResponseInfo = ({
       <div className="flex gap-2">
         <span className="font-bold">Last Modified:</span>
         <span>
-          {format(
-            new Date(surveyResponse.updated_at!),
-            "EEEE, MMMM dd, yyyy h:mm:ss a"
-          )}
+          <time dateTime={lastModified.toISOString()}>
+            {format(lastModified, "EEEE, MMMM dd, yyyy h:mm:ss a")}
+          </time>
         </span>
       </div>
       <div className="flex gap-2">

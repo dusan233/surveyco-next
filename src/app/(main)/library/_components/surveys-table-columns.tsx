@@ -50,9 +50,14 @@ export const columns: ColumnDef<Survey>[] = [
 
     cell: ({ row }) => {
       const createdVal: string = row.getValue("created_at");
-      const formattedDate = format(new Date(createdVal), "yyyy-MM-dd");
+      const createdDate = new Date(createdVal);
+      const formattedDate = format(createdDate, "yyyy-MM-dd");
 
-      return <div>{formattedDate}</div>;
+      return (
+        <span>
+          <time dateTime={createdDate.toISOString()}>{formattedDate}</time>
+        </span>
+      );
     },
   },
 
@@ -72,9 +77,14 @@ export const columns: ColumnDef<Survey>[] = [
 
     cell: ({ row }) => {
       const lastModifiedVal: string = row.getValue("updated_at");
-      const formattedDate = format(new Date(lastModifiedVal), "yyyy-MM-dd");
+      const lastModifiedDate = new Date(lastModifiedVal);
+      const formattedDate = format(lastModifiedDate, "yyyy-MM-dd");
 
-      return <div>{formattedDate}</div>;
+      return (
+        <span>
+          <time dateTime={lastModifiedDate.toISOString()}>{formattedDate}</time>
+        </span>
+      );
     },
   },
   {

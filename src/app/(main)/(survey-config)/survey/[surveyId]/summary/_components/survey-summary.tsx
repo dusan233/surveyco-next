@@ -23,10 +23,15 @@ const SurveySummary = async ({ surveyId }: SurveySummaryProps) => {
     { text: "Survey results", href: `/survey/${surveyId}/results` },
   ];
 
+  const createdAt = new Date(survey.created_at);
+
   return (
     <div className="p-5 shadow-sm rounded-lg bg-white ">
       <div className="text-xs  text-gray-500">
-        Created on {format(new Date(survey.created_at), "M/d/yyyy")}
+        Created on{" "}
+        <time dateTime={createdAt.toISOString()}>
+          {format(createdAt, "M/d/yyyy")}
+        </time>
       </div>
       <div className="flex h-full flex-wrap sm:flex-nowrap sm:h-24 gap-5 mt-5">
         <div className="uppercase flex max-w-xs w-full flex-col gap-2 sm:gap-6">

@@ -15,11 +15,11 @@ const SurveyTitleDefault = async ({ params }: SurveyTitleDefaultProps) => {
   const survey = await getSurvey({ surveyId, token });
 
   return (
-    <div className="bg-slate-800 flex items-center min-h-[100px] px-4 sm:px-10">
+    <section className="bg-slate-800 flex items-center min-h-[100px] px-4 sm:px-10">
       <h1 className="text-2xl text-white font-bold py-4 break-words min-w-[1%]">
         {survey.title}
       </h1>
-    </div>
+    </section>
   );
 };
 
