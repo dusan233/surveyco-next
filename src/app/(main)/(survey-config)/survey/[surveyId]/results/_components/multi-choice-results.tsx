@@ -15,6 +15,7 @@ import {
   DropdownQuestionResult,
   MultipleChoiceQuestionResult,
 } from "@/types/question";
+import { Card } from "@/components/ui/card";
 
 type MultiChoiceQuestionResultsProps = {
   questionResult:
@@ -47,7 +48,7 @@ const MultiChoiceQuestionResults = ({
   });
 
   return (
-    <div className="p-5 shadow-sm rounded-lg bg-white">
+    <Card>
       <QuestionResultDescription questionResult={questionResult} />
       {questionResult.answeredCount !== 0 ? (
         <>
@@ -86,7 +87,7 @@ const MultiChoiceQuestionResults = ({
           <p>No matching responses.</p>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useSelectedLayoutSegments } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React from "react";
 import BuildSurveyNavigationLink from "./build-survey-navigation-link";
 

@@ -1,5 +1,6 @@
 import { getSurvey } from "@/api/survey";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { SurveyStatus } from "@/types/survey";
 import { auth } from "@clerk/nextjs/server";
@@ -26,7 +27,7 @@ const SurveySummary = async ({ surveyId }: SurveySummaryProps) => {
   const createdAt = new Date(survey.created_at);
 
   return (
-    <div className="p-5 shadow-sm rounded-lg bg-white ">
+    <Card>
       <div className="text-xs  text-gray-500">
         Created on{" "}
         <time dateTime={createdAt.toISOString()}>
@@ -78,7 +79,7 @@ const SurveySummary = async ({ surveyId }: SurveySummaryProps) => {
           </Link>
         ))}
       </div>
-    </div>
+    </Card>
   );
 };
 

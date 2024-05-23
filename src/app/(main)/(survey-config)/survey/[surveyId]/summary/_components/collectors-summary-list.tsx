@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getSurveyCollectors } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
 import { SortObject } from "@/types/common";
+import { Card } from "@/components/ui/card";
 
 type CollectorsSummaryListProps = {
   surveyId: string;
@@ -26,7 +27,7 @@ const CollectorsSummaryList = async ({
   const collectors = collectorsData.data;
 
   return (
-    <div className="bg-white p-5 rounded-lg shadow-sm">
+    <Card>
       <div className=" space-y-4 bg-white">
         {collectors.map((collector) => {
           return (
@@ -42,7 +43,7 @@ const CollectorsSummaryList = async ({
           </Button>
         </Link>
       </div>
-    </div>
+    </Card>
   );
 };
 

@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Spinner from "@/components/ui/spinner";
 import { getSurveyResponsesVolume } from "@/api/survey";
 import { auth } from "@clerk/nextjs/server";
+import { Card } from "@/components/ui/card";
 
 type ResponsesVolumeProps = {
   surveyId: string;
@@ -24,12 +25,12 @@ const ResponsesVolume = async ({ surveyId }: ResponsesVolumeProps) => {
   });
 
   return (
-    <div className="p-5 shadow-sm rounded-lg bg-white">
+    <Card>
       <p className="mb-4">Last 10 days</p>
       <div className="flex justify-center">
         <DynamicResponsesVolumeChart data={responsesVolumeData} />
       </div>
-    </div>
+    </Card>
   );
 };
 

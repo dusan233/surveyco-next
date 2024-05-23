@@ -21,7 +21,7 @@ const Login = () => {
     );
 
   return (
-    <Card className="max-w-md border-none sm:border shadow-none w-full px-5 sm:px-10 pt-5 pb-5 sm:pb-10 sm:drop-shadow-sm">
+    <Card className="max-w-md border-none sm:border shadow-none w-full px-5 sm:px-10 pt-5 pb-3 sm:pb-10 sm:drop-shadow-sm">
       <div className="flex justify-end gap-1 text-sm mb-5">
         {`Don’t have an account? `}
         <Link className="text-blue-800 hover:underline" href="/sign-up">

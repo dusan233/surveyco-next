@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -22,7 +23,7 @@ const SurveyQuestionResultsControl = ({
   setPage,
 }: SurveyQuestionResultsControlProps) => {
   return (
-    <div className="p-5 space-y-2 shadow-sm rounded-lg bg-white">
+    <Card className="space-y-2">
       <h2 className="font-bold text-lg">
         Total responses: {surveyResponseCount}
       </h2>
@@ -46,7 +47,7 @@ const SurveyQuestionResultsControl = ({
           </SelectContent>
         </Select>
       </div>
-    </div>
+    </Card>
   );
 };
 

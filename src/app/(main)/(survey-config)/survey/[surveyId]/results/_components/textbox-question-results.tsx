@@ -3,6 +3,7 @@ import React from "react";
 import { format } from "date-fns";
 import QuestionResultDescription from "./question-result-description";
 import { TextboxQuestionResult } from "@/types/question";
+import { Card } from "@/components/ui/card";
 
 type TextboxQuestionResultsProps = {
   questionResult: TextboxQuestionResult;
@@ -12,9 +13,8 @@ const TextboxQuestionResults = ({
   questionResult,
 }: TextboxQuestionResultsProps) => {
   return (
-    <div className="p-5 shadow-sm rounded-lg bg-white">
+    <Card>
       <QuestionResultDescription questionResult={questionResult} />
-
       {questionResult.answeredCount !== 0 ? (
         <div className="mt-10 flex flex-col gap-2">
           {questionResult.answers.map((answer) => {
@@ -39,7 +39,7 @@ const TextboxQuestionResults = ({
           <p>No matching responses.</p>
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 
