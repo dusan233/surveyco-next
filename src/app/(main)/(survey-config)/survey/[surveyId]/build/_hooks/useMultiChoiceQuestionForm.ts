@@ -1,5 +1,5 @@
-import { MultiChoiceQuestionFormData } from "@/lib/types";
 import { multiChoiceQuestionSchema } from "@/lib/validationSchemas";
+import { MultiChoiceQuestionFormData } from "@/types/question";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

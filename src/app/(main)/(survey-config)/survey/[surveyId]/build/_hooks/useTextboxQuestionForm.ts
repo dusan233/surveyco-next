@@ -1,5 +1,5 @@
-import { TextboxQuestionFormData } from "@/lib/types";
 import { textboxQuestionSchema } from "@/lib/validationSchemas";
+import { TextboxQuestionFormData } from "@/types/question";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
