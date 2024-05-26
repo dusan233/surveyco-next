@@ -1,5 +1,7 @@
+import { OperationPosition } from "@/types/common";
+import { QuestionType } from "@/types/question";
+import { SurveyCategory } from "@/types/survey";
 import { z } from "zod";
-import { OperationPosition, QuestionType, SurveyCategory } from "./types";
 
 const MAX_FILE_SIZE = 6000000;
 const ACCEPTED_IMAGE_TYPES = [

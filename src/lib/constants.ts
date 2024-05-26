@@ -1,8 +1,9 @@
 import { FaListUl } from "react-icons/fa6";
-import { QuestionType, SurveyCategory } from "./types";
 import { IoMdCheckboxOutline } from "react-icons/io";
 import { HiSelector } from "react-icons/hi";
 import { PiTextboxBold } from "react-icons/pi";
+import { SurveyCategory } from "@/types/survey";
+import { QuestionType } from "@/types/question";
 
 export const SURVEY_CATEGORIES = [
   {

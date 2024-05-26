@@ -1,8 +1,9 @@
-import { Collector, CollectorType, SurveyResponse } from "@/lib/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import SurveyResponseTableAction from "./survey-response-table-action";
 import SortableHeader from "@/components/data-table/sortable-header";
+import { SurveyResponse } from "@/types/survey";
+import { Collector, CollectorType } from "@/types/collector";
 
 export const columns: ColumnDef<SurveyResponse>[] = [
   {
