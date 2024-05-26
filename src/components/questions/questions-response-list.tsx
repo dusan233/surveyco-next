@@ -1,14 +1,12 @@
-import { Question } from '@/lib/types'
-import React from 'react'
+import { Question } from "@/types/question";
+import React from "react";
 
 type QuestionsResponseListProps = {
-    questions: Question[]
-}
+  questions: Question[];
+};
 
 const QuestionsResponseList = ({}: QuestionsResponseListProps) => {
-  return (
-    <div>QuestionsResponseList</div>
-  )
-}
+  return <div>QuestionsResponseList</div>;
+};
 
-export default QuestionsResponseList
+export default QuestionsResponseList;
