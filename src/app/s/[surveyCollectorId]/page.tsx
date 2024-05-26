@@ -9,11 +9,11 @@ import SurveyResponse from "../_components/survey-response";
 
 import { cookies } from "next/headers";
 import { RedirectType, permanentRedirect } from "next/navigation";
-import { CollectorStatus } from "@/lib/types";
 import { Metadata } from "next";
 import { getCollector } from "@/api/collector";
 import { getSurveyPages } from "@/api/survey";
 import { getSurveyQuestionsAndResponses } from "@/actions/survey-actions";
+import { CollectorStatus } from "@/types/collector";
 
 type PageProps = { params: { surveyCollectorId: string } };
 
