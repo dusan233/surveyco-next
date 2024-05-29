@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import "../../styles/global.css";
 import Link from "next/link";
 import AppLogo from "@/components/layout/logo";
 import { Metadata } from "next";

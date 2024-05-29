@@ -1,5 +1,4 @@
 import { PropsWithChildren } from "react";
-import "../../styles/global.css";
 import AppLogo from "@/components/layout/logo";
 
 export default function AuthLayout({ children }: PropsWithChildren) {

@@ -1,5 +1,4 @@
 import Footer from "@/components/layout/footer";
-import "../../styles/global.css";
 import Navbar from "@/components/layout/navbar";
 import { PropsWithChildren } from "react";
 
