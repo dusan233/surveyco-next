@@ -8,8 +8,7 @@ type CollectorsHeaderProps = {
 const CollectorsHeader = ({ surveyId }: CollectorsHeaderProps) => {
   return (
     <div className="flex flex-wrap items-center justify-between gap-2 mb-5">
-      <h2 className="text-2xl">Survey Collectors</h2>
-      
+      <h1 className="text-2xl">Survey Collectors</h1>
       <CreateCollector surveyId={surveyId} />
     </div>
   );

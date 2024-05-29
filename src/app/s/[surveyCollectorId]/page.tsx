@@ -14,12 +14,15 @@ import { getCollector } from "@/api/collector";
 import { getSurveyPages } from "@/api/survey";
 import { getSurveyQuestionsAndResponses } from "@/actions/survey-actions";
 import { CollectorStatus } from "@/types/collector";
+import { PageParams } from "@/types/common";
 
-type PageProps = { params: { surveyCollectorId: string } };
+type TakeSurveyPageProps = {
+  params: PageParams<["surveyCollectorId"]>;
+};
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: TakeSurveyPageProps): Promise<Metadata> {
   const collectorId = params.surveyCollectorId;
   const collector = await getCollector(collectorId);
 
@@ -29,7 +32,7 @@ export async function generateMetadata({
   };
 }
 
-const TakeSurveyPage = async ({ params }: PageProps) => {
+const TakeSurveyPage = async ({ params }: TakeSurveyPageProps) => {
   const queryClient = new QueryClient();
 
   const collector = await getCollector(params.surveyCollectorId);
@@ -69,12 +72,14 @@ const TakeSurveyPage = async ({ params }: PageProps) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="mx-auto max-w-4xl">
-        <SurveyResponse
-          surveyResposneStartTime={surveyResposneStartTime}
-          collectorId={collector.id}
-          surveyId={surveyId}
-        />
+      <div className="bg-slate-100 min-h-screen p-5 sm:p-10">
+        <div className="mx-auto max-w-4xl">
+          <SurveyResponse
+            surveyResposneStartTime={surveyResposneStartTime}
+            collectorId={collector.id}
+            surveyId={surveyId}
+          />
+        </div>
       </div>
     </HydrationBoundary>
   );
