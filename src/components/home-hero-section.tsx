@@ -21,17 +21,23 @@ const HomeHeroSection = () => {
         Create surveys that break the norm.
       </p>
       {!userId ? (
-        <Link href="/sign-up">
-          <Button size="lg" className="mt-8 w-36  text-white" variant="default">
-            Get started
-          </Button>
-        </Link>
+        <Button
+          asChild
+          size="lg"
+          className="mt-8 w-36  text-white"
+          variant="default"
+        >
+          <Link href="/sign-up">Get started</Link>
+        </Button>
       ) : (
-        <Link href="/library">
-          <Button size="lg" className="mt-8 w-36  text-white" variant="default">
-            My surveys
-          </Button>
-        </Link>
+        <Button
+          asChild
+          size="lg"
+          className="mt-8 w-36  text-white"
+          variant="default"
+        >
+          <Link href="/library">My surveys</Link>
+        </Button>
       )}
     </div>
   );

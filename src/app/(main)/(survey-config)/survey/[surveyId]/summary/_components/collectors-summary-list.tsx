@@ -37,11 +37,11 @@ const CollectorsSummaryList = async ({
       </div>
 
       <div className="mt-10">
-        <Link href={`/survey/${surveyId}/collectors`}>
-          <Button size="sm" className="w-full sm:w-auto">
+        <Button size="sm" className="w-full sm:w-auto" asChild>
+          <Link href={`/survey/${surveyId}/collectors`}>
             See all collectors
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </div>
     </Card>
   );

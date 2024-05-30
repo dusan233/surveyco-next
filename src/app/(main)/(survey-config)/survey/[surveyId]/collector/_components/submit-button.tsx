@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Spinner from "@/components/ui/spinner";
 import React from "react";
 import { useFormStatus } from "react-dom";
 
@@ -9,7 +10,7 @@ const SubmitButton = () => {
 
   return (
     <Button type="submit" disabled={pending}>
-      Save
+      Save {pending && <Spinner size="xs" />}
     </Button>
   );
 };

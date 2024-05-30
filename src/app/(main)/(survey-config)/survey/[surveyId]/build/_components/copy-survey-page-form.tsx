@@ -25,6 +25,7 @@ import { useToast } from "@/components/ui/use-toast";
 import usePlacePageForm from "../_hooks/usePlacePageForm";
 import { OperationPosition } from "@/types/common";
 import { PlacePageData } from "@/types/survey";
+import Spinner from "@/components/ui/spinner";
 
 type CopySurveyPageFormProps = {
   surveyId: string;
@@ -135,13 +136,12 @@ const CopySurveyPageForm = ({
           Cancel
         </Button>
         <Button
-          loading={isPending}
           disabled={isPending}
           variant="secondary"
           onClick={form.handleSubmit(handleSubmit)}
           size="sm"
         >
-          Copy page
+          Copy page {isPending && <Spinner size="xs" />}
         </Button>
       </DialogFooter>
     </div>

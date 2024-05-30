@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import { Collector, CollectorStatus } from "@/types/collector";
 import { DialogProps } from "@/types/common";
@@ -69,11 +70,10 @@ const OpenCollectorDialog = ({
           </Button>
           <Button
             disabled={isPending}
-            loading={isPending}
             onClick={handleUpdateCollectorStatus}
             size="sm"
           >
-            Open collector
+            Open collector {isPending && <Spinner size="xs" />}
           </Button>
         </DialogFooter>
       </DialogContent>

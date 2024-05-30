@@ -25,9 +25,9 @@ const SurveyTakenPage = () => {
             </h1>
           </div>
 
-          <Link href="/login">
-            <Button variant="secondary">Create survey</Button>
-          </Link>
+          <Button asChild variant="secondary">
+            <Link href="/login">Create survey </Link>
+          </Button>
         </div>
       </div>
       <div className="flex-1 bg-secondary p-4 sm:p-10"></div>

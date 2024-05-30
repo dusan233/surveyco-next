@@ -15,6 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import useSurveyQuestions from "@/hooks/useSurveyQuestions";
 import { OperationPosition } from "@/types/common";
 import { PlaceQuestionData } from "@/types/question";
+import Spinner from "@/components/ui/spinner";
 
 type PlaceQuestionFormProps = {
   surveyId: string;
@@ -97,11 +98,10 @@ const PlaceQuestionForm = ({
         </Button>
         <Button
           disabled={isPending || isLoading || isFetching}
-          loading={isPending}
           onClick={form.handleSubmit(onSubmit)}
           size="sm"
         >
-          Move question
+          Move question {isPending && <Spinner size="xs" />}
         </Button>
       </DialogFooter>
     </div>

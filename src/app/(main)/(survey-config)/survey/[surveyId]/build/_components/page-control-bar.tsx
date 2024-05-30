@@ -15,6 +15,7 @@ import { useToast } from "@/components/ui/use-toast";
 import PageActions from "./page-actions";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { Settings } from "lucide-react";
+import Spinner from "@/components/ui/spinner";
 
 type PageControlBarProps = {
   surveyId: string;
@@ -78,11 +79,10 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
         <Button
           onClick={handleCreateSurveyPage}
           disabled={isPending}
-          loading={isPending}
           variant="default"
           size="default"
         >
-          Create Page
+          Create Page {isPending && <Spinner size="xs" />}
         </Button>
       </div>
       <div>

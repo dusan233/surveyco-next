@@ -17,6 +17,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 import { getAuthErrorMessage } from "@/lib/util/getAuthErrorMessage";
 import { LoginData } from "@/types/auth";
+import Spinner from "@/components/ui/spinner";
 
 const LoginForm = () => {
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -90,12 +91,11 @@ const LoginForm = () => {
         />
 
         <Button
-          loading={form.formState.isSubmitting}
           disabled={form.formState.isSubmitting}
           className="w-full"
           type="submit"
         >
-          Log in
+          Log in {form.formState.isSubmitting && <Spinner size="xs" />}
         </Button>
       </form>
     </Form>

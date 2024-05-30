@@ -72,11 +72,15 @@ const SurveySummary = async ({ surveyId }: SurveySummaryProps) => {
 
       <div className="flex flex-col sm:flex-row gap-2 mt-4 justify-center sm:justify-end">
         {links.map((link) => (
-          <Link key={link.text} href={link.href}>
-            <Button className="w-full" variant="neutral" size="sm">
-              {link.text}
-            </Button>
-          </Link>
+          <Button
+            key={link.text}
+            asChild
+            className="w-full"
+            variant="neutral"
+            size="sm"
+          >
+            <Link href={link.href}>{link.text}</Link>
+          </Button>
         ))}
       </div>
     </Card>

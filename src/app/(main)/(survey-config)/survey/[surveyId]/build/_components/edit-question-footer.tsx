@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { Question, UnsavedQuestion } from "@/types/question";
 import { isSavedQuestion } from "@/lib/util/questionUtils";
+import Spinner from "@/components/ui/spinner";
 
 type QuestionFooterProps = {
   isDisabled: boolean;
@@ -35,13 +36,8 @@ const QuestionFooter = ({ isDisabled, question }: QuestionFooterProps) => {
       >
         Cancel
       </Button>
-      <Button
-        disabled={isDisabled}
-        loading={isDisabled}
-        size="sm"
-        type="submit"
-      >
-        Save
+      <Button disabled={isDisabled} size="sm" type="submit">
+        Save {isDisabled && <Spinner size="xs" />}
       </Button>
     </div>
   );

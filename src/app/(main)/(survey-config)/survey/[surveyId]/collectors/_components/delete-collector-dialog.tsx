@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import { Collector } from "@/types/collector";
 import { DialogProps } from "@/types/common";
@@ -86,11 +87,10 @@ const DeleteCollectorDialog = ({
           <Button
             variant="destructive"
             disabled={isPending}
-            loading={isPending}
             onClick={handleDeleteCollector}
             size="sm"
           >
-            Delete collector
+            Delete collector {isPending && <Spinner size="xs" />}
           </Button>
         </DialogFooter>
       </DialogContent>

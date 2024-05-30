@@ -26,6 +26,7 @@ import { useToast } from "../ui/use-toast";
 import { createSurvey } from "@/actions/survey-actions";
 import { SURVEY_CATEGORIES } from "@/lib/constants";
 import { CreateSurveyData } from "@/types/survey";
+import Spinner from "../ui/spinner";
 
 type CreateSurveyFormProps = {
   onCreate: () => void;
@@ -106,12 +107,8 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
           />
         </div>
         <div className="flex justify-end">
-          <Button
-            loading={form.formState.isSubmitting}
-            disabled={form.formState.isSubmitting}
-            type="submit"
-          >
-            Create survey
+          <Button disabled={form.formState.isSubmitting} type="submit">
+            Create survey {form.formState.isSubmitting && <Spinner size="xs" />}
           </Button>
         </div>
       </form>

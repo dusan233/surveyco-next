@@ -140,12 +140,11 @@ const VerifyEmailForm = () => {
               Resend verification code
             </button>
             <Button
-              loading={form.formState.isSubmitting}
               disabled={form.formState.isSubmitting}
               className="w-full"
               type="submit"
             >
-              Verify
+              Verify {form.formState.isSubmitting && <Spinner size="xs" />}
             </Button>
           </div>
         </form>

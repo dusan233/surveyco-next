@@ -2,6 +2,7 @@
 
 import { createSurveyCollector } from "@/actions/collector-actions";
 import { Button } from "@/components/ui/button";
+import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import { PlusIcon } from "lucide-react";
 import React, { useTransition } from "react";
@@ -30,13 +31,12 @@ const CreateCollector = ({ surveyId }: CreateCollectorProps) => {
   return (
     <Button
       disabled={isPending}
-      loading={isPending}
       onClick={handleCreateCollector}
       className="uppercase"
       size="lg"
     >
       <span className="flex-1">CREATE NEW COLLECTOR</span>
-      {!isPending && <PlusIcon className="h-4 w-4" />}
+      {isPending ? <Spinner size="xs" /> : <PlusIcon className="h-4 w-4" />}
     </Button>
   );
 };

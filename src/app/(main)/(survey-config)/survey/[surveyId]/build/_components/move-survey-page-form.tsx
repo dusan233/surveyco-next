@@ -26,6 +26,7 @@ import usePlacePageForm from "../_hooks/usePlacePageForm";
 import { useQueryClient } from "@tanstack/react-query";
 import { OperationPosition } from "@/types/common";
 import { PlacePageData } from "@/types/survey";
+import Spinner from "@/components/ui/spinner";
 
 type MoveSurveyPageFormProps = {
   surveyId: string;
@@ -139,12 +140,11 @@ const MoveSurveyPageForm = ({
         </Button>
         <Button
           disabled={isPending}
-          loading={isPending}
           variant="secondary"
           onClick={form.handleSubmit(handleSubmit)}
           size="sm"
         >
-          Move page
+          Move {isPending && <Spinner size="xs" />}
         </Button>
       </DialogFooter>
     </div>

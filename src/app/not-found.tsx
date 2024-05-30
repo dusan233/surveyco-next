@@ -12,13 +12,14 @@ export default function NotFound() {
         <h2 className="text-2xl mb-2">{`We can't find the page you're looking for.`}</h2>
         <p>{`Please check the URL you entered to make sure it's spelled correctly.`}</p>
         <div className="flex mt-6 items-center justify-center gap-3">
-          <Link href="/">
-            <Button variant="secondary">Home</Button>
-          </Link>
+          <Button variant="secondary" asChild>
+            <Link href="/">Home</Link>
+          </Button>
+
           {authState.userId && (
-            <Link href="/library">
-              <Button variant="outline">My Surveys</Button>
-            </Link>
+            <Button variant="outline" asChild>
+              <Link href="/library">My Surveys</Link>
+            </Button>
           )}
         </div>
       </div>

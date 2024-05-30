@@ -80,16 +80,13 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link href="/login">
-                  <Button size="sm" variant="secondary">
-                    Sign in
-                  </Button>
-                </Link>
-                <Link href="/sign-up">
-                  <Button variant="neutral" size="sm">
-                    Sign up
-                  </Button>
-                </Link>
+                <Button asChild size="sm" variant="secondary">
+                  <Link href="/login">Sign in</Link>
+                </Button>
+
+                <Button asChild variant="neutral" size="sm">
+                  <Link href="/sign-up">Sign up </Link>
+                </Button>
               </>
             )}
           </div>

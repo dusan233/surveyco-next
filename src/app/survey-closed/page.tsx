@@ -24,9 +24,10 @@ const SurveyClosedPage = () => {
             This survey is currently closed. Please contact the author of this
             survey for further assistance.
           </p>
-          <Link href="/login">
-            <Button variant="secondary">Create survey</Button>
-          </Link>
+
+          <Button asChild variant="secondary">
+            <Link href="/login">Create survey </Link>
+          </Button>
         </div>
       </div>
       <div className="flex-1 bg-indigo-300 p-4 sm:p-10"></div>

@@ -18,6 +18,7 @@ import useSurveyQuestions from "@/hooks/useSurveyQuestions";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { OperationPosition } from "@/types/common";
 import { PlaceQuestionData } from "@/types/question";
+import Spinner from "@/components/ui/spinner";
 
 type CopyQuestionFormProps = {
   surveyId: string;
@@ -106,11 +107,10 @@ const CopyQuestionForm = ({
         </Button>
         <Button
           disabled={isPending || isLoading || isFetching}
-          loading={isPending}
           onClick={form.handleSubmit(onSubmit)}
           size="sm"
         >
-          Copy question
+          Copy question {isPending && <Spinner size="xs" />}
         </Button>
       </DialogFooter>
     </div>

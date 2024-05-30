@@ -23,9 +23,10 @@ const SurveyThanksPage = () => {
           <p className="text-2xl text-center text-slate-300">
             Get answers with surveys
           </p>
-          <Link href="/login">
-            <Button variant="secondary">Create survey</Button>
-          </Link>
+
+          <Button asChild variant="secondary">
+            <Link href="/login">Create survey </Link>
+          </Button>
         </div>
       </div>
       <div className="flex-1 bg-accent p-4 sm:p-10"></div>
