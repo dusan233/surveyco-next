@@ -110,7 +110,7 @@ const BuildQuestionsList = ({ surveyId }: BuildQuestionsListProps) => {
     >
       <WindowedVirtualList
         virtualizer={virtualizer}
-        listRef={listRef}
+        ref={listRef}
         renderItem={(virtualRow) => {
           return renderItem(questions[virtualRow.index], virtualRow.index);
         }}

@@ -54,7 +54,7 @@ const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
 
       <WindowedVirtualList
         virtualizer={virtualizer}
-        listRef={listRef}
+        ref={listRef}
         renderItem={(virtualRow) => {
           const qResult = questionResultsData![virtualRow.index];
 

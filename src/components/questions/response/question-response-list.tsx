@@ -29,7 +29,7 @@ const QuestionResponseList = ({ questions }: QuestionResponseListProps) => {
   return (
     <WindowedVirtualList
       virtualizer={virtualizer}
-      listRef={listRef}
+      ref={listRef}
       renderItem={(virtualRow) => {
         const questionData = questions[virtualRow.index];
         const questionResponseField = fields[virtualRow.index];
