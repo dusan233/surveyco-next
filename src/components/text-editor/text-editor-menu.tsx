@@ -1,16 +1,17 @@
 "use client";
 
+import React from "react";
 import { editorHasImage } from "@/lib/util/editorHasImage";
 import { Editor } from "@tiptap/react";
-import { ImageIcon } from "lucide-react";
-import React from "react";
 import {
-  FaBold,
-  FaItalic,
-  FaStrikethrough,
-  FaUnderline,
-} from "react-icons/fa6";
-import { ImRedo2, ImUndo2 } from "react-icons/im";
+  Bold,
+  Italic,
+  Strikethrough,
+  Underline,
+  Undo2,
+  Redo2,
+  ImageIcon,
+} from "lucide-react";
 
 type TextEditorMenuProps = {
   editor: Editor | null;
@@ -53,7 +54,7 @@ const TextEditorMenu = ({
             : regularBtnClassNames
         }
       >
-        <FaBold />
+        <Bold className="h-4 w-4" />
       </button>
       <button
         type="button"
@@ -69,7 +70,7 @@ const TextEditorMenu = ({
             : regularBtnClassNames
         }
       >
-        <FaUnderline />
+        <Underline className="h-4 w-4" />
       </button>
       <button
         type="button"
@@ -85,7 +86,7 @@ const TextEditorMenu = ({
             : regularBtnClassNames
         }
       >
-        <FaItalic />
+        <Italic className="h-4 w-4" />
       </button>
       <button
         type="button"
@@ -101,7 +102,7 @@ const TextEditorMenu = ({
             : regularBtnClassNames
         }
       >
-        <FaStrikethrough />
+        <Strikethrough className="h-4 w-4" />
       </button>
       <button
         type="button"
@@ -128,7 +129,7 @@ const TextEditorMenu = ({
         disabled={!editor.can().chain().focus().undo().run()}
         className={regularBtnClassNames}
       >
-        <ImUndo2 />
+        <Undo2 className="h-4 w-4" />
       </button>
       <button
         type="button"
@@ -140,7 +141,7 @@ const TextEditorMenu = ({
         disabled={!editor.can().chain().focus().redo().run()}
         className={regularBtnClassNames}
       >
-        <ImRedo2 />
+        <Redo2 className="h-4 w-4" />
       </button>
     </div>
   );
