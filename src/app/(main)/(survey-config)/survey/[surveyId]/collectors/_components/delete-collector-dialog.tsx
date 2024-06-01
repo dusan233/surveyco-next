@@ -1,6 +1,5 @@
 "use client";
 
-import { deleteSurveyCollector } from "@/actions/collector-actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -15,7 +14,8 @@ import { Collector } from "@/types/collector";
 import { DialogProps } from "@/types/common";
 import { format } from "date-fns";
 import { AlertTriangle } from "lucide-react";
-import React, { useTransition } from "react";
+import React from "react";
+import useDeleteSurveyCollector from "../_hooks/useDeleteSurveyCollector";
 
 type DeleteCollectorDialogProps = DialogProps & {
   collector: Collector;
@@ -26,23 +26,25 @@ const DeleteCollectorDialog = ({
   isOpen,
   collector,
 }: DeleteCollectorDialogProps) => {
-  const [isPending, startTransition] = useTransition();
+  const { isPending, deleteCollectorMutationAsync } =
+    useDeleteSurveyCollector();
   const { toast } = useToast();
   const createdAt = new Date(collector.created_at);
   const updatedAt = new Date(collector.updated_at);
 
-  const handleDeleteCollector = () => {
+  const handleDeleteCollector = async () => {
     onOpenChange();
-    startTransition(async () => {
-      try {
-        await deleteSurveyCollector(collector.id, collector.surveyId);
-      } catch (err) {
-        toast({
-          variant: "destructive",
-          title: "Something went wrong!",
-        });
-      }
-    });
+    try {
+      await deleteCollectorMutationAsync({
+        collectorId: collector.id,
+        surveyId: collector.surveyId,
+      });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!",
+      });
+    }
   };
 
   return (

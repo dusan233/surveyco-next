@@ -1,4 +1,5 @@
-import { updateSurveyCollectorStatus } from "@/actions/collector-actions";
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,7 +12,8 @@ import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import { Collector, CollectorStatus } from "@/types/collector";
 import { DialogProps } from "@/types/common";
-import React, { useTransition } from "react";
+import React from "react";
+import useUpdateCollectorStatus from "../_hooks/useUpdateCollectorStatus";
 
 type OpenCollectorDialogProps = DialogProps & {
   collector: Collector;
@@ -22,21 +24,23 @@ const OpenCollectorDialog = ({
   onOpenChange,
   collector,
 }: OpenCollectorDialogProps) => {
-  const [isPending, startTransition] = useTransition();
+  const { updateCollectorStatusMutationAsync, isPending } =
+    useUpdateCollectorStatus();
   const { toast } = useToast();
 
-  const handleUpdateCollectorStatus = () => {
+  const handleUpdateCollectorStatus = async () => {
     onOpenChange();
-    startTransition(async () => {
-      try {
-        await updateSurveyCollectorStatus(collector.id, CollectorStatus.open);
-      } catch (err) {
-        toast({
-          variant: "destructive",
-          title: "Something went wrong!",
-        });
-      }
-    });
+    try {
+      await updateCollectorStatusMutationAsync({
+        collectorId: collector.id,
+        status: CollectorStatus.open,
+      });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!",
+      });
+    }
   };
 
   return (

@@ -1,6 +1,5 @@
 "use client";
 
-import { updateSurveyCollectorStatus } from "@/actions/collector-actions";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,7 +13,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { Collector, CollectorStatus } from "@/types/collector";
 import { DialogProps } from "@/types/common";
 import { AlertTriangle } from "lucide-react";
-import React, { useTransition } from "react";
+import React from "react";
+import useUpdateCollectorStatus from "../_hooks/useUpdateCollectorStatus";
 
 type CloseCollectorDialogProps = DialogProps & {
   collector: Collector;
@@ -25,21 +25,23 @@ const CloseCollectorDialog = ({
   collector,
   isOpen,
 }: CloseCollectorDialogProps) => {
-  const [isPending, startTransition] = useTransition();
+  const { updateCollectorStatusMutationAsync, isPending } =
+    useUpdateCollectorStatus();
   const { toast } = useToast();
 
-  const handleUpdateCollectorStatus = () => {
+  const handleUpdateCollectorStatus = async () => {
     onOpenChange();
-    startTransition(async () => {
-      try {
-        await updateSurveyCollectorStatus(collector.id, CollectorStatus.closed);
-      } catch (err) {
-        toast({
-          variant: "destructive",
-          title: "Something went wrong!",
-        });
-      }
-    });
+    try {
+      await updateCollectorStatusMutationAsync({
+        collectorId: collector.id,
+        status: CollectorStatus.closed,
+      });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!",
+      });
+    }
   };
 
   return (
