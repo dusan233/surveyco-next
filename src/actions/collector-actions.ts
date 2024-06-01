@@ -42,59 +42,32 @@ export type UpdateCollectorFormState = {
 };
 
 export const updateSurveyCollector = async (
-  prevState: UpdateCollectorFormState,
-  formData: FormData
-): Promise<UpdateCollectorFormState> => {
+  collectorId: string,
+  collectorName: string
+) => {
   const token = await getAccessToken();
 
-  const validatedFields = updateCollectorNameSchema.safeParse({
-    name: formData.get("name"),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      collector: prevState.collector,
-      errorType: "validation_error",
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Validation error!",
-    };
-  }
-
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/collector/${prevState.collector.id}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/collector/${collectorId}`,
     {
       method: "PUT",
       headers: {
         Authorization: "Bearer " + token,
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ name: formData.get("name") }),
+      body: JSON.stringify({ name: collectorName }),
     }
   );
 
   if (!res.ok) {
-    // throw new Error(`Failed to delete collector with id: ${collectorId}`);
-    return {
-      collector: prevState.collector,
-      errorType: "backend_error",
-      errors: null,
-      message: "Error here",
-    };
+    throw new Error(`Failed to update collector with id: ${collectorId}`);
   }
 
-  const collector: Collector = await getResponseData(res);
-
-  revalidatePath(
-    `/survey/${collector.surveyId}/collectors/${prevState.collector.id}`
-  );
+  const collector = await getResponseData<Collector>(res);
+  revalidatePath(`/survey/${collector.surveyId}/collectors/${collector.id}`);
   revalidatePath(`/survey/${collector.surveyId}/summary`);
 
-  return {
-    collector,
-    message: "Success here",
-    errors: null,
-    errorType: null,
-  };
+  return collector;
 };
 
 export const updateSurveyCollectorStatus = async (

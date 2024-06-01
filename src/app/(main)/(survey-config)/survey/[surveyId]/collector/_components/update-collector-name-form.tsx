@@ -1,12 +1,23 @@
 "use client";
 
-import { useFormState } from "react-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
-import SubmitButton from "./submit-button";
-import { updateSurveyCollector } from "@/actions/collector-actions";
-import { Collector } from "@/types/collector";
+import { Collector, UpdateCollectorData } from "@/types/collector";
+import useUpdateCollector from "../_hooks/useUpdateCollector";
+import { useForm } from "react-hook-form";
+import { updateCollectorNameSchema } from "@/lib/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import Spinner from "@/components/ui/spinner";
+import { useToast } from "@/components/ui/use-toast";
 
 type UpdateCollectorNameFormProps = {
   collector: Collector;
@@ -15,36 +26,59 @@ type UpdateCollectorNameFormProps = {
 const UpdateCollectorNameForm = ({
   collector,
 }: UpdateCollectorNameFormProps) => {
-  const [formState, formAction] = useFormState(updateSurveyCollector, {
-    message: null,
-    collector: collector,
-    errorType: null,
-    errors: null,
+  const { isPending, updateCollectorMutationAsync } = useUpdateCollector();
+  const { toast } = useToast();
+  const form = useForm<UpdateCollectorData>({
+    resolver: zodResolver(updateCollectorNameSchema),
+    defaultValues: {
+      name: collector.name,
+    },
   });
 
+  const handleUpdateCollectorName = async (values: UpdateCollectorData) => {
+    try {
+      await updateCollectorMutationAsync({
+        collectorId: collector.id,
+        name: values.name,
+      });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!",
+      });
+    }
+  };
+
   return (
-    <>
-      <form action={formAction} className="flex gap-3 max-w-md items-end">
-        <div className="w-full space-y-1">
-          <Label className="text-md" htmlFor="collectorName">
-            Collector name
-          </Label>
-          <Input
-            placeholder="Enter name"
-            state={formState.errors?.name && "error"}
-            id="collectorName"
+    <Form {...form}>
+      <form
+        className="flex gap-3 items-start max-w-md"
+        onSubmit={form.handleSubmit(handleUpdateCollectorName)}
+      >
+        <div className="w-full space-y-2">
+          <FormField
+            control={form.control}
             name="name"
-            defaultValue={collector.name}
+            render={({ field }) => (
+              <FormItem>
+                <Label>{"Collector's name"}</Label>
+                <FormControl>
+                  <Input
+                    state={form.formState.errors.name && "error"}
+                    {...field}
+                    placeholder="Collector's name"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
+          <Button type="submit" disabled={isPending}>
+            Save {isPending && <Spinner size="xs" />}
+          </Button>
         </div>
-        <SubmitButton />
       </form>
-      {formState.errors?.name && (
-        <p className={"text-xs font-medium mt-1 text-destructive"}>
-          {formState.errors.name[0]}
-        </p>
-      )}
-    </>
+    </Form>
   );
 };
 
