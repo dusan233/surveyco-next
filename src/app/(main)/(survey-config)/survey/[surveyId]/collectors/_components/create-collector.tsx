@@ -1,31 +1,30 @@
 "use client";
 
-import { createSurveyCollector } from "@/actions/collector-actions";
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import { PlusIcon } from "lucide-react";
-import React, { useTransition } from "react";
+import React from "react";
+import useCreateSurveyCollector from "../_hooks/useCreateSurveyCollector";
 
 type CreateCollectorProps = {
   surveyId: string;
 };
 
 const CreateCollector = ({ surveyId }: CreateCollectorProps) => {
-  const [isPending, startTransition] = useTransition();
+  const { createCollectorMutationAsync, isPending } =
+    useCreateSurveyCollector();
   const { toast } = useToast();
 
-  const handleCreateCollector = () => {
-    startTransition(async () => {
-      try {
-        await createSurveyCollector(surveyId);
-      } catch (err) {
-        toast({
-          variant: "destructive",
-          title: "Something went wrong!",
-        });
-      }
-    });
+  const handleCreateCollector = async () => {
+    try {
+      await createCollectorMutationAsync({ surveyId });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong!",
+      });
+    }
   };
 
   return (
