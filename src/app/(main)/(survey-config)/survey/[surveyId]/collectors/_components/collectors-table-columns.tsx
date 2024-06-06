@@ -82,11 +82,12 @@ export const columns: ColumnDef<Collector>[] = [
     },
     cell: ({ row }) => {
       const statusVal: string = row.getValue("status");
-      const classNames = statusVal === "open" ? "bg-green-500" : "bg-red-500";
+      const classNames =
+        statusVal === "open" ? "bg-secondary text-primary" : "bg-primary";
 
       return (
         <div className="font-medium text-white flex items-center">
-          <div className={`p-1 px-2 uppercase rounded-sm ${classNames}`}>
+          <div className={`py-0.5 px-2 uppercase rounded-sm ${classNames}`}>
             {statusVal}
           </div>
         </div>
