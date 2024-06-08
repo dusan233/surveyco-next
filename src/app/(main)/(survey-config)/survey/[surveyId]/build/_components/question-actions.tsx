@@ -15,8 +15,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, MoreVertical, Trash2 } from "lucide-react";
 import useDeleteQuestion from "../_hooks/useDeleteQuestion";
 import { useToast } from "@/components/ui/use-toast";
-import CopyQuestionDialog from "./copy-question-dialog";
-import MoveQuestionDialog from "./move-question/move-question-dialog";
+import CopyQuestionModal from "./copy-question-modal";
+import MoveQuestionModal from "./move-question/move-question-modal";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { useDisclosure } from "@/hooks/useDisclosure";
 
@@ -64,14 +64,14 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
 
   return (
     <>
-      <CopyQuestionDialog
+      <CopyQuestionModal
         questionId={questionId}
         surveyId={surveyId}
         isOpen={isCopyQuestionOpen}
         onOpenChange={onToggleCopyQuestion}
       />
 
-      <MoveQuestionDialog
+      <MoveQuestionModal
         questionId={questionId}
         surveyId={surveyId}
         isOpen={isMoveQuestionOpen}

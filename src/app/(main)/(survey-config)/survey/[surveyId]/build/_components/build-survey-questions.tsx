@@ -7,7 +7,7 @@ import BuildQuestionsList from "./build-questions-list";
 import PageControlBar from "./page-control-bar";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
-import AddQuestionDialog from "./add-question-dialog";
+import AddQuestionModal from "./add-question-modal";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
@@ -63,7 +63,7 @@ const BuildSurveyQuestions = ({ surveyId }: BuildSurveyQuestionsProps) => {
     <div className="p-5 sm:p-10 bg-accent max-w-screen-lg mx-auto">
       <PageControlBar surveyId={surveyId} />
       <BuildQuestionsList surveyId={surveyId} />
-      <AddQuestionDialog isOpen={isOpen} onOpenChange={onToggle} />
+      <AddQuestionModal isOpen={isOpen} onOpenChange={onToggle} />
       <div className="flex justify-center">
         <Button onClick={() => onOpen()}>
           <span className="mr-2">

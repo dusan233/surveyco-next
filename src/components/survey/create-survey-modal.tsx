@@ -12,10 +12,10 @@ const CreateSurveyDialog = ({
   onOpenChange,
 }: CreateSurveyDialogProps) => {
   return (
-    <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
+    <Dialog onOpenChange={onOpenChange} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
-          <DialogTitle>New survey</DialogTitle>
+          <DialogTitle>New survey1</DialogTitle>
         </DialogHeader>
         <div className="mt-5">
           <CreateSurveyForm onCreate={() => onOpenChange()} />

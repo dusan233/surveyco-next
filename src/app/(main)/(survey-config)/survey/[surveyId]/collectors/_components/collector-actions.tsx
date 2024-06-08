@@ -18,9 +18,9 @@ import {
   Trash2,
 } from "lucide-react";
 import React, { useState } from "react";
-import DeleteCollectorDialog from "./delete-collector-dialog";
-import CloseCollectorDialog from "./close-collector-dialog";
-import OpenCollectorDialog from "./open-collector-dialog";
+import DeleteCollectorModal from "./delete-collector-modal";
+import CloseCollectorModal from "./close-collector-modal";
+import OpenCollectorModal from "./open-collector-modal";
 import Link from "next/link";
 import { Collector, CollectorStatus } from "@/types/collector";
 
@@ -35,17 +35,17 @@ const CollectorActions = ({ collector }: CollectorActionsProps) => {
 
   return (
     <>
-      <DeleteCollectorDialog
+      <DeleteCollectorModal
         collector={collector}
         isOpen={deleteCollectorOpen}
         onOpenChange={() => setDeleteCollectorOpen((prev) => !prev)}
       />
-      <CloseCollectorDialog
+      <CloseCollectorModal
         collector={collector}
         isOpen={showCloseCollectorModal}
         onOpenChange={() => setShowCloseCollectorModal((prev) => !prev)}
       />
-      <OpenCollectorDialog
+      <OpenCollectorModal
         collector={collector}
         isOpen={showOpenCollectorModal}
         onOpenChange={() => setShowOpenCollectorModal((prev) => !prev)}

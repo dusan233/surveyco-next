@@ -15,8 +15,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, ChevronDown, Copy, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import useDeleteSurveyPage from "../_hooks/useDeleteSurveyPage";
-import CopySurveyPageDialog from "./copy-survey-page-dialog";
-import MoveSurvePageDialog from "./move-survey-page-dialog";
+import CopySurveyPageModal from "./copy-survey-page-modal";
+import MoveSurvePageModal from "./move-survey-page-modal";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import useSurveyPages from "@/hooks/useSurveyPages";
 import { useDisclosure } from "@/hooks/useDisclosure";
@@ -69,12 +69,12 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
 
   return (
     <>
-      <CopySurveyPageDialog
+      <CopySurveyPageModal
         isOpen={isCopyPageOpen}
         onOpenChange={onToggleCopyPage}
         surveyId={surveyId}
       />
-      <MoveSurvePageDialog
+      <MoveSurvePageModal
         isOpen={isMovePageOpen}
         onOpenChange={onToggleMovePage}
         surveyId={surveyId}

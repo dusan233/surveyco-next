@@ -4,7 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import React, { useEffect } from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import CreateSurveyDialog from "../survey/create-survey-dialog";
+import CreateSurveyModal from "../survey/create-survey-modal";
 import AppLogo from "./logo";
 import NavbarLink from "../navbar-link";
 import UserMenu from "../user-menu";
@@ -41,7 +41,7 @@ const Navbar = () => {
     <header className="bg-slate-800">
       <div className="flex py-2.5 p-4 sm:px-7 gap-7 items-center">
         <NavDrawer open={drawerIsOpen} onClose={onCloseDrawer} />
-        <CreateSurveyDialog
+        <CreateSurveyModal
           isOpen={dialogIsOpen}
           onOpenChange={onToggleDialog}
         />
