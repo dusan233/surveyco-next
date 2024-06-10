@@ -12,18 +12,15 @@ import { DialogProps } from "@/types/common";
 
 type AddQuestionDialogProps = DialogProps;
 
-const AddQuestionDialog = ({
-  isOpen,
-  onOpenChange,
-}: AddQuestionDialogProps) => {
+const AddQuestionDialog = ({ isOpen, onClose }: AddQuestionDialogProps) => {
   return (
-    <Dialog onOpenChange={onOpenChange} open={isOpen}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader hidden>
           <DialogTitle>Add Question</DialogTitle>
         </DialogHeader>
 
-        <AddQuestion onAddQuestion={onOpenChange} />
+        <AddQuestion onAddQuestion={onClose} />
       </DialogContent>
     </Dialog>
   );

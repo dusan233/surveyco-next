@@ -6,11 +6,9 @@ import { SurveyPage } from "@/types/survey";
 export default function useCopySurveyPage() {
   const queryClient = useQueryClient();
   const {
-    isPending,
     mutate: copyPageMutation,
     mutateAsync: copyPageMutationAsync,
-    isError,
-    isSuccess,
+    ...mutation
   } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
@@ -49,10 +47,8 @@ export default function useCopySurveyPage() {
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
     copyPageMutation,
     copyPageMutationAsync,
+    ...mutation,
   };
 }

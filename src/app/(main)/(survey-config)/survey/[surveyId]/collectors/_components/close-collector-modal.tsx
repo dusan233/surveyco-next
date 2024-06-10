@@ -16,26 +16,26 @@ import { AlertTriangle } from "lucide-react";
 import React from "react";
 import useUpdateCollectorStatus from "../_hooks/useUpdateCollectorStatus";
 
-type CloseCollectorDialogProps = DialogProps & {
+type CloseCollectorModalProps = DialogProps & {
   collector: Collector;
 };
 
-const CloseCollectorDialog = ({
-  onOpenChange,
+const CloseCollectorModal = ({
+  onClose,
   collector,
   isOpen,
-}: CloseCollectorDialogProps) => {
+}: CloseCollectorModalProps) => {
   const { updateCollectorStatusMutationAsync, isPending } =
     useUpdateCollectorStatus();
   const { toast } = useToast();
 
   const handleUpdateCollectorStatus = async () => {
-    onOpenChange();
     try {
       await updateCollectorStatusMutationAsync({
         collectorId: collector.id,
         status: CollectorStatus.closed,
       });
+      onClose();
     } catch (err) {
       toast({
         variant: "destructive",
@@ -45,7 +45,7 @@ const CloseCollectorDialog = ({
   };
 
   return (
-    <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
           <DialogTitle>Close {collector.name}</DialogTitle>
@@ -68,12 +68,7 @@ const CloseCollectorDialog = ({
         </div>
 
         <DialogFooter className="mt-5">
-          <Button
-            variant="outline"
-            onClick={() => onOpenChange()}
-            size="sm"
-            disabled={isPending}
-          >
+          <Button variant="outline" onClick={onClose} size="sm">
             Cancel
           </Button>
           <Button
@@ -90,4 +85,4 @@ const CloseCollectorDialog = ({
   );
 };
 
-export default CloseCollectorDialog;
+export default CloseCollectorModal;

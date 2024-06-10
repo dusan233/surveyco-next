@@ -16,7 +16,7 @@ import { isSavedQuestion } from "@/lib/util/questionUtils";
 type BuildSurveyQuestionsProps = { surveyId: string };
 
 const BuildSurveyQuestions = ({ surveyId }: BuildSurveyQuestionsProps) => {
-  const { isOpen, onToggle, onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
 
   const { questions: questionsData, isFetching } = useSurveyQuestions(
@@ -63,7 +63,7 @@ const BuildSurveyQuestions = ({ surveyId }: BuildSurveyQuestionsProps) => {
     <div className="p-5 sm:p-10 bg-accent max-w-screen-lg mx-auto">
       <PageControlBar surveyId={surveyId} />
       <BuildQuestionsList surveyId={surveyId} />
-      <AddQuestionModal isOpen={isOpen} onOpenChange={onToggle} />
+      <AddQuestionModal isOpen={isOpen} onClose={onClose} />
       <div className="flex justify-center">
         <Button onClick={() => onOpen()}>
           <span className="mr-2">

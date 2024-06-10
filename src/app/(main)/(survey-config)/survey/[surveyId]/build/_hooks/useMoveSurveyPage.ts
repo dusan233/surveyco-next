@@ -6,11 +6,9 @@ import { SurveyPage } from "@/types/survey";
 export default function useMoveSurveyPage() {
   const queryClient = useQueryClient();
   const {
-    isPending,
     mutate: movePageMutation,
     mutateAsync: movePageMutationAsync,
-    isError,
-    isSuccess,
+    ...mutation
   } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
@@ -88,10 +86,8 @@ export default function useMoveSurveyPage() {
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
     movePageMutation,
     movePageMutationAsync,
+    ...mutation,
   };
 }

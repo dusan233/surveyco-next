@@ -34,12 +34,12 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
 
   const {
     isOpen: isCopyPageOpen,
-    onToggle: onToggleCopyPage,
+    onClose: onCloseCopyPage,
     onOpen: onOpenCopyPage,
   } = useDisclosure();
   const {
     isOpen: isMovePageOpen,
-    onToggle: onToggleMovePage,
+    onClose: onCloseMovePage,
     onOpen: onOpenMovePage,
   } = useDisclosure();
 
@@ -71,12 +71,12 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
     <>
       <CopySurveyPageModal
         isOpen={isCopyPageOpen}
-        onOpenChange={onToggleCopyPage}
+        onClose={onCloseCopyPage}
         surveyId={surveyId}
       />
       <MoveSurvePageModal
         isOpen={isMovePageOpen}
-        onOpenChange={onToggleMovePage}
+        onClose={onCloseMovePage}
         surveyId={surveyId}
       />
       <DropdownMenu>

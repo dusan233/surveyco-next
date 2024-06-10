@@ -1,110 +1,79 @@
-import useSurveyPages from "@/hooks/useSurveyPages";
-import React, { useEffect, useState } from "react";
-import { v4 as uuid4 } from "uuid";
-import useMoveQuestion from "../_hooks/useMoveQuestion";
+import React from "react";
 import { placeQuestionSchema } from "@/lib/validationSchemas";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoadingToast } from "@/hooks/useLoadingToast";
-import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import { DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import CopyQuestionFormContent from "./copy-question/copy-question-form-content";
-import { useToast } from "@/components/ui/use-toast";
-import useSurveyQuestions from "@/hooks/useSurveyQuestions";
+import PlaceQuestionFormContent from "./place-question-form-content";
 import { OperationPosition } from "@/types/common";
-import { PlaceQuestionData } from "@/types/question";
+import { PlaceQuestionData, Question } from "@/types/question";
 import Spinner from "@/components/ui/spinner";
+import { SurveyPage } from "@/types/survey";
 
 type PlaceQuestionFormProps = {
-  surveyId: string;
-  questionId: string;
-  onCloseDialog: () => void;
+  isSubmitting: boolean;
+  isFetchingQuestions: boolean;
+  surveyPages: SurveyPage[];
+  questions: Question[];
+  selectedPageId: string;
+  onPlaceQuestion: (values: PlaceQuestionData) => Promise<Question | undefined>;
+  onChangePage: (pageId: string) => void;
+  onCancel?: () => void;
+  type?: "move" | "copy";
 };
 
 const PlaceQuestionForm = ({
-  surveyId,
-  onCloseDialog,
-  questionId,
+  onCancel,
+  onPlaceQuestion,
+  onChangePage,
+  isSubmitting,
+  isFetchingQuestions,
+  surveyPages,
+  questions,
+  selectedPageId,
+  type = "copy",
 }: PlaceQuestionFormProps) => {
-  const { toast } = useToast();
-  const { surveyPages } = useSurveyPages(surveyId);
-  const [formId, setFormId] = useState(uuid4());
-  const { moveQuestionMutation, isPending } = useMoveQuestion();
-  const form = useForm<z.infer<typeof placeQuestionSchema>>({
+  const form = useForm<PlaceQuestionData>({
     resolver: zodResolver(placeQuestionSchema),
     defaultValues: {
-      pageId: surveyPages!.find((page) => page.number === 1)!.id,
+      pageId: selectedPageId,
       position: OperationPosition.before,
-      questionId: "",
+      questionId: questions[0].id ?? "",
     },
   });
 
-  const selectedPageId = form.watch("pageId");
-  const selectedPageNumber = surveyPages!.find(
-    (page) => page.id === selectedPageId
-  )!.number;
-  const { questions, isLoading, isFetching } = useSurveyQuestions(
-    surveyId,
-    selectedPageId
-  );
-
-  useEffect(() => {
-    const currentPageId = selectedPageId;
-    const questionId = questions ? (questions[0] ? questions[0].id : "") : "";
-    const position = OperationPosition.after;
-
-    form.reset({ pageId: currentPageId, position, questionId });
-    setFormId(uuid4());
-  }, [questions, form, selectedPageId]);
-
-  useLoadingToast(isPending, "Copying question...");
-
-  const onSubmit = async (values: PlaceQuestionData) => {
-    moveQuestionMutation(
-      {
-        surveyId,
-        questionId: questionId,
-        pageNumber: selectedPageNumber,
-        data: values,
-      },
-      {
-        onError(error) {
-          toast({ title: "Something went wrong!", variant: "destructive" });
-        },
-      }
-    );
+  const handleSubmit = async (values: PlaceQuestionData) => {
+    await onPlaceQuestion(values);
   };
 
   return (
-    <div className="gap-2  mt-5">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-end gap-2"
-        >
-          <CopyQuestionFormContent
-            isLoading={isLoading || isFetching}
-            key={formId}
-            surveyPages={surveyPages!}
-            questions={questions}
-          />
-        </form>
-      </Form>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="flex items-end gap-2"
+      >
+        <PlaceQuestionFormContent
+          onChangePage={onChangePage}
+          isLoading={isFetchingQuestions}
+          surveyPages={surveyPages}
+          questions={questions}
+        />
+      </form>
       <DialogFooter className="mt-10">
-        <Button variant="outline" onClick={() => onCloseDialog()} size="sm">
+        <Button variant="outline" onClick={onCancel} size="sm">
           Cancel
         </Button>
         <Button
-          disabled={isPending || isLoading || isFetching}
-          onClick={form.handleSubmit(onSubmit)}
+          disabled={isSubmitting || isFetchingQuestions}
+          onClick={form.handleSubmit(handleSubmit)}
           size="sm"
         >
-          Move question {isPending && <Spinner size="xs" />}
+          {type === "copy" ? "Copy" : "Move"} question{" "}
+          {isSubmitting && <Spinner size="xs" />}
         </Button>
       </DialogFooter>
-    </div>
+    </Form>
   );
 };
 

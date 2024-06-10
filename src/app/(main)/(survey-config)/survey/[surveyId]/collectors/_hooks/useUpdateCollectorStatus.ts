@@ -6,11 +6,9 @@ import { useMutation } from "@tanstack/react-query";
 
 export default function useUpdateCollectorStatus() {
   const {
-    isPending,
     mutate: updateCollectorStatusMutation,
     mutateAsync: updateCollectorStatusMutationAsync,
-    isError,
-    isSuccess,
+    ...mutation
   } = useMutation({
     mutationFn: async (payload: {
       collectorId: string;
@@ -21,10 +19,8 @@ export default function useUpdateCollectorStatus() {
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
     updateCollectorStatusMutation,
     updateCollectorStatusMutationAsync,
+    ...mutation,
   };
 }

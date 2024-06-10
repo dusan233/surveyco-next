@@ -29,7 +29,7 @@ type CollectorActionsProps = {
 };
 
 const CollectorActions = ({ collector }: CollectorActionsProps) => {
-  const [deleteCollectorOpen, setDeleteCollectorOpen] = useState(false);
+  const [deleteCollectorModal, setDeleteCollectorModal] = useState(false);
   const [showOpenCollectorModal, setShowOpenCollectorModal] = useState(false);
   const [showCloseCollectorModal, setShowCloseCollectorModal] = useState(false);
 
@@ -37,18 +37,18 @@ const CollectorActions = ({ collector }: CollectorActionsProps) => {
     <>
       <DeleteCollectorModal
         collector={collector}
-        isOpen={deleteCollectorOpen}
-        onOpenChange={() => setDeleteCollectorOpen((prev) => !prev)}
+        isOpen={deleteCollectorModal}
+        onClose={() => setDeleteCollectorModal(false)}
       />
       <CloseCollectorModal
         collector={collector}
         isOpen={showCloseCollectorModal}
-        onOpenChange={() => setShowCloseCollectorModal((prev) => !prev)}
+        onClose={() => setShowCloseCollectorModal(false)}
       />
       <OpenCollectorModal
         collector={collector}
         isOpen={showOpenCollectorModal}
-        onOpenChange={() => setShowOpenCollectorModal((prev) => !prev)}
+        onClose={() => setShowOpenCollectorModal(false)}
       />
 
       <DropdownMenu>
@@ -91,7 +91,7 @@ const CollectorActions = ({ collector }: CollectorActionsProps) => {
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
-            onClick={() => setDeleteCollectorOpen(true)}
+            onClick={() => setDeleteCollectorModal(true)}
             className="bg-red-500 text-white focus:bg-red-600 focus:text-white"
           >
             Delete collector

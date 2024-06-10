@@ -20,21 +20,17 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Label } from "../ui/label";
-import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
-import { createSurvey } from "@/actions/survey-actions";
 import { SURVEY_CATEGORIES } from "@/lib/constants";
-import { CreateSurveyData } from "@/types/survey";
+import { CreateSurveyData, Survey } from "@/types/survey";
 import Spinner from "../ui/spinner";
 
 type CreateSurveyFormProps = {
-  onCreate: () => void;
+  onCreate: (values: CreateSurveyData) => Promise<Survey | undefined>;
+  isPending: boolean;
 };
 
-const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
-  const { push } = useRouter();
-  const { toast } = useToast();
+const CreateSurveyForm = ({ onCreate, isPending }: CreateSurveyFormProps) => {
   const form = useForm<CreateSurveyData>({
     resolver: zodResolver(createSurveySchema),
     defaultValues: {
@@ -43,17 +39,7 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
   });
 
   const handleSubmit = async (values: CreateSurveyData) => {
-    try {
-      const newSurvey = await createSurvey(values);
-      push(`/survey/${newSurvey.id}/build`);
-
-      onCreate();
-    } catch (err) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong!",
-      });
-    }
+    await onCreate(values);
   };
 
   return (
@@ -107,8 +93,8 @@ const CreateSurveyForm = ({ onCreate }: CreateSurveyFormProps) => {
           />
         </div>
         <div className="flex justify-end">
-          <Button disabled={form.formState.isSubmitting} type="submit">
-            Create survey {form.formState.isSubmitting && <Spinner size="xs" />}
+          <Button disabled={isPending} type="submit">
+            Create survey {isPending && <Spinner size="xs" />}
           </Button>
         </div>
       </form>

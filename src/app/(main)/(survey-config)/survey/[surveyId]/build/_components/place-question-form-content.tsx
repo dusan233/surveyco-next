@@ -14,20 +14,23 @@ import {
 import { OperationPosition } from "@/types/common";
 import { Question } from "@/types/question";
 import { SurveyPage } from "@/types/survey";
+import { convert } from "html-to-text";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-type CopyQuestionFormContentProps = {
+type PlaceQuestionFormContentProps = {
   surveyPages: SurveyPage[];
   questions?: Question[];
   isLoading: boolean;
+  onChangePage: (pageId: string) => void;
 };
 
-const CopyQuestionFormContent = ({
+const PlaceQuestionFormContent = ({
   surveyPages,
   questions,
   isLoading,
-}: CopyQuestionFormContentProps) => {
+  onChangePage,
+}: PlaceQuestionFormContentProps) => {
   const form = useFormContext();
   return (
     <>
@@ -37,7 +40,13 @@ const CopyQuestionFormContent = ({
         render={({ field }) => (
           <FormItem className="min-w-[70px]">
             <FormLabel>Page</FormLabel>
-            <Select onValueChange={field.onChange} value={field.value}>
+            <Select
+              onValueChange={(val) => {
+                onChangePage(val);
+                field.onChange(val);
+              }}
+              value={field.value}
+            >
               <FormControl>
                 <SelectTrigger>
                   <SelectValue />
@@ -87,7 +96,7 @@ const CopyQuestionFormContent = ({
         name="questionId"
         render={({ field }) => {
           return (
-            <FormItem className="max-w-[300px]">
+            <FormItem className="w-[150px]">
               <FormLabel>Question</FormLabel>
 
               <Select
@@ -102,9 +111,12 @@ const CopyQuestionFormContent = ({
                 </FormControl>
                 <SelectContent>
                   {questions?.map((q) => {
+                    const content = convert(
+                      q.description.replace(/<img[^>]*>/g, "")
+                    );
                     return (
-                      <SelectItem key={q.id} value={q.id}>
-                        {q.number}.
+                      <SelectItem title={content} key={q.id} value={q.id}>
+                        {q.number}. {content}
                       </SelectItem>
                     );
                   })}
@@ -118,4 +130,4 @@ const CopyQuestionFormContent = ({
   );
 };
 
-export default CopyQuestionFormContent;
+export default PlaceQuestionFormContent;

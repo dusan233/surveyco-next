@@ -16,7 +16,7 @@ import { ArrowUpDown, Copy, MoreVertical, Trash2 } from "lucide-react";
 import useDeleteQuestion from "../_hooks/useDeleteQuestion";
 import { useToast } from "@/components/ui/use-toast";
 import CopyQuestionModal from "./copy-question-modal";
-import MoveQuestionModal from "./move-question/move-question-modal";
+import MoveQuestionModal from "./move-question-modal";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { useDisclosure } from "@/hooks/useDisclosure";
 
@@ -32,12 +32,12 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
   const {
     isOpen: isCopyQuestionOpen,
     onOpen: onOpenCopyQuestion,
-    onToggle: onToggleCopyQuestion,
+    onClose: onCloseCopyQuestion,
   } = useDisclosure();
   const {
     isOpen: isMoveQuestionOpen,
     onOpen: onOpenMoveQuestion,
-    onToggle: onToggleMoveQuestion,
+    onClose: onCloseMoveQuestion,
   } = useDisclosure();
 
   const handleDeleteQuestion = () => {
@@ -68,14 +68,14 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
         questionId={questionId}
         surveyId={surveyId}
         isOpen={isCopyQuestionOpen}
-        onOpenChange={onToggleCopyQuestion}
+        onClose={onCloseCopyQuestion}
       />
 
       <MoveQuestionModal
         questionId={questionId}
         surveyId={surveyId}
         isOpen={isMoveQuestionOpen}
-        onOpenChange={onToggleMoveQuestion}
+        onClose={onCloseMoveQuestion}
       />
 
       <DropdownMenu>

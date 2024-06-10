@@ -17,15 +17,15 @@ import { AlertTriangle } from "lucide-react";
 import React from "react";
 import useDeleteSurveyCollector from "../_hooks/useDeleteSurveyCollector";
 
-type DeleteCollectorDialogProps = DialogProps & {
+type DeleteCollectorModalProps = DialogProps & {
   collector: Collector;
 };
 
-const DeleteCollectorDialog = ({
-  onOpenChange,
+const DeleteCollectorModal = ({
+  onClose,
   isOpen,
   collector,
-}: DeleteCollectorDialogProps) => {
+}: DeleteCollectorModalProps) => {
   const { isPending, deleteCollectorMutationAsync } =
     useDeleteSurveyCollector();
   const { toast } = useToast();
@@ -33,12 +33,12 @@ const DeleteCollectorDialog = ({
   const updatedAt = new Date(collector.updated_at);
 
   const handleDeleteCollector = async () => {
-    onOpenChange();
     try {
       await deleteCollectorMutationAsync({
         collectorId: collector.id,
         surveyId: collector.surveyId,
       });
+      onClose();
     } catch (err) {
       toast({
         variant: "destructive",
@@ -48,7 +48,7 @@ const DeleteCollectorDialog = ({
   };
 
   return (
-    <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
           <DialogTitle>Delete collector</DialogTitle>
@@ -78,12 +78,7 @@ const DeleteCollectorDialog = ({
         </div>
 
         <DialogFooter className="mt-5">
-          <Button
-            variant="outline"
-            onClick={onOpenChange}
-            size="sm"
-            disabled={isPending}
-          >
+          <Button variant="outline" onClick={onClose} size="sm">
             Cancel
           </Button>
           <Button
@@ -100,4 +95,4 @@ const DeleteCollectorDialog = ({
   );
 };
 
-export default DeleteCollectorDialog;
+export default DeleteCollectorModal;

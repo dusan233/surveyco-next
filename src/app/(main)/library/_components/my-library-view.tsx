@@ -9,7 +9,7 @@ import { useDisclosure } from "@/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";
 
 const MyLibraryView = () => {
-  const { isOpen, onToggle, onOpen } = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     surveys,
     pageCount,
@@ -23,7 +23,7 @@ const MyLibraryView = () => {
 
   return (
     <>
-      <CreateSurveyModal isOpen={isOpen} onOpenChange={onToggle} />
+      <CreateSurveyModal isOpen={isOpen} onClose={onClose} />
       <h1 className="text-2xl mb-5">My Surveys</h1>
       <UserSurveysTable
         columns={columns}

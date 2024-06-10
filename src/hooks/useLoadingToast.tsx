@@ -9,6 +9,7 @@ export function useLoadingToast(isLoading: boolean, title?: string) {
   useEffect(() => {
     if (isLoading) {
       const loadingToast = toast({
+        duration: Infinity,
         variant: "default",
         title: title ?? "Loading...",
         icon: <Settings className="animate-spin text-secondary" />,

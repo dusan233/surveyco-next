@@ -16,16 +16,13 @@ export default function useMoveQuestion() {
   const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
 
   const {
-    isPending,
     mutate: moveQuestionMutation,
     mutateAsync: moveQuestionMutationAsync,
-    isError,
-    isSuccess,
+    ...mutation
   } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
       questionId: string;
-      pageNumber: number;
       data: PlaceQuestionData;
     }) => moveQuestion(payload.surveyId, payload.questionId, payload.data),
     onMutate(moveQuestion) {
@@ -119,10 +116,8 @@ export default function useMoveQuestion() {
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
     moveQuestionMutation,
     moveQuestionMutationAsync,
+    ...mutation,
   };
 }

@@ -10,23 +10,22 @@ import {
 } from "@/components/ui/dialog";
 import IndividualResponse from "./individual-response";
 import useSurveyPages from "@/hooks/useSurveyPages";
+import { DialogProps } from "@/types/common";
 
-type IndividualResponseDialogProps = {
-  isOpen: boolean;
-  onOpenChange: (show: boolean) => void;
+type IndividualResponseModalProps = DialogProps & {
   surveyId: string;
   responseId: string;
 };
 
-const IndividualResponseDialog = ({
+const IndividualResponseModal = ({
   isOpen,
-  onOpenChange,
+  onClose,
   surveyId,
   responseId,
-}: IndividualResponseDialogProps) => {
+}: IndividualResponseModalProps) => {
   useSurveyPages(surveyId);
   return (
-    <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-2xl">
         <DialogHeader hidden>
           <DialogTitle>Respondent results</DialogTitle>
@@ -39,4 +38,4 @@ const IndividualResponseDialog = ({
   );
 };
 
-export default IndividualResponseDialog;
+export default IndividualResponseModal;

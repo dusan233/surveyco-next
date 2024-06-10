@@ -6,13 +6,14 @@ export default function useSurveyQuestions(
   surveyId: string,
   pageId: string,
   options?: {
+    staleTime?: number;
     refetchOnMount?: boolean;
     refetchOnWindowFocus?: boolean;
     enabled?: boolean;
   }
 ) {
   const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
-    staleTime: 0,
+    staleTime: options?.staleTime || 0,
     queryKey: ["survey", surveyId, "questions", pageId],
     queryFn: () => getSurveyQuestions({ surveyId, surveyPage: pageId }),
     placeholderData: keepPreviousData,

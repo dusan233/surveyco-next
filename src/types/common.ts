@@ -31,7 +31,8 @@ export type ApiError = {
 
 export type DialogProps = {
   isOpen: boolean;
-  onOpenChange: () => void;
+  onOpenChange?: () => void;
+  onClose: () => void;
 };
 
 export type PageParams<TList extends string[]> = {

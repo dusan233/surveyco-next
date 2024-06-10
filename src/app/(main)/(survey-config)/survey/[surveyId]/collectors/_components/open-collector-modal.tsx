@@ -15,26 +15,26 @@ import { DialogProps } from "@/types/common";
 import React from "react";
 import useUpdateCollectorStatus from "../_hooks/useUpdateCollectorStatus";
 
-type OpenCollectorDialogProps = DialogProps & {
+type OpenCollectorModalProps = DialogProps & {
   collector: Collector;
 };
 
-const OpenCollectorDialog = ({
+const OpenCollectorModal = ({
   isOpen,
-  onOpenChange,
+  onClose,
   collector,
-}: OpenCollectorDialogProps) => {
+}: OpenCollectorModalProps) => {
   const { updateCollectorStatusMutationAsync, isPending } =
     useUpdateCollectorStatus();
   const { toast } = useToast();
 
   const handleUpdateCollectorStatus = async () => {
-    onOpenChange();
     try {
       await updateCollectorStatusMutationAsync({
         collectorId: collector.id,
         status: CollectorStatus.open,
       });
+      onClose();
     } catch (err) {
       toast({
         variant: "destructive",
@@ -44,7 +44,7 @@ const OpenCollectorDialog = ({
   };
 
   return (
-    <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
           <DialogTitle>Open {collector.name}</DialogTitle>
@@ -62,14 +62,8 @@ const OpenCollectorDialog = ({
             </p>
           </div>
         </div>
-
         <DialogFooter className="mt-5">
-          <Button
-            variant="outline"
-            onClick={onOpenChange}
-            size="sm"
-            disabled={isPending}
-          >
+          <Button variant="outline" onClick={onClose} size="sm">
             Cancel
           </Button>
           <Button
@@ -85,4 +79,4 @@ const OpenCollectorDialog = ({
   );
 };
 
-export default OpenCollectorDialog;
+export default OpenCollectorModal;

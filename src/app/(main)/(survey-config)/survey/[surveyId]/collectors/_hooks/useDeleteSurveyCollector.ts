@@ -5,11 +5,9 @@ import { useMutation } from "@tanstack/react-query";
 
 export default function useDeleteSurveyCollector() {
   const {
-    isPending,
     mutate: deleteCollectorMutation,
     mutateAsync: deleteCollectorMutationAsync,
-    isError,
-    isSuccess,
+    ...mutation
   } = useMutation({
     mutationFn: async (payload: { collectorId: string; surveyId: string }) => {
       return deleteSurveyCollector(payload.collectorId, payload.surveyId);
@@ -17,10 +15,8 @@ export default function useDeleteSurveyCollector() {
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
     deleteCollectorMutation,
     deleteCollectorMutationAsync,
+    ...mutation,
   };
 }

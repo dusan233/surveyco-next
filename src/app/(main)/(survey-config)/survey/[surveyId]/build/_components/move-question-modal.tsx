@@ -9,51 +9,49 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { DialogProps } from "@/types/common";
-import { useToast } from "@/components/ui/use-toast";
-import useCopyQuestion from "../_hooks/useCopyQuestion";
-import { PlaceQuestionData } from "@/types/question";
+import useMoveQuestion from "../_hooks/useMoveQuestion";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
+import { PlaceQuestionData } from "@/types/question";
+import { useToast } from "@/components/ui/use-toast";
 import PlaceQuestion from "./place-question";
 
-type CopyQuestionModalProps = DialogProps & {
+type MoveQuestionModalProps = DialogProps & {
   surveyId: string;
   questionId: string;
 };
 
-const CopyQuestionModal = ({
+const MoveQuestionModal = ({
   isOpen,
   onClose,
   surveyId,
   questionId,
-}: CopyQuestionModalProps) => {
+}: MoveQuestionModalProps) => {
   const { toast } = useToast();
-  const { copyQuestionMutationAsync, isPending } = useCopyQuestion();
+  const { moveQuestionMutationAsync, isPending } = useMoveQuestion();
 
-  const handleCopyQuestion = async (values: PlaceQuestionData) => {
+  const handleMoveQuestion = async (values: PlaceQuestionData) => {
     try {
       onClose();
-      const copiedQuestion = await copyQuestionMutationAsync({
+      const movedQuestion = await moveQuestionMutationAsync({
         surveyId,
         questionId: questionId,
         data: values,
       });
 
-      return copiedQuestion;
+      return movedQuestion;
     } catch (err) {
       toast({ title: "Something went wrong!", variant: "destructive" });
     }
   };
 
-  useLoadingToast(isPending, "Copying question...");
+  useLoadingToast(isPending, "Moving question...");
 
   return (
     <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
-          <DialogTitle>Copy Question</DialogTitle>
-          <DialogDescription>
-            Copy this question and put it on ...
-          </DialogDescription>
+          <DialogTitle>Move Question</DialogTitle>
+          <DialogDescription>Move this question to...</DialogDescription>
         </DialogHeader>
 
         <div className="gap-2 mt-5">
@@ -61,7 +59,8 @@ const CopyQuestionModal = ({
             surveyId={surveyId}
             isPending={isPending}
             onCancel={onClose}
-            onPlaceQuestion={handleCopyQuestion}
+            onPlaceQuestion={handleMoveQuestion}
+            type="move"
           />
         </div>
       </DialogContent>
@@ -69,4 +68,4 @@ const CopyQuestionModal = ({
   );
 };
 
-export default CopyQuestionModal;
+export default MoveQuestionModal;

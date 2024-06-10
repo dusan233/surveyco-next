@@ -21,9 +21,9 @@ const Navbar = () => {
     onOpen: onOpenDrawer,
   } = useDisclosure();
   const {
-    isOpen: dialogIsOpen,
-    onToggle: onToggleDialog,
-    onOpen: onOpenDialog,
+    isOpen: createSurveyOpen,
+    onClose: onCloseCreateSurvey,
+    onOpen: onOpenCreateSurvey,
   } = useDisclosure();
 
   //close drawer if not mobile screen
@@ -42,8 +42,8 @@ const Navbar = () => {
       <div className="flex py-2.5 p-4 sm:px-7 gap-7 items-center">
         <NavDrawer open={drawerIsOpen} onClose={onCloseDrawer} />
         <CreateSurveyModal
-          isOpen={dialogIsOpen}
-          onOpenChange={onToggleDialog}
+          isOpen={createSurveyOpen}
+          onClose={onCloseCreateSurvey}
         />
         <div className="max-w-xs font-bold">
           <AppLogo theme="dark" />
@@ -57,7 +57,7 @@ const Navbar = () => {
           {isSignedIn && (
             <>
               <Button
-                onClick={onOpenDialog}
+                onClick={onOpenCreateSurvey}
                 size="sm"
                 variant="secondary"
                 className="hidden sm:inline-flex"

@@ -1,12 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { DialogFooter } from "@/components/ui/dialog";
-import useSurveyPages from "@/hooks/useSurveyPages";
-import React from "react";
-import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
-import useMoveSurveyPage from "../_hooks/useMoveSurveyPage";
-import { useLoadingToast } from "@/hooks/useLoadingToast";
 import {
   Form,
   FormControl,
@@ -14,6 +7,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
+import React from "react";
 import {
   Select,
   SelectContent,
@@ -21,56 +15,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
+import { DialogFooter } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import usePlacePageForm from "../_hooks/usePlacePageForm";
-import { useQueryClient } from "@tanstack/react-query";
 import { OperationPosition } from "@/types/common";
-import { PlacePageData } from "@/types/survey";
+import { PlacePageData, SurveyPage } from "@/types/survey";
 import Spinner from "@/components/ui/spinner";
 
-type MoveSurveyPageFormProps = {
-  surveyId: string;
-  onMovePage: () => void;
+type PlaceSurveyPageFormProps = {
+  onPlacePage: (values: PlacePageData) => Promise<SurveyPage | undefined>;
+  isPending: boolean;
+  surveyPages: SurveyPage[];
+  type?: "copy" | "move";
+  onCancel?: () => void;
 };
 
-const MoveSurveyPageForm = ({
-  surveyId,
-  onMovePage,
-}: MoveSurveyPageFormProps) => {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-  const { surveyPages } = useSurveyPages(surveyId);
-  const currentPage = useBuildQuestionsContext((s) => s.currentPage);
-  const { movePageMutation, isPending } = useMoveSurveyPage();
+const PlaceSurveyPageForm = ({
+  onPlacePage,
+  isPending,
+  surveyPages,
+  onCancel,
+  type = "copy",
+}: PlaceSurveyPageFormProps) => {
   const form = usePlacePageForm({
-    pageId: surveyPages!.find((page) => page.number === 1)?.id ?? "",
+    pageId: surveyPages.find((page) => page.number === 1)?.id ?? "",
     position: OperationPosition.after,
   });
 
-  useLoadingToast(isPending);
-
-  const handleSubmit = (values: PlacePageData) => {
-    movePageMutation(
-      {
-        surveyId,
-        sourcePageId: currentPage!.id,
-        data: { position: values.position, pageId: values.pageId },
-      },
-      {
-        onSuccess(data) {
-          queryClient.invalidateQueries({
-            queryKey: ["survey", surveyId, "questions", data.id],
-          });
-          onMovePage();
-        },
-        onError() {
-          toast({
-            title: "Something went wrong!",
-            variant: "destructive",
-          });
-        },
-      }
-    );
+  const handleSubmit = async (values: PlacePageData) => {
+    await onPlacePage(values);
   };
 
   return (
@@ -135,7 +108,7 @@ const MoveSurveyPageForm = ({
         </form>
       </Form>
       <DialogFooter className="mt-10">
-        <Button onClick={() => onMovePage()} size="sm">
+        <Button onClick={() => onCancel && onCancel()} size="sm">
           Cancel
         </Button>
         <Button
@@ -144,11 +117,12 @@ const MoveSurveyPageForm = ({
           onClick={form.handleSubmit(handleSubmit)}
           size="sm"
         >
-          Move {isPending && <Spinner size="xs" />}
+          {type === "copy" ? "Copy" : "Move"} page{" "}
+          {isPending && <Spinner size="xs" />}
         </Button>
       </DialogFooter>
     </div>
   );
 };
 
-export default MoveSurveyPageForm;
+export default PlaceSurveyPageForm;
