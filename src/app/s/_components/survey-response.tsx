@@ -48,7 +48,7 @@ const SurveyResponse = ({
     <>
       <SurveyModifiedAlertDialog
         isOpen={showSurveyModifiedDialog}
-        onOpenChange={() => setShowSurveyModifiedDialog((show) => !show)}
+        onClose={() => setShowSurveyModifiedDialog(false)}
       />
 
       <SurveyResponseForm

@@ -31,7 +31,6 @@ export type ApiError = {
 
 export type DialogProps = {
   isOpen: boolean;
-  onOpenChange?: () => void;
   onClose: () => void;
 };
 

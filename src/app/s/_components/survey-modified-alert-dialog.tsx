@@ -16,10 +16,10 @@ type SurveyModifiedAlertDialogProps = DialogProps;
 
 const SurveyModifiedAlertDialog = ({
   isOpen,
-  onOpenChange,
+  onClose,
 }: SurveyModifiedAlertDialogProps) => {
   return (
-    <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
+    <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
