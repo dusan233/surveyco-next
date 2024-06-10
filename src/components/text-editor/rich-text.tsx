@@ -13,7 +13,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import AutoAnimate from "../auto-animate";
 import { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
 import TextEditorMenu from "./text-editor-menu";
-import InsertImageDialog from "./insert-image-dialog";
+import InsertImageDialog from "./insert-image-modal";
 import { useDisclosure } from "@/hooks/useDisclosure";
 
 type RichTextEditorProps = {
@@ -75,7 +75,7 @@ export const RichTextEditor = ({
     },
     content: `${content}`,
   });
-  const { onOpen, onToggle, isOpen } = useDisclosure();
+  const { onOpen, onClose, isOpen } = useDisclosure();
 
   const addImageToEditor = (imageFile: File) => {
     onAddImage(editor!, imageFile);
@@ -94,7 +94,7 @@ export const RichTextEditor = ({
   return (
     <>
       <InsertImageDialog
-        onOpenChange={onToggle}
+        onClose={onClose}
         isOpen={isOpen}
         addImageToEditor={addImageToEditor}
       />

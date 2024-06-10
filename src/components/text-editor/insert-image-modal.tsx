@@ -6,23 +6,23 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import InsertEditorImage from "./insert-editor-image";
 import { DialogProps } from "@/types/common";
 
-type CopyQuestionDialogProps = DialogProps & {
+type InsertImageModalProps = DialogProps & {
   addImageToEditor: (file: File) => void;
 };
 
-const InsertImageDialog = ({
+const InsertImageModal = ({
   isOpen,
-  onOpenChange,
+  onClose,
   addImageToEditor,
-}: CopyQuestionDialogProps) => {
+}: InsertImageModalProps) => {
   return (
-    <Dialog modal onOpenChange={onOpenChange} open={isOpen}>
+    <Dialog onOpenChange={onClose} open={isOpen}>
       <DialogContent className="sm:max-w-[425px] md:max-w-lg">
         <DialogHeader hidden>
           <DialogTitle>Insert image</DialogTitle>
         </DialogHeader>
         <InsertEditorImage
-          onOpenChange={onOpenChange}
+          onClose={onClose}
           addImageToEditor={addImageToEditor}
         />
       </DialogContent>
@@ -30,4 +30,4 @@ const InsertImageDialog = ({
   );
 };
 
-export default InsertImageDialog;
+export default InsertImageModal;

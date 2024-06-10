@@ -6,12 +6,12 @@ import { uploadQuestionImageSchema } from "@/lib/validationSchemas";
 import { ZodError, ZodIssue } from "zod";
 
 type InsertEditorImageProps = {
-  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
+  onClose: () => void;
   addImageToEditor: (file: File) => void;
 };
 
 const InsertEditorImage = ({
-  onOpenChange,
+  onClose,
   addImageToEditor,
 }: InsertEditorImageProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -56,7 +56,7 @@ const InsertEditorImage = ({
       <DialogFooter className="mt-5">
         <Button
           onClick={() => {
-            onOpenChange(false);
+            onClose();
           }}
           size="sm"
         >
@@ -68,7 +68,7 @@ const InsertEditorImage = ({
               addImageToEditor(imageFile);
             }
 
-            onOpenChange(false);
+            onClose();
           }}
           size="sm"
         >
