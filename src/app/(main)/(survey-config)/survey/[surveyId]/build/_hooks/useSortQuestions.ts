@@ -42,7 +42,6 @@ export default function useSortQuestions(
         {
           surveyId,
           questionId: movingQuestionId as string,
-          pageNumber: currentPage!.number,
           data: {
             position,
             questionId: over.id as string,
