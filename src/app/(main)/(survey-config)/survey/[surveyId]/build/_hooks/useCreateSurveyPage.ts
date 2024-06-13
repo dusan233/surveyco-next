@@ -3,18 +3,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createSurveyPage } from "@/actions/survey-actions";
 import { SurveyPage } from "@/types/survey";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useCreateSurveyPage() {
   const queryClient = useQueryClient();
   const {
-    isPending,
     mutate: createPageMutation,
     mutateAsync: createPageMutationAsync,
-    isError,
-    isSuccess,
+    ...mutation
   } = useMutation({
     mutationFn: async (payload: { surveyId: string }) => {
-      return createSurveyPage(payload.surveyId);
+      return handleServerActionRes(() => createSurveyPage(payload.surveyId));
     },
     onSuccess(data, variables) {
       queryClient.setQueryData<SurveyPage[]>(
@@ -32,10 +31,8 @@ export default function useCreateSurveyPage() {
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
     createPageMutation,
     createPageMutationAsync,
+    ...mutation,
   };
 }

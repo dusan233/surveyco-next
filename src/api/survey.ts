@@ -1,5 +1,5 @@
-import { getResponseData } from "@/lib/util/getResponseData";
-import { SortObject } from "@/types/common";
+import { parseResponseData } from "@/lib/util/responseUtils";
+import { AccessToken, SortObject } from "@/types/common";
 import {
   Question,
   QuestionResponse,
@@ -16,27 +16,28 @@ import {
 } from "@/types/survey";
 import qs from "qs";
 
-export const getSurvey = async (params: {
+export const getSurvey = async ({
+  surveyId,
+  token,
+}: {
   surveyId: string;
-  token: string | null;
+  token: AccessToken;
 }): Promise<Survey> => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${params.surveyId}`,
+    `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${surveyId}`,
     {
       headers: {
-        Authorization: "Bearer " + params.token,
+        Authorization: "Bearer " + token,
       },
       cache: "no-store",
     }
   );
 
   if (!res.ok) {
-    throw new Error(
-      `Failed to fetch data for survey with id: ${params.surveyId}`
-    );
+    throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };
 
 export const getSurveyQuestions = async (params: {
@@ -51,12 +52,10 @@ export const getSurveyQuestions = async (params: {
   );
 
   if (!res.ok) {
-    throw new Error(
-      `Failed to fetch questions for survey with id: ${params.surveyId} and pageId: ${params.surveyPage}`
-    );
+    throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };
 
 export const getSurveyPages = async (
@@ -68,15 +67,15 @@ export const getSurveyPages = async (
   );
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch pages  for survey with id: ${surveyId}`);
+    throw new Error(`Something wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };
 
 export const getSurveyResponsesVolume = async (params: {
   surveyId: string;
-  token: string | null;
+  token: AccessToken;
 }): Promise<VolumeByDay[]> => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_API}/quiz/${params.surveyId}/responses/volume`,
@@ -92,14 +91,14 @@ export const getSurveyResponsesVolume = async (params: {
     throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };
 
 export const getSurveyResponse = async (params: {
   surveyId: string;
   responseId: string;
   pageId: string;
-  accessToken: string | null | undefined;
+  accessToken: AccessToken | undefined;
 }): Promise<{
   surveyResponse: SurveyResponse;
   questions: Question[];
@@ -122,17 +121,17 @@ export const getSurveyResponse = async (params: {
   );
 
   if (!res.ok) {
-    throw new Error(`Failed to get response with id: ${params.responseId}`);
+    throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };
 
 export const getSurveyCollectors = async (params: {
   surveyId: string;
   page: number;
   sort: SortObject;
-  token: string | null | undefined;
+  token: AccessToken | undefined;
   take?: number;
 }): Promise<SurveyCollectorsResData> => {
   const sortColumn = params.sort.column;
@@ -149,25 +148,23 @@ export const getSurveyCollectors = async (params: {
     {
       headers: {
         Authorization: "Bearer " + params.token,
-        cache: "no-store",
       },
+      cache: "no-store",
     }
   );
 
   if (!res.ok) {
-    throw new Error(
-      `Failed to fetch collectors for survey with id: ${params.surveyId}`
-    );
+    throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };
 
 export const getSurveyResponses = async (params: {
   surveyId: string;
   page: number;
   sort: SortObject;
-  token: string | null;
+  token: AccessToken;
 }): Promise<SurveyResponsesResData> => {
   const sortName = params.sort.column;
   const sortType = params.sort.type;
@@ -182,24 +179,22 @@ export const getSurveyResponses = async (params: {
     {
       headers: {
         Authorization: "Bearer " + params.token,
-        cache: "no-store",
       },
+      cache: "no-store",
     }
   );
 
   if (!res.ok) {
-    throw new Error(
-      `Failed to get responses for survey with id: ${params.surveyId}`
-    );
+    throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };
 
 export const getPageQuestionResults = async (params: {
   surveyId: string;
   pageId: string;
-  token: string | null;
+  token: AccessToken;
 }): Promise<QuestionResult[]> => {
   const queryParamsObj = {
     pageId: params.pageId,
@@ -211,16 +206,14 @@ export const getPageQuestionResults = async (params: {
     {
       headers: {
         Authorization: "Bearer " + params.token,
-        cache: "no-store",
       },
+      cache: "no-store",
     }
   );
 
   if (!res.ok) {
-    throw new Error(
-      `Failed to get results for survey with id: ${params.surveyId}`
-    );
+    throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };

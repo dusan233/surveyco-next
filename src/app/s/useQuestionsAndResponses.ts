@@ -1,5 +1,6 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getSurveyQuestionsAndResponses } from "../../actions/survey-actions";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useQuestionsAndResponses(
   surveyId: string,
@@ -10,7 +11,9 @@ export default function useQuestionsAndResponses(
     staleTime: 0,
     queryKey: ["survey", surveyId, "questions-responses", pageId],
     queryFn: () =>
-      getSurveyQuestionsAndResponses(surveyId, collectorId, pageId),
+      handleServerActionRes(() =>
+        getSurveyQuestionsAndResponses(surveyId, collectorId, pageId)
+      ),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
     refetchOnWindowFocus: false,

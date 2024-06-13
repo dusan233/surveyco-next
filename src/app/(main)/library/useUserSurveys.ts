@@ -26,11 +26,10 @@ export default function useUserSurveys() {
     staleTime: 0,
     queryKey: ["user", "surveys", pagination.pageIndex + 1, sort],
     queryFn: async () => {
-      const token = await getToken();
       return getUserSurveys({
         page: pagination.pageIndex + 1,
         sort,
-        token,
+        token: await getToken(),
         userId: userId!,
       });
     },

@@ -9,6 +9,7 @@ import {
 } from "@/types/question";
 import { OperationPosition } from "@/types/common";
 import { SurveyPage } from "@/types/survey";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useMoveQuestion() {
   const queryClient = useQueryClient();
@@ -24,7 +25,10 @@ export default function useMoveQuestion() {
       surveyId: string;
       questionId: string;
       data: PlaceQuestionData;
-    }) => moveQuestion(payload.surveyId, payload.questionId, payload.data),
+    }) =>
+      handleServerActionRes(() =>
+        moveQuestion(payload.surveyId, payload.questionId, payload.data)
+      ),
     onMutate(moveQuestion) {
       const previousQuestions = queryClient.getQueryData<QuestionsResponseData>(
         ["survey", moveQuestion.surveyId, "questions", currentPage!.id]

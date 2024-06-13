@@ -3,25 +3,24 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { createSurveyCollector } from "@/actions/collector-actions";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useCreateSurveyCollector() {
   const {
-    isPending,
     mutate: createCollectorMutation,
     mutateAsync: createCollectorMutationAsync,
-    isError,
-    isSuccess,
+    ...mutation
   } = useMutation({
     mutationFn: async (payload: { surveyId: string }) => {
-      return createSurveyCollector(payload.surveyId);
+      return handleServerActionRes(() =>
+        createSurveyCollector(payload.surveyId)
+      );
     },
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
     createCollectorMutation,
     createCollectorMutationAsync,
+    ...mutation,
   };
 }

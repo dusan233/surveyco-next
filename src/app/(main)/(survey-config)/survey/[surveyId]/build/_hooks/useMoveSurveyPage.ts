@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { moveSurveyPage } from "@/actions/survey-actions";
 import { OperationPosition } from "@/types/common";
 import { SurveyPage } from "@/types/survey";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useMoveSurveyPage() {
   const queryClient = useQueryClient();
@@ -14,7 +15,10 @@ export default function useMoveSurveyPage() {
       surveyId: string;
       sourcePageId: string;
       data: { position: OperationPosition; pageId: string };
-    }) => moveSurveyPage(payload.surveyId, payload.sourcePageId, payload.data),
+    }) =>
+      handleServerActionRes(() =>
+        moveSurveyPage(payload.surveyId, payload.sourcePageId, payload.data)
+      ),
     onSuccess(data, variables) {
       queryClient.setQueryData<SurveyPage[]>(
         ["survey", variables.surveyId, "pages"],

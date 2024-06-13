@@ -1,6 +1,7 @@
 "use client";
 
 import { deleteSurveyCollector } from "@/actions/collector-actions";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 import { useMutation } from "@tanstack/react-query";
 
 export default function useDeleteSurveyCollector() {
@@ -10,7 +11,9 @@ export default function useDeleteSurveyCollector() {
     ...mutation
   } = useMutation({
     mutationFn: async (payload: { collectorId: string; surveyId: string }) => {
-      return deleteSurveyCollector(payload.collectorId, payload.surveyId);
+      return handleServerActionRes(() =>
+        deleteSurveyCollector(payload.collectorId, payload.surveyId)
+      );
     },
   });
 

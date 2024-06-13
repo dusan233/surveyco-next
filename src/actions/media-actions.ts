@@ -2,7 +2,7 @@
 
 import { MediaUploadResData } from "@/types/upload";
 import { getAccessToken } from "./helper";
-import { getResponseData } from "@/lib/util/getResponseData";
+import { parseResponseData } from "@/lib/util/responseUtils";
 
 export const uploadMedia = async (
   surveyId: string,
@@ -25,5 +25,5 @@ export const uploadMedia = async (
     throw new Error(`Failed to upload media file`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };

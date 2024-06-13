@@ -5,6 +5,7 @@ import { copyQuestion } from "@/actions/survey-actions";
 import { PlaceQuestionData, QuestionsResponseData } from "@/types/question";
 import { OperationPosition } from "@/types/common";
 import { SurveyPage } from "@/types/survey";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useCopyQuestion() {
   const queryClient = useQueryClient();
@@ -21,7 +22,10 @@ export default function useCopyQuestion() {
       surveyId: string;
       questionId: string;
       data: PlaceQuestionData;
-    }) => copyQuestion(payload.surveyId, payload.questionId, payload.data),
+    }) =>
+      handleServerActionRes(() =>
+        copyQuestion(payload.surveyId, payload.questionId, payload.data)
+      ),
     onSuccess(data, variables) {
       if (data.surveyPageId === currentPage!.id) {
         queryClient.setQueryData<QuestionsResponseData>(

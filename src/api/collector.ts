@@ -1,4 +1,4 @@
-import { getResponseData } from "@/lib/util/getResponseData";
+import { parseResponseData } from "@/lib/util/responseUtils";
 import { Collector } from "@/types/collector";
 
 export const getCollector = async (collectorId: string): Promise<Collector> => {
@@ -10,8 +10,8 @@ export const getCollector = async (collectorId: string): Promise<Collector> => {
   );
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch collector ${collectorId} for survey`);
+    throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };

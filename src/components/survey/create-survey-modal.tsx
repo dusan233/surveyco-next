@@ -8,6 +8,7 @@ import useCreateSurvey from "@/hooks/useCreateSurvey";
 import { CreateSurveyData } from "@/types/survey";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
 
 type CreateSurveyModalProps = DialogProps;
 
@@ -28,7 +29,7 @@ const CreateSurveyModal = ({ isOpen, onClose }: CreateSurveyModalProps) => {
     } catch (err) {
       toast({
         variant: "destructive",
-        title: "Something went wrong!",
+        title: getUnknownErrorMessage(err),
       });
     }
   };

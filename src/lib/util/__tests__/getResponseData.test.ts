@@ -1,7 +1,7 @@
 import { describe, it, expect } from "@jest/globals";
-import { getResponseData } from "../getResponseData";
+import { parseResponseData } from "../responseUtils";
 
-describe("getResponseData", () => {
+describe("parseResponseData", () => {
   it("should return response data", async () => {
     const responseData = { name: "Mike", lastName: "Mikaelson", age: 24 };
     const responseObject = {
@@ -12,7 +12,7 @@ describe("getResponseData", () => {
       },
     };
 
-    const resData = await getResponseData(responseObject as Response);
+    const resData = await parseResponseData(responseObject as Response);
 
     expect(resData).toEqual(responseData);
   });
@@ -27,7 +27,7 @@ describe("getResponseData", () => {
     };
 
     try {
-      await getResponseData(responseObject as Response);
+      await parseResponseData(responseObject as Response);
     } catch (err: any) {
       expect(err.message).toBe("Something went wrong!");
     }

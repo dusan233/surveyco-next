@@ -2,13 +2,14 @@
 
 import { getAccessToken } from "./helper";
 import { revalidatePath } from "next/cache";
-import { updateCollectorNameSchema } from "@/lib/validationSchemas";
-import { getResponseData } from "@/lib/util/getResponseData";
+import { getResponseData, parseResponseData } from "@/lib/util/responseUtils";
 import { Collector, CollectorStatus, CollectorType } from "@/types/collector";
+import { ErrorObj } from "@/types/common";
+import { isSuccessData } from "@/lib/util/serverActionUtils";
 
 export const createSurveyCollector = async (
   surveyId: string
-): Promise<Collector> => {
+): Promise<Collector | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API}/collector`, {
@@ -20,31 +21,19 @@ export const createSurveyCollector = async (
     body: JSON.stringify({ surveyId, type: CollectorType.web_link }),
   });
 
-  if (!res.ok) {
-    throw new Error(
-      `Failed to fetch collectors for survey with id: ${surveyId}`
-    );
+  const resData = await getResponseData<Collector>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/collectors`);
+    revalidatePath(`/survey/${surveyId}/summary`);
   }
 
-  revalidatePath(`/survey/${surveyId}/collectors`);
-  revalidatePath(`/survey/${surveyId}/summary`);
-
-  return await getResponseData(res);
-};
-
-export type UpdateCollectorFormState = {
-  collector: Collector;
-  message: string | null;
-  errors: {
-    name?: string[] | undefined;
-  } | null;
-  errorType: string | null;
+  return resData;
 };
 
 export const updateSurveyCollector = async (
   collectorId: string,
   collectorName: string
-) => {
+): Promise<Collector | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -59,21 +48,19 @@ export const updateSurveyCollector = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to update collector with id: ${collectorId}`);
+  const resData = await getResponseData<Collector>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${resData.surveyId}/collectors/${resData.id}`);
+    revalidatePath(`/survey/${resData.surveyId}/summary`);
   }
 
-  const collector = await getResponseData<Collector>(res);
-  revalidatePath(`/survey/${collector.surveyId}/collectors/${collector.id}`);
-  revalidatePath(`/survey/${collector.surveyId}/summary`);
-
-  return collector;
+  return resData;
 };
 
 export const updateSurveyCollectorStatus = async (
   collectorId: string,
   status: CollectorStatus
-): Promise<Collector> => {
+): Promise<Collector | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -88,22 +75,19 @@ export const updateSurveyCollectorStatus = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to delete collector with id: ${collectorId}`);
+  const resData = await getResponseData<Collector>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${resData.surveyId}/collectors`);
+    revalidatePath(`/survey/${resData.surveyId}/summary`);
   }
 
-  const collector = await getResponseData<Collector>(res);
-
-  revalidatePath(`/survey/${collector.surveyId}/collectors`);
-  revalidatePath(`/survey/${collector.surveyId}/summary`);
-
-  return collector;
+  return resData;
 };
 
 export const deleteSurveyCollector = async (
   collectorId: string,
   surveyId: string
-) => {
+): Promise<Collector | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -116,10 +100,11 @@ export const deleteSurveyCollector = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to delete collector with id: ${collectorId}`);
+  const resData = await getResponseData<Collector>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/collectors`);
+    revalidatePath(`/survey/${surveyId}/summary`);
   }
 
-  revalidatePath(`/survey/${surveyId}/collectors`);
-  revalidatePath(`/survey/${surveyId}/summary`);
+  return resData;
 };

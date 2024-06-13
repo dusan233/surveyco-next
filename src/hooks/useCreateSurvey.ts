@@ -1,26 +1,27 @@
 "use client";
 
 import { createSurvey } from "@/actions/survey-actions";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 import { SurveyCategory } from "@/types/survey";
 import { useMutation } from "@tanstack/react-query";
 
 export default function useCreateSurvey() {
-  const {
-    mutate: createSurveyMutation,
-    mutateAsync: createSurveyMutationAsync,
-    ...mutation
-  } = useMutation({
+  const { mutateAsync: createSurveyMutationAsync, ...mutation } = useMutation({
     mutationFn: async (payload: {
       title: string;
       category?: SurveyCategory;
     }) => {
-      return createSurvey({ title: payload.title, category: payload.category });
+      return handleServerActionRes(() =>
+        createSurvey({
+          title: payload.title,
+          category: payload.category,
+        })
+      );
     },
   });
 
   return {
     ...mutation,
-    createSurveyMutation,
     createSurveyMutationAsync,
   };
 }

@@ -6,9 +6,9 @@ import setCookie from "set-cookie-parser";
 import { revalidatePath } from "next/cache";
 import { getAccessToken } from "./helper";
 import qs from "qs";
-import { getResponseData } from "@/lib/util/getResponseData";
+import { getResponseData, parseResponseData } from "@/lib/util/responseUtils";
 import { CreateSurveyData, Survey, SurveyPage } from "@/types/survey";
-import { ApiError, OperationPosition } from "@/types/common";
+import { ErrorObj, OperationPosition } from "@/types/common";
 import {
   PlaceQuestionData,
   Question,
@@ -16,12 +16,13 @@ import {
   QuestionsResponsesData,
   SaveQuestionData,
 } from "@/types/question";
+import { isSuccessData } from "@/lib/util/serverActionUtils";
 
 export const createQuestion = async (
   surveyId: string,
   pageId: string,
   data: SaveQuestionData
-): Promise<Question> => {
+): Promise<Question | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -36,24 +37,21 @@ export const createQuestion = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(
-      `Failed to create question for survey with id: ${surveyId}`
-    );
+  const resData = await getResponseData<Question>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/summary`);
+    revalidatePath(`/survey/${surveyId}/results`);
+    revalidatePath(`/survey/${surveyId}/results/individual`);
+    revalidatePath(`/library`);
   }
 
-  revalidatePath(`/survey/${surveyId}/summary`);
-  revalidatePath(`/survey/${surveyId}/results`);
-  revalidatePath(`/survey/${surveyId}/results/individual`);
-  revalidatePath(`/library`);
-
-  return await getResponseData(res);
+  return resData;
 };
 
 export const updateQuestion = async (
   surveyId: string,
   data: SaveQuestionData
-): Promise<Question> => {
+): Promise<Question | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -68,23 +66,20 @@ export const updateQuestion = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(
-      `Failed to update question for survey with id: ${surveyId}`
-    );
+  const resData = await getResponseData<Question>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/summary`);
+    revalidatePath(`/survey/${surveyId}/results`);
+    revalidatePath(`/survey/${surveyId}/results/individual`);
   }
 
-  revalidatePath(`/survey/${surveyId}/summary`);
-  revalidatePath(`/survey/${surveyId}/results`);
-  revalidatePath(`/survey/${surveyId}/results/individual`);
-
-  return await getResponseData(res);
+  return resData;
 };
 
 export const deleteQuestion = async (
   surveyId: string,
   questionId: string
-): Promise<void> => {
+): Promise<Question | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -97,20 +92,21 @@ export const deleteQuestion = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to delete question with id: ${questionId}`);
+  const resData = await getResponseData<Question>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/summary`);
+    revalidatePath(`/survey/${surveyId}/results`);
+    revalidatePath(`/survey/${surveyId}/results/individual`);
+    revalidatePath(`/library`);
   }
 
-  revalidatePath(`/survey/${surveyId}/summary`);
-  revalidatePath(`/survey/${surveyId}/results`);
-  revalidatePath(`/survey/${surveyId}/results/individual`);
-  revalidatePath(`/library`);
+  return resData;
 };
 
 export const deleteSurveyPage = async (
   surveyId: string,
   pageId: string
-): Promise<void> => {
+): Promise<SurveyPage | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -122,21 +118,21 @@ export const deleteSurveyPage = async (
       },
     }
   );
-
-  if (!res.ok) {
-    throw new Error(`Failed to delete page with id: ${pageId}`);
+  const resData = await getResponseData<SurveyPage>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/summary`);
+    revalidatePath(`/survey/${surveyId}/results`);
+    revalidatePath(`/survey/${surveyId}/results/individual`);
   }
 
-  revalidatePath(`/survey/${surveyId}/summary`);
-  revalidatePath(`/survey/${surveyId}/results`);
-  revalidatePath(`/survey/${surveyId}/results/individual`);
+  return resData;
 };
 
 export const copySurveyPage = async (
   surveyId: string,
   sourcePageId: string,
   data: { position: OperationPosition; pageId: string }
-): Promise<SurveyPage> => {
+): Promise<SurveyPage | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -151,22 +147,21 @@ export const copySurveyPage = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to copy page with id: ${sourcePageId}`);
+  const resData = await getResponseData<SurveyPage>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/summary`);
+    revalidatePath(`/survey/${surveyId}/results`);
+    revalidatePath(`/survey/${surveyId}/results/individual`);
   }
 
-  revalidatePath(`/survey/${surveyId}/summary`);
-  revalidatePath(`/survey/${surveyId}/results`);
-  revalidatePath(`/survey/${surveyId}/results/individual`);
-
-  return await getResponseData(res);
+  return resData;
 };
 
 export const moveSurveyPage = async (
   surveyId: string,
   sourcePageId: string,
   data: { position: OperationPosition; pageId: string }
-): Promise<SurveyPage> => {
+): Promise<SurveyPage | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -181,10 +176,6 @@ export const moveSurveyPage = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to move page with id: ${sourcePageId}`);
-  }
-
   return await getResponseData(res);
 };
 
@@ -192,7 +183,7 @@ export const copyQuestion = async (
   surveyId: string,
   questionId: string,
   data: PlaceQuestionData
-): Promise<Question> => {
+): Promise<Question | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -207,10 +198,6 @@ export const copyQuestion = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to copy question with id: ${questionId}`);
-  }
-
   return await getResponseData(res);
 };
 
@@ -218,7 +205,7 @@ export const moveQuestion = async (
   surveyId: string,
   questionId: string,
   data: PlaceQuestionData
-): Promise<Question> => {
+): Promise<Question | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -233,16 +220,12 @@ export const moveQuestion = async (
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to move question with id: ${questionId}`);
-  }
-
   return await getResponseData(res);
 };
 
 export const createSurveyPage = async (
   surveyId: string
-): Promise<SurveyPage> => {
+): Promise<SurveyPage | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -254,24 +237,19 @@ export const createSurveyPage = async (
       },
     }
   );
-  const data = await getResponseData<SurveyPage | ApiError>(res);
-
-  if (!res.ok) {
-    const errorMsg =
-      (data as ApiError).error.code === "MaxPagesExceeded"
-        ? "You can have up to 20 pages per survey."
-        : "Something went wrong!";
-    throw new Error(errorMsg);
+  const resData = await getResponseData<SurveyPage>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/summary`);
+    revalidatePath(`/survey/${surveyId}/results`);
+    revalidatePath(`/survey/${surveyId}/results/individual`);
   }
 
-  revalidatePath(`/survey/${surveyId}/summary`);
-  revalidatePath(`/survey/${surveyId}/results`);
-  revalidatePath(`/survey/${surveyId}/results/individual`);
-
-  return data as SurveyPage;
+  return resData;
 };
 
-export const createSurvey = async (data: CreateSurveyData): Promise<Survey> => {
+export const createSurvey = async (
+  data: CreateSurveyData
+): Promise<Survey | ErrorObj> => {
   const token = await getAccessToken();
 
   const res = await fetch(
@@ -286,24 +264,25 @@ export const createSurvey = async (data: CreateSurveyData): Promise<Survey> => {
     }
   );
 
-  if (!res.ok) {
-    throw new Error(`Failed to create new survey`);
+  const resData = await getResponseData<Survey>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/library`);
   }
-
-  revalidatePath(`/library`);
-
-  return await getResponseData(res);
+  return resData;
 };
 
 export const getSurveyQuestionsAndResponses = async (
   surveyId: string,
   collectorId: string,
   pageId: string
-): Promise<{
-  questions: Question[];
-  questionResponses: QuestionResponse[];
-  page: string;
-}> => {
+): Promise<
+  | {
+      questions: Question[];
+      questionResponses: QuestionResponse[];
+      page: string;
+    }
+  | ErrorObj
+> => {
   const surveyResponsesCookieVal = cookies().get("surveyResponses");
   const queryParamsObj = {
     collectorId,
@@ -322,10 +301,6 @@ export const getSurveyQuestionsAndResponses = async (
       },
     }
   );
-
-  if (!res.ok) {
-    throw new Error(`Failed to get questions and question responses.`);
-  }
 
   return await getResponseData(res);
 };
@@ -429,6 +404,6 @@ export const saveSurveyResponse = async (
       },
     };
   }
-  const resData = await getResponseData<{ submitted: boolean }>(res);
+  const resData = await parseResponseData<{ submitted: boolean }>(res);
   return { error: null, data: resData };
 };

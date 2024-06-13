@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createQuestion, updateQuestion } from "@/actions/survey-actions";
 import { QuestionsResponseData, SaveQuestionData } from "@/types/question";
 import { SurveyPage } from "@/types/survey";
+import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useSaveQuestion() {
   const queryClient = useQueryClient();
@@ -17,13 +18,15 @@ export default function useSaveQuestion() {
       surveyId: string;
       currentPage: SurveyPage;
     }) =>
-      payload.data.id
-        ? updateQuestion(payload.surveyId, payload.data)
-        : createQuestion(
-            payload.surveyId,
-            payload.currentPage.id,
-            payload.data
-          ),
+      handleServerActionRes(() =>
+        payload.data.id
+          ? updateQuestion(payload.surveyId, payload.data)
+          : createQuestion(
+              payload.surveyId,
+              payload.currentPage.id,
+              payload.data
+            )
+      ),
     onSuccess(data, variables) {
       queryClient.setQueryData<QuestionsResponseData>(
         ["survey", variables.surveyId, "questions", variables.currentPage.id],

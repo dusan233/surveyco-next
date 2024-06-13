@@ -1,4 +1,4 @@
-import { getResponseData } from "@/lib/util/getResponseData";
+import { parseResponseData } from "@/lib/util/responseUtils";
 import { SortObject } from "@/types/common";
 import { UserSurveysResData } from "@/types/survey";
 import qs from "qs";
@@ -28,8 +28,8 @@ export const getUserSurveys = async (params: {
   );
 
   if (!res.ok) {
-    throw new Error(`Failed to get surveys for user with id: ${params.userId}`);
+    throw new Error(`Something went wrong!`);
   }
 
-  return await getResponseData(res);
+  return await parseResponseData(res);
 };
