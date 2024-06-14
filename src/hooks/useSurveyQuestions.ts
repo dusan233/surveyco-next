@@ -1,5 +1,4 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import useToastError from "./useToastError";
 import { getSurveyQuestions } from "@/api/survey";
 
 export default function useSurveyQuestions(
@@ -12,17 +11,16 @@ export default function useSurveyQuestions(
     enabled?: boolean;
   }
 ) {
-  const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
-    staleTime: options?.staleTime || 0,
-    queryKey: ["survey", surveyId, "questions", pageId],
-    queryFn: () => getSurveyQuestions({ surveyId, surveyPage: pageId }),
-    placeholderData: keepPreviousData,
-    refetchOnMount: false,
-    refetchOnWindowFocus: true,
-    ...options,
-  });
-
-  useToastError(isError);
+  const { data, isLoading, isFetching, isRefetching, isError, error } =
+    useQuery({
+      staleTime: options?.staleTime || 0,
+      queryKey: ["survey", surveyId, "questions", pageId],
+      queryFn: () => getSurveyQuestions({ surveyId, surveyPage: pageId }),
+      placeholderData: keepPreviousData,
+      refetchOnMount: false,
+      refetchOnWindowFocus: true,
+      ...options,
+    });
 
   return {
     questions: data?.questions,
@@ -31,5 +29,6 @@ export default function useSurveyQuestions(
     isFetching,
     isRefetching,
     isError,
+    error,
   };
 }

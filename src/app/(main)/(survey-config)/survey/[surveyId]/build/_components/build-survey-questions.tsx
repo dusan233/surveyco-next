@@ -12,6 +12,8 @@ import { useDisclosure } from "@/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import { isSavedQuestion } from "@/lib/util/questionUtils";
+import useToastError from "@/hooks/useToastError";
+import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
 
 type BuildSurveyQuestionsProps = { surveyId: string };
 
@@ -19,10 +21,13 @@ const BuildSurveyQuestions = ({ surveyId }: BuildSurveyQuestionsProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
 
-  const { questions: questionsData, isFetching } = useSurveyQuestions(
-    surveyId,
-    currentPage!.id
-  );
+  const {
+    questions: questionsData,
+    isFetching,
+    isError,
+    error,
+  } = useSurveyQuestions(surveyId, currentPage!.id);
+  useToastError(isError, getUnknownErrorMessage(error));
 
   const updateQuestions = useBuildQuestionsContext((s) => s.updateQuestions);
   const addingQuestion = useBuildQuestionsContext((s) => s.addingQuestion);

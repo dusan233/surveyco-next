@@ -7,6 +7,8 @@ import { columns } from "../survey-responses-table-columns";
 import IndividualResponseDialog from "./individual-response-modal";
 import { useIndividualResponseStore } from "../../individual/useIndividualResponseStore";
 import { Survey } from "@/types/survey";
+import useToastError from "@/hooks/useToastError";
+import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
 
 type SurveyResponsesProps = {
   survey: Survey;
@@ -22,9 +24,13 @@ const IndividualResponses = ({ survey }: SurveyResponsesProps) => {
     sorting,
     setSorting,
     lastSuccessData,
+    isError,
+    error,
   } = useSurveyIndividualResponses(survey.id);
   const { showDialog, responseId, setShowDialog } =
     useIndividualResponseStore();
+
+  useToastError(isError, getUnknownErrorMessage(error));
 
   return (
     <>

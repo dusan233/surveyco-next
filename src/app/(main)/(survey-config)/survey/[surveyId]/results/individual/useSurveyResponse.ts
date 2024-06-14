@@ -1,5 +1,4 @@
 import { getSurveyResponse } from "@/api/survey";
-import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@clerk/nextjs";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
@@ -9,9 +8,8 @@ export default function useSurveyResponse(
   responseId: string,
   pageId: string
 ) {
-  const { toast } = useToast();
   const { getToken } = useAuth();
-  const { data, isLoading, isFetching, isError } = useQuery({
+  const { data, isLoading, isFetching, isError, error } = useQuery({
     staleTime: 0,
     queryKey: ["survey", surveyId, "response", responseId, pageId],
     queryFn: async () => {
@@ -22,12 +20,6 @@ export default function useSurveyResponse(
   });
 
   const lastSuccessData = useRef(data);
-
-  useEffect(() => {
-    if (isError && !isFetching) {
-      toast({ variant: "destructive", title: "Something went wrong!" });
-    }
-  }, [isError, toast, isFetching]);
 
   useEffect(() => {
     if (data) lastSuccessData.current = data;
@@ -41,5 +33,6 @@ export default function useSurveyResponse(
     isFetching,
     lastSuccessData,
     isError,
+    error,
   };
 }

@@ -5,6 +5,8 @@ import CollectorsHeader from "./collectors-header";
 import { DataTable as CollectorsTable } from "@/components/data-table/data-table";
 import useSurveyCollectors from "@/hooks/useSurveyCollectors";
 import { columns } from "./collectors-table-columns";
+import useToastError from "@/hooks/useToastError";
+import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
 
 type SurveyCollectorsProps = {
   surveyId: string;
@@ -19,8 +21,12 @@ const SurveyCollectors = ({ surveyId }: SurveyCollectorsProps) => {
     setPagination,
     setSorting,
     isFetching,
+    isError,
+    error,
     lastSuccessData,
   } = useSurveyCollectors(surveyId);
+
+  useToastError(isError, getUnknownErrorMessage(error));
 
   return (
     <div>

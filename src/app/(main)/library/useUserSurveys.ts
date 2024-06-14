@@ -1,13 +1,11 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useRef, useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
 import { getUserSurveys } from "@/api/user";
 import { useAuth } from "@clerk/nextjs";
 import { SortObject } from "@/types/common";
 
 export default function useUserSurveys() {
-  const { toast } = useToast();
   const { userId, getToken } = useAuth();
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -22,29 +20,24 @@ export default function useUserSurveys() {
     { id: "updated_at", desc: true },
   ]);
 
-  const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
-    staleTime: 0,
-    queryKey: ["user", "surveys", pagination.pageIndex + 1, sort],
-    queryFn: async () => {
-      return getUserSurveys({
-        page: pagination.pageIndex + 1,
-        sort,
-        token: await getToken(),
-        userId: userId!,
-      });
-    },
-    placeholderData: keepPreviousData,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading, isFetching, isRefetching, isError, error } =
+    useQuery({
+      staleTime: 0,
+      queryKey: ["user", "surveys", pagination.pageIndex + 1, sort],
+      queryFn: async () => {
+        return getUserSurveys({
+          page: pagination.pageIndex + 1,
+          sort,
+          token: await getToken(),
+          userId: userId!,
+        });
+      },
+      placeholderData: keepPreviousData,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    });
 
   const lastSuccessData = useRef(data);
-
-  useEffect(() => {
-    if (isError) {
-      toast({ variant: "destructive", title: "Something went wrong!" });
-    }
-  }, [isError, toast]);
 
   useEffect(() => {
     if (data) lastSuccessData.current = data;
@@ -61,6 +54,7 @@ export default function useUserSurveys() {
   }, [sorting, data]);
 
   return {
+    error,
     surveys: data?.data,
     pageCount: data?.total_pages || 0,
     isLoading,

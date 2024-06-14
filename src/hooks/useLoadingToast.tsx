@@ -18,5 +18,7 @@ export function useLoadingToast(isLoading: boolean, title?: string) {
     } else {
       toastRef.current?.dismiss();
     }
+
+    return () => toastRef.current?.dismiss();
   }, [isLoading, toast, title]);
 }

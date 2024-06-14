@@ -1,13 +1,11 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useRef, useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
 import { getSurveyCollectors } from "@/api/survey";
 import { useAuth } from "@clerk/nextjs";
 import { SortObject } from "@/types/common";
 
 export default function useSurveyCollectors(surveyId: string) {
-  const { toast } = useToast();
   const { getToken } = useAuth();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -21,36 +19,31 @@ export default function useSurveyCollectors(surveyId: string) {
     { id: "updated_at", desc: true },
   ]);
 
-  const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
-    staleTime: 0,
-    queryKey: [
-      "survey",
-      surveyId,
-      "collectors",
-      pagination.pageIndex + 1,
-      sort,
-    ],
-    queryFn: async () => {
-      const token = await getToken();
-      return getSurveyCollectors({
+  const { data, isLoading, isFetching, isRefetching, isError, error } =
+    useQuery({
+      staleTime: 0,
+      queryKey: [
+        "survey",
         surveyId,
-        page: pagination.pageIndex + 1,
+        "collectors",
+        pagination.pageIndex + 1,
         sort,
-        token,
-      });
-    },
-    placeholderData: keepPreviousData,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
+      ],
+      queryFn: async () => {
+        const token = await getToken();
+        return getSurveyCollectors({
+          surveyId,
+          page: pagination.pageIndex + 1,
+          sort,
+          token,
+        });
+      },
+      placeholderData: keepPreviousData,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    });
 
   const lastSuccessData = useRef(data);
-
-  useEffect(() => {
-    if (isError) {
-      toast({ variant: "destructive", title: "Something went wrong!" });
-    }
-  }, [isError, toast]);
 
   useEffect(() => {
     if (data) lastSuccessData.current = data;
@@ -78,5 +71,6 @@ export default function useSurveyCollectors(surveyId: string) {
     isRefetching,
     lastSuccessData,
     isError,
+    error,
   };
 }

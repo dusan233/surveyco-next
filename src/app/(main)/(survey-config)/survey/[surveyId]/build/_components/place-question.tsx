@@ -3,6 +3,8 @@ import useSurveyQuestions from "@/hooks/useSurveyQuestions";
 import { PlaceQuestionData, Question } from "@/types/question";
 import React, { useState } from "react";
 import PlaceQuestionForm from "./place-question-form";
+import useToastError from "@/hooks/useToastError";
+import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
 
 type PlaceQuestionProps = {
   surveyId: string;
@@ -23,11 +25,12 @@ const PlaceQuestion = ({
   const [selectedPageId, setSelectedPageId] = useState(
     surveyPages?.[0].id ?? ""
   );
-  const { questions, page, isFetching } = useSurveyQuestions(
+  const { questions, page, isFetching, isError, error } = useSurveyQuestions(
     surveyId,
     selectedPageId,
     { staleTime: Infinity }
   );
+  useToastError(isError, getUnknownErrorMessage(error));
 
   return (
     <PlaceQuestionForm
