@@ -19,29 +19,22 @@ export default function useSurveyIndividualResponses(surveyId: string) {
     { id: "updated_at", desc: true },
   ]);
 
-  const { data, isLoading, isFetching, isRefetching, isError, error } =
-    useQuery({
-      staleTime: 0,
-      queryKey: [
-        "survey",
+  const { data, ...queryInfo } = useQuery({
+    staleTime: 0,
+    queryKey: ["survey", surveyId, "responses", pagination.pageIndex + 1, sort],
+    queryFn: async () => {
+      const token = await getToken();
+      return getSurveyResponses({
         surveyId,
-        "responses",
-        pagination.pageIndex + 1,
         sort,
-      ],
-      queryFn: async () => {
-        const token = await getToken();
-        return getSurveyResponses({
-          surveyId,
-          sort,
-          page: pagination.pageIndex + 1,
-          token,
-        });
-      },
-      placeholderData: keepPreviousData,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    });
+        page: pagination.pageIndex + 1,
+        token,
+      });
+    },
+    placeholderData: keepPreviousData,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 
   const lastSuccessData = useRef(data);
 
@@ -62,15 +55,11 @@ export default function useSurveyIndividualResponses(surveyId: string) {
   return {
     responses: data?.data,
     pageCount: data?.total_pages || 0,
-    isLoading,
     pagination,
     sorting,
     setSorting,
     setPagination,
-    isFetching,
-    isRefetching,
-    isError,
-    error,
     lastSuccessData,
+    ...queryInfo,
   };
 }

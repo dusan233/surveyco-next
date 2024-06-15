@@ -16,6 +16,8 @@ import PageActions from "./page-actions";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { Settings } from "lucide-react";
 import Spinner from "@/components/ui/spinner";
+import { getErrorMessage } from "@/lib/util/errorUtils";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
 
 type PageControlBarProps = {
   surveyId: string;
@@ -26,31 +28,21 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { toast } = useToast();
   const { surveyPages } = useSurveyPages(surveyId);
-  const { createPageMutation, isPending } = useCreateSurveyPage();
+  const { createPageMutationAsync, isPending } = useCreateSurveyPage();
 
-  const handleCreateSurveyPage = () => {
-    const createPageToast = toast({
-      variant: "default",
-      title: "Creating page...",
-      icon: <Settings className="animate-spin text-secondary" />,
-    });
-
-    createPageMutation(
-      { surveyId },
-      {
-        onSuccess(data) {
-          createPageToast.dismiss();
-          setCurrentPage(data);
-        },
-        onError(error) {
-          toast({
-            variant: "destructive",
-            title: error.message,
-          });
-        },
-      }
-    );
+  const handleCreateSurveyPage = async () => {
+    try {
+      const data = await createPageMutationAsync({ surveyId });
+      setCurrentPage(data);
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: getErrorMessage(err),
+      });
+    }
   };
+
+  useLoadingToast(isPending, "Creating page...");
 
   return (
     <div className="mb-4 py-2 flex flex-col xs:flex-row xs:items-end bg-slate-100 xs:justify-between gap-2 sticky top-11 z-10">

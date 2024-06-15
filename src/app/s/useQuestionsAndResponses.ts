@@ -7,7 +7,7 @@ export default function useQuestionsAndResponses(
   collectorId: string,
   pageId: string
 ) {
-  const { data, isLoading, isFetching, isRefetching, isError } = useQuery({
+  const { data, ...queryInfo } = useQuery({
     staleTime: 0,
     queryKey: ["survey", surveyId, "questions-responses", pageId],
     queryFn: () =>
@@ -23,9 +23,6 @@ export default function useQuestionsAndResponses(
     questions: data?.questions,
     questionResponses: data?.questionResponses,
     page: data?.page,
-    isLoading,
-    isFetching,
-    isRefetching,
-    isError,
+    ...queryInfo,
   };
 }

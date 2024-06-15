@@ -16,11 +16,7 @@ export default function useMoveQuestion() {
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
 
-  const {
-    mutate: moveQuestionMutation,
-    mutateAsync: moveQuestionMutationAsync,
-    ...mutation
-  } = useMutation({
+  const { mutateAsync: moveQuestionMutationAsync, ...mutation } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
       questionId: string;
@@ -120,7 +116,6 @@ export default function useMoveQuestion() {
   });
 
   return {
-    moveQuestionMutation,
     moveQuestionMutationAsync,
     ...mutation,
   };

@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
 import { isSavedQuestion } from "@/lib/util/questionUtils";
 import useToastError from "@/hooks/useToastError";
-import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type BuildSurveyQuestionsProps = { surveyId: string };
 
@@ -27,7 +27,7 @@ const BuildSurveyQuestions = ({ surveyId }: BuildSurveyQuestionsProps) => {
     isError,
     error,
   } = useSurveyQuestions(surveyId, currentPage!.id);
-  useToastError(isError, getUnknownErrorMessage(error));
+  useToastError(isError, getErrorMessage(error));
 
   const updateQuestions = useBuildQuestionsContext((s) => s.updateQuestions);
   const addingQuestion = useBuildQuestionsContext((s) => s.addingQuestion);

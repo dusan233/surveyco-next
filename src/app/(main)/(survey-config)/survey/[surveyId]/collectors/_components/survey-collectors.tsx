@@ -6,7 +6,7 @@ import { DataTable as CollectorsTable } from "@/components/data-table/data-table
 import useSurveyCollectors from "@/hooks/useSurveyCollectors";
 import { columns } from "./collectors-table-columns";
 import useToastError from "@/hooks/useToastError";
-import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type SurveyCollectorsProps = {
   surveyId: string;
@@ -26,7 +26,7 @@ const SurveyCollectors = ({ surveyId }: SurveyCollectorsProps) => {
     lastSuccessData,
   } = useSurveyCollectors(surveyId);
 
-  useToastError(isError, getUnknownErrorMessage(error));
+  useToastError(isError, getErrorMessage(error));
 
   return (
     <div>

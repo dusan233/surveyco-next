@@ -14,6 +14,7 @@ import useCopyQuestion from "../_hooks/useCopyQuestion";
 import { PlaceQuestionData } from "@/types/question";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import PlaceQuestion from "./place-question";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type CopyQuestionModalProps = DialogProps & {
   surveyId: string;
@@ -40,7 +41,7 @@ const CopyQuestionModal = ({
 
       return copiedQuestion;
     } catch (err) {
-      toast({ title: "Something went wrong!", variant: "destructive" });
+      toast({ title: getErrorMessage(err), variant: "destructive" });
     }
   };
 

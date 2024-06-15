@@ -12,7 +12,7 @@ import useSurveyResponsesPagination from "../../individual/useSurveyResponsesPag
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 import useToastError from "@/hooks/useToastError";
-import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type IndividualResponseProps = {
   surveyId: string;
@@ -42,7 +42,7 @@ const IndividualResponse = ({
     isLoading: loadingResponse,
     isFetching: fetchingResponse,
   } = useSurveyResponse(surveyId, responseId, page);
-  useToastError(isError, getUnknownErrorMessage(error));
+  useToastError(isError, getErrorMessage(error));
 
   const surveyResponsesData =
     responses || lastSuccessSurveyResponses.current?.data;

@@ -4,11 +4,9 @@ import { QuestionsResponsesData } from "@/types/question";
 
 export default function useSaveSurveyResponse() {
   const {
-    isPending,
     mutate: saveResponseMutation,
     mutateAsync: saveResponseMutationAsync,
-    isError,
-    isSuccess,
+    ...mutation
   } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
@@ -29,10 +27,8 @@ export default function useSaveSurveyResponse() {
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
     saveResponseMutation,
     saveResponseMutationAsync,
+    ...mutation,
   };
 }

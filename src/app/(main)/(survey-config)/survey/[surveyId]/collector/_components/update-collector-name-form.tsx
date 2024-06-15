@@ -18,6 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type UpdateCollectorNameFormProps = {
   collector: Collector;
@@ -44,7 +45,7 @@ const UpdateCollectorNameForm = ({
     } catch (err) {
       toast({
         variant: "destructive",
-        title: "Something went wrong!",
+        title: getErrorMessage(err),
       });
     }
   };

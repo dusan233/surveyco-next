@@ -4,7 +4,7 @@ import { PlaceQuestionData, Question } from "@/types/question";
 import React, { useState } from "react";
 import PlaceQuestionForm from "./place-question-form";
 import useToastError from "@/hooks/useToastError";
-import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type PlaceQuestionProps = {
   surveyId: string;
@@ -30,7 +30,7 @@ const PlaceQuestion = ({
     selectedPageId,
     { staleTime: Infinity }
   );
-  useToastError(isError, getUnknownErrorMessage(error));
+  useToastError(isError, getErrorMessage(error));
 
   return (
     <PlaceQuestionForm

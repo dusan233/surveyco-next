@@ -5,20 +5,19 @@ import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 import { useMutation } from "@tanstack/react-query";
 
 export default function useDeleteSurveyCollector() {
-  const {
-    mutate: deleteCollectorMutation,
-    mutateAsync: deleteCollectorMutationAsync,
-    ...mutation
-  } = useMutation({
-    mutationFn: async (payload: { collectorId: string; surveyId: string }) => {
-      return handleServerActionRes(() =>
-        deleteSurveyCollector(payload.collectorId, payload.surveyId)
-      );
-    },
-  });
+  const { mutateAsync: deleteCollectorMutationAsync, ...mutation } =
+    useMutation({
+      mutationFn: async (payload: {
+        collectorId: string;
+        surveyId: string;
+      }) => {
+        return handleServerActionRes(() =>
+          deleteSurveyCollector(payload.collectorId, payload.surveyId)
+        );
+      },
+    });
 
   return {
-    deleteCollectorMutation,
     deleteCollectorMutationAsync,
     ...mutation,
   };

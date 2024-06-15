@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 
 export const useQuestionResults = (surveyId: string, pageId: string) => {
   const { getToken } = useAuth();
-  const { data, error, isFetching, status, isError } = useQuery({
+  const { data, ...queryInfo } = useQuery({
     staleTime: 0,
     queryKey: ["survey", surveyId, "questions", "results", pageId],
     queryFn: async () => {
@@ -26,9 +26,6 @@ export const useQuestionResults = (surveyId: string, pageId: string) => {
   return {
     questionResults,
     lastSuccessData,
-    error,
-    isError,
-    isFetching,
-    status,
+    ...queryInfo,
   };
 };

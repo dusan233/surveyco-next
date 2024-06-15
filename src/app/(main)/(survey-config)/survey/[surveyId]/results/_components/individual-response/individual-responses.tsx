@@ -8,7 +8,7 @@ import IndividualResponseDialog from "./individual-response-modal";
 import { useIndividualResponseStore } from "../../individual/useIndividualResponseStore";
 import { Survey } from "@/types/survey";
 import useToastError from "@/hooks/useToastError";
-import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type SurveyResponsesProps = {
   survey: Survey;
@@ -30,7 +30,7 @@ const IndividualResponses = ({ survey }: SurveyResponsesProps) => {
   const { showDialog, responseId, setShowDialog } =
     useIndividualResponseStore();
 
-  useToastError(isError, getUnknownErrorMessage(error));
+  useToastError(isError, getErrorMessage(error));
 
   return (
     <>

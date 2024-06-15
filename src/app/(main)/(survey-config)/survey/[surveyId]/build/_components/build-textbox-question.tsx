@@ -17,6 +17,8 @@ import {
   UnsavedTextboxQuestion,
 } from "@/types/question";
 import { isSavedQuestion } from "@/lib/util/questionUtils";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextboxQuestion;
@@ -47,9 +49,11 @@ const BuildTextboxQuestion = ({
     (s) => s.setAddingQuestion
   );
 
-  const { isPending, saveQuestionMutation } = useSaveQuestion();
+  const { isPending, saveQuestionMutationAsync } = useSaveQuestion();
 
-  const handleSaveQuestion: SubmitHandler<TextboxQuestionFormData> = (data) => {
+  const handleSaveQuestion: SubmitHandler<TextboxQuestionFormData> = async (
+    data
+  ) => {
     const questionData: SaveTextboxQuestionData = {
       description: data.description,
       required: data.required,
@@ -58,30 +62,27 @@ const BuildTextboxQuestion = ({
       ...(isSavedQuestion(question) && { id: question.id }),
     };
     setCanSelectQuestion(false);
-    const addingQuestionToast = toast({
-      variant: "default",
-      title: "Saving question...",
-    });
-    saveQuestionMutation(
-      { surveyId, currentPage: currentPage!, data: questionData },
-      {
-        onSuccess(data) {
-          setCanSelectQuestion(true);
-          setAddingQuestion(false);
-          if (!questionData.id) {
-            setQueueQuestion(data.id);
-          }
-          addingQuestionToast.dismiss();
-        },
-        onError() {
-          toast({
-            variant: "destructive",
-            title: "Something went wrong!",
-          });
-        },
+
+    try {
+      const resData = await saveQuestionMutationAsync({
+        surveyId,
+        currentPage: currentPage!,
+        data: questionData,
+      });
+      setCanSelectQuestion(true);
+      setAddingQuestion(false);
+      if (!questionData.id) {
+        setQueueQuestion(resData.id);
       }
-    );
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: getErrorMessage(err),
+      });
+    }
   };
+
+  useLoadingToast(isPending, "Saving question...");
 
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
     const fn = form.handleSubmit(handleSaveQuestion);

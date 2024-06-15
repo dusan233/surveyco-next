@@ -14,6 +14,7 @@ import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { PlaceQuestionData } from "@/types/question";
 import { useToast } from "@/components/ui/use-toast";
 import PlaceQuestion from "./place-question";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type MoveQuestionModalProps = DialogProps & {
   surveyId: string;
@@ -40,7 +41,7 @@ const MoveQuestionModal = ({
 
       return movedQuestion;
     } catch (err) {
-      toast({ title: "Something went wrong!", variant: "destructive" });
+      toast({ title: getErrorMessage(err), variant: "destructive" });
     }
   };
 

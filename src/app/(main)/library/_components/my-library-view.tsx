@@ -8,7 +8,7 @@ import CreateSurveyModal from "@/components/survey/create-survey-modal";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";
 import useToastError from "@/hooks/useToastError";
-import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 const MyLibraryView = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -25,7 +25,7 @@ const MyLibraryView = () => {
     isError,
   } = useUserSurveys();
 
-  useToastError(isError, getUnknownErrorMessage(error));
+  useToastError(isError, getErrorMessage(error));
 
   return (
     <>

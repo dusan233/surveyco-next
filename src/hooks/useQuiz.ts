@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export default function useSurvey(surveyId: string) {
   const { getToken } = useAuth();
-  const { data, isLoading } = useQuery({
+  const { data, ...queryInfo } = useQuery({
     queryKey: ["survey", surveyId],
     queryFn: async () => {
       const token = await getToken();
@@ -12,5 +12,5 @@ export default function useSurvey(surveyId: string) {
     },
   });
 
-  return { survey: data, isLoading };
+  return { survey: data, ...queryInfo };
 }

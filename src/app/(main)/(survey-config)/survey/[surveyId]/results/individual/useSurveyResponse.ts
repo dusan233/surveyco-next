@@ -9,7 +9,7 @@ export default function useSurveyResponse(
   pageId: string
 ) {
   const { getToken } = useAuth();
-  const { data, isLoading, isFetching, isError, error } = useQuery({
+  const { data, ...queryInfo } = useQuery({
     staleTime: 0,
     queryKey: ["survey", surveyId, "response", responseId, pageId],
     queryFn: async () => {
@@ -29,10 +29,7 @@ export default function useSurveyResponse(
     surveyResponse: data?.surveyResponse,
     questions: data?.questions,
     questionResponses: data?.questionResponses,
-    isLoading,
-    isFetching,
     lastSuccessData,
-    isError,
-    error,
+    ...queryInfo,
   };
 }

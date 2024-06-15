@@ -5,13 +5,7 @@ import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useDeleteSurveyPage() {
   const queryClient = useQueryClient();
-  const {
-    isPending,
-    mutate: deletePageMutation,
-    mutateAsync: deletePageMutationAsync,
-    isError,
-    isSuccess,
-  } = useMutation({
+  const { mutateAsync: deletePageMutationAsync, ...mutation } = useMutation({
     mutationFn: (payload: { surveyId: string; pageId: string }) =>
       handleServerActionRes(() =>
         deleteSurveyPage(payload.surveyId, payload.pageId)
@@ -41,10 +35,7 @@ export default function useDeleteSurveyPage() {
   });
 
   return {
-    isPending,
-    isError,
-    isSuccess,
-    deletePageMutation,
     deletePageMutationAsync,
+    ...mutation,
   };
 }

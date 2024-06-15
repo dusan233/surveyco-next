@@ -7,12 +7,7 @@ import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useSaveQuestion() {
   const queryClient = useQueryClient();
-  const {
-    isPending,
-    mutate: saveQuestionMutation,
-    isError,
-    isSuccess,
-  } = useMutation({
+  const { mutateAsync: saveQuestionMutationAsync, ...mutation } = useMutation({
     mutationFn: (payload: {
       data: SaveQuestionData;
       surveyId: string;
@@ -59,5 +54,5 @@ export default function useSaveQuestion() {
     },
   });
 
-  return { isPending, isError, isSuccess, saveQuestionMutation };
+  return { saveQuestionMutationAsync, ...mutation };
 }

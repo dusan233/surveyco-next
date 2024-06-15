@@ -16,6 +16,7 @@ import useCopySurveyPage from "../_hooks/useCopySurveyPage";
 import { useToast } from "@/components/ui/use-toast";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import PlaceSurveyPageForm from "./place-survey-page-form";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type CopyPageModalProps = DialogProps & {
   surveyId: string;
@@ -46,7 +47,7 @@ const CopySurvePageModal = ({
       return copiedSurveyPage;
     } catch (err) {
       toast({
-        title: "Something went wrong!",
+        title: getErrorMessage(err),
         variant: "destructive",
       });
     }

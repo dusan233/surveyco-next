@@ -14,7 +14,7 @@ import WindowedVirtualList from "@/components/layout/windowed-virtual-list";
 import { Survey } from "@/types/survey";
 import { QuestionType } from "@/types/question";
 import useToastError from "@/hooks/useToastError";
-import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type SurveyResultsProps = {
   survey: Survey;
@@ -31,7 +31,7 @@ const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
   });
   const { questionResults, isFetching, lastSuccessData, isError, error } =
     useQuestionResults(surveyId, selectedPage);
-  useToastError(isError, getUnknownErrorMessage(error));
+  useToastError(isError, getErrorMessage(error));
 
   const questionResultsData = questionResults || lastSuccessData.current;
   const listRef = useRef<HTMLDivElement | null>(null);

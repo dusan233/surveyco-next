@@ -19,6 +19,8 @@ import CopyQuestionModal from "./copy-question-modal";
 import MoveQuestionModal from "./move-question-modal";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { useDisclosure } from "@/hooks/useDisclosure";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type QuestionActionsProps = {
   surveyId: string;
@@ -28,7 +30,9 @@ type QuestionActionsProps = {
 const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { toast } = useToast();
-  const { deleteQuestionMutation } = useDeleteQuestion(currentPage!);
+  const { deleteQuestionMutationAsync, isPending } = useDeleteQuestion(
+    currentPage!
+  );
   const {
     isOpen: isCopyQuestionOpen,
     onOpen: onOpenCopyQuestion,
@@ -40,27 +44,18 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
     onClose: onCloseMoveQuestion,
   } = useDisclosure();
 
-  const handleDeleteQuestion = () => {
-    const deleteQuestionToast = toast({
-      variant: "destructive",
-      title: "Deleting question...",
-    });
-
-    deleteQuestionMutation(
-      { surveyId, questionId },
-      {
-        onSuccess() {
-          deleteQuestionToast.dismiss();
-        },
-        onError() {
-          toast({
-            variant: "destructive",
-            title: "Something went wrong!",
-          });
-        },
-      }
-    );
+  const handleDeleteQuestion = async () => {
+    try {
+      await deleteQuestionMutationAsync({ surveyId, questionId });
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: getErrorMessage(err),
+      });
+    }
   };
+
+  useLoadingToast(isPending, "Deleting question...");
 
   return (
     <>

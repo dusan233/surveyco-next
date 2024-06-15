@@ -16,6 +16,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { useQueryClient } from "@tanstack/react-query";
 import PlaceSurveyPageForm from "./place-survey-page-form";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type MovePageModalProps = DialogProps & {
   surveyId: string;
@@ -49,7 +50,7 @@ const MoveSurvePageModal = ({
       return movedSurveyPage;
     } catch (err) {
       toast({
-        title: "Something went wrong!",
+        title: getErrorMessage(err),
         variant: "destructive",
       });
     }

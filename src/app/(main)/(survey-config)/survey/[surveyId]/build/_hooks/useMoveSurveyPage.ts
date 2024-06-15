@@ -6,11 +6,7 @@ import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useMoveSurveyPage() {
   const queryClient = useQueryClient();
-  const {
-    mutate: movePageMutation,
-    mutateAsync: movePageMutationAsync,
-    ...mutation
-  } = useMutation({
+  const { mutateAsync: movePageMutationAsync, ...mutation } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
       sourcePageId: string;
@@ -90,7 +86,6 @@ export default function useMoveSurveyPage() {
   });
 
   return {
-    movePageMutation,
     movePageMutationAsync,
     ...mutation,
   };

@@ -28,6 +28,8 @@ import {
   isSavedQuestion,
   isSavedQuestionChoice,
 } from "@/lib/util/questionUtils";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type MultiChoiceQuestionProps = {
   question:
@@ -75,9 +77,9 @@ const BuildMultiChoiceQuestion = ({
     return isSavedQuestion(question) ? !question.hasResponses : true;
   }, [question]);
 
-  const { isPending, saveQuestionMutation } = useSaveQuestion();
+  const { isPending, saveQuestionMutationAsync } = useSaveQuestion();
 
-  const handleSaveQuestion: SubmitHandler<MultiChoiceQuestionFormData> = (
+  const handleSaveQuestion: SubmitHandler<MultiChoiceQuestionFormData> = async (
     data
   ) => {
     const questionData: SaveMultiChoiceQuestionData = {
@@ -91,44 +93,40 @@ const BuildMultiChoiceQuestion = ({
     };
 
     setCanSelectQuestion(false);
-    const addingQuestionToast = toast({
-      variant: "default",
-      title: "Saving question...",
-      icon: <Settings className="animate-spin text-secondary" />,
-    });
-    saveQuestionMutation(
-      { surveyId, currentPage: currentPage!, data: questionData },
-      {
-        onSuccess(data) {
-          setCanSelectQuestion(true);
-          setAddingQuestion(false);
 
-          form.setValue(
-            "options",
-            // @ts-ignore
-            data.options.map((option) => {
-              return {
-                id: option.id,
-                description: option.description,
-                number: option.number,
-                descriptionImage: option.description_image,
-              };
-            })
-          );
-          if (!questionData.id) {
-            setQueueQuestion(data.id);
-          }
-          addingQuestionToast.dismiss();
-        },
-        onError() {
-          toast({
-            variant: "destructive",
-            title: "Something went wrong!",
-          });
-        },
+    try {
+      const resData = await saveQuestionMutationAsync({
+        surveyId,
+        currentPage: currentPage!,
+        data: questionData,
+      });
+      setCanSelectQuestion(true);
+      setAddingQuestion(false);
+
+      form.setValue(
+        "options",
+        // @ts-ignore
+        resData.options.map((option) => {
+          return {
+            id: option.id,
+            description: option.description,
+            number: option.number,
+            descriptionImage: option.description_image,
+          };
+        })
+      );
+      if (!questionData.id) {
+        setQueueQuestion(resData.id);
       }
-    );
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: getErrorMessage(err),
+      });
+    }
   };
+
+  useLoadingToast(isPending, "Saving question...");
 
   const ref = useClickAwayQuestionEdit<HTMLDivElement>(async (e) => {
     const fn = form.handleSubmit(handleSaveQuestion);

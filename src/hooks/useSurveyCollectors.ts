@@ -19,29 +19,28 @@ export default function useSurveyCollectors(surveyId: string) {
     { id: "updated_at", desc: true },
   ]);
 
-  const { data, isLoading, isFetching, isRefetching, isError, error } =
-    useQuery({
-      staleTime: 0,
-      queryKey: [
-        "survey",
+  const { data, ...queryInfo } = useQuery({
+    staleTime: 0,
+    queryKey: [
+      "survey",
+      surveyId,
+      "collectors",
+      pagination.pageIndex + 1,
+      sort,
+    ],
+    queryFn: async () => {
+      const token = await getToken();
+      return getSurveyCollectors({
         surveyId,
-        "collectors",
-        pagination.pageIndex + 1,
+        page: pagination.pageIndex + 1,
         sort,
-      ],
-      queryFn: async () => {
-        const token = await getToken();
-        return getSurveyCollectors({
-          surveyId,
-          page: pagination.pageIndex + 1,
-          sort,
-          token,
-        });
-      },
-      placeholderData: keepPreviousData,
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-    });
+        token,
+      });
+    },
+    placeholderData: keepPreviousData,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
 
   const lastSuccessData = useRef(data);
 
@@ -62,15 +61,11 @@ export default function useSurveyCollectors(surveyId: string) {
   return {
     collectors: data?.data,
     pageCount: data?.total_pages || 0,
-    isLoading,
     pagination,
     sorting,
     setSorting,
     setPagination,
-    isFetching,
-    isRefetching,
     lastSuccessData,
-    isError,
-    error,
+    ...queryInfo,
   };
 }

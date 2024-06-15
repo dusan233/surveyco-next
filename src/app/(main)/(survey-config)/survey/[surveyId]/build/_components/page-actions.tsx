@@ -20,6 +20,8 @@ import MoveSurvePageModal from "./move-survey-page-modal";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import useSurveyPages from "@/hooks/useSurveyPages";
 import { useDisclosure } from "@/hooks/useDisclosure";
+import { useLoadingToast } from "@/hooks/useLoadingToast";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type QuestionActionsProps = {
   surveyId: string;
@@ -30,7 +32,7 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { surveyPages } = useSurveyPages(surveyId);
   const { toast } = useToast();
-  const { deletePageMutation } = useDeleteSurveyPage();
+  const { deletePageMutationAsync, isPending } = useDeleteSurveyPage();
 
   const {
     isOpen: isCopyPageOpen,
@@ -43,29 +45,20 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
     onOpen: onOpenMovePage,
   } = useDisclosure();
 
-  const handleDeletePage = () => {
-    const deletePageToast = toast({
-      variant: "destructive",
-      title: "Deleting page...",
-    });
-
-    deletePageMutation(
-      { surveyId, pageId: currentPage!.id },
-      {
-        onSuccess() {
-          const firstPage = surveyPages?.find((page) => page.number === 1);
-          setCurrentPage(firstPage!);
-          deletePageToast.dismiss();
-        },
-        onError() {
-          toast({
-            variant: "destructive",
-            title: "Something went wrong!",
-          });
-        },
-      }
-    );
+  const handleDeletePage = async () => {
+    try {
+      await deletePageMutationAsync({ surveyId, pageId: currentPage!.id });
+      const firstPage = surveyPages?.find((page) => page.number === 1);
+      setCurrentPage(firstPage!);
+    } catch (err) {
+      toast({
+        variant: "destructive",
+        title: getErrorMessage(err),
+      });
+    }
   };
+
+  useLoadingToast(isPending, "Deleting page...");
 
   return (
     <>

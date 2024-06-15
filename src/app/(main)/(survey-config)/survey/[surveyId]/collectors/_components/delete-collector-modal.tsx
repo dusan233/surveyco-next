@@ -16,6 +16,7 @@ import { format } from "date-fns";
 import { AlertTriangle } from "lucide-react";
 import React from "react";
 import useDeleteSurveyCollector from "../_hooks/useDeleteSurveyCollector";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type DeleteCollectorModalProps = DialogProps & {
   collector: Collector;
@@ -42,7 +43,7 @@ const DeleteCollectorModal = ({
     } catch (err) {
       toast({
         variant: "destructive",
-        title: "Something went wrong!",
+        title: getErrorMessage(err),
       });
     }
   };

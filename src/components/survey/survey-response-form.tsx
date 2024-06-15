@@ -49,7 +49,7 @@ const SurveyResponseForm = ({
   isPreview = false,
 }: SurveyResponseFormProps) => {
   const { toast } = useToast();
-  const { saveResponseMutation, isPending } = useSaveSurveyResponse();
+  const { isPending, saveResponseMutationAsync } = useSaveSurveyResponse();
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
     defaultValues: {
@@ -61,29 +61,24 @@ const SurveyResponseForm = ({
   )!.number;
 
   const handleSubmit = async (values: QuestionsResponsesData) => {
-    saveResponseMutation(
-      {
-        surveyId,
-        data: values,
-        collectorId,
-        pageId: displayPageId,
-        surveyResposneStartTime,
-        isPreview,
-      },
-      {
-        onSuccess(data) {
-          if (data.error) {
-            if (data.error.errorCode === "SURVEY_UPDATED") {
-              onSurveyChange();
-            } else {
-              toast({ variant: "destructive", title: "Something went wrong!" });
-            }
-          } else if (data.data) {
-            onSuccessfulSubmit(values, data.data.submitted);
-          }
-        },
+    const data = await saveResponseMutationAsync({
+      surveyId,
+      data: values,
+      collectorId,
+      pageId: displayPageId,
+      surveyResposneStartTime,
+      isPreview,
+    });
+
+    if (data.error) {
+      if (data.error.errorCode === "SURVEY_UPDATED") {
+        onSurveyChange();
+      } else {
+        toast({ variant: "destructive", title: "Something went wrong!" });
       }
-    );
+    } else if (data.data) {
+      onSuccessfulSubmit(values, data.data.submitted);
+    }
   };
 
   const showNextBtn =

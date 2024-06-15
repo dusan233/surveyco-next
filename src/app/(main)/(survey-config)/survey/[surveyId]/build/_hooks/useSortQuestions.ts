@@ -6,6 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { SurveyPage } from "@/types/survey";
 import { DragEndEvent } from "@/types/dnd";
 import { OperationPosition } from "@/types/common";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 export default function useSortQuestions(
   surveyId: string,
@@ -13,7 +14,7 @@ export default function useSortQuestions(
 ) {
   const { toast } = useToast();
   const [activeId, setActiveId] = useState(null);
-  const { isPending, moveQuestionMutation } = useMoveQuestion();
+  const { isPending, moveQuestionMutationAsync } = useMoveQuestion();
   const updateQuestions = useBuildQuestionsContext((s) => s.updateQuestions);
 
   const handleDragStart = (event: any) => {
@@ -21,25 +22,25 @@ export default function useSortQuestions(
     setActiveId(active.id);
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
+  const handleDragEnd = async (event: DragEndEvent) => {
+    try {
+      const { active, over } = event;
 
-    if (active.id !== over.id) {
-      const movingQuestionId = active.id;
-      const destinationIndex = over.data.current?.sortable.index;
-      const sourceIndex = active.data.current?.sortable.index;
+      if (active.id !== over.id) {
+        const movingQuestionId = active.id;
+        const destinationIndex = over.data.current?.sortable.index;
+        const sourceIndex = active.data.current?.sortable.index;
 
-      const position =
-        sourceIndex > destinationIndex
-          ? OperationPosition.before
-          : OperationPosition.after;
+        const position =
+          sourceIndex > destinationIndex
+            ? OperationPosition.before
+            : OperationPosition.after;
 
-      updateQuestions((questions) => {
-        return arrayMove(questions, sourceIndex, destinationIndex);
-      });
-      setActiveId(null);
-      moveQuestionMutation(
-        {
+        updateQuestions((questions) => {
+          return arrayMove(questions, sourceIndex, destinationIndex);
+        });
+        setActiveId(null);
+        await moveQuestionMutationAsync({
           surveyId,
           questionId: movingQuestionId as string,
           data: {
@@ -47,18 +48,15 @@ export default function useSortQuestions(
             questionId: over.id as string,
             pageId: currentPage!.id,
           },
-        },
-        {
-          onError() {
-            toast({
-              title: "Something went wrong!",
-              variant: "destructive",
-            });
-          },
-        }
-      );
-    } else {
-      setActiveId(null);
+        });
+      } else {
+        setActiveId(null);
+      }
+    } catch (err) {
+      toast({
+        title: getErrorMessage(err),
+        variant: "destructive",
+      });
     }
   };
 

@@ -11,24 +11,19 @@ export default function useSurveyQuestions(
     enabled?: boolean;
   }
 ) {
-  const { data, isLoading, isFetching, isRefetching, isError, error } =
-    useQuery({
-      staleTime: options?.staleTime || 0,
-      queryKey: ["survey", surveyId, "questions", pageId],
-      queryFn: () => getSurveyQuestions({ surveyId, surveyPage: pageId }),
-      placeholderData: keepPreviousData,
-      refetchOnMount: false,
-      refetchOnWindowFocus: true,
-      ...options,
-    });
+  const { data, ...queryInfo } = useQuery({
+    staleTime: options?.staleTime || 0,
+    queryKey: ["survey", surveyId, "questions", pageId],
+    queryFn: () => getSurveyQuestions({ surveyId, surveyPage: pageId }),
+    placeholderData: keepPreviousData,
+    refetchOnMount: false,
+    refetchOnWindowFocus: true,
+    ...options,
+  });
 
   return {
     questions: data?.questions,
     page: data?.page,
-    isLoading,
-    isFetching,
-    isRefetching,
-    isError,
-    error,
+    ...queryInfo,
   };
 }

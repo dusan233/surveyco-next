@@ -8,7 +8,7 @@ export default function useSurveyPages(
     refetchOnWindowFocus?: boolean;
   }
 ) {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, ...queryInfo } = useQuery({
     staleTime: Infinity,
     gcTime: Infinity,
     queryKey: ["survey", surveyId, "pages"],
@@ -18,5 +18,5 @@ export default function useSurveyPages(
     ...options,
   });
 
-  return { surveyPages: data, isLoading, isError, error };
+  return { surveyPages: data, ...queryInfo };
 }

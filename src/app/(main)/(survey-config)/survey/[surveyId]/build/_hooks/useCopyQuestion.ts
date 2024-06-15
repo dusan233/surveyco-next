@@ -13,11 +13,7 @@ export default function useCopyQuestion() {
   const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
   const setQueueQuestion = useBuildQuestionsContext((s) => s.setQueueQuestion);
 
-  const {
-    mutate: copyQuestionMutation,
-    mutateAsync: copyQuestionMutationAsync,
-    ...mutation
-  } = useMutation({
+  const { mutateAsync: copyQuestionMutationAsync, ...mutation } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
       questionId: string;
@@ -77,7 +73,6 @@ export default function useCopyQuestion() {
   });
 
   return {
-    copyQuestionMutation,
     copyQuestionMutationAsync,
     ...mutation,
   };

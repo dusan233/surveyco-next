@@ -6,11 +6,7 @@ import { handleServerActionRes } from "@/lib/util/serverActionUtils";
 
 export default function useCopySurveyPage() {
   const queryClient = useQueryClient();
-  const {
-    mutate: copyPageMutation,
-    mutateAsync: copyPageMutationAsync,
-    ...mutation
-  } = useMutation({
+  const { mutateAsync: copyPageMutationAsync, ...mutation } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
       sourcePageId: string;
@@ -51,7 +47,6 @@ export default function useCopySurveyPage() {
   });
 
   return {
-    copyPageMutation,
     copyPageMutationAsync,
     ...mutation,
   };

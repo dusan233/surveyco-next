@@ -14,6 +14,7 @@ import { Collector, CollectorStatus } from "@/types/collector";
 import { DialogProps } from "@/types/common";
 import React from "react";
 import useUpdateCollectorStatus from "../_hooks/useUpdateCollectorStatus";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type OpenCollectorModalProps = DialogProps & {
   collector: Collector;
@@ -38,7 +39,7 @@ const OpenCollectorModal = ({
     } catch (err) {
       toast({
         variant: "destructive",
-        title: "Something went wrong!",
+        title: getErrorMessage(err),
       });
     }
   };

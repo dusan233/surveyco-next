@@ -15,6 +15,7 @@ import { DialogProps } from "@/types/common";
 import { AlertTriangle } from "lucide-react";
 import React from "react";
 import useUpdateCollectorStatus from "../_hooks/useUpdateCollectorStatus";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type CloseCollectorModalProps = DialogProps & {
   collector: Collector;
@@ -39,7 +40,7 @@ const CloseCollectorModal = ({
     } catch (err) {
       toast({
         variant: "destructive",
-        title: "Something went wrong!",
+        title: getErrorMessage(err),
       });
     }
   };

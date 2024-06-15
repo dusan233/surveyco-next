@@ -6,7 +6,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { PlusIcon } from "lucide-react";
 import React from "react";
 import useCreateSurveyCollector from "../_hooks/useCreateSurveyCollector";
-import { getUnknownErrorMessage } from "@/lib/util/errorUtils";
+import { getErrorMessage } from "@/lib/util/errorUtils";
 
 type CreateCollectorProps = {
   surveyId: string;
@@ -23,7 +23,7 @@ const CreateCollector = ({ surveyId }: CreateCollectorProps) => {
     } catch (err) {
       toast({
         variant: "destructive",
-        title: getUnknownErrorMessage(err),
+        title: getErrorMessage(err),
       });
     }
   };
