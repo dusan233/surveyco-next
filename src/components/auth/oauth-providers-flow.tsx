@@ -4,8 +4,8 @@ import React from "react";
 import { useSignIn } from "@clerk/nextjs";
 import { OAuthStrategy } from "@clerk/nextjs/server";
 import OauthProviderButton from "./oauth-provider-button";
-import { useToast } from "../ui/use-toast";
 import Spinner from "../ui/spinner";
+import { toastError } from "@/lib/util/toastError";
 
 type OauthProvidersFlowProps = {
   login?: boolean;
@@ -17,7 +17,6 @@ const OauthProvidersFlow = ({
   direction = "row",
 }: OauthProvidersFlowProps) => {
   const { signIn, isLoaded } = useSignIn();
-  const { toast } = useToast();
 
   const signinWithProvicer = async (strategy: OAuthStrategy) => {
     if (!isLoaded) return;
@@ -28,10 +27,7 @@ const OauthProvidersFlow = ({
         redirectUrlComplete: "/",
       });
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: "Something went wrong.",
-      });
+      toastError("Something went wrong!");
     }
   };
 

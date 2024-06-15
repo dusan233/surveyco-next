@@ -12,9 +12,9 @@ import { DialogProps } from "@/types/common";
 import useMoveQuestion from "../_hooks/useMoveQuestion";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { PlaceQuestionData } from "@/types/question";
-import { useToast } from "@/components/ui/use-toast";
 import PlaceQuestion from "./place-question";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type MoveQuestionModalProps = DialogProps & {
   surveyId: string;
@@ -27,7 +27,6 @@ const MoveQuestionModal = ({
   surveyId,
   questionId,
 }: MoveQuestionModalProps) => {
-  const { toast } = useToast();
   const { moveQuestionMutationAsync, isPending } = useMoveQuestion();
 
   const handleMoveQuestion = async (values: PlaceQuestionData) => {
@@ -41,7 +40,7 @@ const MoveQuestionModal = ({
 
       return movedQuestion;
     } catch (err) {
-      toast({ title: getErrorMessage(err), variant: "destructive" });
+      toastError(getErrorMessage(err));
     }
   };
 

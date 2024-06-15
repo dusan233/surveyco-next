@@ -11,13 +11,13 @@ import {
 import useSurveyPages from "@/hooks/useSurveyPages";
 import { Button } from "@/components/ui/button";
 import useCreateSurveyPage from "../_hooks/useCreateSurveyPage";
-import { useToast } from "@/components/ui/use-toast";
 import PageActions from "./page-actions";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
-import { Settings } from "lucide-react";
+
 import Spinner from "@/components/ui/spinner";
 import { getErrorMessage } from "@/lib/util/errorUtils";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
+import { toastError } from "@/lib/util/toastError";
 
 type PageControlBarProps = {
   surveyId: string;
@@ -26,7 +26,7 @@ type PageControlBarProps = {
 const PageControlBar = ({ surveyId }: PageControlBarProps) => {
   const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
-  const { toast } = useToast();
+
   const { surveyPages } = useSurveyPages(surveyId);
   const { createPageMutationAsync, isPending } = useCreateSurveyPage();
 
@@ -35,10 +35,7 @@ const PageControlBar = ({ surveyId }: PageControlBarProps) => {
       const data = await createPageMutationAsync({ surveyId });
       setCurrentPage(data);
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

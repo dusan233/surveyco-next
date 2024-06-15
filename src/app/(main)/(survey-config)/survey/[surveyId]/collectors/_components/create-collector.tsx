@@ -2,11 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
 import { PlusIcon } from "lucide-react";
 import React from "react";
 import useCreateSurveyCollector from "../_hooks/useCreateSurveyCollector";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type CreateCollectorProps = {
   surveyId: string;
@@ -15,16 +15,12 @@ type CreateCollectorProps = {
 const CreateCollector = ({ surveyId }: CreateCollectorProps) => {
   const { createCollectorMutationAsync, isPending } =
     useCreateSurveyCollector();
-  const { toast } = useToast();
 
   const handleCreateCollector = async () => {
     try {
       await createCollectorMutationAsync({ surveyId });
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

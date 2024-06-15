@@ -2,17 +2,16 @@ import useMoveQuestion from "./useMoveQuestion";
 import { useState } from "react";
 import { arrayMove } from "@dnd-kit/sortable";
 import useBuildQuestionsContext from "./useBuildQuestionsContext";
-import { useToast } from "@/components/ui/use-toast";
 import { SurveyPage } from "@/types/survey";
 import { DragEndEvent } from "@/types/dnd";
 import { OperationPosition } from "@/types/common";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 export default function useSortQuestions(
   surveyId: string,
   currentPage: SurveyPage
 ) {
-  const { toast } = useToast();
   const [activeId, setActiveId] = useState(null);
   const { isPending, moveQuestionMutationAsync } = useMoveQuestion();
   const updateQuestions = useBuildQuestionsContext((s) => s.updateQuestions);
@@ -53,10 +52,7 @@ export default function useSortQuestions(
         setActiveId(null);
       }
     } catch (err) {
-      toast({
-        title: getErrorMessage(err),
-        variant: "destructive",
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

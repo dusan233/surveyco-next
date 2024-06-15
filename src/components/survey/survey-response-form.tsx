@@ -8,13 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import QuestionResponseList from "../questions/response/question-response-list";
-import { useToast } from "../ui/use-toast";
 import {
   Question,
   QuestionResponseData,
   QuestionsResponsesData,
 } from "@/types/question";
 import { SurveyPage } from "@/types/survey";
+import { toastError } from "@/lib/util/toastError";
 
 type SurveyResponseFormProps = {
   questions: Question[];
@@ -48,7 +48,6 @@ const SurveyResponseForm = ({
   onSuccessfulSubmit,
   isPreview = false,
 }: SurveyResponseFormProps) => {
-  const { toast } = useToast();
   const { isPending, saveResponseMutationAsync } = useSaveSurveyResponse();
   const form = useForm<QuestionsResponsesData>({
     resolver: zodResolver(questionsResponsesSchema),
@@ -74,7 +73,7 @@ const SurveyResponseForm = ({
       if (data.error.errorCode === "SURVEY_UPDATED") {
         onSurveyChange();
       } else {
-        toast({ variant: "destructive", title: "Something went wrong!" });
+        toastError("Something went wrong!");
       }
     } else if (data.data) {
       onSuccessfulSubmit(values, data.data.submitted);

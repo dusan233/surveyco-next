@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
 import { Collector } from "@/types/collector";
 import { DialogProps } from "@/types/common";
 import { format } from "date-fns";
@@ -17,6 +16,7 @@ import { AlertTriangle } from "lucide-react";
 import React from "react";
 import useDeleteSurveyCollector from "../_hooks/useDeleteSurveyCollector";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type DeleteCollectorModalProps = DialogProps & {
   collector: Collector;
@@ -29,7 +29,6 @@ const DeleteCollectorModal = ({
 }: DeleteCollectorModalProps) => {
   const { isPending, deleteCollectorMutationAsync } =
     useDeleteSurveyCollector();
-  const { toast } = useToast();
   const createdAt = new Date(collector.created_at);
   const updatedAt = new Date(collector.updated_at);
 
@@ -41,10 +40,7 @@ const DeleteCollectorModal = ({
       });
       onClose();
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, ChevronDown, Copy, Trash2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
 import useDeleteSurveyPage from "../_hooks/useDeleteSurveyPage";
 import CopySurveyPageModal from "./copy-survey-page-modal";
 import MoveSurvePageModal from "./move-survey-page-modal";
@@ -22,6 +21,7 @@ import useSurveyPages from "@/hooks/useSurveyPages";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type QuestionActionsProps = {
   surveyId: string;
@@ -31,7 +31,6 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
   const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { surveyPages } = useSurveyPages(surveyId);
-  const { toast } = useToast();
   const { deletePageMutationAsync, isPending } = useDeleteSurveyPage();
 
   const {
@@ -51,10 +50,7 @@ const PageActions = ({ surveyId }: QuestionActionsProps) => {
       const firstPage = surveyPages?.find((page) => page.number === 1);
       setCurrentPage(firstPage!);
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

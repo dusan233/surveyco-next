@@ -14,13 +14,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Copy, MoreVertical, Trash2 } from "lucide-react";
 import useDeleteQuestion from "../_hooks/useDeleteQuestion";
-import { useToast } from "@/components/ui/use-toast";
 import CopyQuestionModal from "./copy-question-modal";
 import MoveQuestionModal from "./move-question-modal";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { useDisclosure } from "@/hooks/useDisclosure";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type QuestionActionsProps = {
   surveyId: string;
@@ -29,7 +29,7 @@ type QuestionActionsProps = {
 
 const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
-  const { toast } = useToast();
+
   const { deleteQuestionMutationAsync, isPending } = useDeleteQuestion(
     currentPage!
   );
@@ -48,10 +48,7 @@ const QuestionActions = ({ surveyId, questionId }: QuestionActionsProps) => {
     try {
       await deleteQuestionMutationAsync({ surveyId, questionId });
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

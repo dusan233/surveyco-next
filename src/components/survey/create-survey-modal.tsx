@@ -6,14 +6,13 @@ import CreateSurveyForm from "./create-survey-form";
 import { DialogProps } from "@/types/common";
 import useCreateSurvey from "@/hooks/useCreateSurvey";
 import { CreateSurveyData } from "@/types/survey";
-import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type CreateSurveyModalProps = DialogProps;
 
 const CreateSurveyModal = ({ isOpen, onClose }: CreateSurveyModalProps) => {
-  const { toast } = useToast();
   const { push } = useRouter();
   const { createSurveyMutationAsync, isPending } = useCreateSurvey();
 
@@ -27,10 +26,7 @@ const CreateSurveyModal = ({ isOpen, onClose }: CreateSurveyModalProps) => {
       push(`/survey/${newSurvey.id}/build`);
       return newSurvey;
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

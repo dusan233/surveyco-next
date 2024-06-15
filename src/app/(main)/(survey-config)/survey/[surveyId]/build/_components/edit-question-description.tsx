@@ -10,9 +10,9 @@ import React from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
 
 import AutoAnimate from "@/components/auto-animate";
-import { useToast } from "@/components/ui/use-toast";
 import { uploadMedia } from "@/actions/media-actions";
 import { editorHasImage } from "@/lib/util/editorHasImage";
+import { toastError } from "@/lib/util/toastError";
 
 type EditQuestionDescriptionProps = {
   surveyId: string;
@@ -23,7 +23,6 @@ const EditQuestionDescription = ({
   surveyId,
   handleSaveQuestion,
 }: EditQuestionDescriptionProps) => {
-  const { toast } = useToast();
   const form = useFormContext();
 
   return (
@@ -70,10 +69,7 @@ const EditQuestionDescription = ({
 
                   await form.handleSubmit(handleSaveQuestion)();
                 } catch (err) {
-                  toast({
-                    variant: "destructive",
-                    title: "Something went wrong!",
-                  });
+                  toastError("Something went wrong!");
                 }
               }}
               onBlur={field.onBlur}

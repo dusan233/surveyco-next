@@ -8,12 +8,10 @@ import EditQuestionChoiceList from "./edit-question-choice-list";
 import EditQuestionFooter from "./edit-question-footer";
 import useSaveQuestion from "../_hooks/useSaveQuestion";
 import { useClickAwayQuestionEdit } from "@/hooks/useClickAwayQuestionEdit";
-import { useToast } from "@/components/ui/use-toast";
 import EditQuestionSettings from "./edit-question-settings";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import useMultiChoiceQuestionForm from "../_hooks/useMultiChoiceQuestionForm";
 import EditQuestionDescription from "./edit-question-description";
-import { Settings } from "lucide-react";
 import {
   CheckboxesQuestion,
   DropdownQuestion,
@@ -30,6 +28,7 @@ import {
 } from "@/lib/util/questionUtils";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type MultiChoiceQuestionProps = {
   question:
@@ -50,7 +49,6 @@ const BuildMultiChoiceQuestion = ({
   scrollToQuestion,
   qIndex,
 }: MultiChoiceQuestionProps) => {
-  const { toast } = useToast();
   const form = useMultiChoiceQuestionForm({
     description: question.description,
     options: question.options.map((qChoice) => ({
@@ -119,10 +117,7 @@ const BuildMultiChoiceQuestion = ({
         setQueueQuestion(resData.id);
       }
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

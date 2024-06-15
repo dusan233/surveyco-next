@@ -13,10 +13,10 @@ import useSurveyPages from "@/hooks/useSurveyPages";
 import { DialogProps } from "@/types/common";
 import { PlacePageData } from "@/types/survey";
 import useCopySurveyPage from "../_hooks/useCopySurveyPage";
-import { useToast } from "@/components/ui/use-toast";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import PlaceSurveyPageForm from "./place-survey-page-form";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type CopyPageModalProps = DialogProps & {
   surveyId: string;
@@ -27,7 +27,6 @@ const CopySurvePageModal = ({
   onClose,
   surveyId,
 }: CopyPageModalProps) => {
-  const { toast } = useToast();
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const setCurrentPage = useBuildQuestionsContext((s) => s.setCurrentPage);
   const { copyPageMutationAsync, isPending } = useCopySurveyPage();
@@ -46,10 +45,7 @@ const CopySurvePageModal = ({
       setCurrentPage(copiedSurveyPage);
       return copiedSurveyPage;
     } catch (err) {
-      toast({
-        title: getErrorMessage(err),
-        variant: "destructive",
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

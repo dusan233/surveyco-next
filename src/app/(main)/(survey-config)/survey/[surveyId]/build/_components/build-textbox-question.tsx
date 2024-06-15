@@ -5,7 +5,6 @@ import { Form } from "@/components/ui/form";
 import EditQuestionFooter from "./edit-question-footer";
 import { useClickAwayQuestionEdit } from "@/hooks/useClickAwayQuestionEdit";
 import useSaveQuestion from "../_hooks/useSaveQuestion";
-import { useToast } from "@/components/ui/use-toast";
 import EditQuestionSettings from "./edit-question-settings";
 import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import useTextboxQuestionForm from "../_hooks/useTextboxQuestionForm";
@@ -19,6 +18,7 @@ import {
 import { isSavedQuestion } from "@/lib/util/questionUtils";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type TextboxQuestionProps = {
   question: TextboxQuestion | UnsavedTextboxQuestion;
@@ -33,7 +33,6 @@ const BuildTextboxQuestion = ({
   scrollToQuestion,
   qIndex,
 }: TextboxQuestionProps) => {
-  const { toast } = useToast();
   const form = useTextboxQuestionForm({
     required: question.required,
     description: question.description,
@@ -75,10 +74,7 @@ const BuildTextboxQuestion = ({
         setQueueQuestion(resData.id);
       }
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

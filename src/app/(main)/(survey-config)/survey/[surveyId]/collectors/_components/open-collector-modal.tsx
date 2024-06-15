@@ -9,12 +9,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
 import { Collector, CollectorStatus } from "@/types/collector";
 import { DialogProps } from "@/types/common";
 import React from "react";
 import useUpdateCollectorStatus from "../_hooks/useUpdateCollectorStatus";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type OpenCollectorModalProps = DialogProps & {
   collector: Collector;
@@ -27,7 +27,6 @@ const OpenCollectorModal = ({
 }: OpenCollectorModalProps) => {
   const { updateCollectorStatusMutationAsync, isPending } =
     useUpdateCollectorStatus();
-  const { toast } = useToast();
 
   const handleUpdateCollectorStatus = async () => {
     try {
@@ -37,10 +36,7 @@ const OpenCollectorModal = ({
       });
       onClose();
     } catch (err) {
-      toast({
-        variant: "destructive",
-        title: getErrorMessage(err),
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

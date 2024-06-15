@@ -12,11 +12,11 @@ import useBuildQuestionsContext from "../_hooks/useBuildQuestionsContext";
 import { DialogProps } from "@/types/common";
 import { PlacePageData } from "@/types/survey";
 import useMoveSurveyPage from "../_hooks/useMoveSurveyPage";
-import { useToast } from "@/components/ui/use-toast";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import { useQueryClient } from "@tanstack/react-query";
 import PlaceSurveyPageForm from "./place-survey-page-form";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type MovePageModalProps = DialogProps & {
   surveyId: string;
@@ -27,7 +27,6 @@ const MoveSurvePageModal = ({
   onClose,
   surveyId,
 }: MovePageModalProps) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const currentPage = useBuildQuestionsContext((s) => s.currentPage);
   const { surveyPages } = useSurveyPages(surveyId);
@@ -49,10 +48,7 @@ const MoveSurvePageModal = ({
 
       return movedSurveyPage;
     } catch (err) {
-      toast({
-        title: getErrorMessage(err),
-        variant: "destructive",
-      });
+      toastError(getErrorMessage(err));
     }
   };
 

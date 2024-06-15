@@ -9,12 +9,12 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { DialogProps } from "@/types/common";
-import { useToast } from "@/components/ui/use-toast";
 import useCopyQuestion from "../_hooks/useCopyQuestion";
 import { PlaceQuestionData } from "@/types/question";
 import { useLoadingToast } from "@/hooks/useLoadingToast";
 import PlaceQuestion from "./place-question";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { toastError } from "@/lib/util/toastError";
 
 type CopyQuestionModalProps = DialogProps & {
   surveyId: string;
@@ -27,7 +27,6 @@ const CopyQuestionModal = ({
   surveyId,
   questionId,
 }: CopyQuestionModalProps) => {
-  const { toast } = useToast();
   const { copyQuestionMutationAsync, isPending } = useCopyQuestion();
 
   const handleCopyQuestion = async (values: PlaceQuestionData) => {
@@ -41,7 +40,7 @@ const CopyQuestionModal = ({
 
       return copiedQuestion;
     } catch (err) {
-      toast({ title: getErrorMessage(err), variant: "destructive" });
+      toastError(getErrorMessage(err));
     }
   };
 

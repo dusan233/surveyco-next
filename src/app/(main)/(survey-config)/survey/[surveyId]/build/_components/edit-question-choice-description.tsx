@@ -7,8 +7,8 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useToast } from "@/components/ui/use-toast";
 import { editorHasImage } from "@/lib/util/editorHasImage";
+import { toastError } from "@/lib/util/toastError";
 import { Editor } from "@tiptap/react";
 import React from "react";
 import { SubmitHandler, useFormContext } from "react-hook-form";
@@ -24,7 +24,6 @@ const EditQuestionChoiceDescription = ({
   index,
   handleSaveQuestion,
 }: EditQuestionChoiceDescriptionProps) => {
-  const { toast } = useToast();
   const { control, setValue, getValues, handleSubmit } = useFormContext();
 
   return (
@@ -63,10 +62,7 @@ const EditQuestionChoiceDescription = ({
 
                   await handleSubmit(handleSaveQuestion)();
                 } catch (err) {
-                  toast({
-                    variant: "destructive",
-                    title: "Something went wrong!",
-                  });
+                  toastError("Something went wrong!");
                 }
               }}
               onChange={(editor: Editor) => {
