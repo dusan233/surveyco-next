@@ -1,7 +1,7 @@
 import { getSurveyResponse } from "@/api/survey";
+import { useLastSuccessData } from "@/hooks/useLastSuccessData";
 import { useAuth } from "@clerk/nextjs";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
 
 export default function useSurveyResponse(
   surveyId: string,
@@ -19,17 +19,13 @@ export default function useSurveyResponse(
     placeholderData: keepPreviousData,
   });
 
-  const lastSuccessData = useRef(data);
-
-  useEffect(() => {
-    if (data) lastSuccessData.current = data;
-  }, [data]);
+  const { lastSuccessData } = useLastSuccessData(data);
 
   return {
-    surveyResponse: data?.surveyResponse,
-    questions: data?.questions,
-    questionResponses: data?.questionResponses,
-    lastSuccessData,
+    surveyResponse: data?.surveyResponse || lastSuccessData?.surveyResponse,
+    questions: data?.questions || lastSuccessData?.questions,
+    questionResponses:
+      data?.questionResponses || lastSuccessData?.questionResponses,
     ...queryInfo,
   };
 }

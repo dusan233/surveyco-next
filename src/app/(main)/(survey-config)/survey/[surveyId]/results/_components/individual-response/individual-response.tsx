@@ -13,18 +13,20 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertTriangleIcon } from "lucide-react";
 import useToastError from "@/hooks/useToastError";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { SortObject } from "@/types/common";
 
 type IndividualResponseProps = {
   surveyId: string;
   responseId: string;
+  dataTableState: { sort: SortObject; page: number };
 };
 
 const IndividualResponse = ({
   surveyId,
   responseId,
+  dataTableState,
 }: IndividualResponseProps) => {
-  const { responses, lastSuccessData: lastSuccessSurveyResponses } =
-    useSurveyResponses(surveyId);
+  const { responses } = useSurveyResponses({ surveyId, ...dataTableState });
   const { surveyPages, isLoading: loadingSurveyPages } =
     useSurveyPages(surveyId);
   const [page, setPage] = useState(() => {
@@ -36,7 +38,6 @@ const IndividualResponse = ({
     surveyResponse,
     questions,
     questionResponses,
-    lastSuccessData,
     isError,
     error,
     isLoading: loadingResponse,
@@ -44,8 +45,7 @@ const IndividualResponse = ({
   } = useSurveyResponse(surveyId, responseId, page);
   useToastError(isError, getErrorMessage(error));
 
-  const surveyResponsesData =
-    responses || lastSuccessSurveyResponses.current?.data;
+  const surveyResponsesData = responses;
 
   const {
     getCanNextResponse,
@@ -54,13 +54,10 @@ const IndividualResponse = ({
     handlePreviousResponse,
   } = useSurveyResponsesPagination(surveyResponsesData!, responseId);
 
-  const noData =
-    !surveyResponse && !questions && !questionResponses && lastSuccessData;
-  const responseData =
-    surveyResponse || lastSuccessData.current?.surveyResponse;
-  const questionsData = questions || lastSuccessData.current?.questions;
-  const questionResponsesData =
-    questionResponses || lastSuccessData.current?.questionResponses;
+  const noData = !surveyResponse && !questions && !questionResponses;
+  const responseData = surveyResponse;
+  const questionsData = questions;
+  const questionResponsesData = questionResponses;
 
   if (isError && noData) {
     return (

@@ -1,7 +1,7 @@
 import { getPageQuestionResults } from "@/api/survey";
+import { useLastSuccessData } from "@/hooks/useLastSuccessData";
 import { useAuth } from "@clerk/nextjs";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
 
 export const useQuestionResults = (surveyId: string, pageId: string) => {
   const { getToken } = useAuth();
@@ -16,16 +16,10 @@ export const useQuestionResults = (surveyId: string, pageId: string) => {
     refetchOnMount: false,
   });
 
-  const lastSuccessData = useRef(data);
+  const { lastSuccessData } = useLastSuccessData(data);
 
-  useEffect(() => {
-    if (data) lastSuccessData.current = data;
-  }, [data]);
-
-  const questionResults = data;
   return {
-    questionResults,
-    lastSuccessData,
+    questionResults: data || lastSuccessData,
     ...queryInfo,
   };
 };

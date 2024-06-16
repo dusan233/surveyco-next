@@ -82,7 +82,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <div className="flex px-4 border-t items-center h-16">
+      <div className="flex px-4 border-t gap-2 items-center h-16">
         {pageCount > 1 && (
           <DataTablePagination
             nextPage={nextPage}

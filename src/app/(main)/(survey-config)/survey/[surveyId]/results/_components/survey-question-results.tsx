@@ -29,11 +29,13 @@ const SurveyQuestionResults = ({ surveyId, survey }: SurveyResultsProps) => {
 
     return firstPage!.id;
   });
-  const { questionResults, isFetching, lastSuccessData, isError, error } =
-    useQuestionResults(surveyId, selectedPage);
+  const { questionResults, isFetching, isError, error } = useQuestionResults(
+    surveyId,
+    selectedPage
+  );
   useToastError(isError, getErrorMessage(error));
 
-  const questionResultsData = questionResults || lastSuccessData.current;
+  const questionResultsData = questionResults;
   const listRef = useRef<HTMLDivElement | null>(null);
   const virtualizer = useWindowVirtualizer({
     count: questionResultsData!.length,

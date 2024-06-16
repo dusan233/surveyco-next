@@ -9,21 +9,17 @@ import { useDisclosure } from "@/hooks/useDisclosure";
 import { Button } from "@/components/ui/button";
 import useToastError from "@/hooks/useToastError";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { useDataTableState } from "@/hooks/useDataTableState";
 
 const MyLibraryView = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const {
-    surveys,
-    pageCount,
-    pagination,
-    sorting,
-    setPagination,
-    setSorting,
-    isFetching,
-    lastSuccessData,
-    error,
-    isError,
-  } = useUserSurveys();
+
+  const { sortObj, sorting, setPagination, setSorting, pagination } =
+    useDataTableState({ pageSize: 30 });
+  const { surveys, pageCount, isFetching, error, isError } = useUserSurveys({
+    page: pagination.pageIndex + 1,
+    sort: sortObj,
+  });
 
   useToastError(isError, getErrorMessage(error));
 
@@ -34,8 +30,8 @@ const MyLibraryView = () => {
       <UserSurveysTable
         columns={columns}
         loading={isFetching}
-        data={surveys! || lastSuccessData.current?.data!}
-        pageCount={pageCount || lastSuccessData.current?.total_pages!}
+        data={surveys!}
+        pageCount={pageCount!}
         paginationState={pagination}
         sortingState={sorting}
         onPaginationChange={setPagination}

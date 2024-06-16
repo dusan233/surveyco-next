@@ -1,38 +1,30 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { PaginationState, SortingState } from "@tanstack/react-table";
-import { useEffect, useRef, useState } from "react";
 import { getSurveyCollectors } from "@/api/survey";
 import { useAuth } from "@clerk/nextjs";
 import { SortObject } from "@/types/common";
+import { useLastSuccessData } from "./useLastSuccessData";
 
-export default function useSurveyCollectors(surveyId: string) {
+type UseSurveyCollectorsParams = {
+  surveyId: string;
+  page: number;
+  sort: SortObject;
+};
+
+export default function useSurveyCollectors({
+  surveyId,
+  page,
+  sort,
+}: UseSurveyCollectorsParams) {
   const { getToken } = useAuth();
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 15,
-  });
-  const [sort, setSort] = useState<SortObject>({
-    column: "updated_at",
-    type: "desc",
-  });
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: "updated_at", desc: true },
-  ]);
 
   const { data, ...queryInfo } = useQuery({
     staleTime: 0,
-    queryKey: [
-      "survey",
-      surveyId,
-      "collectors",
-      pagination.pageIndex + 1,
-      sort,
-    ],
+    queryKey: ["survey", surveyId, "collectors", page, sort],
     queryFn: async () => {
       const token = await getToken();
       return getSurveyCollectors({
         surveyId,
-        page: pagination.pageIndex + 1,
+        page,
         sort,
         token,
       });
@@ -42,30 +34,11 @@ export default function useSurveyCollectors(surveyId: string) {
     refetchOnWindowFocus: false,
   });
 
-  const lastSuccessData = useRef(data);
-
-  useEffect(() => {
-    if (data) lastSuccessData.current = data;
-    if (data?.data.length !== 0) {
-      setPagination((pagination) => ({
-        pageIndex: 0,
-        pageSize: pagination.pageSize,
-      }));
-      setSort({
-        column: sorting[0].id,
-        type: sorting[0].desc ? "desc" : "asc",
-      });
-    }
-  }, [sorting, data]);
+  const { lastSuccessData } = useLastSuccessData(data);
 
   return {
-    collectors: data?.data,
-    pageCount: data?.total_pages || 0,
-    pagination,
-    sorting,
-    setSorting,
-    setPagination,
-    lastSuccessData,
+    collectors: data?.data || lastSuccessData?.data,
+    pageCount: data?.total_pages || lastSuccessData?.total_pages,
     ...queryInfo,
   };
 }

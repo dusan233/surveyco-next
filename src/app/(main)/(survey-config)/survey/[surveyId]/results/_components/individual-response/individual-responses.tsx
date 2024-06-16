@@ -9,24 +9,21 @@ import { useIndividualResponseStore } from "../../individual/useIndividualRespon
 import { Survey } from "@/types/survey";
 import useToastError from "@/hooks/useToastError";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { useDataTableState } from "@/hooks/useDataTableState";
 
 type SurveyResponsesProps = {
   survey: Survey;
 };
 
 const IndividualResponses = ({ survey }: SurveyResponsesProps) => {
-  const {
-    responses,
-    pagination,
-    setPagination,
-    pageCount,
-    isFetching,
-    sorting,
-    setSorting,
-    lastSuccessData,
-    isError,
-    error,
-  } = useSurveyIndividualResponses(survey.id);
+  const { setPagination, setSorting, sortObj, sorting, pagination } =
+    useDataTableState({ pageSize: 30 });
+  const { responses, pageCount, isFetching, isError, error } =
+    useSurveyIndividualResponses({
+      surveyId: survey.id,
+      sort: sortObj,
+      page: pagination.pageIndex + 1,
+    });
   const { showDialog, responseId, setShowDialog } =
     useIndividualResponseStore();
 
@@ -39,13 +36,14 @@ const IndividualResponses = ({ survey }: SurveyResponsesProps) => {
         isOpen={showDialog}
         surveyId={survey.id}
         responseId={responseId}
+        dataTableState={{ sort: sortObj, page: pagination.pageIndex + 1 }}
       />
       <h1 className="text-2xl mb-5">Individual Responses</h1>
       <IndividualResponsesTable
-        pageCount={pageCount || lastSuccessData.current?.total_pages!}
+        pageCount={pageCount!}
         loading={isFetching}
         columns={columns}
-        data={responses! || lastSuccessData.current?.data}
+        data={responses!}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
         sortingState={sorting}

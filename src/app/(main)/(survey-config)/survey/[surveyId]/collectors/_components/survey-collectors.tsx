@@ -7,24 +7,21 @@ import useSurveyCollectors from "@/hooks/useSurveyCollectors";
 import { columns } from "./collectors-table-columns";
 import useToastError from "@/hooks/useToastError";
 import { getErrorMessage } from "@/lib/util/errorUtils";
+import { useDataTableState } from "@/hooks/useDataTableState";
 
 type SurveyCollectorsProps = {
   surveyId: string;
 };
 
 const SurveyCollectors = ({ surveyId }: SurveyCollectorsProps) => {
-  const {
-    collectors,
-    pageCount,
-    pagination,
-    sorting,
-    setPagination,
-    setSorting,
-    isFetching,
-    isError,
-    error,
-    lastSuccessData,
-  } = useSurveyCollectors(surveyId);
+  const { pagination, setPagination, setSorting, sortObj, sorting } =
+    useDataTableState({ pageSize: 15 });
+  const { collectors, pageCount, isFetching, isError, error } =
+    useSurveyCollectors({
+      surveyId,
+      sort: sortObj,
+      page: pagination.pageIndex + 1,
+    });
 
   useToastError(isError, getErrorMessage(error));
 
@@ -32,13 +29,13 @@ const SurveyCollectors = ({ surveyId }: SurveyCollectorsProps) => {
     <div>
       <CollectorsHeader surveyId={surveyId} />
       <CollectorsTable
-        pageCount={pageCount || lastSuccessData.current?.total_pages!}
+        pageCount={pageCount!}
         paginationState={pagination}
         sortingState={sorting}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
         loading={isFetching}
-        data={collectors! || lastSuccessData.current?.data}
+        data={collectors!}
         columns={columns}
         noDataMsg="No collectors"
       />
