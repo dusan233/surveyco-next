@@ -1,12 +1,13 @@
 import { getSurveyPages } from "@/api/survey";
-import { useQuery } from "@tanstack/react-query";
+import { SurveyPage } from "@/types/survey";
+import { UndefinedInitialDataOptions, useQuery } from "@tanstack/react-query";
 
 export default function useSurveyPages(
   surveyId: string,
-  options?: {
-    refetchOnMount?: boolean;
-    refetchOnWindowFocus?: boolean;
-  }
+  options?: Omit<
+    UndefinedInitialDataOptions<SurveyPage[], Error, SurveyPage[], string[]>,
+    "queryKey" | "queryFn"
+  >
 ) {
   const { data, ...queryInfo } = useQuery({
     staleTime: Infinity,

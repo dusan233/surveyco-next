@@ -3,11 +3,7 @@ import { saveSurveyResponse } from "@/actions/survey-actions";
 import { QuestionsResponsesData } from "@/types/question";
 
 export default function useSaveSurveyResponse() {
-  const {
-    mutate: saveResponseMutation,
-    mutateAsync: saveResponseMutationAsync,
-    ...mutation
-  } = useMutation({
+  const { mutateAsync: saveResponseMutationAsync, ...mutation } = useMutation({
     mutationFn: (payload: {
       surveyId: string;
       data: QuestionsResponsesData;
@@ -27,7 +23,6 @@ export default function useSaveSurveyResponse() {
   });
 
   return {
-    saveResponseMutation,
     saveResponseMutationAsync,
     ...mutation,
   };

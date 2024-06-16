@@ -1,18 +1,26 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import {
+  UndefinedInitialDataOptions,
+  keepPreviousData,
+  useQuery,
+} from "@tanstack/react-query";
 import { getSurveyQuestions } from "@/api/survey";
+import { QuestionsResponseData } from "@/types/question";
 
 export default function useSurveyQuestions(
   surveyId: string,
   pageId: string,
-  options?: {
-    staleTime?: number;
-    refetchOnMount?: boolean;
-    refetchOnWindowFocus?: boolean;
-    enabled?: boolean;
-  }
+  options?: Omit<
+    UndefinedInitialDataOptions<
+      QuestionsResponseData,
+      Error,
+      QuestionsResponseData,
+      string[]
+    >,
+    "queryKey" | "queryFn"
+  >
 ) {
   const { data, ...queryInfo } = useQuery({
-    staleTime: options?.staleTime || 0,
+    staleTime: 0,
     queryKey: ["survey", surveyId, "questions", pageId],
     queryFn: () => getSurveyQuestions({ surveyId, surveyPage: pageId }),
     placeholderData: keepPreviousData,
