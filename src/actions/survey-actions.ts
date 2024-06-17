@@ -176,6 +176,12 @@ export const moveSurveyPage = async (
     }
   );
 
+  const resData = await getResponseData<SurveyPage>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/results`);
+    revalidatePath(`/survey/${surveyId}/results/individual`);
+  }
+
   return await getResponseData(res);
 };
 
@@ -198,6 +204,13 @@ export const copyQuestion = async (
     }
   );
 
+  const resData = await getResponseData<SurveyPage>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/library`);
+    revalidatePath(`/survey/${surveyId}/results`);
+    revalidatePath(`/survey/${surveyId}/summary`);
+  }
+
   return await getResponseData(res);
 };
 
@@ -219,6 +232,11 @@ export const moveQuestion = async (
       body: JSON.stringify(data),
     }
   );
+
+  const resData = await getResponseData<SurveyPage>(res);
+  if (isSuccessData(resData)) {
+    revalidatePath(`/survey/${surveyId}/results`);
+  }
 
   return await getResponseData(res);
 };
